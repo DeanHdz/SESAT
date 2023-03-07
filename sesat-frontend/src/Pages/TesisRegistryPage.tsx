@@ -1,11 +1,18 @@
 import Navbar from "../Components/Navbar/Navbar";
-import TesisRegistry from "../Components/TesisRegistry";
+import InsiteBaner from "../Components/Banner/InsiteBanner";
+import Breadcrumbs from "../Components/Breadcrumbs/Breadcrumbs";
+import TesisRegistryForm from "../Components/TesisRegistryForm/TesisRegistryForm";
+
+let paths: string[] = [];
+paths.push("Registro de Tésis");
 
 export const TesisRegistryPage = () => {
   return (
     <>
       <Navbar />
-      <TesisRegistry />
+      <InsiteBaner topic={"Registro"}/>
+      <Breadcrumbs paths={paths}/>
+      <TesisRegistryForm />
     </>
   );
 };
