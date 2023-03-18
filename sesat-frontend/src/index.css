@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "SESAT";
+  src: url("/Fonts/Myriad-Pro-Semibold.ttf");
+}

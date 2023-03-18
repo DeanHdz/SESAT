@@ -1,8 +1,8 @@
-const BreadcrumbElement = ({text}:{text: string}) =>
+const BreadcrumbElement = ({text, link}:{text: string, link: string}) =>
 {
   return(
     <li className="flex items-center">
-          <a href="javascript:void(0)" className="text-black hover:text-sky-600 text-base font-semibold">
+          <a href={`${link}`} className="text-black hover:text-sky-600 text-base font-semibold">
             {text}
           </a>
           <span className="text-body-color px-3">

@@ -5,11 +5,11 @@ import LandingBase from "../Components/LandingBase/LandingBase"
 const LandingPage = () =>
 {
   return(
-    <>
+    <div className="overflow-hidden">
       <Navbar />
       <LandingBanner />
       <LandingBase />
-    </>
+    </div>
   )
 }
 

@@ -2,10 +2,15 @@
 module.exports = {
   content: [ "./src/**/*.{html,js,jsx,ts,tsx}" ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        SESAT: ["SESAT", "semibold"],
+      },
+    },
   },
-  plugins: [require("daisyui"),
-            require('@tailwindcss/typography') ],
+  plugins: [require('@tailwindcss/typography'),
+            require('@tailwindcss/forms'),
+            require("daisyui") ],
   daisyui: {
     themes: [
       {
