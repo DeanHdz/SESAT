@@ -5,7 +5,7 @@ const NewAssignment = () => {
   return (
     <div className="lg:flex lg:flex-row w-screen">
       <div className="block w-11/12 lg:w-3/6">
-        <form className="lg:flex lg:flex-col mt-10 ml-10">
+        <form className="sm:pl-12 lg:flex lg:flex-col mt-10 ml-10">
           <label className="mb-3 block text-lg font-bold">Título</label>
           <input
             className="h-1/4 py-2 px-10 shadow appearance-none rounded w-5/6 mb-10"
@@ -39,7 +39,7 @@ const NewAssignment = () => {
         </form>
       </div>
       <div className="block w-11/12 lg:w-3/6 ">
-        <form className="lg:lex lg:flex-col mt-10 ml-10 ">
+        <form className="lg:lex lg:flex-col mt-10 ml-10 sm:pl-12">
           <div className="bg-[#e8edef] w-5/6 rounded py-6 px-6">  
             <div className="flex justify-around w-full ">
               <label className="mb-3 block text-lg font-bold">

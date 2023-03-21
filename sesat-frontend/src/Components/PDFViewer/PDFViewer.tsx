@@ -8,7 +8,7 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 
 /*pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`*/
 
-pdfjs.GlobalWorkerOptions.workerSrc = `../../../public/pdf/pdf.worker.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `/pdf/pdf.worker.js`;
 
 export default function PDFViewer() {
   const [scale, setScale] = useState<number>(1);
@@ -35,7 +35,7 @@ export default function PDFViewer() {
 
   return (
     <div className="justify-center">         
-      <Document file="../../../public/pdf/sample.pdf">
+      <Document file="/pdf/sample.pdf">
         <Page pageNumber={1} scale={scaleNumber} onLoadSuccess={onSuccessLoadDoc}/>
       </Document>
     </div>
