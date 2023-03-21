@@ -7,6 +7,8 @@ import CreateAssignment from "../Pages/CreateAssignment";
 import TesisViewPage from "../Pages/TesisViewPage";
 import UserRegistryPage from "../Pages/UserRegistryPage";
 import ProfilePage from "../Pages/ProfilePage";
+import AdminPageUsers from "../Pages/AdminSearchPage";
+import AsesorPage from "../Pages/AsesorSearchPage";
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
       <Route path="/view_tesis" element={<TesisViewPage />} />
       <Route path="/user-register" element={<UserRegistryPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/admin-search" element={<AdminPageUsers />} />
+      <Route path="/asesor-search" element={<AsesorPage />} />
     </Routes>
   );
 }
