@@ -3,6 +3,8 @@ import LandingPage from "../Pages/LandingPage";
 import TesisRegistryPage  from "../Pages/TesisRegistryPage";
 import AssignmentPage from "../Pages/AssignmentPage";
 import BoardPage from "../Pages/BoardPage";
+import CreateAssignment from "../Pages/CreateAssignment";
+import TesisViewPage from "../Pages/TesisViewPage";
 
 export default function App() {
   return (
@@ -11,6 +13,8 @@ export default function App() {
       <Route path="/board" element={<BoardPage />} />
       <Route path="/register" element={<TesisRegistryPage />} />
       <Route path="/assignment" element={<AssignmentPage />} />
+      <Route path="/create_assignment" element={<CreateAssignment />} />
+      <Route path="/view_tesis" element={<TesisViewPage />} />
     </Routes>
   );
 }
