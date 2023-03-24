@@ -1,5 +1,7 @@
 import CustomCalendar from "../CustomCalendar/CustomCalendar";
 import CustomTimePicker from "../CustomTimePicker/CustomTimePicker";
+import { PrimaryButton } from "../../Components/Buttons/PrimaryButton";
+import { SecondaryButton } from "../../Components/Buttons/SecondaryButton";
 
 const NewAssignment = () => {
   return (
@@ -40,7 +42,7 @@ const NewAssignment = () => {
       </div>
       <div className="block w-11/12 lg:w-3/6 ">
         <form className="lg:lex lg:flex-col mt-10 ml-10 sm:pl-12">
-          <div className="bg-[#e8edef] w-5/6 rounded py-6 px-6">  
+          <div className="bg-[#e8edef] w-5/6 rounded py-6 px-6">
             <div className="flex justify-around w-full ">
               <label className="mb-3 block text-lg font-bold">
                 Fecha de publicación
@@ -63,14 +65,11 @@ const NewAssignment = () => {
               <CustomCalendar />
               <CustomTimePicker />
             </div>
-            
           </div>
-          <div className="flex justify-end items-end w-5/6 mb-10 mt-10">
-              <button className="btn ml-6 bg-white border-primary text-black">
-                Descartar
-              </button>
-              <button className="btn ml-6 ">Crear</button>
-            </div>
+          <div className="flex justify-end w-5/6 mb-10 mt-10">
+            <div className="mr-6"><SecondaryButton id="noID" text="Descartar" /></div>            
+            <PrimaryButton id="noID" text="Crear" />
+          </div>
         </form>
       </div>
     </div>

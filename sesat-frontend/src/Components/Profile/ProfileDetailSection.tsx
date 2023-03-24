@@ -1,4 +1,5 @@
 import { IProfileDetail } from "../../Interfaces/IProfileDetail"
+import { PrimaryButton } from "../Buttons/PrimaryButton";
 
 //(Dean)
 //1.-La idea es que dependiendo de la clave que reciba en la funcion, regrese determinado informacion dependiendo si es alumno, asesor/externo
@@ -9,12 +10,13 @@ export const ProfileDetailSection = () => {
     return (
         <div className="border-solid border-2 border-[#dfdfdf] rounded-xl p-4 m-4 self-start">
             
-            <div className="border-solid border-2 border-[#a0a0a0] rounded-lg  bg-[#cccccc] p-1 m-2">
+            <div className="border-solid border-2 border-[#a0a0a0] rounded-lg  bg-[#cccccc] p-1 mb-2">
                 <span>Detalles de Usuario</span>
             </div>
 
             {/* The button to open modal */}
-            <label htmlFor="my-modal-3" className="btn m-2">Editar Perfil</label>
+            
+            <PrimaryButton id="my-modal-3" text="Editar Perfil" />
 
             {/* Put this part before </body> tag */}
             <input type="checkbox" id="my-modal-3" className="modal-toggle" />

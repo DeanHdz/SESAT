@@ -23,7 +23,7 @@ const link2:string = "https://academica.uaslp.mx/";
 const LandingInfo = () =>
 {
   return(
-    <div className="bg-white mt-10 flex flex-row space-x-2 ">
+    <div className="bg-white mt-10 flex flex-row space-x-2 rounded">
       <LandingInfoBlock title={"UASLP"} body={lines} link={link}/>
       <LandingInfoBlock title={"SECRETARÍA ACADÉMICA"} body={lines2} link={link2}/>
     </div>

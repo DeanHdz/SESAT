@@ -12,7 +12,7 @@ let links: string[] = [];
 links.push("/view_tesis");
 
 let titulo: string = "Machine Learning Classification Algorithms";
-let fecha: string = "12/02/2022";
+let fecha: string = "12/02/2020";
 let autor: string = "José Alfredo Ipiña Zarazúa ";
 
 const TesisViewPage = () => {

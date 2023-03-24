@@ -30,6 +30,8 @@ export default function PDFViewer() {
     }else if(windowWidth >= 640){
       finalScale = (windowWidth*scalesm)/640;
       setScale(finalScale);
+    }else if(windowWidth <640){
+      setScale(0.58);
     }  
   }
 
