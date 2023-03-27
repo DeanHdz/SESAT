@@ -5,6 +5,10 @@ import { AppService } from './app.service';
 import { Usuario } from './usuario/entities/usuario.entity';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AlumnoModule } from './alumno/alumno.module';
+import { TesisModule } from './tesis/tesis.module';
+import { ProgramaModule } from './programa/programa.module';
+import { AsesorModule } from './asesor/asesor.module';
+import { AsesorExternoModule } from './asesor-externo/asesor-externo.module';
 
 @Module({
   imports: [
@@ -20,6 +24,10 @@ import { AlumnoModule } from './alumno/alumno.module';
     }),
     UsuarioModule,
     AlumnoModule,
+    TesisModule,
+    ProgramaModule,
+    AsesorModule,
+    AsesorExternoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
