@@ -2,6 +2,7 @@ import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn, ManyToMany } from 
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { Programa } from "src/programa/entities/programa.entity";
 
+@Entity()
 export class Tesis {
   @PrimaryColumn()
   id_tesis: number;

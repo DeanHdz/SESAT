@@ -138,4 +138,39 @@ export namespace SESAT {
     Modalidad: string;
   }
 
+  /*------------------ COASESOR INTERFACE ------------------*/
+  
+  export interface Tesis{
+    id_tesis: number;
+    Clave_Alumno: number;
+    Clave_Asesor: number;
+    id_programa: number;
+    Titulo: string;
+    FechaRegistro: Date;
+    Generacion: string;
+    Modalidad: string;
+  }
+
+  export interface CreateTesis{
+    id_tesis: number;
+    Clave_Alumno: number;
+    Clave_Asesor: number;
+    id_programa: number;
+    Titulo: string;
+    FechaRegistro: Date;
+    Generacion: string;
+    Modalidad: string;
+  }
+
+  export interface UpdateTesis{
+    id_tesis: number;
+    Clave_Alumno: number;
+    Clave_Asesor: number;
+    id_programa: number;
+    Titulo: string;
+    FechaRegistro: Date;
+    Generacion: string;
+    Modalidad: string;
+  }
+
 }

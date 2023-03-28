@@ -9,6 +9,8 @@ import { TesisModule } from './tesis/tesis.module';
 import { ProgramaModule } from './programa/programa.module';
 import { AsesorModule } from './asesor/asesor.module';
 import { AsesorExternoModule } from './asesor-externo/asesor-externo.module';
+import { CoAsesorModule } from './co-asesor/co-asesor.module';
+import { AsignacionModule } from './asignacion/asignacion.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { AsesorExternoModule } from './asesor-externo/asesor-externo.module';
     ProgramaModule,
     AsesorModule,
     AsesorExternoModule,
+    CoAsesorModule,
+    AsignacionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
