@@ -1,3 +1,5 @@
+import UserIcon from "../UserIcon/UserIcon";
+
 const Navbar = () => 
 {
   return (
@@ -44,11 +46,7 @@ const Navbar = () =>
       </div>
       <div className="navbar-end">
         <div className="dropdown dropdown-end mr-8">
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar placeholder">
-          <div className="bg-[#31325c] text-neutral-content rounded-full w-[40px]">
-            <span className="text-2xl">?</span>
-          </div>
-          </label>
+          <UserIcon userName="?"/>
           <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
             <li><a>Iniciar Sesión</a></li>
           </ul>
