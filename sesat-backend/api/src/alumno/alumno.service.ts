@@ -21,7 +21,7 @@ export class AlumnoService {
   }
 
   findOne(id: number) {
-    return this.alumnoRepository.findOne({ where: { Clave: id } });
+    return this.alumnoRepository.findOne({ where: { alumno_id: id } });
   }
 
   update(updateAlumnoDto: UpdateAlumnoDto) {

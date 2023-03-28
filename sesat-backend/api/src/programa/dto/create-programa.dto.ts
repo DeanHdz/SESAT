@@ -7,5 +7,5 @@ export class CreateProgramaDto {
 
   @IsNotEmpty()
   @IsString()
-  NombrePrograma: string;
+  nombreprograma: string;
 }

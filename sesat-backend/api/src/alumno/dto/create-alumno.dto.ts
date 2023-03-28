@@ -3,13 +3,17 @@ import { IsNotEmpty, IsNumber } from "class-validator";
 export class CreateAlumnoDto {
     @IsNotEmpty()
     @IsNumber()
-    Clave: number;
+    alumno_id: number;
 
     @IsNotEmpty()
     @IsNumber()
-    EstadoActivo: number;
+    clave: number;
 
     @IsNotEmpty()
     @IsNumber()
-    Ultimo_Avance: number;
+    estado_activo: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    ultimo_avance: number;
 }

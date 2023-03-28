@@ -1,36 +1,48 @@
-import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn, ManyToMany } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn, ManyToMany, ManyToOne, JoinTable } from "typeorm";
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { Programa } from "src/programa/entities/programa.entity";
+import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 
 @Entity()
 export class Tesis {
   @PrimaryColumn()
   id_tesis: number;
 
+  @Column()
+  clave_alumno: number;
+
   @OneToOne(() => Usuario, { eager: true })
-  @JoinColumn({ name: 'Clave' })
-  Clave_Alumno: number;
+  @JoinColumn({ name: 'clave_alumno' })
+  claveAlumno: Usuario;
+
+  @Column()
+  clave_asesor: number;
 
   //una tesis puede tener multiples asesores, un asesor puede tener multiples tesis
-  @ManyToMany(() => Usuario, { eager: true })
-  @JoinColumn({ name: 'Clave' })
-  Clave_Asesor: number;
+  @OneToOne(() => Usuario, { eager: true })
+  @JoinColumn({name: 'clave_asesor'})
+  claveAsesor: Usuario
 
-  @OneToOne(() => Programa, { eager: true })
-  @JoinColumn({ name: 'id_programa' })
   @Column()
   id_programa: number;
 
-  @Column()
-  Titulo: string;
+  @OneToOne(() => Programa, { eager: true })
+  @JoinColumn({ name: 'id_programa' })
+  idPrograma: Programa;
 
   @Column()
-  FechaRegistro: Date;
+  titulo: string;
 
   @Column()
-  Generacion: string;
+  fecharegistro: Date;
 
   @Column()
-  Modalidad: string;
+  generacion: string;
+
+  @Column()
+  modalidad: string;
+
+  //@ManyToOne(() => Asignacion, (asignacion) => asignacion.id_tesis)
+  //asignacion: Asignacion;
 
 }

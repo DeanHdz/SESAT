@@ -9,5 +9,5 @@ export class UpdateProgramaDto extends PartialType(CreateProgramaDto) {
 
   @IsNotEmpty()
   @IsString()
-  NombrePrograma: string;
+  nombreprograma: string;
 }

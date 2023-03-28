@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAsesorExternoDto } from './dto/create-asesor-externo.dto';
-import { UpdateAsesorExternoDto } from './dto/update-asesor-externo.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AsesorExterno } from './entities/asesor-externo.entity';
-import { Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { CreateAsesorExternoDto } from "./dto/create-asesor-externo.dto";
+import { UpdateAsesorExternoDto } from "./dto/update-asesor-externo.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { AsesorExterno } from "./entities/asesor-externo.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class AsesorExternoService {
   constructor(
     @InjectRepository(AsesorExterno)
-    private asesorRepository: Repository<AsesorExterno>,
+    private asesorRepository: Repository<AsesorExterno>
   ) {}
 
   create(createAsesorExternoDto: CreateAsesorExternoDto) {
@@ -21,7 +21,7 @@ export class AsesorExternoService {
   }
 
   findOne(id: number) {
-    return this.asesorRepository.findOne({ where: { Clave: id } });
+    return this.asesorRepository.findOne({ where: { asesor_externo: id } });
   }
 
   update(updateAsesorExternoDto: UpdateAsesorExternoDto) {

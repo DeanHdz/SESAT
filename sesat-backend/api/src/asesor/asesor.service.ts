@@ -21,7 +21,7 @@ export class AsesorService {
   }
 
   findOne(id: number) {
-    return this.asesorRepository.findOne({ where: { Clave: id } });
+    return this.asesorRepository.findOne({ where: { asesor_id: id } });
   }
 
   update(updateAsesorDto: UpdateAsesorDto) {

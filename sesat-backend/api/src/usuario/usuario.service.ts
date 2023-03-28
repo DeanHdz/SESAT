@@ -21,7 +21,7 @@ export class UsuarioService {
   }
 
   findOne(id: number) {
-    return this.usuarioRepository.findOne({ where: { Clave: id } });
+    return this.usuarioRepository.findOne({ where: { clave: id } });
   }
 
   update(updateUsuarioDto: UpdateUsuarioDto) {

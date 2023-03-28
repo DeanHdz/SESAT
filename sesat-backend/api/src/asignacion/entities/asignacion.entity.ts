@@ -1,4 +1,11 @@
-import { Entity, Column, OneToMany, JoinColumn, PrimaryColumn, Timestamp} from "typeorm";
+import {
+  Entity,
+  Column,
+  OneToMany,
+  JoinColumn,
+  PrimaryColumn,
+  Timestamp,
+} from "typeorm";
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import path from "path";
@@ -6,33 +13,36 @@ import path from "path";
 @Entity()
 export class Asignacion {
   @PrimaryColumn()
-  id_asignacion: number
-
-  @OneToMany(() => Tesis, (tesis) => tesis.id_tesis)
-  @Column() //?
-  id_tesis: number
+  id_asignacion: number;
 
   @Column()
-  num_Avance: number
+  id_tesis: number;
+
+  //@OneToMany(() => Tesis, (tesis) => tesis.id_tesis, { eager: true })
+  //@JoinColumn({name: 'id_tesis'})
+  //tesis: Tesis[];
 
   @Column()
-  Titulo: string
+  num_Avance: number;
 
   @Column()
-  Descripcion: string
+  titulo: string;
 
   @Column()
-  Apertura: Timestamp
+  descripcion: string;
 
   @Column()
-  Cierre: Timestamp
+  apertura: Date;
 
   @Column()
-  calificacion: number
+  cierre: Date;
 
   @Column()
-  Documento: string
+  calificacion: number;
 
   @Column()
-  Estado_Entrega: number
+  documento: string;
+
+  @Column()
+  estado_Entrega: number;
 }

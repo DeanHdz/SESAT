@@ -5,9 +5,13 @@ import { IsNotEmpty, IsNumber } from 'class-validator';
 export class UpdateAsesorDto extends PartialType(CreateAsesorDto) {
   @IsNotEmpty()
   @IsNumber()
-  Clave: number;
+  asesor_id: number;
+  
+  @IsNotEmpty()
+  @IsNumber()
+  clave: number;
 
   @IsNotEmpty()
   @IsNumber()
-  Sinodal: number;
+  sinodal: number;
 }

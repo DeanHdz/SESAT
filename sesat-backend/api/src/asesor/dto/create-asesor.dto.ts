@@ -3,9 +3,13 @@ import { IsNotEmpty, IsNumber } from "class-validator";
 export class CreateAsesorDto {
   @IsNotEmpty()
   @IsNumber()
-  Clave: number;
+  asesor_id: number;
 
   @IsNotEmpty()
   @IsNumber()
-  Sinodal: number;
+  clave: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  sinodal: number;
 }

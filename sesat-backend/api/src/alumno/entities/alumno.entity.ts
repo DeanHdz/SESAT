@@ -1,18 +1,21 @@
 import { Usuario } from 'src/usuario/entities/usuario.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Alumno {
+  @PrimaryColumn()
+  alumno_id: number;
+
   @Column()
-  Clave: number;
+  clave: number;
 
   @OneToOne(() => Usuario, { eager: true })
-  @JoinColumn({ name: 'Clave' })
+  @JoinColumn({ name: 'clave' })
   usuario: Usuario;
 
   @Column()
-  Estado_Activo: number;
+  estado_activo: number;
 
   @Column()
-  Ultimo_Avance: number;
+  ultimo_avance: number;
 }

@@ -5,13 +5,17 @@ import { CreateAlumnoDto } from './create-alumno.dto';
 export class UpdateAlumnoDto extends PartialType(CreateAlumnoDto) {
     @IsNotEmpty()
     @IsNumber()
-    Clave: number;
+    alumno_id: number;
 
     @IsNotEmpty()
     @IsNumber()
-    EstadoActivo: number;
+    clave: number;
 
     @IsNotEmpty()
     @IsNumber()
-    Ultimo_Avance: number;
+    estado_activo: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    ultimo_avance: number;
 }

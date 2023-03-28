@@ -6,5 +6,5 @@ export class Programa {
   id_programa: number;
 
   @Column()
-  NombrePrograma: string;
+  nombreprograma: string;
 }

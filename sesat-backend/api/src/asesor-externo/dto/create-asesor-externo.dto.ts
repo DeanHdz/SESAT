@@ -3,29 +3,33 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class CreateAsesorExternoDto {
   @IsNotEmpty()
   @IsNumber()
-  Clave: number;
+  asesor_externo_id: number;
+  
+  @IsNotEmpty()
+  @IsNumber()
+  clave: number;
 
   @IsNotEmpty()
   @IsString()
-  Telefono: string;
+  telefono: string;
 
   @IsNotEmpty()
   @IsString()
-  Institucion: string;
+  institucion: string;
 
   @IsNotEmpty()
   @IsString()
-  Nombre: string;
+  nombre: string;
 
   @IsNotEmpty()
   @IsString()
-  ApellidoPaterno: string;
+  apellidopaterno: string;
 
   @IsNotEmpty()
   @IsString()
-  ApellidoMaterno: string;
+  apellidomaterno: string;
 
   @IsNotEmpty()
   @IsString()
-  Correo: string;
+  correo: string;
 }

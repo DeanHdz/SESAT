@@ -1,27 +1,30 @@
-import { Entity, Column, OneToOne, JoinColumn} from "typeorm";
+import { Entity, Column, OneToOne, JoinColumn, PrimaryColumn} from "typeorm";
 import { Usuario } from "src/usuario/entities/usuario.entity";
 
 @Entity()
 export class AsesorExterno {
+  @PrimaryColumn()
+  asesor_externo: number;
+
   @OneToOne(() => Usuario, { eager: true })
   @JoinColumn({ name: 'Clave' })
-  Clave: number;
+  clave: number;
 
   @Column()
-  Telefono: string;
+  telefono: string;
 
   @Column()
-  Institucion: string;
+  institucion: string;
 
   @Column()
-  Nombre: string;
+  nombre: string;
 
   @Column()
-  ApellidoPaterno: string;
+  apellidopaterno: string;
 
   @Column()
-  ApellidoMaterno: string;
+  apellidomaterno: string;
 
   @Column()
-  Correo: string;
+  correo: string;
 }
