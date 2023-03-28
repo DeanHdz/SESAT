@@ -1,26 +1,28 @@
 import axios from "axios";
 import { SESAT } from "../Interfaces/ISESAT";
 
-export namespace UsuarioEndpoint{
-  
+export namespace UsuarioEndpoint {
   export const getUsuario = async (
     id: number,
     token: string
   ): Promise<SESAT.Usuario | undefined> => {
     return await axios
-      .get<SESAT.Usuario>(`${process.env.REACT_APP_API_HOSTNAME}/usuario/` + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
+      .get<SESAT.Usuario>(
+        `http://localhost:3000/usuario/` + id
+        /*{
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+        }*/
+      )
       .then(({ data }) => {
         if (data) {
           return data;
         }
       });
   };
-  
+
   export const getUsuarios = async (
     token: string
   ): Promise<SESAT.Usuario | undefined> => {
@@ -37,7 +39,7 @@ export namespace UsuarioEndpoint{
         }
       });
   };
-  
+
   export const postUsuario = async (
     createUsuarioDto: SESAT.CreateUsuario,
     token: string
@@ -55,7 +57,7 @@ export namespace UsuarioEndpoint{
         }
       });
   };
-  
+
   export const putUsuario = async (
     updateUsuarioDto: SESAT.UpdateUsuario,
     token: string
@@ -73,7 +75,7 @@ export namespace UsuarioEndpoint{
         }
       });
   };
-  
+
   export const deleteUsuario = async (
     id: number,
     token: string
