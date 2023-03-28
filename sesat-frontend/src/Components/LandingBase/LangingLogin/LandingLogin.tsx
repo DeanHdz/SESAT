@@ -31,7 +31,7 @@ import { UsuarioEndpoint } from "../../../api/usuario.endpoint";
  
 const LandingLogin = () => {
  
-  const [claveUnica, setClaveUnica] = useState<number>(0);
+  const [claveUnica, setClaveUnica] = useState<any>(0); //cum
   const [constraseña, setContraseña] = useState("");
  
   async function handleSubmit (e:any) {
@@ -56,7 +56,7 @@ const LandingLogin = () => {
             </span>
           </label>
           <input
-            type="text"
+            type="number"
             placeholder="Clave Única"
             value={claveUnica}
             onChange={
