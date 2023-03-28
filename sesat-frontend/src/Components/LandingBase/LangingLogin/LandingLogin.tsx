@@ -21,31 +21,25 @@
       <button className="mt-16 btn bg-[#8c969f] border-transparent w-2/6"> Iniciar Sesión (Ingresar) </button>
     </div>
   )
-}*/
+}
 
 export default LandingLogin
+*/
 
 import { useState } from "react";
-import axios from "axios";
-import { SESAT } from "../../../Interfaces/ISESAT";
+import { UsuarioEndpoint } from "../../../api/usuario.endpoint";
  
 const LandingLogin = () => {
  
-  const [claveUnica, setClaveUnica] = useState("");
+  const [claveUnica, setClaveUnica] = useState<number>(0);
   const [constraseña, setContraseña] = useState("");
  
   async function handleSubmit (e:any) {
     e.preventDefault();
     try {
       console.log(claveUnica, constraseña);
-      const resp = await axios.post<User>('http://localhost:8000',{
-      claveUnica: claveUnica,
-      contraseña: constraseña      
-      });
-      
-      const user: User = resp.data as User;
-      console.log(user.nombre);      
-      
+      const resp = UsuarioEndpoint.getUsuario(claveUnica,"") 
+      console.log(resp);      
     }            
     catch(err) {
       console.log(err);
