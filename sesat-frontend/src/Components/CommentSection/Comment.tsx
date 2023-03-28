@@ -1,5 +1,6 @@
 import { IReply } from "../../Interfaces/IReply"
 import { IComment } from "../../Interfaces/IComment"
+import UserIcon from "../UserIcon/UserIcon"
 import Reply from "./Reply"
 
 const Comment = ({userName, date, body, replies}:{userName: string, date: string, body: string, replies: IReply[]}) =>
@@ -15,11 +16,7 @@ const Comment = ({userName, date, body, replies}:{userName: string, date: string
       <div className="flex-col w-full bg-white border-b-2 border-l-2 border-gray-200 mt-2">
         <div className="flex flex-row">
           {/*User Image*/}
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar placeholder">
-            <div className="bg-[#31325c] text-neutral-content rounded-full w-[40px]">
-              <span className="text-2xl"> BG </span>
-            </div>
-          </label>
+          <UserIcon userName="BG"/>
           {/*User Image*/}
           <div className="flex-col mt-1">
               {/*User name and date of comment is here*/}

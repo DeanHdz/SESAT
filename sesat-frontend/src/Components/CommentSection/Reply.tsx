@@ -1,3 +1,5 @@
+import UserIcon from "../UserIcon/UserIcon"
+
 const Reply = ({userName, date, body} : {userName: string, date: string, body: string}) =>
 {
   return(
@@ -5,11 +7,7 @@ const Reply = ({userName, date, body} : {userName: string, date: string, body: s
       <hr className="my-2 ml-16 border-gray-200" />
       <div className="flex flex-row pt-1 md-10 ml-16">
         {/*User Image*/}
-        <label tabIndex={0} className="btn btn-ghost btn-circle avatar placeholder">
-          <div className="bg-[#31325c] text-neutral-content rounded-full w-[40px]">
-            <span className="text-2xl"> JA </span>
-          </div>
-        </label>
+        <UserIcon userName="JA"/>
         {/*User Image*/}
         <div className="flex-col mt-1">
           {/*User name and date of comment is here*/}
