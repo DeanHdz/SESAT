@@ -8,7 +8,7 @@ export namespace UsuarioEndpoint {
   ): Promise<SESAT.Usuario | undefined> => {
     return await axios
       .get<SESAT.Usuario>(
-        `http://localhost:3000/usuario/` + id,
+        `${import.meta.env.VITE_API_HOSTNAME}/usuario/` + id,
         {
           headers: {
             "Content-Type": "application/json",

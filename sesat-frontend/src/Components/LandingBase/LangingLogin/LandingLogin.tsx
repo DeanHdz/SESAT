@@ -1,17 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { UsuarioEndpoint } from "../../../api/usuario.endpoint";
  
 const LandingLogin = () => {
  
   const [claveUnica, setClaveUnica] = useState(""); //cum
   const [constraseña, setContraseña] = useState("");
+  const navigate = useNavigate();
  
   async function handleSubmit (e:any) {
     e.preventDefault();
     try {
       console.log(claveUnica, constraseña);
-      const resp = UsuarioEndpoint.getUsuario(parseInt(claveUnica),"");
-      console.log(resp + "I'm resp"); //por qué no se imprime?
+      const resp = await UsuarioEndpoint.getUsuario(parseInt(claveUnica),"");
+      if(resp)
+        navigate("/register");
     }            
     catch(err) {
       console.log(err);
