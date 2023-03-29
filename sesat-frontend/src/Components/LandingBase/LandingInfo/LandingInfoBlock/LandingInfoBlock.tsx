@@ -4,13 +4,13 @@ const LandingInfoBlock = ({title, body, link}:{title:string, body:string[], link
   for(let i = 0; i < body.length-1; i++)
   {
     lines.push(
-      <article className="prose prose-sm text-black font-medium"> 
+      <article key={i} className="prose prose-sm text-black font-medium"> 
         {body[i]} 
       </article>
     );
   }
   lines.push(
-    <a href={`${link}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-600">
+    <a key={body.length} href={`${link}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-600">
       {link}
     </a>
   )

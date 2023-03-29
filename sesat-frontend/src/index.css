@@ -6,3 +6,12 @@
   font-family: "SESAT";
   src: url("/Fonts/Myriad-Pro-Semibold.ttf");
 }
+
+@layer utilites {
+  .\[appearance\:textfield\] {
+    -webkit-appearance: textfield;
+            appearance: textfield;
+  }
+
+  /* ... */
+}
