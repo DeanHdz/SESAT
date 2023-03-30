@@ -21,6 +21,7 @@ import { CoAsesor } from "./co-asesor/entities/co-asesor.entity";
 import { Programa } from "./programa/entities/programa.entity";
 import { Tesis } from "./tesis/entities/tesis.entity";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { ComentarioModule } from './comentario/comentario.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
     AsesorExternoModule,
     CoAsesorModule,
     AsignacionModule,
+    ComentarioModule,
   ],
   controllers: [AppController],
   providers: [AppService],

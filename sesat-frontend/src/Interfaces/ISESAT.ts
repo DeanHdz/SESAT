@@ -15,22 +15,22 @@ export namespace SESAT {
   }
 
   /*------------------ ALUMNO INTERFACE ------------------*/
-  
-  export interface Alumno{
+
+  export interface Alumno {
     clave: number;
     usuario: Usuario;
     estado_activo: number;
     ultimo_avance: number;
   }
 
-  export interface CreateAlumno{
+  export interface CreateAlumno {
     clave: number;
     usuario: Usuario;
     estado_activo: number;
     ultimo_avance: number;
   }
 
-  export interface UpdateAlumno{
+  export interface UpdateAlumno {
     clave: number;
     usuario: Usuario;
     estado_activo: number;
@@ -38,25 +38,25 @@ export namespace SESAT {
   }
 
   /*------------------ ASESOR INTERFACE ------------------*/
-  
-  export interface Asesor{
+
+  export interface Asesor {
     clave: number;
     sinodal: number;
   }
 
-  export interface CreateAsesor{
+  export interface CreateAsesor {
     clave: number;
     sinodal: number;
   }
 
-  export interface UpdateAsesor{
+  export interface UpdateAsesor {
     clave: number;
     sinodal: number;
   }
 
   /*------------------ ASESOR EXTERNO INTERFACE ------------------*/
-  
-  export interface AsesorExterno{
+
+  export interface AsesorExterno {
     clave: number;
     telefono: string;
     institucion: string;
@@ -66,7 +66,7 @@ export namespace SESAT {
     correo: string;
   }
 
-  export interface CreateAsesorExterno{
+  export interface CreateAsesorExterno {
     clave: number;
     telefono: string;
     institucion: string;
@@ -76,7 +76,7 @@ export namespace SESAT {
     correo: string;
   }
 
-  export interface UpdateAsesorExterno{
+  export interface UpdateAsesorExterno {
     clave: number;
     telefono: string;
     institucion: string;
@@ -87,25 +87,25 @@ export namespace SESAT {
   }
 
   /*------------------ PROGRAMA INTERFACE ------------------*/
-  
-  export interface Programa{
+
+  export interface Programa {
     id_programa: number;
     nombreprograma: string;
   }
 
-  export interface CreatePrograma{
+  export interface CreatePrograma {
     id_programa: number;
     nombreprograma: string;
   }
 
-  export interface UpdatePrograma{
+  export interface UpdatePrograma {
     id_programa: number;
     nombreprograma: string;
   }
 
   /*------------------ TESIS INTERFACE ------------------*/
-  
-  export interface Tesis{
+
+  export interface Tesis {
     id_tesis: number;
     clave_alumno: number;
     clave_asesor: number;
@@ -116,7 +116,7 @@ export namespace SESAT {
     modalidad: string;
   }
 
-  export interface CreateTesis{
+  export interface CreateTesis {
     clave_alumno: number;
     clave_asesor: number;
     id_programa: number;
@@ -126,7 +126,7 @@ export namespace SESAT {
     modalidad: string;
   }
 
-  export interface UpdateTesis{
+  export interface UpdateTesis {
     id_tesis: number;
     clave_alumno: number;
     clave_asesor: number;
@@ -138,6 +138,38 @@ export namespace SESAT {
   }
 
   /*------------------ COASESOR INTERFACE ------------------*/
-  
+  export interface CoAsesor {
+    Clave: number;
+    id_tesis: number;
+  }
+
+  export interface CreateCoAsesor {
+    Clave: number;
+    id_tesis: number;
+  }
+
+  export interface UpdateCoAsesor {
+    Clave: number;
+    id_tesis: number;
+  }
+
+  /*------------------ COMENTARIO INTERFACE --------------*/
+  export interface Comentario {
+    id_comentario: number;
+    Clave: number;
+    Texto: string;
+  }
+
+  export interface CreateComentario {
+    id_comentario: number;
+    Clave: number;
+    Texto: string;
+  }
+
+  export interface UpdateComentario {
+    id_comentario: number;
+    Clave: number;
+    Texto: string;
+  }
 
 }

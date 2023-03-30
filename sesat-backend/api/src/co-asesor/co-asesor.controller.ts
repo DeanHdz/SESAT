@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { CoAsesorService } from './co-asesor.service';
 import { CreateCoAsesorDto } from './dto/create-co-asesor.dto';
 import { UpdateCoAsesorDto } from './dto/update-co-asesor.dto';
@@ -22,9 +22,9 @@ export class CoAsesorController {
     return this.coAsesorService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoAsesorDto: UpdateCoAsesorDto) {
-    return this.coAsesorService.update(+id, updateCoAsesorDto);
+  @Put()
+  update(@Body() updateCoAsesorDto: UpdateCoAsesorDto) {
+    return this.coAsesorService.update(updateCoAsesorDto);
   }
 
   @Delete(':id')
