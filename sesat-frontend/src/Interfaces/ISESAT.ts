@@ -3,174 +3,141 @@ export namespace SESAT {
   /*------------------ USUARIO INTERFACE ------------------*/
 
   export interface Usuario {
-    Clave: number;
+    clave: number;
   }
 
   export interface CreateUsuario {
-    Clave: number;
+    clave: number;
   }
 
   export interface UpdateUsuario {
-    Clave: number;
+    clave: number;
   }
 
   /*------------------ ALUMNO INTERFACE ------------------*/
   
   export interface Alumno{
-    Clave: number;
+    clave: number;
     usuario: Usuario;
-    Estado_Activo: number;
-    Ultimo_Avance: number;
+    estado_activo: number;
+    ultimo_avance: number;
   }
 
   export interface CreateAlumno{
-    Clave: number;
+    clave: number;
     usuario: Usuario;
-    Estado_Activo: number;
-    Ultimo_Avance: number;
+    estado_activo: number;
+    ultimo_avance: number;
   }
 
   export interface UpdateAlumno{
-    Clave: number;
+    clave: number;
     usuario: Usuario;
-    Estado_Activo: number;
-    Ultimo_Avance: number;
+    estado_activo: number;
+    ultimo_avance: number;
   }
 
   /*------------------ ASESOR INTERFACE ------------------*/
   
   export interface Asesor{
-    Clave: number;
-    Sinodal: number;
+    clave: number;
+    sinodal: number;
   }
 
   export interface CreateAsesor{
-    Clave: number;
-    Sinodal: number;
+    clave: number;
+    sinodal: number;
   }
 
   export interface UpdateAsesor{
-    Clave: number;
-    Sinodal: number;
+    clave: number;
+    sinodal: number;
   }
 
   /*------------------ ASESOR EXTERNO INTERFACE ------------------*/
   
   export interface AsesorExterno{
-    Clave: number;
-    Telefono: string;
-    Institucion: string;
-    Nombre: string;
-    ApellidoPaterno: string;
-    ApellidoMaterno: string;
-    Correo: string;
+    clave: number;
+    telefono: string;
+    institucion: string;
+    nombre: string;
+    apellidoPaterno: string;
+    apellidoMaterno: string;
+    correo: string;
   }
 
   export interface CreateAsesorExterno{
-    Clave: number;
-    Telefono: string;
-    Institucion: string;
-    Nombre: string;
-    ApellidoPaterno: string;
-    ApellidoMaterno: string;
-    Correo: string;
+    clave: number;
+    telefono: string;
+    institucion: string;
+    nombre: string;
+    apellidoPaterno: string;
+    apellidoMaterno: string;
+    correo: string;
   }
 
   export interface UpdateAsesorExterno{
-    Clave: number;
-    Telefono: string;
-    Institucion: string;
-    Nombre: string;
-    ApellidoPaterno: string;
-    ApellidoMaterno: string;
-    Correo: string;
+    clave: number;
+    telefono: string;
+    institucion: string;
+    nombre: string;
+    apellidoPaterno: string;
+    apellidoMaterno: string;
+    correo: string;
   }
 
   /*------------------ PROGRAMA INTERFACE ------------------*/
   
   export interface Programa{
     id_programa: number;
-    NombrePrograma: string;
+    nombreprograma: string;
   }
 
   export interface CreatePrograma{
     id_programa: number;
-    NombrePrograma: string;
+    nombreprograma: string;
   }
 
   export interface UpdatePrograma{
     id_programa: number;
-    NombrePrograma: string;
+    nombreprograma: string;
   }
 
   /*------------------ TESIS INTERFACE ------------------*/
   
   export interface Tesis{
     id_tesis: number;
-    Clave_Alumno: number;
-    Clave_Asesor: number;
+    clave_alumno: number;
+    clave_asesor: number;
     id_programa: number;
-    Titulo: string;
-    FechaRegistro: Date;
-    Generacion: string;
-    Modalidad: string;
+    titulo: string;
+    fecharegistro: Date;
+    generacion: string;
+    modalidad: string;
   }
 
   export interface CreateTesis{
-    id_tesis: number;
-    Clave_Alumno: number;
-    Clave_Asesor: number;
+    clave_alumno: number;
+    clave_asesor: number;
     id_programa: number;
-    Titulo: string;
-    FechaRegistro: Date;
-    Generacion: string;
-    Modalidad: string;
+    titulo: string;
+    fecharegistro: Date;
+    generacion: string;
+    modalidad: string;
   }
 
   export interface UpdateTesis{
     id_tesis: number;
-    Clave_Alumno: number;
-    Clave_Asesor: number;
+    clave_alumno: number;
+    clave_asesor: number;
     id_programa: number;
-    Titulo: string;
-    FechaRegistro: Date;
-    Generacion: string;
-    Modalidad: string;
+    titulo: string;
+    fecharegistro: Date;
+    generacion: string;
+    modalidad: string;
   }
 
   /*------------------ COASESOR INTERFACE ------------------*/
   
-  export interface Tesis{
-    id_tesis: number;
-    Clave_Alumno: number;
-    Clave_Asesor: number;
-    id_programa: number;
-    Titulo: string;
-    FechaRegistro: Date;
-    Generacion: string;
-    Modalidad: string;
-  }
-
-  export interface CreateTesis{
-    id_tesis: number;
-    Clave_Alumno: number;
-    Clave_Asesor: number;
-    id_programa: number;
-    Titulo: string;
-    FechaRegistro: Date;
-    Generacion: string;
-    Modalidad: string;
-  }
-
-  export interface UpdateTesis{
-    id_tesis: number;
-    Clave_Alumno: number;
-    Clave_Asesor: number;
-    id_programa: number;
-    Titulo: string;
-    FechaRegistro: Date;
-    Generacion: string;
-    Modalidad: string;
-  }
 
 }

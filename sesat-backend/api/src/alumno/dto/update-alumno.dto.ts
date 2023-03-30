@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { CreateAlumnoDto } from './create-alumno.dto';
 
 export class UpdateAlumnoDto extends PartialType(CreateAlumnoDto) {
@@ -18,4 +18,8 @@ export class UpdateAlumnoDto extends PartialType(CreateAlumnoDto) {
     @IsNotEmpty()
     @IsNumber()
     ultimo_avance: number;
+
+    @IsNotEmpty()
+    @IsString()
+    nombre: string;
 }

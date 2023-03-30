@@ -12,4 +12,7 @@ export class Asesor {
 
   @Column()
   sinodal: number;
+
+  @Column()
+  nombre: string;
 }

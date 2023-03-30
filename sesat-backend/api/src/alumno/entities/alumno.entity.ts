@@ -18,4 +18,7 @@ export class Alumno {
 
   @Column()
   ultimo_avance: number;
+
+  @Column()
+  nombre: string;
 }

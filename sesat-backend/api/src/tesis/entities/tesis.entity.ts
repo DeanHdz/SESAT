@@ -1,11 +1,11 @@
-import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn, ManyToMany, ManyToOne, JoinTable } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn, ManyToMany, ManyToOne, JoinTable, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { Programa } from "src/programa/entities/programa.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 
 @Entity()
 export class Tesis {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id_tesis: number;
 
   @Column()

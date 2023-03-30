@@ -34,6 +34,7 @@ const LandingLogin = () => {
             type="text"
             placeholder="Clave Única"
             value={claveUnica}
+            required
             onChange={
               (e) => {
                 setClaveUnica(e.target.value);
@@ -54,6 +55,7 @@ const LandingLogin = () => {
             type="password"
             placeholder="Contraseña Institucional"
             value={constraseña}
+            required
             onChange={
               (e) => {
                 setContraseña(e.target.value);

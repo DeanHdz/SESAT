@@ -3,10 +3,6 @@ import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateTesisDto {
   @IsNotEmpty()
   @IsNumber()
-  id_tesis: number;
-
-  @IsNotEmpty()
-  @IsNumber()
   clave_alumno: number;
 
   @IsNotEmpty()

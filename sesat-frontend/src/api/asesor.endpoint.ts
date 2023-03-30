@@ -22,9 +22,9 @@ export namespace AsesorEndpoint {
 
   export const getAsesores = async (
     token: string
-  ): Promise<SESAT.Asesor | undefined> => {
+  ): Promise<SESAT.Asesor[] | undefined> => {
     return await axios
-      .get<SESAT.Asesor>(`${import.meta.env.VITE_API_HOSTNAME}/asesor`, {
+      .get<SESAT.Asesor[]>(`${import.meta.env.VITE_API_HOSTNAME}/asesor`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

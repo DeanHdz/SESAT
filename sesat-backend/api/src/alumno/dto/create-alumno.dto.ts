@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateAlumnoDto {
     @IsNotEmpty()
@@ -16,4 +16,8 @@ export class CreateAlumnoDto {
     @IsNotEmpty()
     @IsNumber()
     ultimo_avance: number;
+
+    @IsNotEmpty()
+    @IsString()
+    nombre: string;
 }

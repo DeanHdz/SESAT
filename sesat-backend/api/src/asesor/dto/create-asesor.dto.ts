@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateAsesorDto {
   @IsNotEmpty()
@@ -12,4 +12,8 @@ export class CreateAsesorDto {
   @IsNotEmpty()
   @IsNumber()
   sinodal: number;
+
+  @IsNotEmpty()
+  @IsString()
+  nombre: string;
 }
