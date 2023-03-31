@@ -22,9 +22,9 @@ export namespace AlumnoEndpoint {
 
   export const getAlumnos = async (
     token: string
-  ): Promise<SESAT.Alumno | undefined> => {
+  ): Promise<SESAT.Alumno[] | undefined> => {
     return await axios
-      .get<SESAT.Alumno>(`${import.meta.env.VITE_API_HOSTNAME}/alumno`, {
+      .get<SESAT.Alumno[]>(`${import.meta.env.VITE_API_HOSTNAME}/alumno`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

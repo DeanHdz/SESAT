@@ -22,9 +22,9 @@ export namespace AsesorExternoEndpoint {
 
   export const getAsesoresExternos = async (
     token: string
-  ): Promise<SESAT.AsesorExterno | undefined> => {
+  ): Promise<SESAT.AsesorExterno[] | undefined> => {
     return await axios
-      .get<SESAT.AsesorExterno>(`${import.meta.env.VITE_API_HOSTNAME}/asesorExterno`, {
+      .get<SESAT.AsesorExterno[]>(`${import.meta.env.VITE_API_HOSTNAME}/asesorExterno`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

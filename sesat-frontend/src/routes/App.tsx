@@ -10,6 +10,7 @@ import ProfilePage from "../Pages/ProfilePage";
 import AdminPageUsers from "../Pages/AdminSearchPage";
 import AsesorPage from "../Pages/AsesorSearchPage";
 import DocumentViewPage from "../Pages/DocumentViewPage";
+import NewUserPage from "../Pages/NewUserPage";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
       <Route path="/admin-search" element={<AdminPageUsers />} />
       <Route path="/asesor-search" element={<AsesorPage />} />
       <Route path="/view_document" element={<DocumentViewPage />} />
+      <Route path="/welcome" element={<NewUserPage />} />
     </Routes>
   );
 }

@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState, } from "react";
+import { render } from "react-dom";
 import { useNavigate } from "react-router";
 import { AsesorEndpoint } from "../../api/asesor.endpoint";
+import { ProgramaEndpoint } from "../../api/programa.endpoint";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
+import { SESAT } from "../../Interfaces/ISESAT";
+import SelectAsesores from "./SelectAsesores";
+import SelectProgramas from "./SelectProgramas";
 
 export const TesisRegistryForm = () => {
   const [nombre, setNombre] = useState("");
@@ -19,7 +24,7 @@ export const TesisRegistryForm = () => {
     try {
       const resp = await TesisEndpoint.postTesis(
         {
-          clave_alumno: 313585,
+          clave_alumno: 312972,
           clave_asesor: parseInt(asesor),
           id_programa: parseInt(programa),
           titulo: nombre,
@@ -34,6 +39,44 @@ export const TesisRegistryForm = () => {
       }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  const [Asesores, setAsesores] = useState<SESAT.Asesor[] | undefined>(undefined);
+  //custom Hook para sacar los datos de los asesores del backend
+  const getAsesoresData = async() =>
+  {
+    setAsesores(await AsesorEndpoint.getAsesores(""));
+  } 
+
+  useEffect(() => {
+    getAsesoresData();
+  }, [])
+
+  const renderSelectAsesores = () =>
+  {
+    if(Asesores!=undefined)
+    {
+      return <SelectAsesores asesores={Asesores}/>
+    }
+  }
+
+  const [Programas, setProgramas] = useState<SESAT.Programa[] | undefined>(undefined);
+  //custom Hook para sacar los datos de los asesores del backend
+  const getProgramasData = async() =>
+  {
+    setProgramas(await ProgramaEndpoint.getProgramas(""));
+  } 
+
+  useEffect(() => {
+    getProgramasData();
+  }, [])
+
+  const renderSelectProgramas = () =>
+  {
+    if(Programas!=undefined)
+    {
+      return <SelectProgramas programas={Programas}/>
     }
   }
 
@@ -65,10 +108,9 @@ export const TesisRegistryForm = () => {
               <option disabled selected>
                 Nombre completo Asesor/a
               </option>
-              <option>333333</option>
-              <option>444444</option>
-              <option>Asesor 3</option>
-              <option>Asesor 4</option>
+              {
+                renderSelectAsesores() //display las opciones de asesores de manera condicional
+              }
             </select>
             <div className="flex flex-row">
               <div className="w-5/6">
@@ -120,10 +162,9 @@ export const TesisRegistryForm = () => {
               <option disabled selected>
                 Programa al que pertenece
               </option>
-              <option>1</option>
-              <option>Programa 2</option>
-              <option>Programa 3</option>
-              <option>Programa 4</option>
+              {
+                renderSelectProgramas()
+              }
             </select>
             <label className="mb-3 block text-lg font-bold">
               Generación del alumno
@@ -159,3 +200,4 @@ export const TesisRegistryForm = () => {
 };
 
 export default TesisRegistryForm;
+
