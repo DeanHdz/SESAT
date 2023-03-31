@@ -23,9 +23,9 @@ export namespace TesisEndpoint {
   //plural de tesis en inglés, porque en español no hay
   export const getTheses = async (
     token: string
-  ): Promise<SESAT.Tesis | undefined> => {
+  ): Promise<SESAT.Tesis[] | undefined> => {
     return await axios
-      .get<SESAT.Tesis>(`${import.meta.env.VITE_API_HOSTNAME}/tesis`, {
+      .get<SESAT.Tesis[]>(`${import.meta.env.VITE_API_HOSTNAME}/tesis`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

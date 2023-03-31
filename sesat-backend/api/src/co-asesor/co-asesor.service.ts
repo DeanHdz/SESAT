@@ -1,34 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateCoAsesorDto } from './dto/create-co-asesor.dto';
 import { UpdateCoAsesorDto } from './dto/update-co-asesor.dto';
-import { CoAsesor } from './entities/co-asesor.entity';
 
 @Injectable()
 export class CoAsesorService {
-  constructor(@InjectRepository(CoAsesor)
-  private coasesorRepository: Repository<CoAsesor>
-  ){
-
-  }
   create(createCoAsesorDto: CreateCoAsesorDto) {
-    return this.coasesorRepository.save(createCoAsesorDto);
+    return 'This action adds a new coAsesor';
   }
 
   findAll() {
-    return this.coasesorRepository.find();
+    return `This action returns all coAsesor`;
   }
 
   findOne(id: number) {
-    return this.coasesorRepository.findOne({where: {Clave: id}});
+    return `This action returns a #${id} coAsesor`;
   }
 
-  update(updateCoAsesorDto: UpdateCoAsesorDto) {
-    return this.coasesorRepository.save(updateCoAsesorDto);
+  update(id: number, updateCoAsesorDto: UpdateCoAsesorDto) {
+    return `This action updates a #${id} coAsesor`;
   }
 
   remove(id: number) {
-    return this.coasesorRepository.delete(id);
+    return `This action removes a #${id} coAsesor`;
   }
 }

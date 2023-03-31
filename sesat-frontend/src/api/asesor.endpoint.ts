@@ -1,4 +1,5 @@
 import axios from "axios";
+import { json } from "stream/consumers";
 import { SESAT } from "../Interfaces/ISESAT";
 
 export namespace AsesorEndpoint {

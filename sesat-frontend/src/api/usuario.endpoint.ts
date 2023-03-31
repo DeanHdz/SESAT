@@ -24,9 +24,9 @@ export namespace UsuarioEndpoint {
 
   export const getUsuarios = async (
     token: string
-  ): Promise<SESAT.Usuario | undefined> => {
+  ): Promise<SESAT.Usuario[] | undefined> => {
     return await axios
-      .get<SESAT.Usuario>(`${import.meta.env.VITE_API_HOSTNAME}/usuario`, {
+      .get<SESAT.Usuario[]>(`${import.meta.env.VITE_API_HOSTNAME}/usuario`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

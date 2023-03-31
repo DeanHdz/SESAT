@@ -22,9 +22,9 @@ export namespace ProgramaEndpoint {
 
   export const getProgramas = async (
     token: string
-  ): Promise<SESAT.Programa | undefined> => {
+  ): Promise<SESAT.Programa[] | undefined> => {
     return await axios
-      .get<SESAT.Programa>(`${import.meta.env.VITE_API_HOSTNAME}/programa`, {
+      .get<SESAT.Programa[]>(`${import.meta.env.VITE_API_HOSTNAME}/programa`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,
