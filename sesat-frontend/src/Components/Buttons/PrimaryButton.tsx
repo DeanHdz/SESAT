@@ -1,10 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
+import { ButtonProps } from "../../Interfaces/IButtonProps";
 
 
-export const PrimaryButton = ({id, text}: {id:string, text:string}) => {
+export const PrimaryButton: FC<ButtonProps> = ({onClick, id, text}) => {
   return (
     <div>
-      <label htmlFor={id} className="btn">
+      <label htmlFor={id} className="btn" onClick={onClick}>
         {text}
       </label>
     </div>

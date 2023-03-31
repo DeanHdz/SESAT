@@ -67,8 +67,8 @@ const NewAssignment = () => {
             </div>
           </div>
           <div className="flex justify-end w-5/6 mb-10 mt-10">
-            <div className="mr-6"><SecondaryButton id="noID" text="Descartar" /></div>            
-            <PrimaryButton id="noID" text="Crear" />
+            <div className="mr-6"><SecondaryButton text="Descartar" /></div>            
+            <PrimaryButton text="Crear" />
           </div>
         </form>
       </div>

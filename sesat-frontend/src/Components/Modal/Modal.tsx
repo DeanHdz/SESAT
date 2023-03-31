@@ -5,6 +5,11 @@ import { SecondaryButton } from "../../Components/Buttons/SecondaryButton";
 
 
 export const Modal = ({info}: {info:IModalData}) => {
+
+  function doNothing(): void {
+    // This function does nothing
+  }
+
   return (
     <div>
       <input type="checkbox" id="my-modal-6" className="modal-toggle" />
@@ -20,8 +25,8 @@ export const Modal = ({info}: {info:IModalData}) => {
             {info.message}            
           </p>
           <div className="modal-action">
-            <SecondaryButton id="my-modal-6" text="Descartar"/>
-            <PrimaryButton id="my-modal-6" text="Aceptar"/>
+            <SecondaryButton onClick={doNothing} id="my-modal-6" text="Descartar"/>
+            <PrimaryButton onClick={doNothing} id="my-modal-6" text="Aceptar"/>
           </div>
         </div>
       </div>
