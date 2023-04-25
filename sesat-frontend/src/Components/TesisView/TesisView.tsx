@@ -39,7 +39,7 @@ const TesisView = ({
   return (
     <div className="block lg:flex lg:flex-row w-screen">
       <div className="block w-11/12 lg:flex lg:flex-col lg:w-5/12">
-        <div className="block mt-10 ml-10 w-auto bg-slate-200 rounded px-8 py-4 mb-10 h-fit">
+        <div className="block mt-10 ml-10 w-auto bg-light-blue-10 rounded px-8 py-4 mb-10 h-fit">
           <label className="mb-0 block text-base font-light">Título</label>
           <label className="mb-4 block text-lg font-bold">{titulo}</label>
 
@@ -64,20 +64,20 @@ const TesisView = ({
           </label>
         </div>
 
-        <div className="block mt-0 ml-10 w-auto bg-slate-200 rounded px-8 py-4 mb-10 h-fit">
+        <div className="block mt-0 ml-10 w-auto bg-light-blue-10 rounded px-8 py-4 mb-10 h-fit">
           <label className="mb-0 block text-base font-bold">
             Formatos de revisión para el avance {avance}
           </label>
-          <label onClick={viewPDFCertificate} className="mt-6 mb-2 block text-base font-light cursor-pointer hover:text-slate-500">
+          <label onClick={viewPDFCertificate} className="mt-6 mb-2 block text-base text-dark-blue-10 font-light cursor-pointer hover:text-dark-blue-20">
             Acta de evaluación de avance de tesis
           </label>
-          <label onClick={viewPDFFormat} className="mt-6 mb-2 block text-base font-light cursor-pointer hover:text-slate-500">
+          <label onClick={viewPDFFormat} className="mt-6 mb-2 block text-base text-dark-blue-10 font-light cursor-pointer hover:text-dark-blue-20">
             Formato para la evaluación de avance de tesis
           </label>
 
         </div>
 
-        <div className="block mt-0 ml-10 w-auto bg-slate-200 rounded px-8 py-4 mb-10 h-fit">
+        <div className="block mt-0 ml-10 w-auto bg-light-blue-10 rounded px-8 py-4 mb-10 h-fit">
           <label className="mb-0 block text-base font-bold">
             Versiones anteriores de la tesis
           </label>
@@ -95,7 +95,7 @@ const TesisView = ({
 
 
         </div>
-        <div className="block mt-0 ml-10 w-auto bg-slate-200 rounded px-8 py-4 mb-10 h-fit">
+        <div className="block mt-0 ml-10 w-auto bg-light-blue-10 rounded px-8 py-4 mb-10 h-fit">
           <label className="mb-0 block text-base font-bold">Propiedades</label>
 
           
@@ -105,7 +105,7 @@ const TesisView = ({
           <label className="mb-5 block text-lg font-bold">{fecha}</label>
 
 
-          <label htmlFor="my-modal-6" className="mb-0 mt-5 block text-base font-light cursor-pointer hover:text-slate-500">
+          <label htmlFor="my-modal-6" className="mb-0 mt-5 block text-dark-blue-10 text-base font-light cursor-pointer hover:text-dark-blue-20">
             Editar nombre de la tesis            
           </label>
           <Modal info={modalData} />
@@ -114,7 +114,7 @@ const TesisView = ({
       </div>
 
       <div className="block w-11/12 pl-10 lg:pl-6 lg:flex lg:flex-col lg:items-center lg:w-7/12 lg:px-6 py-10">
-        <div className="pt-0 pb-6 px-3 w-full h-fit lg:px-4 lg:w-full  bg-slate-200 rounded">
+        <div className="pt-0 pb-6 px-3 w-full h-fit lg:px-4 lg:w-full  bg-light-blue-10 rounded">
           <div className="flex flex-row mt-0 ml-10 w-5/6 justify-center rounded px-8 py-0 mb-0 h-fit">
             <label className="mb-0 block text-base font-light">
               Vista previa del documento

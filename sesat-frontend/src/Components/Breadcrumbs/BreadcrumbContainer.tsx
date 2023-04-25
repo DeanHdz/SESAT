@@ -16,7 +16,7 @@ const BreadcrumbContainer = ({paths, links} : {paths: string[], links:string[]})
   }
 
   return(
-    <div className="w-screen border-light shadow-card rounded-lg border bg-[#f7f8fa] py-4 px-4 sm:px-6 md:px-8 md:py-5">
+    <div className="w-screen border-light shadow-ca rd rounded-lg border bg-[#f7f8fa] py-4 px-4 sm:px-6 md:px-8 md:py-5">
       <ul className="flex items-center">
         <li className="flex items-center">
           <a href="/board" className="hover:text-sky-600 flex items-center text-base font-semibold text-black"> 

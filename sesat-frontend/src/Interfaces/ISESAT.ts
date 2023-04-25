@@ -144,6 +144,32 @@ export namespace SESAT {
   }
 
   /*------------------ COASESOR INTERFACE ------------------*/
+
+
+
+  /*------------------ UPLOAD PDF INTERFACE ------------------*/
+  export interface UploadPDF{
+    id_formatos: number;
+    acta_evaluacion?: string;       //array of unsigned int 8 bits
+    formato_evaluacion?: string;
+  }
+
+  /*------------------ ACTA EVALUACION INTERFACE -----------*/
+  //Debe contener todos los datos del formulario del acta
+  //por ahora solo lo basico para pruebas
+  export interface ActaEvalForm{    
+    num_evaluacion: number;
+    ap_pat: string;
+    ap_mat: string;
+    nombre: string;    
+  }
+
+  export interface ActaEvaluacionDoc{
+    id_acta: number;
+    id_asignacion: number;
+    documento_rellenado: string;
+    id_acta_vacia: number;
+  }
   
 
 }

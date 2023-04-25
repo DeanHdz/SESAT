@@ -1,4 +1,4 @@
-import LandingLogin from "./LangingLogin/LandingLogin"
+import LandingLogin from "./LandingLogin/LandingLogin"
 import LandingLogo from "./LandingLogo/LandingLogo"
 import LandingInfo from "./LandingInfo/LandingInfo"
 

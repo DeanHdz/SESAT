@@ -7,7 +7,7 @@ export const PrimaryButton: FC<ButtonProps> = ({onClick, id, text}) => {
     <div>
       <label htmlFor={id} className="btn" onClick={onClick}>
         {text}
-      </label>
+      </label>      
     </div>
   );
 };

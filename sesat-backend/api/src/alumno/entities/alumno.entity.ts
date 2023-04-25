@@ -1,3 +1,4 @@
+
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 

@@ -9,7 +9,7 @@ export const SecondaryButton: FC<ButtonProps> = ({onClick, id, text}) => {
       <label
         htmlFor={id}
         onClick={onClick}
-        className="btn bg-white border-primary text-slate-900 hover:text-white"
+        className="btn bg-white border-primary text-dark-blue-20 hover:bg-light-gray-22"
       >
         {text}
       </label>
