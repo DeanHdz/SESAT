@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { UploadPDF_Endpoint } from "../../api/uploadpdf.enpoint";
 import { encode } from "base64-arraybuffer";
+import {fromByteArray} from "base64-js";
 
 export const PDFUploadForm = () => {
   const [fileSelected, setFileSelected] = useState<Blob | undefined>();
@@ -12,13 +13,14 @@ export const PDFUploadForm = () => {
     event.preventDefault();
     try {
       if (fileSelected) {
-
+        //bytea
         var rdr = new FileReader();
         rdr.readAsArrayBuffer(fileSelected);        
         //onload se ejecuta cuando el recurso termina de cargar          
         rdr.onload = async () => { 
           var uint8View = new Uint8Array(rdr.result as ArrayBuffer);  
           //Codificar a base64 antes de enviar        
+          //const base64String = fromByteArray(uint8View);
           const base64String = encode(uint8View);
           console.log(base64String);
           const resp = await UploadPDF_Endpoint.postPDF(

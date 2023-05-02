@@ -1,8 +1,10 @@
-import PDFViewer from "../PDFViewer/PDFViewer";
+import PDFViewer from "../PDFViewer/SimplePDFViewer";
 import { Modal } from "../Modal/Modal";
 import { IModalData } from "../../Interfaces/IModalData";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { useNavigate } from "react-router-dom";
+import SimplePDFViewer from "../PDFViewer/SimplePDFViewer";
+import { useState } from "react";
 
 const modalData: IModalData = {
   title: "Modificar Nombre de la Tesis",
@@ -24,16 +26,32 @@ const TesisView = ({
 
   const avance:string = "04";
   const navigate = useNavigate();
+  const [id_asignacion, setIdAsignacion] = useState("102");
 
   function viewPDFDocument() {
-    navigate("/view_document");
+    navigate('/view_document/', {
+      state: {
+        id_assign: id_asignacion, 
+        pdfType: 2, 
+      },
+    });    
   }
 
   function viewPDFCertificate(){
-    navigate("/view_document");
+    navigate('/view_document/', {
+      state: {
+        id_assign: id_asignacion, 
+        pdfType: 2, 
+      },
+    }); 
   }
   function viewPDFFormat(){
-    navigate("/view_document");
+    navigate('/view_document/', {
+      state: {
+        id_assign: id_asignacion, 
+        pdfType: 2, 
+      },
+    });   
   }
   
   return (
@@ -120,7 +138,7 @@ const TesisView = ({
               Vista previa del documento
             </label>
           </div>
-          <PDFViewer />
+          <SimplePDFViewer />
         </div>
         <div className="mt-6 flex flex-row justify-center w-full">
           <PrimaryButton onClick={viewPDFDocument} text="Ver PDF Completo"/>          

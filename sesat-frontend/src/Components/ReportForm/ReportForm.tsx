@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 const ReportForm = () => {
 
 
-  const [apPat, setApPat] = useState("Ramírez");
-  const [apMat, setApMat] = useState("Gámez");
-  const [nombre, setNombre] = useState("César Augusto");
+  const [apPat, setApPat] = useState("Ramirez");
+  const [apMat, setApMat] = useState("Gamez");
+  const [nombre, setNombre] = useState("Cesar Augusto");
   const [programa, setPrograma] = useState("Doctorado en ciencias de la computación");
   const [numAvance, setNumAvance] = useState("01");
   const [nombreTesis, setNombreTesis] = useState("Reconocimiento de masas y sus características en mamografias para su clasificación de acuerdo con el sitema BI-RADS");
@@ -26,7 +26,7 @@ const ReportForm = () => {
   const [promedio, setPromedio] = useState("");
   const [observaciones, setObservaciones] = useState("");
 
-  const [id_asignacion, setIdAsignacion] = useState("1");
+  const [id_asignacion, setIdAsignacion] = useState("102");
   
   const navigate = useNavigate();
   
@@ -53,7 +53,14 @@ const ReportForm = () => {
         
         console.log("Acta guardada");        
         //navigate("/view_document/");
-        navigate('/view_document/', { state: { id_assign: {id_asignacion}, pdfType: 2 } });
+        navigate('/view_document/', { 
+            state: { 
+              id_assign: id_asignacion, 
+              pdfType: 2, 
+            }, 
+          }
+        );
+
         
       }else{
         console.log('No hubo respuesta del servidor');
@@ -186,8 +193,7 @@ const ReportForm = () => {
             <input
               className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
               type="number"
-              placeholder="0%"
-              required
+              placeholder="0%"              
               pattern="^(100|[1-9][0-9]?|0)$"
               value={porcentajeAv}
               onChange={
@@ -203,7 +209,7 @@ const ReportForm = () => {
               className="textarea h-48 w-full px-10  border-primary rounded text-base mb-10"
               placeholder="Escriba sus sugerencias o comentarios"
               value={comentarios}
-              required
+              
               onChange={
                 (e) => {
                   autosize(e.currentTarget);
@@ -224,7 +230,7 @@ const ReportForm = () => {
                     placeholder="00"
                     pattern="^(100|[1-9][0-9]?|0)$"
                     value={documentoAvance}
-                    required
+                    
                     onChange={
                       (e) => {
                         setDocAvance(e.target.value);
@@ -242,7 +248,7 @@ const ReportForm = () => {
                     placeholder="00"
                     pattern="^(100|[1-9][0-9]?|0)$"
                     value={exposicion}
-                    required
+                    
                     onChange={
                       (e) => {
                         setExposicion(e.target.value);
@@ -260,7 +266,7 @@ const ReportForm = () => {
                     placeholder="00"
                     pattern="^(100|[1-9][0-9]?|0)$"
                     value={dominioTema}
-                    required
+                    
                     onChange={
                       (e) => {
                         setDominioTema(e.target.value);
@@ -278,7 +284,7 @@ const ReportForm = () => {
                     placeholder="00"
                     pattern="^(100|[1-9][0-9]?|0)$"
                     value={gradoAvance}
-                    required
+                    
                     onChange={
                       (e) => {
                         setGradoAvance(e.target.value);
@@ -315,7 +321,7 @@ const ReportForm = () => {
               className="textarea h-48 w-full px-10 border-primary rounded text-base mb-10"
               placeholder="Escriba sus observaciones y compromisos para el alumno"
               value={observaciones}
-              required
+              
               onChange={
                 (e) => {
                   autosize(e.currentTarget);

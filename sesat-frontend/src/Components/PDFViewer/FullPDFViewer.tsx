@@ -89,10 +89,11 @@ export default function FullPDFViewer({ file }: { file: string | Uint8Array}) {
   });
 
   return (
+    
     <div className="h-[1200px]">
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
         <Viewer fileUrl={file} plugins={[layoutPluginInstance]}></Viewer>
       </Worker>
-    </div>
+    </div>    
   );
 }
