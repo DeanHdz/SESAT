@@ -1,32 +1,56 @@
-import Table from "../Table/Table"
-import { Itable } from "../../Interfaces/ITable"
+import Table from "../Table/Table";
+import { Itable } from "../../Interfaces/ITable";
+import { SESAT } from "../../Interfaces/ISESAT";
 
-let tableHead: string[] = [];
-let tableBody: string[][]= [
-                              ["Estatus de la entrega", "Aun no se ha hecho ninguna tarea"],
-                              ["Estatus de calificación", ""],
-                              ["Tiempo restante", ""],
-                              ["Última modificación", ""]
-                            ]
+const AssingmentStatusBlock = ({
+  asignacion,
+}: {
+  asignacion: SESAT.Asignacion | undefined;
+}) => {
 
-let table: Itable =
-{
-  head: tableHead,
-  body: tableBody
-}
+  let status: string;
 
-const AssingmentStatusBlock = () =>
-{
-  return(
+  switch(asignacion?.estado_entrega){
+    case 0:
+      status = "Aun no se ha hecho ninguna tarea";
+      break;
+    case 1:
+      status = "Entregado";
+      break;
+    case 2:
+      status = "Entregado con retraso";
+      break;
+    default:
+      status = "Aun no se ha hecho ninguna tarea";
+      break;
+  }
+
+  let calificacion: number = 0;
+
+  if(asignacion != undefined)
+    calificacion = asignacion.calificacion;
+
+
+  let tableHead: string[] = [];
+  let tableBody: string[][] = [
+    ["Estatus de la entrega", status],
+    ["Estatus de calificación", calificacion == undefined ? "" : calificacion.toString()],
+    ["Tiempo restante", ""],
+  ];
+
+  let table: Itable = {
+    head: tableHead,
+    body: tableBody,
+  };
+
+  return (
     <div>
       <article className="prose">
-        <h1 className="font-SESAT mt-2">
-          Estatus de la entrega
-        </h1>
+        <h1 className="font-SESAT mt-2">Estatus de la entrega</h1>
       </article>
-      <Table table={table} style={"table table-zebra w-full table-auto"}/>
+      <Table table={table} style={"table table-zebra w-full table-auto"} />
     </div>
-  )
-}
+  );
+};
 
-export default AssingmentStatusBlock
+export default AssingmentStatusBlock;

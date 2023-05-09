@@ -3,11 +3,7 @@ import { isNotEmpty, IsNotEmpty, IsNumber, IsString, isString } from "class-vali
 export class CreateComentarioDto {
     @IsNotEmpty()
     @IsNumber()
-    id_comentario: number;
-
-    @IsNotEmpty()
-    @IsNumber()
-    Clave: number;
+    clave: number;
 
     @IsNotEmpty()
     @IsNumber()
@@ -15,7 +11,7 @@ export class CreateComentarioDto {
 
     @IsNotEmpty()
     @IsString()
-    Texto: string;
+    texto: string;
 
 }
 

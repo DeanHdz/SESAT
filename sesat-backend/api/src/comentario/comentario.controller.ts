@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { ComentarioService } from './comentario.service';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
@@ -22,9 +22,9 @@ export class ComentarioController {
     return this.comentarioService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateComentarioDto: UpdateComentarioDto) {
-    return this.comentarioService.update(+id, updateComentarioDto);
+  @Put(':id')
+  update(@Body() updateComentarioDto: UpdateComentarioDto) {
+    return this.comentarioService.update(updateComentarioDto);
   }
 
   @Delete(':id')

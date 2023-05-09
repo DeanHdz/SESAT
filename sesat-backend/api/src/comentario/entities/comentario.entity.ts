@@ -9,10 +9,10 @@ export class Comentario {
     id_comentario: number;    
 
     @Column()
-    Clave: number;
+    clave: number;
 
     @OneToOne(() => Usuario, { eager: true})
-    @JoinColumn({name: 'Clave'})
+    @JoinColumn({name: 'clave'})
     usuario: Usuario;
     
     @Column()
@@ -23,5 +23,5 @@ export class Comentario {
     asignacion: Asignacion;
     
     @Column()
-    Texto: string;
+    texto: string;
 }

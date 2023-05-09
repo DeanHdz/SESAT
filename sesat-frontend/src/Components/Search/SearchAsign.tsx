@@ -14,14 +14,14 @@ const SearchAsign = () => {
     setSuggestions(suggestions);
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    window.location.href = '/register';
-  };
+  //const handleSuggestionClick = (suggestion: string) => {
+  //  window.location.href = '/register';
+  //};
 
   return (
     <div className="flex flex-row w-screen justify-center items-center">
       <div className="w-3/6">
-        <form className="flex flex-col mt-10 ml-10 items-center">
+        <form className="flex flex-col m-4 items-center">
           <label className="mb-3 block text-lg font-bold" style={{ textAlign: 'center' }}>
             Asignacion
           </label>
@@ -35,15 +35,18 @@ const SearchAsign = () => {
           {suggestions.length > 0 && (
             <ul className="border border-gray-300 rounded w-5/6 overflow-auto max-h-40">
             {suggestions.map((suggestion) => (
-              <li key={suggestion} className="p-2 hover:bg-gray-100" onClick={() => handleSuggestionClick(suggestion)}>
-                {suggestion}
-              </li>
+              <li key={suggestion} className="p-2 hover:bg-gray-100">
+                {suggestion} 
+              </li> //onClick={() => handleSuggestionClick(suggestion)}
             ))}
           </ul>
-          
           )}
+          <button className="btn btn-wide">Crear Asignacion</button>
         </form>
       </div>
+
+      
+
     </div>
   );
 };
