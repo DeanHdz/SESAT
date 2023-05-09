@@ -15,6 +15,7 @@ import { ActaEvaluacionModule } from './acta-evaluacion/acta-evaluacion.module';
 import { FormatosVaciosModule } from './formatos-vacios/formatos-vacios.module';
 import { join } from "path";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { RespuestaModule } from './respuesta/respuesta.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
     AsignacionModule,
     ActaEvaluacionModule,
     FormatosVaciosModule,
+    RespuestaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

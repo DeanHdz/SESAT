@@ -23,7 +23,7 @@ export class Asignacion {
   //tesis: Tesis[];
 
   @Column()
-  num_Avance: number;
+  num_avance: number;
 
   @Column()
   titulo: string;
@@ -44,5 +44,5 @@ export class Asignacion {
   documento: string;
 
   @Column()
-  estado_Entrega: number;
+  estado_entrega: number;
 }

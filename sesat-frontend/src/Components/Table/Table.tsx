@@ -5,7 +5,7 @@ const Table = ({table, style} : {table:Itable, style:string}) =>
   let tableHead = [];
   for(let i=0; i<table.head.length; i++)
   {
-    tableHead.push(<th> {table.head[i]} </th>);
+    tableHead.push(<th key={i}> {table.head[i]} </th>);
   }
   
   let tableBody = [];
@@ -14,7 +14,7 @@ const Table = ({table, style} : {table:Itable, style:string}) =>
     let tableBodySection = [];
     for(let y=0; y<table.body[i].length; y++)
     {
-      tableBodySection.push(<td>{table.body[i][y]}</td>);
+      tableBodySection.push(<td key={i}>{table.body[i][y]}</td>);
     }
     tableBody.push(<tr> {tableBodySection} </tr>);
   }

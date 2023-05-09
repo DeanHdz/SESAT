@@ -92,6 +92,48 @@ export namespace SESAT {
     correo: string;
   }
 
+  /*------------------ ASIGNACION INTERFACE ------------------*/
+
+  export interface Asignacion {
+    id_asignacion: number;
+    id_tesis: number;
+    num_avance: number;
+    titulo: string;
+    descripcion: string;
+    apertura: Date;
+    cierre: Date;
+    calificacion: number;
+    documento: string;
+    estado_entrega: number;
+  }
+
+  export interface CreateAsignacion {
+    id_asignacion: number;
+    id_tesis: number;
+    num_avance: number;
+    titulo: string;
+    descripcion: string;
+    apertura: Date;
+    cierre: Date;
+    calificacion: number;
+    documento: string;
+    estado_entrega: number;
+  }
+
+  export interface UpdateAsignacion {
+    id_asignacion: number;
+    id_tesis: number;
+    num_avance: number;
+    titulo: string;
+    descripcion: string;
+    apertura: Date;
+    cierre: Date;
+    calificacion: number;
+    documento: string;
+    estado_entrega: number;
+  }
+
+
   /*------------------ PROGRAMA INTERFACE ------------------*/
   
   export interface Programa{
@@ -146,6 +188,51 @@ export namespace SESAT {
   /*------------------ COASESOR INTERFACE ------------------*/
 
 
+  /*------------------ COMENTARIO INTERFACE ------------------*/
+
+  export interface Comentario{
+    id_comentario: number;
+    clave: number;
+    usuario: Usuario;
+    id_asignacion: number;
+    asignacion: Asignacion;
+    texto: string;
+  }
+
+  export interface CreateComentario{
+    clave: number;
+    id_asignacion: number;
+    texto: string;
+  }
+
+  export interface UpdateComentario{
+    id_comentario: number;
+    clave: number;
+    id_asignacion: number;
+    texto: string;
+  }
+
+  /*------------------ RESPUESTA INTERFACE ------------------*/
+
+  export interface Respuesta{
+    id_respuesta: number;
+    id_comentario: number;
+    texto: string;
+    clave: number;
+  }
+
+  export interface CreateRespuesta{
+    id_comentario: number;
+    texto: string;
+    clave: number;
+  }
+
+  export interface UpdateRespuesta{
+    id_respuesta: number;
+    id_comentario: number;
+    texto: string;
+    clave: number;
+  }
 
   /*------------------ UPLOAD PDF INTERFACE ------------------*/
   export interface UploadPDF{

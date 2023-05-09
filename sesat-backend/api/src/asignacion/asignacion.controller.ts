@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { AsignacionService } from './asignacion.service';
 import { CreateAsignacionDto } from './dto/create-asignacion.dto';
 import { UpdateAsignacionDto } from './dto/update-asignacion.dto';
@@ -22,9 +22,9 @@ export class AsignacionController {
     return this.asignacionService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAsignacionDto: UpdateAsignacionDto) {
-    return this.asignacionService.update(+id, updateAsignacionDto);
+  @Put(':id')
+  update(@Body() updateAsignacionDto: UpdateAsignacionDto) {
+    return this.asignacionService.update(updateAsignacionDto);
   }
 
   @Delete(':id')
