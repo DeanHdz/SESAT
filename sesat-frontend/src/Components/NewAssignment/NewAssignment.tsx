@@ -7,8 +7,8 @@ import autosize from "autosize";
 const NewAssignment = () => {
   return (
     <form className="lg:flex lg:flex-row w-11/12 m-auto">
-      <div className="block w-11/12 lg:w-3/6">
-        <div className="sm:pl-12 lg:flex lg:flex-col mt-10">
+      <div className="block w-11/12 lg:w-3/6 ">
+        <div className="pt-6 sm:pl-12 lg:flex lg:flex-col mt-10 mb-10 mr-6 rounded border border-light-gray-22 border-solid">
           <label className="mb-3 block text-lg font-bold">Título</label>
           <input
             className="h-1/4 py-2 px-10 shadow appearance-none rounded w-full lg:w-5/6 mb-10"
@@ -39,13 +39,13 @@ const NewAssignment = () => {
             </label>
             <input
               type="file"
-              className="file-input w-full lg:w-5/6 mb-10 hover:border hover:border-[#003067]"
+              className="file-input w-full lg:w-5/6 mb-10 hover:border hover:border-[#003067] border border-light-gray-22 border-solid"
             />
           </div>
         </div>
       </div>
       <div className="block w-11/12 lg:w-3/6">
-        <div className="bg-light-blue-10 w-auto md:w-auto lg:w-full rounded py-6 px-6 ml-12 lg:ml-0 lg:mt-10">
+        <div className="bg-light-blue-10 w-auto md:w-auto lg:w-full rounded py-6 px-6 ml-12 lg:ml-0 lg:mt-10 border border-light-gray-22 border-solid">
           <div className="flex justify-around w-full ">
             <label className="mb-3 block text-lg font-bold">
               Fecha de publicación

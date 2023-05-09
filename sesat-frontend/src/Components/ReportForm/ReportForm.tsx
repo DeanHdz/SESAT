@@ -88,7 +88,7 @@ const ReportForm = () => {
             Datos del alumno
           </label>
         </div>
-        <div className="flex flex-col  w-5/6 m-auto bg-light-blue-10 rounded py-6 px-6">
+        <div className="flex flex-col  w-5/6 m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
           <div className="flex flex-col lg:flex-row">
             <div className="lg:w-1/3">
               <label className="mb-3 block text-lg font-bold">
@@ -218,7 +218,7 @@ const ReportForm = () => {
               } 
             ></textarea>
             <label className="mb-3 block text-lg font-bold">Evaluación</label>
-            <div className="flex flex-col  w-full m-auto bg-light-blue-10 rounded py-6 px-6">
+            <div className="flex flex-col  w-full m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
               <div className="flex flex-col lg:flex-row justify-between">
                 <div className="flex flex-col">
                   <label className="mb-3 block text-lg font-bold">
