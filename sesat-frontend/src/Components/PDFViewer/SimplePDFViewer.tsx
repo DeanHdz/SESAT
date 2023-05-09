@@ -10,12 +10,13 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
 export default function SimplePDFViewer() {        
   const testFile = "/pdf/descargaA.pdf";
-  return (          
-    <div className="h-[750px]">               
-      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+  return (  
+    <>
+    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
         <Viewer fileUrl="/pdf/sample.pdf" viewMode={ViewMode.SinglePage} defaultScale={SpecialZoomLevel.PageFit}></Viewer>
       </Worker>
       
-    </div>    
+    </>        
+   
   );
 }

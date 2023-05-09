@@ -33,6 +33,7 @@ export default function App() {
         <Route path="/welcome" element={<NewUserPage />} />
         <Route path="/fill-report" element={<FillReportPage />} />
         <Route path="/send-pdf" element={<SendPDFToDBPage />} />
+        <Route path="/board" element={<BoardPage />} />
       </Routes>
     </ScrollToTop>
   );

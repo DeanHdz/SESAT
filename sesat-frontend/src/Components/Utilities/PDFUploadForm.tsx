@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { UploadPDF_Endpoint } from "../../api/uploadpdf.enpoint";
 import { encode } from "base64-arraybuffer";
-import {fromByteArray} from "base64-js";
 
 export const PDFUploadForm = () => {
   const [fileSelected, setFileSelected] = useState<Blob | undefined>();

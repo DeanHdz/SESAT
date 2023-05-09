@@ -4,9 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        "light-blue-10": "#E3EEF6",
+        "light-blue-10": "#f7f8fa",
         "dark-blue-20": "#3D4451",
-        "dark-blue-10": "#03396c",    
+        "dark-blue-10": "#03396c",           
         "light-gray-22": "#d5d3dd"     
       },
       fontFamily: {
@@ -30,3 +30,5 @@ module.exports = {
     ],
   },
 }
+
+/**E3EEF6 */

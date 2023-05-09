@@ -24,36 +24,36 @@ const TesisView = ({
   autor: string;
 }) => {
 
-  const avance:string = "04";
+  const avance: string = "04";
   const navigate = useNavigate();
   const [id_asignacion, setIdAsignacion] = useState("102");
 
   function viewPDFDocument() {
     navigate('/view_document/', {
       state: {
-        id_assign: id_asignacion, 
-        pdfType: 2, 
+        id_assign: id_asignacion,
+        pdfType: 2,
       },
-    });    
+    });
   }
 
-  function viewPDFCertificate(){
+  function viewPDFCertificate() {
     navigate('/view_document/', {
       state: {
-        id_assign: id_asignacion, 
-        pdfType: 2, 
+        id_assign: id_asignacion,
+        pdfType: 2,
       },
-    }); 
+    });
   }
-  function viewPDFFormat(){
+  function viewPDFFormat() {
     navigate('/view_document/', {
       state: {
-        id_assign: id_asignacion, 
-        pdfType: 2, 
+        id_assign: id_asignacion,
+        pdfType: 2,
       },
-    });   
+    });
   }
-  
+
   return (
     <div className="block lg:flex lg:flex-row w-screen">
       <div className="block w-11/12 lg:flex lg:flex-col lg:w-5/12">
@@ -116,7 +116,7 @@ const TesisView = ({
         <div className="block mt-0 ml-10 w-auto bg-light-blue-10 rounded px-8 py-4 mb-10 h-fit">
           <label className="mb-0 block text-base font-bold">Propiedades</label>
 
-          
+
           <label className="mb-0 mt-5 block text-base font-light">
             Fecha de registro de la tesis
           </label>
@@ -124,7 +124,7 @@ const TesisView = ({
 
 
           <label htmlFor="my-modal-6" className="mb-0 mt-5 block text-dark-blue-10 text-base font-light cursor-pointer hover:text-dark-blue-20">
-            Editar nombre de la tesis            
+            Editar nombre de la tesis
           </label>
           <Modal info={modalData} />
 
@@ -138,10 +138,12 @@ const TesisView = ({
               Vista previa del documento
             </label>
           </div>
-          <SimplePDFViewer />
+          <div className="h-[750px]">
+            <SimplePDFViewer />
+          </div>
         </div>
         <div className="mt-6 flex flex-row justify-center w-full">
-          <PrimaryButton onClick={viewPDFDocument} text="Ver PDF Completo"/>          
+          <PrimaryButton onClick={viewPDFDocument} text="Ver PDF Completo" />
         </div>
       </div>
     </div>
