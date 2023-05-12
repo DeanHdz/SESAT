@@ -31,6 +31,8 @@ const AssignmentPage = () => {
     getComentario();
   }, []);
 
+  console.log(comentario);
+
   let comments: IComment[] = [];
   let repplies: IReply[] = [];
 
@@ -39,17 +41,23 @@ const AssignmentPage = () => {
     repply = {
       userName: "Jesús Alemán",
       date: "day: " + (i + 1) + " month: 3 year: 2023",
-      body: "",
+      body: "Soy una respuesta",
     };
     repplies.push(repply);
   }
 
+  function isEmpty(str: string | undefined) 
+  {
+    return(!str || str.length === 0);
+  }
+
   for (let i = 0; i < 3; i++) {
     let comment: IComment;
+
     comment = {
       userName: "Benjamín Alba",
       date: "day: " + (i + 1) + " month: 3 year: 2023",
-      body: comentario?.texto,
+      body: comentario?.texto! ?? "", //::)
       replies: repplies,
     };
     comments.push(comment);

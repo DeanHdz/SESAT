@@ -4,7 +4,7 @@ import BreadcrumbContainer from "../Components/Breadcrumbs/BreadcrumbContainer";
 import TesisRegistryForm from "../Components/TesisRegistryForm/TesisRegistryForm";
 import NewAssignment from "../Components/NewAssignment/NewAssignment";
 import Board from "../Components/Board/Board";
-
+import Footer from "../Components/Footer/Footer";
 let paths: string[] = [];
 paths.push("Tablero");
 
