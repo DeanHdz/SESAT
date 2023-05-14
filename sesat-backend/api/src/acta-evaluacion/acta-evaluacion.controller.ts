@@ -44,7 +44,7 @@ export class ActaEvaluacionController {
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
       
         //Editar PDF
-        const pages = pdfDoc.getPages()
+        /*const pages = pdfDoc.getPages()
         const firstPage = pages[0]
         const { width, height } = firstPage.getSize()
         firstPage.drawText('This text was added with JavaScript!', {
@@ -55,25 +55,26 @@ export class ActaEvaluacionController {
           color: rgb(0.95, 0.1, 0.1),          
         });
         //Nombres de las variables de los campos del PDF
-        /*const fieldNames = pdfDoc
+        const fieldNames = pdfDoc
           .getForm()
           .getFields()
           .map((f) => f.getName());
 
-        logger.log('PDF Fields: ', fieldNames);
+        logger.log('PDF Fields: ', fieldNames);*/
         
-        *///Editar campos del PDF
+        //Editar campos del PDF
       
-        /*var form = pdfDoc.getForm();
-        form.getTextField('Text-num-reporte').setText(createFormulario.num_evaluacion.toString());
-        form.getTextField('Text-Ap-Paterno').setText(createFormulario.ap_pat);
-        form.getTextField('Text-Ap-Mat').setText(createFormulario.ap_mat);
-        form.getTextField('Text-Nombres').setText(createFormulario.nombre);
+        var form = pdfDoc.getForm();
+        //form.getTextField('location').setText(createFormulario.num_evaluacion.toString());
+        form.getTextField('location').setText(createFormulario.ap_pat);
+        form.getTextField('function').setText(createFormulario.ap_mat);
+        form.getTextField('reason').setText(createFormulario.nombre);
 
-        form.getTextField('Text-num-reporte').enableReadOnly();
-        form.getTextField('Text-Ap-Paterno').enableReadOnly();
-        form.getTextField('Text-Ap-Mat').enableReadOnly();
-        form.getTextField('Text-Nombres').enableReadOnly();*/
+        form.getTextField('location').enableReadOnly();        
+        form.getTextField('function').enableReadOnly();
+        form.getTextField('reason').enableReadOnly();
+        
+        
         
             
         //Codificar datos binarios a base64                

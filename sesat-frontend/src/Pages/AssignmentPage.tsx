@@ -72,7 +72,7 @@ const AssignmentPage = () => {
       <BreadcrumbContainer paths={paths} links={links} />
       <div className="w-screen lg:h-[1400px] flex flex-col lg:flex-row space-x-4 mt-4">
         <div className=" w-full lg:w-4/6 flex flex-col px-4 space-y-4">
-          <AssignmentInfoBlock asignacion={asignacion} />
+          <Assignment   UI-q InfoBlock asignacion={asignacion} />
           <AssingmentStatusBlock asignacion={asignacion} />
         </div>
         <div className="w-full lg:w-2/6 overflow-auto hover:overflow-scroll">

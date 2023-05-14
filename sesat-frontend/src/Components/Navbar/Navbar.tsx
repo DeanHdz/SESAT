@@ -24,8 +24,8 @@ const Navbar = () =>
             </li>
           </ul>
         </div>
-        <a className="h-[80px]">
-          <img src="/img/uaslp_sesat_logo-m.png" alt="UASLP-SESAT Logo" className="h-[80px] hover:animate-pulse object-contain" />
+        <a className="h-[50px]">
+          <img src="/img/uaslp_sesat_logo-m.png" alt="UASLP-SESAT Logo" className="h-[50px] hover:animate-pulse object-contain" />
         </a>
       </div>
       <div className="hidden navbar-center lg:flex">

@@ -44,7 +44,7 @@ const AssingmentStatusBlock = ({
   };
 
   return (
-    <div>
+    <div className="border border-light-gray-22 border-solid rounded p-6">
       <article className="prose">
         <h1 className="font-SESAT mt-2">Estatus de la entrega</h1>
       </article>
