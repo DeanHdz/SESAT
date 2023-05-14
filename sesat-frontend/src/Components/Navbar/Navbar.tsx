@@ -3,7 +3,7 @@ import UserIcon from "../UserIcon/UserIcon";
 const Navbar = () => 
 {
   return (
-    <div className="fixed navbar bg-base-100 drop-shadow-md z-50">
+    <div className="w-screen fixed navbar bg-base-100 drop-shadow-md z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
