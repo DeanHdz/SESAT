@@ -24,6 +24,10 @@ export class ComentarioService {
     return this.comentarioRepository.findOne({ where: { id_comentario: id } });
   }
 
+  findPerAssignment(id: number) {
+    return this.comentarioRepository.find({where: {id_asignacion: id}})
+  }
+
   update(updateComentarioDto: UpdateComentarioDto) {
     return this.comentarioRepository.save(updateComentarioDto);
   }

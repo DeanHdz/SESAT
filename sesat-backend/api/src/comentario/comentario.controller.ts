@@ -22,6 +22,11 @@ export class ComentarioController {
     return this.comentarioService.findOne(+id);
   }
 
+  @Get("/per-assignment/:id")
+  findPerAssignment(@Param('id') id: string) {
+    return this.comentarioService.findPerAssignment(+id);
+  }
+
   @Put(':id')
   update(@Body() updateComentarioDto: UpdateComentarioDto) {
     return this.comentarioService.update(updateComentarioDto);

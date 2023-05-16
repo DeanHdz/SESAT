@@ -1,7 +1,7 @@
 import axios from "axios";
 import { SESAT } from "../Interfaces/ISESAT";
 
-export namespace RepsuestaEndpoint {
+export namespace RespuestaEndpoint {
   export const getRespuesta = async (
     id: number,
     token: string
@@ -32,6 +32,27 @@ export namespace RepsuestaEndpoint {
           Authorization: `bearer ${token}`,
         },
       })
+      .then(({ data }) => {
+        if (data) {
+          return data;
+        }
+      });
+  };
+
+  export const getPerAssignment = async (
+    id: number,
+    token: string
+  ): Promise<SESAT.Respuesta[] | undefined> => {
+    return await axios
+      .get<SESAT.Respuesta[]>(
+        `${import.meta.env.VITE_API_HOSTNAME}/respuesta/per-assignment/` + id,
+        {
+          headers: {
+            "Content-Type": "application/json", 
+            Authorization: `bearer ${token}`,
+          },
+        }
+      )
       .then(({ data }) => {
         if (data) {
           return data;

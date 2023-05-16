@@ -6,7 +6,7 @@ export const getCoAsesor = async (
   token: string
 ): Promise<SESAT.CoAsesor | undefined> => {
   return await axios
-    .get<SESAT.CoAsesor>(`${process.env.REACT_APP_API_HOSTNAME}/coasesor/` + id, {
+    .get<SESAT.CoAsesor>(`${import.meta.env.VITE_API_HOSTNAME}/coasesor/` + id, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `bearer ${token}`,
@@ -23,7 +23,7 @@ export const getAllCoAsesores = async (
   token: string
 ): Promise<SESAT.CoAsesor | undefined> => {
   return await axios
-    .get<SESAT.CoAsesor>(`${process.env.REACT_APP_API_HOSTNAME}/coasesor`, {
+    .get<SESAT.CoAsesor>(`${import.meta.env.VITE_API_HOSTNAME}/coasesor`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `bearer ${token}`,
@@ -41,7 +41,7 @@ export const postCoAsesor = async (
   token: string
 ): Promise<SESAT.CoAsesor | undefined> => {
   return await axios
-    .post(`${process.env.REACT_APP_API_HOSTNAME}/coasesor`, createCoasesorDto, {
+    .post(`${import.meta.env.VITE_API_HOSTNAME}/coasesor`, createCoasesorDto, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `bearer ${token}`,
@@ -59,7 +59,7 @@ export const putCoAsesor = async (
   token: string
 ): Promise<SESAT.CoAsesor | undefined> => {
   return await axios
-    .put(`${process.env.REACT_APP_API_HOSTNAME}/coasesor`, updateCoAsesorDto, {
+    .put(`${import.meta.env.VITE_API_HOSTNAME}/coasesor`, updateCoAsesorDto, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `bearer ${token}`,
@@ -77,7 +77,7 @@ export const deleteCoAsesor = async (
   token: string
 ): Promise<SESAT.CoAsesor | undefined> => {
   return await axios
-    .delete(`${process.env.REACT_APP_API_HOSTNAME}/coasesor/` + id, {
+    .delete(`${import.meta.env.VITE_API_HOSTNAME}/coasesor/` + id, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `bearer ${token}`,

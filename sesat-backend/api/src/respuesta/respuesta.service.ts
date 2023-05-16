@@ -24,6 +24,10 @@ export class RespuestaService {
     return this.respuestaRepository.findOne({where: {id_respuesta: id}});
   }
 
+  findPerAssignment(id: number) {
+    return this.respuestaRepository.find({where: {id_comentario: id}})
+  }
+
   update(updateRespuestaDto: UpdateRespuestaDto) {
     return this.respuestaRepository.save(updateRespuestaDto);
   }

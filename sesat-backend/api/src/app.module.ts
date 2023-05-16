@@ -11,11 +11,12 @@ import { AsesorModule } from "./asesor/asesor.module";
 import { AsesorExternoModule } from "./asesor-externo/asesor-externo.module";
 import { CoAsesorModule } from "./co-asesor/co-asesor.module";
 import { AsignacionModule } from "./asignacion/asignacion.module";
-import { ActaEvaluacionModule } from './acta-evaluacion/acta-evaluacion.module';
-import { FormatosVaciosModule } from './formatos-vacios/formatos-vacios.module';
+import { ActaEvaluacionModule } from "./acta-evaluacion/acta-evaluacion.module";
+import { FormatosVaciosModule } from "./formatos-vacios/formatos-vacios.module";
 import { join } from "path";
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { RespuestaModule } from './respuesta/respuesta.module';
+import { RespuestaModule } from "./respuesta/respuesta.module";
+import { ComentarioModule } from "./comentario/comentario.module";
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { RespuestaModule } from './respuesta/respuesta.module';
         database: "SESAT",
         schema: "public",
         synchronize: false,
-        entities: ['dist/**/entities/*.entity.js'],        
+        entities: ["dist/**/entities/*.entity.js"],
       }),
     }),
     ConfigModule.forRoot({
@@ -53,6 +54,7 @@ import { RespuestaModule } from './respuesta/respuesta.module';
     ActaEvaluacionModule,
     FormatosVaciosModule,
     RespuestaModule,
+    ComentarioModule,
   ],
   controllers: [AppController],
   providers: [AppService],

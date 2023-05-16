@@ -22,6 +22,11 @@ export class RespuestaController {
     return this.respuestaService.findOne(+id);
   }
 
+  @Get("/per-assignment/:id")
+  findPerAssignment(@Param('id') id: string) {
+    return this.respuestaService.findPerAssignment(+id);
+  }
+  
   @Put()
   update(@Body() updateRespuestaDto: UpdateRespuestaDto) {
     return this.respuestaService.update(updateRespuestaDto);

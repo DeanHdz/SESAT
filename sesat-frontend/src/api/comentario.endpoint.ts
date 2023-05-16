@@ -8,7 +8,7 @@ export namespace ComentarioEndpoint {
   ): Promise<SESAT.Comentario | undefined> => {
     return await axios
       .get<SESAT.Comentario>(
-        `${process.env.REACT_APP_API_HOSTNAME}/comentario/` + id,
+        `${import.meta.env.VITE_API_HOSTNAME}/comentario/` + id,
         {
           headers: {
             "Content-Type": "application/json",
@@ -25,13 +25,34 @@ export namespace ComentarioEndpoint {
 
   export const getAllComentarios = async (
     token: string
-  ): Promise<SESAT.Comentario | undefined> => {
+  ): Promise<SESAT.Comentario[] | undefined> => {
     return await axios
-      .get<SESAT.Comentario>(
-        `${process.env.REACT_APP_API_HOSTNAME}/comentario`,
+      .get<SESAT.Comentario[]>(
+        `${import.meta.env.VITE_API_HOSTNAME}/comentario`,
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+        }
+      )
+      .then(({ data }) => {
+        if (data) {
+          return data;
+        }
+      });
+  };
+
+  export const getPerAssignment = async (
+    id: number,
+    token: string
+  ): Promise<SESAT.Comentario[] | undefined> => {
+    return await axios
+      .get<SESAT.Comentario[]>(
+        `${import.meta.env.VITE_API_HOSTNAME}/comentario/per-assignment/` + id,
+        {
+          headers: {
+            "Content-Type": "application/json", 
             Authorization: `bearer ${token}`,
           },
         }
@@ -49,7 +70,7 @@ export namespace ComentarioEndpoint {
   ): Promise<SESAT.Comentario | undefined> => {
     return await axios
       .post(
-        `${process.env.REACT_APP_API_HOSTNAME}/usuario`,
+        `${import.meta.env.VITE_API_HOSTNAME}/comentario`,
         CreateComentarioDto,
         {
           headers: {
@@ -71,7 +92,7 @@ export namespace ComentarioEndpoint {
   ): Promise<SESAT.Usuario | undefined> => {
     return await axios
       .put(
-        `${process.env.REACT_APP_API_HOSTNAME}/usuario`,
+        `${import.meta.env.VITE_API_HOSTNAME}/comentario`,
         UpdateComentarioDto,
         {
           headers: {
@@ -92,7 +113,7 @@ export namespace ComentarioEndpoint {
     token: string
   ): Promise<SESAT.Comentario | undefined> => {
     return await axios
-      .delete(`${process.env.REACT_APP_API_HOSTNAME}/comentario/` + id, {
+      .delete(`${import.meta.env.VITE_API_HOSTNAME}/comentario/` + id, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

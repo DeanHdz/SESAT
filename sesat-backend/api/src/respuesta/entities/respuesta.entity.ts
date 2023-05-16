@@ -1,5 +1,6 @@
-import { Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity()
 export class Respuesta {
     @PrimaryGeneratedColumn()
     id_respuesta: number;
