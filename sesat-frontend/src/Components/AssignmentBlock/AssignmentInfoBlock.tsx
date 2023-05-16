@@ -9,7 +9,7 @@ const AssignmentInfoBlock = ({asignacion}:{asignacion:SESAT.Asignacion | undefin
         <h1 className="font-SESAT mt-2">{asignacion != undefined ? asignacion.titulo: ""}</h1>
         <h3 className="ml-4">{asignacion?.descripcion}</h3>
       </article>
-      <div className=" mt-4 w-full bg-[#f8f9fa] shadow-md px-4 py-4">
+      <div className=" mt-4 w-full bg-[#f8f9fa] shadow-md px-6 py-6">
         <div className="pt-[7px]">
           <button className="btn bg-[#8c969f] border-transparent w-1/8 h-[30px]">
             Marcar como hecho
@@ -37,7 +37,7 @@ const AssignmentInfoBlock = ({asignacion}:{asignacion:SESAT.Asignacion | undefin
       </div>
       <input
         type="file"
-        className="file-input mt-10 hover:border hover:border-[#003067]"
+        className="file-input mt-10 hover:border hover:border-[#003067] border border-light-gray-22 border-solid"
       />
     </div>
   );
