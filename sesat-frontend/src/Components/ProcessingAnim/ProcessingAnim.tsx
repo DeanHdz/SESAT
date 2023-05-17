@@ -1,4 +1,3 @@
-
 const ProcessingAnim = () => {
     return (
         <div className="mt-10 h-screen w-full flex items-center justify-center">

@@ -4,13 +4,11 @@ import BreadcrumbContainer from "../Components/Breadcrumbs/BreadcrumbContainer";
 import CommentSection from "../Components/CommentSection/CommentSection";
 import AssignmentInfoBlock from "../Components/AssignmentBlock/AssignmentInfoBlock";
 import AssingmentStatusBlock from "../Components/AssignmentBlock/AssignmentStatusBlock";
-import { IComment } from "../Interfaces/IComment";
-import { IReply } from "../Interfaces/IReply";
 import { useEffect, useState } from "react";
 import { SESAT } from "../Interfaces/ISESAT";
 import { AsignacionEndpoint } from "../api/asignacion.endpoint";
-import { ComentarioEndpoint } from "../api/comentario.endpoint";
-import { RespuestaEndpoint } from "../api/respuesta.endpoint";
+
+import LoadingAnimation from "../Components/LoadingAnimation/LoadingAnimation";
 
 let paths: string[] = [];
 paths.push("Avance # de Tesis");
@@ -20,67 +18,20 @@ links.push("/board");
 links.push("assignment");
 
 const AssignmentPage = () => {
-  const [comentario, setComentario] = useState<
-    SESAT.Comentario[] | undefined
-  >();
-  const [respuesta, setRespuesta] = useState<SESAT.Respuesta[] | undefined>();
-
   const [asignacion, setAsignacion] = useState<SESAT.Asignacion | undefined>();
-
-  const [isLoading, setLoad] = useState(true);
-
-  const [isLoadingC, setLoadC] = useState(true);
 
   const getAsignacion = async () => {
     setAsignacion(await AsignacionEndpoint.getAsignacion(1, ""));
-    setLoad(false);
   };
 
   useEffect(() => {
     getAsignacion();
   }, []);
 
-  const getComentarios = async () => {
-    if (asignacion) {
-      setComentario(
-        await ComentarioEndpoint.getPerAssignment(asignacion.id_asignacion, "")
-      );
-      setLoadC(false);
-    }
-  };
-
-  let comments: IComment[] = [];
-  let repplies: IReply[] = [];
-
-  for (let i = 0; respuesta && i < respuesta.length; i++) {
-    let repply: IReply;
-    repply = {
-      userName: "Jesús Alemán",
-      date: "day: " + (i + 1) + " month: 3 year: 2023",
-      body: respuesta[i].texto,
-    };
-    repplies.push(repply);
+  if (asignacion == null)
+  {
+    return <LoadingAnimation texto="Cargando..."/> 
   }
-
-  for (let i = 0; comentario && i < comentario?.length; i++) {
-    let comment: IComment;
-
-    console.log(repplies);
-
-    comment = {
-      userName: "Benjamín Alba",
-      date: "day: " + (i + 1) + " month: 3 year: 2023",
-      body: comentario[i].texto, //::)
-      replies: repplies,
-    };
-    comments.push(comment);
-  }
-
-  function isEmpty(str: string | undefined) {
-    return !str || str.length === 0;
-  }
-
-  if (isLoading) return <div>CARGANDO</div>;
   else
     return (
       <div className="overflow-x-hidden">
@@ -98,7 +49,7 @@ const AssignmentPage = () => {
                 <h1 className="font-SESAT my-4">Comentarios</h1>
               </article>
               <div className="container px-0 mx-auto sm:px-5">
-                <CommentSection comments={comments} />
+                <CommentSection id_asignacion={asignacion?.id_asignacion} />
               </div>
             </div>
           </div>

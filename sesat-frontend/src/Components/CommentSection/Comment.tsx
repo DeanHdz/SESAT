@@ -1,14 +1,41 @@
 import { IReply } from "../../Interfaces/IReply"
 import { IComment } from "../../Interfaces/IComment"
+import { SESAT } from "../../Interfaces/ISESAT";
+import { RespuestaEndpoint } from "../../api/respuesta.endpoint";
 import UserIcon from "../UserIcon/UserIcon"
 import Reply from "./Reply"
+import { useState, useEffect } from "react";
 
-const Comment = ({userName, date, body, replies}:{userName: string, date: string, body: string, replies: IReply[]}) =>
+const Comment = ({userName, date, body, comment_id}:{userName: string, date: string, body: string, comment_id: number}) =>
 {
-  let repliesToDisplay = [];
-  for(let i=0; i<replies.length;i++)
+  console.log("id del comentario: " + comment_id);
+  const [respuesta, setRespuesta] = useState<SESAT.Respuesta[] | undefined>();
+
+  const getRespuestas = async () => 
   {
-    repliesToDisplay.push(<Reply userName={replies[i].userName} date={replies[i].date} body={replies[i].body} />);
+    setRespuesta(await RespuestaEndpoint.getPerAssignment(comment_id, ""));
+  }
+  
+  useEffect(() => {
+    getRespuestas();
+  }, []);
+
+  let repplies: IReply[] = [];
+
+  for (let i = 0; respuesta && i < respuesta.length; i++) {
+    let repply: IReply;
+    repply = {
+      userName: "Jesús Alemán",
+      date: "day: " + (i + 1) + " month: 3 year: 2023",
+      body: respuesta[i].texto,
+    };
+    repplies.push(repply);
+  }
+  
+  let repliesToDisplay = [];
+  for(let i=0; i<repplies.length;i++)
+  {
+    repliesToDisplay.push(<Reply userName={repplies[i].userName} date={repplies[i].date} body={repplies[i].body} />);
   }
   
   return(
