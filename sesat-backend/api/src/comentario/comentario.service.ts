@@ -17,6 +17,7 @@ export class ComentarioService {
   }
 
   findAll() {
+    console.log("TEST");
     return this.comentarioRepository.find();
   }
 

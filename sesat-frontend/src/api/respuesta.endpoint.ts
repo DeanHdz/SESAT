@@ -39,7 +39,7 @@ export namespace RespuestaEndpoint {
       });
   };
 
-  export const getPerAssignment = async (
+  export const getPerComment = async (
     id: number,
     token: string
   ): Promise<SESAT.Respuesta[] | undefined> => {

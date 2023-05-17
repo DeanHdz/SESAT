@@ -17,9 +17,16 @@ import { join } from "path";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { RespuestaModule } from "./respuesta/respuesta.module";
 import { ComentarioModule } from "./comentario/comentario.module";
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from "@nestjs/core";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
     TypeOrmModule.forRootAsync({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
@@ -55,8 +62,9 @@ import { ComentarioModule } from "./comentario/comentario.module";
     FormatosVaciosModule,
     RespuestaModule,
     ComentarioModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [{provide: APP_GUARD, useClass: ThrottlerGuard}],
 })
 export class AppModule {}

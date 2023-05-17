@@ -13,7 +13,7 @@ const Comment = ({userName, date, body, comment_id}:{userName: string, date: str
 
   const getRespuestas = async () => 
   {
-    setRespuesta(await RespuestaEndpoint.getPerAssignment(comment_id, ""));
+    setRespuesta(await RespuestaEndpoint.getPerComment(comment_id, ""));
   }
   
   useEffect(() => {

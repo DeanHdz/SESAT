@@ -11,7 +11,7 @@ export class Respuesta {
     //@ManyToOne()
 
     @Column()
-    text: string;
+    texto: string;
 
     @Column()
     clave: number;

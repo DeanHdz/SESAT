@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { And, Repository } from 'typeorm';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Usuario } from './entities/usuario.entity';
@@ -22,6 +22,11 @@ export class UsuarioService {
 
   findOne(id: number) {
     return this.usuarioRepository.findOne({ where: { clave: id } });
+  }
+
+  identify(clave: number/*Tentativo*/, password: string){
+    console.log("Entre al usuario service");
+    return this.usuarioRepository.find({where: { clave: clave, password: password}});
   }
 
   update(updateUsuarioDto: UpdateUsuarioDto) {
