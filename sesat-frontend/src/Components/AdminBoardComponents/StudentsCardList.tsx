@@ -1,6 +1,6 @@
 import StudentCard from "./StudentCard";
 
-const StudentsList = ({title}:{title: string}) => {
+const StudentsCardList = ({title}:{title: string}) => {
     return (
         <div className="w-full p-6 flex flex-col">
             <label className="m-3 block text-2xl font-bold cursor-pointer">{title}</label>  
@@ -19,4 +19,4 @@ const StudentsList = ({title}:{title: string}) => {
     );
 };
 
-export default StudentsList;
+export default StudentsCardList;

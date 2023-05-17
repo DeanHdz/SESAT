@@ -1,6 +1,12 @@
 export const UserRegistryForm = () => {
     return (
+
+        
+
     <div className="flex flex-wrap gap-4 m-8 place-content-center">
+
+        <label className="m-3 block text-2xl font-bold cursor-pointer">Dar de alta Usuario</label>  
+        <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end"></div>
 
         <div className="border border-light-gray-22 border-solid rounded p-10 m-4 self-start">
             <p className="text-3xl">Añadir alumno</p>
@@ -116,6 +122,7 @@ export const UserRegistryForm = () => {
         </div>
 
     </div>
+
     );
   };
   

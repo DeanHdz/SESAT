@@ -1,18 +1,18 @@
-import StudentsList from "../Components/AdminBoardComponents/StudentsCardList";
+import PhdStudentsList from "../Components/AdminBoardComponents/StudentsProfileList";
 import Drawer from "../Components/Drawer/Drawer";
 
-const StudentTesisMPage = () => {
+const PhdStudentListPage = () => {
     return (
         <div className="flex flex-row">
             <div className="w-3/12">
                 <Drawer />
             </div>
             <div className="w-9/12">
-                <StudentsList title="Tesis de Maestría"/>                
+                <PhdStudentsList title="Alumnos de Doctorado"/>                
             </div>
 
         </div>
     );
 };
 
-export default StudentTesisMPage;
+export default PhdStudentListPage;

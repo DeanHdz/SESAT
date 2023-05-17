@@ -3,6 +3,8 @@ import InsiteBaner from "../Components/Banner/InsiteBanner";
 import BreadcrumbContainer from "../Components/Breadcrumbs/BreadcrumbContainer";
 import TesisRegistryForm from "../Components/TesisRegistryForm/TesisRegistryForm";
 import NewAssignment from "../Components/NewAssignment/NewAssignment";
+import Drawer from "../Components/Drawer/Drawer";
+
 
 let paths: string[] = [];
 paths.push("Nueva Asignación");
@@ -12,12 +14,14 @@ links.push("/create_assignment");
 
 const CreateAssignment = () => {
   return (
-    <div className="overflow-hidden">
-      <Navbar />
-      <InsiteBaner topic={"Nueva Asignación "} />
-      <BreadcrumbContainer paths={paths} links={links} />
-      <NewAssignment />
+  <div className="flex flex-row">
+    <div className="w-3/12">
+      <Drawer />
     </div>
+    <div className="w-9/12">
+    <NewAssignment />
+    </div>
+  </div>
   );
 };
 

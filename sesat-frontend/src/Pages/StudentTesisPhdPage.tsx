@@ -1,4 +1,4 @@
-import StudentsList from "../Components/AdminBoardComponents/StudentsList";
+import StudentsCardList from "../Components/AdminBoardComponents/StudentsCardList";
 import Drawer from "../Components/Drawer/Drawer";
 
 const StudentTesisPhdPage = () => {
@@ -8,7 +8,7 @@ const StudentTesisPhdPage = () => {
                 <Drawer />
             </div>
             <div className="w-9/12">
-                <StudentsList title="Tesis de Doctorado"/>                
+                <StudentsCardList title="Tesis de Doctorado"/>                
             </div>
 
         </div>
