@@ -6,6 +6,11 @@ import autosize from "autosize";
 
 const NewAssignment = () => {
   return (
+    <div>
+
+    <label className="m-3 block text-2xl font-bold cursor-pointer">Nueva Asignación</label>  
+        <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end"></div>
+
     <form className="lg:flex lg:flex-row w-11/12 m-auto">
       <div className="block w-11/12 lg:w-3/6 ">
         <div className="pt-6 sm:pl-12 lg:flex lg:flex-col mt-10 mb-10 mr-6 rounded border border-light-gray-22 border-solid">
@@ -77,6 +82,7 @@ const NewAssignment = () => {
         </div>
       </div>
     </form>
+    </div>
   );
 };
 

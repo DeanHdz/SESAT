@@ -1,8 +1,5 @@
-
 import Drawer from "../Components/Drawer/Drawer";
 import AdminBoard from "../Components/Board/AdminBoard";
-
-
 
 const AdminBoardPage = () => {
   return (
@@ -13,10 +10,8 @@ const AdminBoardPage = () => {
       <div className="w-9/12">
         <AdminBoard />
       </div>
-
     </div>
   )
 }
-
 
 export default AdminBoardPage;
