@@ -5,15 +5,15 @@ import { UsuarioEndpoint } from "../../../api/usuario.endpoint";
 const LandingLogin = () => {
  
   const [claveUnica, setClaveUnica] = useState(""); //cum
-  const [constraseña, setContraseña] = useState("");
+  const [contraseña, setContraseña] = useState("");
   const navigate = useNavigate();
  
   async function handleSubmit (e:any) {
     e.preventDefault();
     try {
-      console.log(claveUnica, constraseña);
+      console.log(claveUnica, contraseña);
       const resp = await UsuarioEndpoint.getUsuario(parseInt(claveUnica),"");
-      if(resp)
+      if(resp && resp.password === contraseña)
         navigate("/register");
     }            
     catch(err) {
@@ -54,7 +54,7 @@ const LandingLogin = () => {
           <input
             type="password"
             placeholder="Contraseña Institucional"
-            value={constraseña}
+            value={contraseña}
             required
             onChange={
               (e) => {

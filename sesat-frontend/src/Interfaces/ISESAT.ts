@@ -4,14 +4,26 @@ export namespace SESAT {
 
   export interface Usuario {
     clave: number;
+    name: string;
+    last_name: string;
+    family_name: string;
+    password: string;
   }
 
   export interface CreateUsuario {
     clave: number;
+    name: string;
+    last_name: string;
+    family_name: string;
+    password: string;
   }
 
   export interface UpdateUsuario {
     clave: number;
+    name: string;
+    last_name: string;
+    family_name: string;
+    password: string;
   }
 
   /*------------------ ALUMNO INTERFACE ------------------*/
@@ -258,5 +270,12 @@ export namespace SESAT {
     id_acta_vacia: number;
   }
   
+  /*------------------ MISCELANEOUS -----------*/
+
+  export interface LoggedUser {
+    message: string;
+    usuario: Usuario;
+    token: string;
+  }
 
 }

@@ -11,13 +11,11 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async verifyCredentials(clave: number, password: string): Promise<any> {
-    const user = await this.usuarioService.identify(clave, password);
-
-    console.log("auth service user: " + user);
-
-    if(user) {
-      return user;
+  async validateUser(clave: number, pass: string): Promise<any> {
+    const user = await this.usuarioService.findOne(clave);
+    if(user && user.password === pass) {
+      const {password, ...result} = user;
+      return result;
     }
     return null;
   }
