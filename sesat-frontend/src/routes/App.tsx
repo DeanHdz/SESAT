@@ -3,7 +3,9 @@ import LandingPage from "../Pages/LandingPage";
 import TesisRegistryPage from "../Pages/TesisRegistryPage";
 import AssignmentPage from "../Pages/AssignmentPage";
 import BoardPage from "../Pages/BoardPage";
+import BoardPageAsesor from "../Pages/BoardPageAsesor";
 import CreateAssignment from "../Pages/CreateAssignment";
+import Assignments from "../Pages/Assignments";
 import TesisViewPage from "../Pages/TesisViewPage";
 import UserRegistryPage from "../Pages/UserRegistryPage";
 import ProfilePage from "../Pages/ProfilePage";
@@ -17,6 +19,8 @@ import SendPDFToDBPage from "../Pages/SendPDFToDBPage";
 import AdminBoardPage from "../Pages/AdminBoardPage";
 import StudentTesisMPage from "../Pages/StudentTesisMPage";
 import StudentTesisPhdPage from "../Pages/StudentTesisPhdPage";
+import StudentTesisMAsesor from "../Pages/StudentTesisMAsesor";
+import StudentTesisAsesorPage from "../Pages/StudentTesisAsesorPage";
 
 import MStudentListPage from "../Pages/MStudentListPage";
 import PhdStudentListPage from "../Pages/PhdStudentListPage";
@@ -29,6 +33,7 @@ export default function App() {
       <Routes>
         <Route path="*" element={<LandingPage />} />
         <Route path="/board" element={<BoardPage />} />
+        <Route path="/board-asesor" element={<BoardPageAsesor />} />
         <Route path="/register" element={<TesisRegistryPage />} />
         <Route path="/assignment" element={<AssignmentPage />} />
         <Route path="/view_tesis" element={<TesisViewPage />} />
@@ -44,13 +49,19 @@ export default function App() {
         <Route path="/admin-board" element={<AdminBoardPage />} />
         <Route path="/admin-board/user-register" element={<UserRegistryPage />} />
         <Route path="/admin-board/create_assignment" element={<CreateAssignment />} />
+        <Route path="/admin-board/assignments" element={<Assignments />} />
         <Route path="/admin-board/view-tesis-masters" element={<StudentTesisMPage />} />
         <Route path="/admin-board/view-tesis-phd" element={<StudentTesisPhdPage />} />
         <Route path="/admin-board/view-tesis-masters/view_tesis" element={<TesisViewPage />} />        
         <Route path="/admin-board/view-tesis-phd/view_tesis" element={<TesisViewPage />} />  
         <Route path="/admin-board/view-students-M" element={<MStudentListPage />} />
         <Route path="/admin-board/view-students-Phd" element={<PhdStudentListPage />} />
+        <Route path="/board-asesor/view-tesis-masters" element={<StudentTesisMAsesor />} />
+        <Route path="/board-asesor/view-tesis-phd" element={<StudentTesisAsesorPage />} />
+        <Route path="/board-asesor/view-tesis-masters/view_tesis" element={<TesisViewPage />} />  
+        <Route path="/board-asesor/view-tesis-phd/view_tesis" element={<TesisViewPage />} />  
       </Routes>
     </ScrollToTop>
   );
 }
+
