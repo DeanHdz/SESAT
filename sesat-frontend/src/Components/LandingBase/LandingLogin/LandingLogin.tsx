@@ -1,28 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UsuarioEndpoint } from "../../../api/usuario.endpoint";
- 
+import { useSessionStorage } from "../../../hooks/useSessionStorage.hook";
+
 const LandingLogin = () => {
- 
-  const [claveUnica, setClaveUnica] = useState(""); //cum
+  const [user, setUser] = useSessionStorage("user", "");
+  const [failed, setFailed] = useState(false);
+  const [claveUnica, setClaveUnica] = useState("");
   const [contraseña, setContraseña] = useState("");
   const navigate = useNavigate();
- 
-  async function handleSubmit (e:any) {
+
+  async function handleSubmit(e: any) {
     e.preventDefault();
     try {
       console.log(claveUnica, contraseña);
-      const resp = await UsuarioEndpoint.getUsuario(parseInt(claveUnica),"");
-      if(resp && resp.password === contraseña)
+      const resp = await UsuarioEndpoint.getUsuario(parseInt(claveUnica), "");
+      if (resp && resp.password === contraseña) {
+        setUser({
+          clave: resp.clave,
+          name: resp.name,
+          last_name: resp.last_name,
+          family_name: resp.family_name,
+        });
         navigate("/register");
-    }            
-    catch(err) {
+      } else setFailed(true);
+    } catch (err) {
+      setFailed(true);
       console.log(err);
     }
   }
- 
+
+  useEffect(() => {
+    if (failed) {
+      setTimeout(() => {
+        setFailed(false);
+      }, 2000);
+    }
+  }, [failed]);
+
   return (
-    <form className="w-inherit h-inherit flex flex-col items-center" onSubmit={handleSubmit}>
+    <form
+      className="w-inherit h-inherit flex flex-col items-center"
+      onSubmit={handleSubmit}
+    >
       <div className="form-control mt-28 w-3/6">
         <label className="input-group input-group-vertical">
           <label className="label bg-transparent mb-6">
@@ -35,11 +55,9 @@ const LandingLogin = () => {
             placeholder="Clave Única"
             value={claveUnica}
             required
-            onChange={
-              (e) => {
-                setClaveUnica(e.target.value);
-              }
-            }
+            onChange={(e) => {
+              setClaveUnica(e.target.value);
+            }}
             className="input input-bordered"
           />
         </label>
@@ -56,21 +74,29 @@ const LandingLogin = () => {
             placeholder="Contraseña Institucional"
             value={contraseña}
             required
-            onChange={
-              (e) => {
-                setContraseña(e.target.value);
-              }
-            }
+            onChange={(e) => {
+              setContraseña(e.target.value);
+            }}
             className="input input-bordered"
           />
         </label>
       </div>
-      <button type="submit" className="mt-16 btn bg-[#8c969f] border-transparent w-2/6">
+      <button
+        type="submit"
+        className="mt-16 btn bg-[#8c969f] border-transparent w-2/6"
+      >
         {" "}
         Iniciar Sesión (Ingresar){" "}
       </button>
+      <div className="flex justify-center">
+        {failed && (
+          <div className="m-auto flex flex-row mt-10">
+            <p className="text-xl">Clave unica o contraseña incorrecta</p>
+          </div>
+        )}
+      </div>
     </form>
   );
 };
- 
+
 export default LandingLogin;
