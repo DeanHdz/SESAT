@@ -20,6 +20,7 @@ import { ComentarioModule } from "./comentario/comentario.module";
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
     RespuestaModule,
     ComentarioModule,
     AuthModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [{provide: APP_GUARD, useClass: ThrottlerGuard}],

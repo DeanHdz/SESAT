@@ -1,5 +1,16 @@
-import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn, ManyToMany, ManyToOne, JoinTable, PrimaryGeneratedColumn } from "typeorm";
-import { Usuario } from 'src/usuario/entities/usuario.entity';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  JoinTable,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from "typeorm";
+import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Programa } from "src/programa/entities/programa.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 
@@ -12,7 +23,7 @@ export class Tesis {
   clave_alumno: number;
 
   @OneToOne(() => Usuario, { eager: true })
-  @JoinColumn({ name: 'clave_alumno' })
+  @JoinColumn({ name: "clave_alumno" })
   claveAlumno: Usuario;
 
   @Column()
@@ -20,14 +31,14 @@ export class Tesis {
 
   //una tesis puede tener multiples asesores, un asesor puede tener multiples tesis
   @OneToOne(() => Usuario, { eager: true })
-  @JoinColumn({name: 'clave_asesor'})
-  claveAsesor: Usuario
+  @JoinColumn({ name: "clave_asesor" })
+  claveAsesor: Usuario;
 
   @Column()
   id_programa: number;
 
   @OneToOne(() => Programa, { eager: true })
-  @JoinColumn({ name: 'id_programa' })
+  @JoinColumn({ name: "id_programa" })
   idPrograma: Programa;
 
   @Column()
@@ -42,7 +53,8 @@ export class Tesis {
   @Column()
   modalidad: string;
 
-  //@ManyToOne(() => Asignacion, (asignacion) => asignacion.id_tesis)
-  //asignacion: Asignacion;
-
+  @OneToMany(() => Asignacion, (asignacion) => asignacion.tesis, {
+    eager: true,
+  })
+  asignaciones: Asignacion[];
 }

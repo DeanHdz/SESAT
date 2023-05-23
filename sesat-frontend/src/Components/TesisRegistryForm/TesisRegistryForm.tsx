@@ -1,4 +1,4 @@
-import { useEffect, useState, } from "react";
+import { useEffect, useState } from "react";
 import { render } from "react-dom";
 import { useNavigate } from "react-router";
 import { AsesorEndpoint } from "../../api/asesor.endpoint";
@@ -7,8 +7,11 @@ import { TesisEndpoint } from "../../api/tesis.endpoint";
 import { SESAT } from "../../Interfaces/ISESAT";
 import SelectAsesores from "./SelectAsesores";
 import SelectProgramas from "./SelectProgramas";
+import { ReactSession } from "react-client-session";
+import { UsuarioEndpoint } from "../../api/usuario.endpoint";
 
 export const TesisRegistryForm = () => {
+  const [user, setUser] = useState<SESAT.LoggedUser>(JSON.parse(sessionStorage.getItem("loggedUser") || '{}'));
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [asesor, setAsesor] = useState("");
@@ -22,63 +25,65 @@ export const TesisRegistryForm = () => {
   async function handleSubmit(e: any) {
     e.preventDefault();
     try {
-      const resp = await TesisEndpoint.postTesis(
-        {
-          clave_alumno: 312972,
-          clave_asesor: parseInt(asesor),
-          id_programa: parseInt(programa),
-          titulo: nombre,
-          fecharegistro: new Date(),
-          generacion: generacion,
-          modalidad: modalidad,
-        },
-        ""
-      );
-      if(resp){
-        navigate('/view_tesis')
+      console.log(user);
+
+      if (user) {
+        const resp = await TesisEndpoint.postTesis(
+          {
+            clave_alumno: user.clave,
+            clave_asesor: parseInt(asesor),
+            id_programa: parseInt(programa),
+            titulo: nombre,
+            fecharegistro: new Date(),
+            generacion: generacion,
+            modalidad: modalidad,
+          },
+          ""
+        );
+        if (resp) {
+          navigate("/view_tesis");
+        }
       }
     } catch (err) {
       console.log(err);
     }
   }
 
-  const [Asesores, setAsesores] = useState<SESAT.Asesor[] | undefined>(undefined);
+  const [Asesores, setAsesores] = useState<SESAT.Usuario[] | undefined>(
+    undefined
+  );
   //custom Hook para sacar los datos de los asesores del backend
-  const getAsesoresData = async() =>
-  {
-    setAsesores(await AsesorEndpoint.getAsesores(""));
-  } 
+  const getAsesoresData = async () => {
+    setAsesores(await UsuarioEndpoint.getAsesores(""));
+  };
 
   useEffect(() => {
     getAsesoresData();
-  }, [])
+  }, []);
 
-  const renderSelectAsesores = () =>
-  {
-    if(Asesores!=undefined)
-    {
-      return <SelectAsesores asesores={Asesores}/>
+  const renderSelectAsesores = () => {
+    if (Asesores != undefined) {
+      return <SelectAsesores asesores={Asesores} />;
     }
-  }
+  };
 
-  const [Programas, setProgramas] = useState<SESAT.Programa[] | undefined>(undefined);
+  const [Programas, setProgramas] = useState<SESAT.Programa[] | undefined>(
+    undefined
+  );
   //custom Hook para sacar los datos de los asesores del backend
-  const getProgramasData = async() =>
-  {
+  const getProgramasData = async () => {
     setProgramas(await ProgramaEndpoint.getProgramas(""));
-  } 
+  };
 
   useEffect(() => {
     getProgramasData();
-  }, [])
+  }, []);
 
-  const renderSelectProgramas = () =>
-  {
-    if(Programas!=undefined)
-    {
-      return <SelectProgramas programas={Programas}/>
+  const renderSelectProgramas = () => {
+    if (Programas != undefined) {
+      return <SelectProgramas programas={Programas} />;
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -162,9 +167,7 @@ export const TesisRegistryForm = () => {
               <option disabled selected>
                 Programa al que pertenece
               </option>
-              {
-                renderSelectProgramas()
-              }
+              {renderSelectProgramas()}
             </select>
             <label className="mb-3 block text-lg font-bold">
               Generación del alumno
@@ -200,4 +203,3 @@ export const TesisRegistryForm = () => {
 };
 
 export default TesisRegistryForm;
-

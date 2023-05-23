@@ -5,6 +5,8 @@ import {
   JoinColumn,
   PrimaryColumn,
   Timestamp,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
@@ -12,15 +14,15 @@ import path from "path";
 
 @Entity()
 export class Asignacion {
-  @PrimaryColumn()
-  id_asignacion: number;
+  @PrimaryGeneratedColumn()
+  asignacion_id: number;
 
   @Column()
   id_tesis: number;
 
-  //@OneToMany(() => Tesis, (tesis) => tesis.id_tesis, { eager: true })
-  //@JoinColumn({name: 'id_tesis'})
-  //tesis: Tesis[];
+  @ManyToOne(() => Tesis, (tesis) => tesis.asignaciones)
+  @JoinColumn({name: 'id_tesis'})
+  tesis: Tesis;
 
   @Column()
   num_avance: number;

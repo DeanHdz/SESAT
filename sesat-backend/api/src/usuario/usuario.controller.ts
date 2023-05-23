@@ -20,6 +20,11 @@ export class UsuarioController {
     return this.usuarioService.findAll();
   }
 
+  @Get('/asesores')
+  findAsesores() {
+    return this.usuarioService.findAsesores();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(+id);

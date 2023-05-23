@@ -8,6 +8,8 @@ export namespace SESAT {
     last_name: string;
     family_name: string;
     password: string;
+    role: number;
+    active_status: boolean;
   }
 
   export interface CreateUsuario {
@@ -16,6 +18,8 @@ export namespace SESAT {
     last_name: string;
     family_name: string;
     password: string;
+    role: number;
+    active_status: boolean;
   }
 
   export interface UpdateUsuario {
@@ -24,6 +28,8 @@ export namespace SESAT {
     last_name: string;
     family_name: string;
     password: string;
+    role: number;
+    active_status: boolean;
   }
 
 /*------------------ USUARIO INTERFACE ------------------*/
@@ -33,6 +39,8 @@ export interface LoggedUser {
   name: string;
   last_name: string;
   family_name: string;
+  role: number;
+  active_status: boolean;
   token: string;
 }
 
@@ -117,7 +125,7 @@ export interface LoggedUser {
   /*------------------ ASIGNACION INTERFACE ------------------*/
 
   export interface Asignacion {
-    id_asignacion: number;
+    asignacion_id: number;
     id_tesis: number;
     num_avance: number;
     titulo: string;
@@ -130,7 +138,6 @@ export interface LoggedUser {
   }
 
   export interface CreateAsignacion {
-    id_asignacion: number;
     id_tesis: number;
     num_avance: number;
     titulo: string;
@@ -143,7 +150,7 @@ export interface LoggedUser {
   }
 
   export interface UpdateAsignacion {
-    id_asignacion: number;
+    asignacion_id: number;
     id_tesis: number;
     num_avance: number;
     titulo: string;
@@ -255,6 +262,31 @@ export interface LoggedUser {
     texto: string;
     clave: number;
   }
+
+/*------------------ NOTIFICATION INTERFACE ------------------*/
+
+export interface Notification{
+  notification_id: number;
+  user_id: number;
+  title: string;
+  description: string;
+  expediton_date: Date;
+}
+
+export interface CreateNotification{
+  user_id: number;
+  title: string;
+  description: string;
+  expediton_date: Date;
+}
+
+export interface UpdateNotification{
+  notification_id: number;
+  user_id: number;
+  title: string;
+  description: string;
+  expediton_date: Date;
+}
 
   /*------------------ UPLOAD PDF INTERFACE ------------------*/
   export interface UploadPDF{

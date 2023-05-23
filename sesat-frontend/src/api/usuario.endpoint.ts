@@ -39,6 +39,23 @@ export namespace UsuarioEndpoint {
       });
   };
 
+  export const getAsesores = async (
+    token: string
+  ): Promise<SESAT.Usuario[] | undefined> => {
+    return await axios
+      .get<SESAT.Usuario[]>(`${import.meta.env.VITE_API_HOSTNAME}/usuario/asesores`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then(({ data }) => {
+        if (data) {
+          return data;
+        }
+      });
+  };
+
   export const postUsuario = async (
     createUsuarioDto: SESAT.CreateUsuario,
     token: string

@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateTesisDto {
   @IsNotEmpty()
@@ -18,7 +18,7 @@ export class CreateTesisDto {
   titulo: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   fecharegistro: Date;
   
   @IsNotEmpty()

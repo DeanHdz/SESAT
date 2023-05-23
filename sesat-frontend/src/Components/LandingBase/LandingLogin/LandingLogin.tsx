@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UsuarioEndpoint } from "../../../api/usuario.endpoint";
 import { useSessionStorage } from "../../../hooks/useSessionStorage.hook";
+import { ReactSession } from "react-client-session";
 
 const LandingLogin = () => {
-  const [user, setUser] = useSessionStorage("user", "");
+  ReactSession.setStoreType("sessionStorage");
   const [failed, setFailed] = useState(false);
   const [claveUnica, setClaveUnica] = useState("");
   const [contraseña, setContraseña] = useState("");
@@ -13,17 +14,24 @@ const LandingLogin = () => {
   async function handleSubmit(e: any) {
     e.preventDefault();
     try {
-      console.log(claveUnica, contraseña);
       const resp = await UsuarioEndpoint.getUsuario(parseInt(claveUnica), "");
       if (resp && resp.password === contraseña) {
-        setUser({
-          clave: resp.clave,
-          name: resp.name,
-          last_name: resp.last_name,
-          family_name: resp.family_name,
-        });
+        sessionStorage.setItem(
+          "loggedUser",
+          JSON.stringify({
+            clave: resp.clave,
+            name: resp.name,
+            last_name: resp.last_name,
+            family_name: resp.family_name,
+            role: resp.role,
+            active_status: resp.active_status,
+          })
+        );
         navigate("/register");
-      } else setFailed(true);
+      } else {
+        console.log(new Date().toISOString().slice(0, 10));
+        setFailed(true);
+      }
     } catch (err) {
       setFailed(true);
       console.log(err);

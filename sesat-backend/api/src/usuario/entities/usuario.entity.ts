@@ -16,4 +16,10 @@ export class Usuario {
 
     @Column()
     password: string;
+
+    @Column()
+    role: number;
+
+    @Column()
+    active_status: boolean;
 }

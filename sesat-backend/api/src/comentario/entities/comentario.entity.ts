@@ -1,11 +1,11 @@
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
 export class Comentario {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id_comentario: number;    
 
     @Column()

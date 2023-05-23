@@ -49,7 +49,7 @@ const AssignmentPage = () => {
                 <h1 className="font-SESAT my-4">Comentarios</h1>
               </article>
               <div className="container px-0 mx-auto sm:px-5">
-                <CommentSection id_asignacion={asignacion?.id_asignacion} />
+                <CommentSection id_asignacion={asignacion?.asignacion_id} />
               </div>
             </div>
           </div>

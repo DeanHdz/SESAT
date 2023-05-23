@@ -37,7 +37,7 @@ const CommentSection = ({id_asignacion}:{id_asignacion: number}) =>
     if(comentario)
       commentsToDisplay.push(<><Comment key={i} userName={comments[i].userName} date={comments[i].date} body={comments[i].body} comment_id={comentario[i].id_comentario}/></>) 
   }
-  commentsToDisplay.push(<AddComment key={comments.length}/>)
+  commentsToDisplay.push(<AddComment key={comments.length} id_asignacion={id_asignacion}/>)
 
   return(
     <div>
