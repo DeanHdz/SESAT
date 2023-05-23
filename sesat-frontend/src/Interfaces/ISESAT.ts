@@ -191,6 +191,7 @@ export interface LoggedUser {
     fecharegistro: Date;
     generacion: string;
     modalidad: string;
+    ultimo_avance: number;
   }
 
   export interface CreateTesis{

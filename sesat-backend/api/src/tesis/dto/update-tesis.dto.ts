@@ -34,4 +34,8 @@ export class UpdateTesisDto extends PartialType(CreateTesisDto) {
   @IsNotEmpty()
   @IsString()
   modalidad: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  ultimo_avance: number;
 }

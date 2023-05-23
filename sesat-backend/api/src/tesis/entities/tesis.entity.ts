@@ -57,4 +57,7 @@ export class Tesis {
     eager: true,
   })
   asignaciones: Asignacion[];
+
+  @Column()
+  ultimo_avance: number;
 }

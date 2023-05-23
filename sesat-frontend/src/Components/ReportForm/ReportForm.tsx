@@ -5,19 +5,19 @@ import autosize from 'autosize';
 import { ActaEvaluacion_Endpoint } from "../../api/acta-evaluacion.endpoint";
 import { useNavigate } from "react-router-dom";
 import ProcessingAnim from "../ProcessingAnim/ProcessingAnim";
+import { SESAT } from "../../Interfaces/ISESAT";
+import { TesisEndpoint } from "../../api/tesis.endpoint";
+import { UsuarioEndpoint  } from "../../api/usuario.endpoint";
+import { ProgramaEndpoint  } from "../../api/programa.endpoint";
 
-//Falta: Traer los datos del alumno y la tesis de la base de datos
 
-const ReportForm = () => {
-  
-  const [apPat, setApPat] = useState("Ramírez");
-  const [apMat, setApMat] = useState("Gámez");
-  const [nombre, setNombre] = useState("César Augusto");
-  const [programa, setPrograma] = useState("Doctorado en ciencias de la computación");
-  const [numAvance, setNumAvance] = useState("1");
-  const [nombreTesis, setNombreTesis] = useState("Reconocimiento de masas y sus características en mamografias para su clasificación de acuerdo con el sitema BI-RADS");
-  const [claveU, setClaveUnica] = useState("222222");
+const ReportForm = ({claveUnica = 295282}:{claveUnica: number}) => {
+  const [tesis, setTesis] = useState<SESAT.Tesis | undefined>();  
+  const [alumno, setAlumno] = useState<SESAT.Usuario | undefined>();
+  const [programa, setPrograma] = useState<SESAT.Programa | undefined>();
 
+
+  const [received, setReceived] = useState(false);
   const [fechaEval, setFechaEval] = useState(new Date());
   const [porcentajeAv, setPrcAvance] = useState("");
   const [comentarios, setComentarios] = useState("");
@@ -48,8 +48,14 @@ const ReportForm = () => {
     navigate('back');
   };
 
+
+  useEffect(() =>{
+    getPrograma();
+  }, [received])
+
   useEffect(() => {  
-    
+    getAlumno();
+    getTesis();    
     //Esta pagina requiere la claveUnica del alumno para realizar consultas
     //pasar en variables de estado de navigate();
     
@@ -65,6 +71,38 @@ const ReportForm = () => {
     //Consulta 3 de la tabla programa usando id_programa de la tabla tesis
     //nombre programa
   }, []);
+  
+
+  const getTesis = async () => {
+    setTesis(
+      await TesisEndpoint.getTesisPerStudent(
+        claveUnica,
+        ""
+      )
+    )
+    setReceived(true);
+  } 
+
+  const getAlumno = async () => {
+    setAlumno(
+      await UsuarioEndpoint.getUsuario(
+        claveUnica,
+        ""
+      )
+    )
+  }
+
+  const getPrograma = async () => {
+    if(tesis){
+      setPrograma(
+        await ProgramaEndpoint.getPrograma(
+          tesis?.id_programa,
+          ""
+        )
+      )      
+    }
+    
+  }
 
   useEffect(() => {
     let p = (parseInt(documentoAvance) + parseInt(exposicion) + parseInt(dominioTema) + parseInt(gradoAvance))/4;
@@ -75,23 +113,20 @@ const ReportForm = () => {
   async function handleSubmit(e: any) {
     e.preventDefault();
     try {
-      setLoading(true);
-      //Crear dto y enviar via POST
-      //El dto contiene todos los datos del reporte, el servidor solo debe rellenar el formulario
-      //devolver el pdf?
+      setLoading(true);      
       const resp = await ActaEvaluacion_Endpoint.postActaForm(
         parseInt(id_asignacion),
         {
 
           fecha_eval: formatDate(fechaEval),
-          ap_pat: apPat,
-          ap_mat: apMat,
-          nombre: nombre,
+          ap_pat: alumno?.last_name! ?? "",
+          ap_mat: alumno?.family_name! ?? "",
+          nombre: alumno?.name! ?? "",
 
-          programa: programa,
-          no_avance: parseInt(numAvance),
+          programa: programa?.nombreprograma! ?? "",
+          no_avance: tesis?.ultimo_avance! ?? "",
 
-          titulo_tesis: nombreTesis,
+          titulo_tesis: tesis?.titulo! ?? "",
           total_avance: porcentajeAv,
           comentarios: comentarios,
 
@@ -110,8 +145,7 @@ const ReportForm = () => {
       );
       if (resp) {
         setLoading(false);
-        console.log("Acta guardada");
-        //navigate("/view_document/");
+        console.log("Acta guardada");        
         navigate('/view_document/', {
           state: {
             id_assign: id_asignacion,
@@ -157,7 +191,7 @@ const ReportForm = () => {
                     Apellido Paterno:
                   </label>
                   <label className="mb-3 block text-lg font-sans">
-                    {apPat}
+                    {alumno?.last_name}
                   </label>
                 </div>
                 <div className="lg:w-1/3">
@@ -165,13 +199,13 @@ const ReportForm = () => {
                     Apellido Materno:
                   </label>
                   <label className="mb-3 block text-lg font-sans">
-                    {apMat}
+                    {alumno?.family_name}
                   </label>
                 </div>
                 <div className="lg:w-1/3">
                   <label className="mb-3 block text-lg font-bold">Nombre:</label>
                   <label className="mb-3 block text-lg font-sans">
-                    {nombre}
+                    {alumno?.name}
                   </label>
                 </div>
               </div>
@@ -181,7 +215,7 @@ const ReportForm = () => {
                     Estudiante del programa:
                   </label>
                   <label className="mb-3 block text-lg font-sans">
-                    {programa}
+                    {programa?.nombreprograma}
                   </label>
 
                 </div>
@@ -191,13 +225,13 @@ const ReportForm = () => {
                       Clave Única:
                     </label>
                     <label className="mb-3 block text-lg font-sans">
-                      {claveU}
+                      {claveUnica}
                     </label>
                   </div>
                   <div className="flex flex-col w-1/2">
                     <label className="mb-3 block text-lg font-bold">Avance No.:</label>
                     <label className="mb-3 block text-lg font-sans">
-                      {numAvance}
+                      {tesis?.ultimo_avance}
                     </label>
                   </div>
 
@@ -216,7 +250,7 @@ const ReportForm = () => {
                   Título de la tesis
                 </label>
                 <label className="mb-3 block text-lg">
-                  {nombreTesis}
+                  {tesis?.titulo}
                 </label>
               </div>
 

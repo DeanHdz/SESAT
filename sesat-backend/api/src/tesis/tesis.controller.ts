@@ -21,6 +21,10 @@ export class TesisController {
   findOne(@Param('id') id: string) {
     return this.tesisService.findOne(+id);
   }
+  @Get('/per-student/:id')
+  findTesisPerStudent(@Param('id') id: string) {
+    return this.tesisService.findTesisPerStudent(+id);
+  }
 
   @Put()
   update(@Body() updateTesisDto: UpdateTesisDto) {

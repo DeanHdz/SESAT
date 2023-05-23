@@ -28,4 +28,9 @@ export class CreateTesisDto {
   @IsNotEmpty()
   @IsString()
   modalidad: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  ultimo_avance: number;
+
 }

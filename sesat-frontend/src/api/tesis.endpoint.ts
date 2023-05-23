@@ -20,6 +20,26 @@ export namespace TesisEndpoint {
       });
   };
 
+  export const getTesisPerStudent = async (
+    id: number,
+    token: string
+  ): Promise<SESAT.Tesis | undefined> => {
+    return await axios
+      .get<SESAT.Tesis>(`${import.meta.env.VITE_API_HOSTNAME}/tesis/per-student/` + id, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then(({ data }) => {
+        if (data) {
+          return data;
+        }
+      });
+  };
+
+
+
   //plural de tesis en inglés, porque en español no hay
   export const getTheses = async (
     token: string
