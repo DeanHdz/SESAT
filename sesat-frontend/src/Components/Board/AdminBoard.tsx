@@ -9,7 +9,7 @@ const AdminBoard = () => {
         <div className="w-full p-6 flex flex-row">
             <div className="block w-3/6 mr-6">
                 <HomeCard title="Tesis de Alumnos de Maestría" webLink="view-tesis-masters"/>
-                <NotificationsCard title="Sistema de Notificaciones"/>
+                <NotificationsCard title="Sistema de Notificaciones" webLink="notification-system"/>
             </div>
             <div className="block w-3/6 mr-6">
                 <HomeCard title="Tesis de Alumnos de Doctorado" webLink="view-tesis-phd"/> 

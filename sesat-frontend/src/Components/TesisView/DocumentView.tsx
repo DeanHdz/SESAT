@@ -139,7 +139,7 @@ const DocumentView = () => {
 
   } else {
     return (
-      <ProcessingAnim />
+      <ProcessingAnim title="Procesando..."/>
     );
 
   }

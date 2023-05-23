@@ -41,7 +41,7 @@ export class ActaEvaluacionController {
     try {              
         var pdfDoc = await PDFDocument.load(uint8Array);
         
-        const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+        //const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
       
         //Editar PDF
         /*const pages = pdfDoc.getPages()
@@ -54,7 +54,7 @@ export class ActaEvaluacionController {
           font: helveticaFont,
           color: rgb(0.95, 0.1, 0.1),          
         });
-        //Nombres de las variables de los campos del PDF
+        //Nombres de las variables de los campos del PDF (FOR DEBUG)
         const fieldNames = pdfDoc
           .getForm()
           .getFields()
@@ -65,14 +65,53 @@ export class ActaEvaluacionController {
         //Editar campos del PDF
       
         var form = pdfDoc.getForm();
-        //form.getTextField('location').setText(createFormulario.num_evaluacion.toString());
-        form.getTextField('location').setText(createFormulario.ap_pat);
-        form.getTextField('function').setText(createFormulario.ap_mat);
-        form.getTextField('reason').setText(createFormulario.nombre);
+        
+        form.getTextField('posgrado').setText("Ciencias de la Computación");
+        form.getTextField('fecha_eval').setText(createFormulario.fecha_eval);
+        form.getTextField('ap_paterno').setText(createFormulario.ap_pat);
+        form.getTextField('ap_materno').setText(createFormulario.ap_mat);
+        form.getTextField('nombres_alumno').setText(createFormulario.nombre);
 
-        form.getTextField('location').enableReadOnly();        
-        form.getTextField('function').enableReadOnly();
-        form.getTextField('reason').enableReadOnly();
+        form.getTextField('programa_posgrado').setText(createFormulario.programa);
+        form.getTextField('no_avance').setText(createFormulario.no_avance.toString());
+        form.getTextField('titulo_tesis').setText(createFormulario.titulo_tesis);
+        form.getTextField('total_avance').setText(createFormulario.total_avance);
+        form.getTextField('comentarios').setText(createFormulario.comentarios);                 
+
+        form.getTextField('cal_doc_av').setText(createFormulario.cal_doc.toString());
+        form.getTextField('cal_expo').setText(createFormulario.cal_expo.toString());
+        form.getTextField('cal_dom').setText(createFormulario.cal_dom.toString());
+        form.getTextField('grado_avance').setText(createFormulario.grado_avance.toString());
+        form.getTextField('promedio').setText(createFormulario.promedio.toString());  
+
+        form.getTextField('fecha_toefl').setText(createFormulario.fecha_toefl);
+        form.getTextField('puntaje_toefl').setText(createFormulario.puntaje_toefl.toString());
+        form.getTextField('prox_toefl').setText(createFormulario.prox_toefl);
+        form.getTextField('observaciones').setText(createFormulario.observaciones);
+
+
+        form.getTextField('posgrado').enableReadOnly(); 
+        form.getTextField('fecha_eval').enableReadOnly(); 
+        form.getTextField('ap_paterno').enableReadOnly();        
+        form.getTextField('ap_materno').enableReadOnly();
+        form.getTextField('nombres_alumno').enableReadOnly();
+               
+        form.getTextField('programa_posgrado').enableReadOnly();
+        form.getTextField('no_avance').enableReadOnly();
+        form.getTextField('titulo_tesis').enableReadOnly();        
+        form.getTextField('total_avance').enableReadOnly();
+        form.getTextField('comentarios').enableReadOnly();
+
+        form.getTextField('cal_doc_av').enableReadOnly();
+        form.getTextField('cal_expo').enableReadOnly();
+        form.getTextField('cal_dom').enableReadOnly();        
+        form.getTextField('grado_avance').enableReadOnly();
+        form.getTextField('promedio').enableReadOnly();
+
+        form.getTextField('fecha_toefl').enableReadOnly();
+        form.getTextField('puntaje_toefl').enableReadOnly();
+        form.getTextField('prox_toefl').enableReadOnly();        
+        form.getTextField('observaciones').enableReadOnly();        
         
         
         

@@ -299,10 +299,30 @@ export interface UpdateNotification{
   //Debe contener todos los datos del formulario del acta
   //por ahora solo lo basico para pruebas
   export interface ActaEvalForm{    
-    num_evaluacion: number;
+    
+    fecha_eval: string;
     ap_pat: string;
     ap_mat: string;
-    nombre: string;    
+    nombre: string;  
+
+    programa: string;
+    no_avance: number;
+
+    titulo_tesis: string;
+    total_avance: string;
+    comentarios: string;
+
+    cal_doc: number;
+    cal_expo: number;
+    cal_dom: number;
+    grado_avance: number;
+    promedio: number;
+    fecha_toefl: string;
+    puntaje_toefl: number;
+    prox_toefl: string;
+    observaciones: string;
+
+    /*Pendiente comite de evaluacion a que se refiere? */
   }
 
   export interface ActaEvaluacionDoc{

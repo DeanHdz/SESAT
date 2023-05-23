@@ -24,6 +24,7 @@ import StudentTesisAsesorPage from "../Pages/StudentTesisAsesorPage";
 
 import MStudentListPage from "../Pages/MStudentListPage";
 import PhdStudentListPage from "../Pages/PhdStudentListPage";
+import NotificationSystemPage from "../Pages/NotificationSystemPage";
 
 
 {/* /view_document/:id/:type   --> id_asignacion, tipo documento(formato(1), acta(2), tesis(3))*/}
