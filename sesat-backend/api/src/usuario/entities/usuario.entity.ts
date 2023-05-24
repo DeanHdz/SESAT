@@ -6,22 +6,22 @@ export class Usuario {
     clave: number;
 
     @Column()
-    name: string;
+    nombre: string;
 
     @Column()
-    last_name: string;
+    apellido_paterno: string;
 
     @Column()
-    family_name: string;
+    apellido_materno: string;
 
     @Column()
     password: string;
 
     @Column()
-    role: number;
+    rol: number;
 
     @Column()
-    active_status: boolean;
+    estado_activo: boolean;
 
     @Column()
     modalidad: number;

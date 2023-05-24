@@ -21,7 +21,7 @@ export class AsesorExternoService {
   }
 
   findOne(id: number) {
-    return this.asesorRepository.findOne({ where: { asesor_externo: id } });
+    return this.asesorRepository.findOne({ where: { id_asesor_externo: id } });
   }
 
   update(updateAsesorExternoDto: UpdateAsesorExternoDto) {

@@ -3,7 +3,7 @@ import { isNotEmpty, IsNotEmpty, IsNumber, IsString, isString } from "class-vali
 export class CreateComentarioDto {
     @IsNotEmpty()
     @IsNumber()
-    clave: number;
+    clave_usuario: number;
 
     @IsNotEmpty()
     @IsNumber()

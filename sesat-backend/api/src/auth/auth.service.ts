@@ -25,16 +25,16 @@ export class AuthService {
       resolve({
         message: 'Authenticated',
         clave: user.clave,
-        name: user.name,
-        last_name: user.last_name,
-        family_name: user.family_name,
+        name: user.nombre,
+        last_name: user.apellido_paterno,
+        family_name: user.apellido_materno,
         token: this.jwtService.sign(
           {
             usuario: {
               clave: user.clave,
-              name: user.name,
-              last_name: user.last_name,
-              family_name: user.family_name
+              name: user.nombre,
+              last_name: user.apellido_paterno,
+              family_name: user.apellido_materno
             }
           },
           {

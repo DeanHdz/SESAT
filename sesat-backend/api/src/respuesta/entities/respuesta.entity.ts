@@ -14,5 +14,5 @@ export class Respuesta {
     texto: string;
 
     @Column()
-    clave: number;
+    clave_usuario: number;
 }

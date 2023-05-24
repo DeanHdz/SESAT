@@ -4,7 +4,7 @@ import { Usuario } from "src/usuario/entities/usuario.entity";
 @Entity()
 export class AsesorExterno {
   @PrimaryColumn()
-  asesor_externo: number;
+  id_asesor_externo: number;
 
   @OneToOne(() => Usuario, { eager: true })
   @JoinColumn({ name: 'Clave' })
@@ -20,10 +20,10 @@ export class AsesorExterno {
   nombre: string;
 
   @Column()
-  apellidopaterno: string;
+  apellido_paterno: string;
 
   @Column()
-  apellidomaterno: string;
+  apellido_materno: string;
 
   @Column()
   correo: string;

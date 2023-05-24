@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { UsuarioPruebaEndpoint } from "../../api/usuario-prueba.endpoint";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
-import { Console } from "console";
 
 export const UserRegistryForm = () => {
 
@@ -48,18 +47,19 @@ export const UserRegistryForm = () => {
         try {
             await UsuarioEndpoint.postUsuario({
                 clave: parseInt(claveUnica),
-                name: usuarioPrueba?.nombre! ?? "",
-                last_name: usuarioPrueba?.apellido_mat! ?? "",
-                family_name: usuarioPrueba?.apellido_mat! ?? "",
+                nombre: usuarioPrueba?.nombre! ?? "",
+                apellido_paterno: usuarioPrueba?.apellido_mat! ?? "",
+                apellido_materno: usuarioPrueba?.apellido_mat! ?? "",
                 password: usuarioPrueba?.password! ?? "",
-                role: role! ?? "",
-                active_status: activeStatus! ?? "",
+                rol: role! ?? "",
+                estado_activo: activeStatus! ?? "",
                 modalidad: modalidad! ?? "",
             }, "");
 
         } catch (err) {
             console.log(err);
         }
+        window. location. reload();
     }
 
     //0 --> Medio tiempo

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { ComentarioEndpoint } from "../../api/comentario.endpoint";
-import { NotificationEndpoint } from "../../api/notification.endpoint";
+import { NotificacionEndpoint } from "../../api/notification.endpoint";
 
 const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
   const [comment, setComment] = useState("");
@@ -15,7 +15,7 @@ const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
     try {
       ComentarioEndpoint.postComentario(
         {
-          clave: user.clave,
+          clave_usuario: user.clave,
           id_asignacion: id_asignacion,
           texto: comment,
         },
@@ -23,12 +23,12 @@ const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
       );
 
       if (user.role === 3) {
-        NotificationEndpoint.postNotification(
+        NotificacionEndpoint.postNotificacion(
           {
-            user_id: user.clave,
-            title: "Nuevo Comentario",
-            description: user.name + " hizo un nuevo comentario",
-            expediton_date: new Date(),
+            clave_usuario: user.clave,
+            titulo: "Nuevo Comentario",
+            descripcion: user.name + " hizo un nuevo comentario",
+            fecha_expedicion: new Date(),
           },
           ""
         );

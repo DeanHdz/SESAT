@@ -4,34 +4,34 @@ export namespace SESAT {
 
   export interface Usuario {
     clave: number;
-    name: string;
-    last_name: string;
-    family_name: string;
+    nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
     password: string;
-    role: number;
-    active_status: boolean;
+    rol: number;
+    estado_activo: boolean;
     modalidad: number;
   }
 
   export interface CreateUsuario {
     clave: number;
-    name: string;
-    last_name: string;
-    family_name: string;
+    nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
     password: string;
-    role: number;
-    active_status: boolean;
+    rol: number;
+    estado_activo: boolean;
     modalidad: number;
   }
 
   export interface UpdateUsuario {
     clave: number;
-    name: string;
-    last_name: string;
-    family_name: string;
+    nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
     password: string;
-    role: number;
-    active_status: boolean;
+    rol: number;
+    estado_activo: boolean;
     modalidad: number;
   }
 
@@ -96,32 +96,35 @@ export interface LoggedUser {
   /*------------------ ASESOR EXTERNO INTERFACE ------------------*/
   
   export interface AsesorExterno{
+    id_asesor_externo: number;
     clave: number;
     telefono: string;
     institucion: string;
     nombre: string;
-    apellidoPaterno: string;
-    apellidoMaterno: string;
+    apellido_paterno: string;
+    apellido_materno: string;
     correo: string;
   }
 
   export interface CreateAsesorExterno{
+    id_asesor_externo: number;
     clave: number;
     telefono: string;
     institucion: string;
     nombre: string;
-    apellidoPaterno: string;
-    apellidoMaterno: string;
+    apellido_paterno: string;
+    apellido_materno: string;
     correo: string;
   }
 
   export interface UpdateAsesorExterno{
+    id_asesor_externo: number;
     clave: number;
     telefono: string;
     institucion: string;
     nombre: string;
-    apellidoPaterno: string;
-    apellidoMaterno: string;
+    apellido_paterno: string;
+    apellido_materno: string;
     correo: string;
   }
 
@@ -225,7 +228,7 @@ export interface LoggedUser {
 
   export interface Comentario{
     id_comentario: number;
-    clave: number;
+    clave_usuario: number;
     usuario: Usuario;
     id_asignacion: number;
     asignacion: Asignacion;
@@ -233,14 +236,14 @@ export interface LoggedUser {
   }
 
   export interface CreateComentario{
-    clave: number;
+    clave_usuario: number;
     id_asignacion: number;
     texto: string;
   }
 
   export interface UpdateComentario{
     id_comentario: number;
-    clave: number;
+    clave_usuario: number;
     id_asignacion: number;
     texto: string;
   }
@@ -251,45 +254,45 @@ export interface LoggedUser {
     id_respuesta: number;
     id_comentario: number;
     texto: string;
-    clave: number;
+    clave_usuario: number;
   }
 
   export interface CreateRespuesta{
     id_comentario: number;
     texto: string;
-    clave: number;
+    clave_usuario: number;
   }
 
   export interface UpdateRespuesta{
     id_respuesta: number;
     id_comentario: number;
     texto: string;
-    clave: number;
+    clave_usuario: number;
   }
 
 /*------------------ NOTIFICATION INTERFACE ------------------*/
 
-export interface Notification{
-  notification_id: number;
-  user_id: number;
-  title: string;
-  description: string;
-  expediton_date: Date;
+export interface Notificacion{
+  id_notificacion: number;
+  clave_usuario: number;
+  titulo: string;
+  descripcion: string;
+  fecha_expedicion: Date;
 }
 
-export interface CreateNotification{
-  user_id: number;
-  title: string;
-  description: string;
-  expediton_date: Date;
+export interface CreateNotificacion{
+  clave_usuario: number;
+  titulo: string;
+  descripcion: string;
+  fecha_expedicion: Date;
 }
 
-export interface UpdateNotification{
-  notification_id: number;
-  user_id: number;
-  title: string;
-  description: string;
-  expediton_date: Date;
+export interface UpdateNotificacion{
+  id_notificacion: number;
+  clave_usuario: number;
+  titulo: string;
+  descripcion: string;
+  fecha_expedicion: Date;
 }
 
   /*------------------ UPLOAD PDF INTERFACE ------------------*/

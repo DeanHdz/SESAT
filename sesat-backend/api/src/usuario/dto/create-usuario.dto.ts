@@ -7,15 +7,15 @@ export class CreateUsuarioDto {
 
     @IsNotEmpty()
     @IsString()
-    name: string;
+    nombre: string;
 
     @IsNotEmpty()
     @IsString()
-    last_name: string;
+    apellido_paterno: string;
 
     @IsNotEmpty()
     @IsString()
-    family_name: string;
+    apellido_materno: string;
 
     @IsNotEmpty()
     @IsString()
@@ -23,11 +23,11 @@ export class CreateUsuarioDto {
 
     @IsNotEmpty()
     @IsNumber()
-    role: number;
+    rol: number;
 
     @IsNotEmpty()
     @IsBoolean()
-    active_status: boolean;
+    estado_activo: boolean;
 
     @IsNotEmpty()
     @IsNumber()

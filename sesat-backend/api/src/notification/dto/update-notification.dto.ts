@@ -5,21 +5,21 @@ import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class UpdateNotificationDto extends PartialType(CreateNotificationDto) {
     @IsNotEmpty()
     @IsNumber()
-    notification_id: number;
+    id_notificacion: number;
 
     @IsNotEmpty()
     @IsNumber()
-    user_id: number;
+    clave_usuario: number;
 
     @IsNotEmpty()
     @IsString()
-    title: string;
+    titulo: string;
 
     @IsNotEmpty()
     @IsString()
-    decription: string;
+    decripcion: string;
 
     @IsNotEmpty()
     @IsDate()
-    expedition_date: Date;
+    fecha_expedicion: Date;
 }

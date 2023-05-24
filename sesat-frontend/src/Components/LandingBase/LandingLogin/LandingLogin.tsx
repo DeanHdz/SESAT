@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UsuarioEndpoint } from "../../../api/usuario.endpoint";
-import { useSessionStorage } from "../../../hooks/useSessionStorage.hook";
 import { ReactSession } from "react-client-session";
 
 const LandingLogin = () => {
@@ -20,11 +19,11 @@ const LandingLogin = () => {
           "loggedUser",
           JSON.stringify({
             clave: resp.clave,
-            name: resp.name,
-            last_name: resp.last_name,
-            family_name: resp.family_name,
-            role: resp.role,
-            active_status: resp.active_status,
+            name: resp.nombre,
+            last_name: resp.apellido_paterno,
+            family_name: resp.apellido_materno,
+            role: resp.rol,
+            active_status: resp.estado_activo,
           })
         );
         navigate("/register");

@@ -21,7 +21,7 @@ export class NotificationService {
 
   findOne(id: number) {
     return this.notificationRepository.findOne({
-      where: { notification_id: id },
+      where: { id_notificacion: id },
     });
   }
 

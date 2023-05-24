@@ -1,14 +1,14 @@
 import axios from "axios";
 import { SESAT } from "../Interfaces/ISESAT";
 
-export namespace NotificationEndpoint {
-  export const getNotification = async (
+export namespace NotificacionEndpoint {
+  export const getNotificacion = async (
     id: number,
     token: string
-  ): Promise<SESAT.Notification | undefined> => {
+  ): Promise<SESAT.Notificacion | undefined> => {
     return await axios
-      .get<SESAT.Notification>(
-        `${import.meta.env.VITE_API_HOSTNAME}/notification/` + id,
+      .get<SESAT.Notificacion>(
+        `${import.meta.env.VITE_API_HOSTNAME}/Notificacion/` + id,
         {
           headers: {
             "Content-Type": "application/json",
@@ -22,12 +22,12 @@ export namespace NotificationEndpoint {
         }
       });
   };
-  export const getNotifications = async (
+  export const getNotificacions = async (
     token: string
-  ): Promise<SESAT.Notification[] | undefined> => {
+  ): Promise<SESAT.Notificacion[] | undefined> => {
     return await axios
-      .get<SESAT.Notification[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/notification`,
+      .get<SESAT.Notificacion[]>(
+        `${import.meta.env.VITE_API_HOSTNAME}/Notificacion`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -42,12 +42,12 @@ export namespace NotificationEndpoint {
       });
   };
 
-  export const postNotification = async (
-    createRespuesta: SESAT.CreateNotification,
+  export const postNotificacion = async (
+    createRespuesta: SESAT.CreateNotificacion,
     token: string
-  ): Promise<SESAT.Notification | undefined> => {
+  ): Promise<SESAT.Notificacion | undefined> => {
     return await axios
-      .post(`${import.meta.env.VITE_API_HOSTNAME}/notification`, createRespuesta, {
+      .post(`${import.meta.env.VITE_API_HOSTNAME}/Notificacion`, createRespuesta, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,
@@ -60,12 +60,12 @@ export namespace NotificationEndpoint {
       });
   };
 
-  export const putNotification = async (
-    updateRespuesta: SESAT.UpdateNotification,
+  export const putNotificacion = async (
+    updateRespuesta: SESAT.UpdateNotificacion,
     token: string
-  ): Promise<SESAT.Notification | undefined> => {
+  ): Promise<SESAT.Notificacion | undefined> => {
     return await axios
-      .put(`${import.meta.env.VITE_API_HOSTNAME}/notification`, updateRespuesta, {
+      .put(`${import.meta.env.VITE_API_HOSTNAME}/Notificacion`, updateRespuesta, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,
@@ -78,12 +78,12 @@ export namespace NotificationEndpoint {
       });
   };
 
-  export const deleteNotification = async (
+  export const deleteNotificacion = async (
     id: number,
     token: string
-  ): Promise<SESAT.Notification | undefined> => {
+  ): Promise<SESAT.Notificacion | undefined> => {
     return await axios
-      .delete(`${import.meta.env.VITE_API_HOSTNAME}/notification/` + id, {
+      .delete(`${import.meta.env.VITE_API_HOSTNAME}/Notificacion/` + id, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

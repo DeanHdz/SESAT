@@ -9,7 +9,7 @@ export class Comentario {
     id_comentario: number;    
 
     @Column()
-    clave: number;
+    clave_usuario: number;
 
     @OneToOne(() => Usuario, { eager: true})
     @JoinColumn({name: 'clave'})
