@@ -26,9 +26,22 @@ const LandingLogin = () => {
             active_status: resp.estado_activo,
           })
         );
-        navigate("/register");
+
+        switch(resp.rol) //handle boards
+        {
+          case 1: //admin
+            navigate("/admin-board");
+            break;
+          case 2: //asesor
+          case 4: //asesor externo
+            navigate("/asesor-board");
+            break;
+          case 3: //alumno
+            navigate("/register");
+            break;
+        }
       } else {
-        console.log(new Date().toISOString().slice(0, 10));
+
         setFailed(true);
       }
     } catch (err) {
@@ -62,6 +75,7 @@ const LandingLogin = () => {
             placeholder="Clave Única"
             value={claveUnica}
             required
+            maxLength={6}
             onChange={(e) => {
               setClaveUnica(e.target.value);
             }}

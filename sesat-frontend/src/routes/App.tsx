@@ -35,7 +35,7 @@ export default function App() {
       <Routes>
         <Route path="*" element={<LandingPage />} />
         <Route path="/board" element={<BoardPage />} />
-        <Route path="/board-asesor" element={<BoardPageAsesor />} />
+        <Route path="/asesor-board" element={<BoardPageAsesor />} />
         <Route path="/register" element={<TesisRegistryPage />} />
         <Route path="/assignment" element={<AssignmentPage />} />
         <Route path="/view_tesis" element={<TesisViewPage />} />
