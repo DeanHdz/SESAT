@@ -341,4 +341,12 @@ export interface UpdateNotification{
     token: string;
   }
 
+  export interface UsuarioPrueba{
+    clave_unica: number;
+    nombre: string;
+    password: string;
+    apellido_pat: string;
+    apellido_mat: string;
+  }
+
 }

@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUsuariosPruebaDto } from './dto/create-usuarios_prueba.dto';
 import { UpdateUsuariosPruebaDto } from './dto/update-usuarios_prueba.dto';
+import { UsuariosPrueba } from './entities/usuarios_prueba.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsuariosPruebaService {
+  constructor(
+    @InjectRepository(UsuariosPrueba)
+    private usuariopruebaRepository: Repository<UsuariosPrueba>
+  ) {}
   create(createUsuariosPruebaDto: CreateUsuariosPruebaDto) {
     return 'This action adds a new usuariosPrueba';
   }
@@ -13,7 +20,7 @@ export class UsuariosPruebaService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} usuariosPrueba`;
+    return this.usuariopruebaRepository.findOne({ where: { clave_unica: id } });
   }
 
   update(id: number, updateUsuariosPruebaDto: UpdateUsuariosPruebaDto) {
