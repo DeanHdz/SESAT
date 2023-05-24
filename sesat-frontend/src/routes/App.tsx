@@ -25,6 +25,7 @@ import StudentTesisAsesorPage from "../Pages/StudentTesisAsesorPage";
 import MStudentListPage from "../Pages/MStudentListPage";
 import PhdStudentListPage from "../Pages/PhdStudentListPage";
 import NotificationSystemPage from "../Pages/NotificationSystemPage";
+import PhdAssignments from "../Pages/PhdAssignments";
 
 
 {/* /view_document/:id/:type   --> id_asignacion, tipo documento(formato(1), acta(2), tesis(3))*/}
@@ -51,6 +52,7 @@ export default function App() {
         <Route path="/admin-board/user-register" element={<UserRegistryPage />} />
         <Route path="/admin-board/create_assignment" element={<CreateAssignment />} />
         <Route path="/admin-board/assignments" element={<Assignments />} />
+        <Route path="/admin-board/assignments-phd" element={<PhdAssignments />} />
         <Route path="/admin-board/view-tesis-masters" element={<StudentTesisMPage />} />
         <Route path="/admin-board/view-tesis-phd" element={<StudentTesisPhdPage />} />
         <Route path="/admin-board/view-tesis-masters/view_tesis" element={<TesisViewPage />} />        

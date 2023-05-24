@@ -8,7 +8,7 @@ const Assignments = () => {
                 <Drawer />
             </div>
             <div className="w-9/12">
-                <StudentAssignamentsList title="Administrar Asignaciones"/>                
+                <StudentAssignamentsList title="Asignaciones para este semestre" program="Alumnos de Maestría"/>                
             </div>
         </div>
     );

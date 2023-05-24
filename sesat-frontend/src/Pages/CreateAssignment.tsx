@@ -1,7 +1,3 @@
-import Navbar from "../Components/Navbar/Navbar";
-import InsiteBaner from "../Components/Banner/InsiteBanner";
-import BreadcrumbContainer from "../Components/Breadcrumbs/BreadcrumbContainer";
-import TesisRegistryForm from "../Components/TesisRegistryForm/TesisRegistryForm";
 import NewAssignment from "../Components/NewAssignment/NewAssignment";
 import Drawer from "../Components/Drawer/Drawer";
 
@@ -19,7 +15,7 @@ const CreateAssignment = () => {
       <Drawer />
     </div>
     <div className="w-9/12">
-    <NewAssignment />
+      <NewAssignment program="Programa" title="Título de la asignación"/>
     </div>
   </div>
   );
