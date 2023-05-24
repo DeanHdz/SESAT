@@ -28,4 +28,8 @@ export class CreateUsuarioDto {
     @IsNotEmpty()
     @IsBoolean()
     active_status: boolean;
+
+    @IsNotEmpty()
+    @IsNumber()
+    modalidad: number;
 }

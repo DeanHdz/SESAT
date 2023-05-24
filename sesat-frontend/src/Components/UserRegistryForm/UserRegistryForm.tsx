@@ -2,31 +2,42 @@ import { useEffect, useState } from "react";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { UsuarioPruebaEndpoint } from "../../api/usuario-prueba.endpoint";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
+import { Console } from "console";
 
 export const UserRegistryForm = () => {
-
-
 
     const [claveUnica, setClaveUnica] = useState("");
     const [role, setRole] = useState<number>();
     const [activeStatus, setActiveStatus] = useState<boolean>();
+    const [modalidad, setModalidad] = useState<number>();
 
-
+    const [hasShownUserInfo, setHasShownUserInfo] = useState(false);
     const [usuarioPrueba, setUsuarioPrueba] = useState<SESAT.UsuarioPrueba | undefined>();
+
     const getUsuarioPrueba = async () => {
-        if (claveUnica) {
+        if (claveUnica && claveUnica.length == 6) {
             setUsuarioPrueba(
                 await UsuarioPruebaEndpoint.getUsuarioPrueba(
                     parseInt(claveUnica),
                     ""
                 )
             )
+            setHasShownUserInfo(true);
         }
 
+        if(hasShownUserInfo == true)
+        {
+            setUsuarioPrueba(
+                await UsuarioPruebaEndpoint.getUsuarioPrueba(
+                    parseInt(claveUnica),
+                    ""
+                )
+            )
+            setHasShownUserInfo(false);
+        }
 
     }
-    //0 --> Medio tiempo
-    //1 -->Tiempo completo
+
     useEffect(() => {
         getUsuarioPrueba();
     }, [claveUnica]
@@ -43,6 +54,7 @@ export const UserRegistryForm = () => {
                 password: usuarioPrueba?.password! ?? "",
                 role: role! ?? "",
                 active_status: activeStatus! ?? "",
+                modalidad: modalidad! ?? "",
             }, "");
 
         } catch (err) {
@@ -50,16 +62,12 @@ export const UserRegistryForm = () => {
         }
     }
 
-
+    //0 --> Medio tiempo
+    //1 -->Tiempo completo
 
     return (
         <>
-
-
-
-
             <div className="flex flex-wrap gap-4 m-8 ">
-
                 <label className="block text-4xl font-bold">Dar de alta Usuario</label>
                 <div className="border-b border-light-gray-22 border-solid w-full"></div>
 
@@ -70,7 +78,7 @@ export const UserRegistryForm = () => {
                         <label className="label">
                             <span className="label-text">Clave Única</span>
                         </label>
-                        <input type="text" placeholder="0-9" className="input rounded input-bordered w-full max-w-xs"
+                        <input type="text" placeholder="0-9" maxLength={6} className="input rounded input-bordered w-full max-w-xs"
                             value={claveUnica}
                             onChange={(e) => {
                                 setClaveUnica(e.target.value);
@@ -82,8 +90,15 @@ export const UserRegistryForm = () => {
                         <label className="label">
                             <span className="label-text">Modalidad</span>
                         </label>
-                        <select className="select select-bordered rounded">
-                        <option disabled selected>Seleccione una opción</option>
+                        <select required className="select select-bordered rounded" 
+                            onChange={(e) => {
+                                if (e.target.value == "0")
+                                    setModalidad(0);
+                                else if (e.target.value == "1") {
+                                    setModalidad(1);
+                                }
+                            }}>
+                            <option disabled selected >Seleccione una opción</option>
                             <option value={0}>Medio tiempo</option>
                             <option value={1}>Tiempo Completo</option>
                         </select>
@@ -94,13 +109,13 @@ export const UserRegistryForm = () => {
                             <span className="label-text">Estado</span>
                         </label>
                         <select required className="select select-bordered rounded"
-                            /*onChange={(e) => {
+                            onChange={(e) => {
                                 if (e.target.value == "0")
                                     setActiveStatus(false);
                                 else if (e.target.value == "1") {
                                     setActiveStatus(true);
                                 }
-                            }}*/
+                            }}
                         >
 
                             <option disabled selected>Seleccione una opción</option>
@@ -113,13 +128,13 @@ export const UserRegistryForm = () => {
                             <span className="label-text">Tipo de usuario</span>
                         </label>
                         <select required className="select select-bordered rounded"
-                            /*onChange={(e) => {
+                            onChange={(e) => {
                                 if (e.target.value == "0")
                                     setRole(3);
                                 else if (e.target.value == "1") {
                                     setRole(2);
                                 }
-                            }}*/>
+                            }}>
                             <option disabled selected>Seleccione una opción</option>
                             <option value={"0"}>Alumno</option>
                             <option value={"1"}>Asesor</option>

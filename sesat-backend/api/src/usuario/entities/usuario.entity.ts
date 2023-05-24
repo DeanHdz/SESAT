@@ -22,4 +22,7 @@ export class Usuario {
 
     @Column()
     active_status: boolean;
+
+    @Column()
+    modalidad: number;
 }

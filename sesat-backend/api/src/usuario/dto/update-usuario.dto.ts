@@ -30,4 +30,8 @@ export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
     @IsNotEmpty()
     @IsBoolean()
     active_status: boolean;
+
+    @IsNotEmpty()
+    @IsNumber()
+    modalidad: number;
 }

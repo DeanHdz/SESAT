@@ -10,6 +10,7 @@ export namespace SESAT {
     password: string;
     role: number;
     active_status: boolean;
+    modalidad: number;
   }
 
   export interface CreateUsuario {
@@ -20,6 +21,7 @@ export namespace SESAT {
     password: string;
     role: number;
     active_status: boolean;
+    modalidad: number;
   }
 
   export interface UpdateUsuario {
@@ -30,6 +32,7 @@ export namespace SESAT {
     password: string;
     role: number;
     active_status: boolean;
+    modalidad: number;
   }
 
 /*------------------ USUARIO INTERFACE ------------------*/
