@@ -21,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { NotificationModule } from './notification/notification.module';
+import { UsuariosPruebaModule } from './usuarios_prueba/usuarios_prueba.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { NotificationModule } from './notification/notification.module';
     ComentarioModule,
     AuthModule,
     NotificationModule,
+    UsuariosPruebaModule,
   ],
   controllers: [AppController],
   providers: [{provide: APP_GUARD, useClass: ThrottlerGuard}],

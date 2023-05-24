@@ -5,6 +5,7 @@ import { NotificationEndpoint } from "../../api/notification.endpoint";
 
 const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
   const [comment, setComment] = useState("");
+  const [addedComment, setAddedComment] = useState(false);
   const [user, setUser] = useState<SESAT.LoggedUser>(
     JSON.parse(sessionStorage.getItem("loggedUser") || "{}")
   );
@@ -35,6 +36,7 @@ const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
     } catch (err) {
       console.log(err);
     }
+    window.location.reload();
   }
 
   return (
