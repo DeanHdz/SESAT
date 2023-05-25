@@ -146,7 +146,6 @@ export const UserRegistryForm = () => {
                     </div>
                 </form>
 
-
                 <div className="border border-light-gray-22 border-solid rounded p-10 m-4 self-start">
                     <p className="text-3xl">Datos de usuario</p>
                     {usuarioPrueba
