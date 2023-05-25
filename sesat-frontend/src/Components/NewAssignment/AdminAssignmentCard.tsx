@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const AdminAssignmentCard = ({ title }: { title: string }) => {
+const AdminAssignmentCard = ({ title, status }: { title: string, status: string }) => {
     const navigate = useNavigate();
     function handleClick(){
         navigate('/admin-board/create_assignment');
@@ -17,7 +17,7 @@ const AdminAssignmentCard = ({ title }: { title: string }) => {
                 </div>
             </div>
             <div className="ml-3 flex items-center justify-center">
-                <p>Estado actual</p>
+                <p>{status}</p>
             </div>
             <div className="ml-auto flex justify-end items-center">
                 <button className="btn shadow rounded" onClick={handleClick}>Crear</button>
