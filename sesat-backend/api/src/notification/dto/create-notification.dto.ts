@@ -1,6 +1,6 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateNotificationDto {
+export class CreateNotificacionDto {
     @IsNotEmpty()
     @IsNumber()
     clave_usuario: number;

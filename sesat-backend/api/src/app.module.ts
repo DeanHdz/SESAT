@@ -22,6 +22,9 @@ import { AsignacionTesisModule } from './asignacion-tesis/asignacion-tesis.modul
 import { ComiteModule } from './comite/comite.module';
 import { DatosAlumnoModule } from './datos-alumno/datos-alumno.module';
 import { DatosAsesorExternoModule } from './datos-asesor-externo/datos-asesor-externo.module';
+import { RolModule } from './rol/rol.module';
+import { FuncionModule } from './funcion/funcion.module';
+import { FormatoEvaluacionModule } from './formato-evaluacion/formato-evaluacion.module';
 
 @Module({
   imports: [
@@ -67,6 +70,9 @@ import { DatosAsesorExternoModule } from './datos-asesor-externo/datos-asesor-ex
     ComiteModule,
     DatosAlumnoModule,
     DatosAsesorExternoModule,
+    RolModule,
+    FuncionModule,
+    FormatoEvaluacionModule,
   ],
   controllers: [AppController],
   providers: [{provide: APP_GUARD, useClass: ThrottlerGuard}],

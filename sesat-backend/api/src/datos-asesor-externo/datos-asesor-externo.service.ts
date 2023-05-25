@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CreateDatosAsesorExternoDto } from './dto/create-datos-asesor-externo.dto';
-import { UpdateDatosAsesorExternoDto } from './dto/update-datos-asesor-externo.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateDatosAsesorExternoDto } from "./dto/create-datos-asesor-externo.dto";
+import { UpdateDatosAsesorExternoDto } from "./dto/update-datos-asesor-externo.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { DatosAsesorExterno } from "./entities/datos-asesor-externo.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class DatosAsesorExternoService {
+  constructor(
+    @InjectRepository(DatosAsesorExterno)
+    private datosAsesorExternoRepository: Repository<DatosAsesorExterno>
+  ) {}
+
   create(createDatosAsesorExternoDto: CreateDatosAsesorExternoDto) {
-    return 'This action adds a new datosAsesorExterno';
+    return this.datosAsesorExternoRepository.save(createDatosAsesorExternoDto);
   }
 
   findAll() {
-    return `This action returns all datosAsesorExterno`;
+    return this.datosAsesorExternoRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} datosAsesorExterno`;
+    return this.datosAsesorExternoRepository.findOne({
+      where: { id_datos_asesorexterno: id },
+    });
   }
 
-  update(id: number, updateDatosAsesorExternoDto: UpdateDatosAsesorExternoDto) {
-    return `This action updates a #${id} datosAsesorExterno`;
+  update(updateDatosAsesorExternoDto: UpdateDatosAsesorExternoDto) {
+    return this.datosAsesorExternoRepository.save(updateDatosAsesorExternoDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} datosAsesorExterno`;
+    return this.datosAsesorExternoRepository.delete(id);
   }
 }

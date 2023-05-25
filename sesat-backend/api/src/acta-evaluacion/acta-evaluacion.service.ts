@@ -21,7 +21,7 @@ export class ActaEvaluacionService {
   }
   //cambiar a id asignacion
   findOne(id: number) {
-    return this.actaEvalRepo.findOne({where: {id_acta: id}});
+    return this.actaEvalRepo.findOne({where: {id_acta_evaluacion: id}});
   }
 
   update(updateActaEvaluacionDto: UpdateActaEvaluacionDto) {

@@ -1,9 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Programa } from "src/programa/entities/programa.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity()
-export class DatosAlumno 
-{
-  
+export class DatosAlumno {
   @PrimaryGeneratedColumn()
   id_datos_alumno: number;
 
@@ -19,4 +24,7 @@ export class DatosAlumno
   @Column()
   id_programa: number;
 
+  @OneToOne(() => Programa, { eager: true })
+  @JoinColumn({ name: "id_programa" })
+  programa: Programa;
 }

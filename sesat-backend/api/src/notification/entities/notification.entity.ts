@@ -1,12 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Usuario } from "src/usuario/entities/usuario.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Notification {
+export class Notificacion {
     @PrimaryGeneratedColumn()
     id_notificacion: number;
 
     @Column()
     clave_usuario: number;
+
+    @ManyToOne(() => Usuario, (usuario) => usuario.notificaciones)
+    @JoinColumn({name: 'clave'})
+    usuario: Usuario
 
     @Column()
     titulo: string;
@@ -16,4 +21,5 @@ export class Notification {
 
     @Column()
     fecha_expedicion: Date;
+
 }

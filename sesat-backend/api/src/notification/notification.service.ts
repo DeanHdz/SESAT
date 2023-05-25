@@ -1,35 +1,35 @@
 import { Injectable } from "@nestjs/common";
-import { CreateNotificationDto } from "./dto/create-notification.dto";
-import { UpdateNotificationDto } from "./dto/update-notification.dto";
+import { CreateNotificacionDto } from "./dto/create-notification.dto";
+import { UpdateNotificacionDto } from "./dto/update-notification.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Notification } from "./entities/notification.entity";
+import { Notificacion } from "./entities/notification.entity";
 import { Repository } from "typeorm";
 
 @Injectable()
-export class NotificationService {
+export class NotificacionService {
   constructor(
-    @InjectRepository(Notification)
-    private notificationRepository: Repository<Notification>
+    @InjectRepository(Notificacion)
+    private notificacionRepository: Repository<Notificacion>
   ) {}
-  create(createNotificationDto: CreateNotificationDto) {
-    return this.notificationRepository.save(createNotificationDto);
+  create(createNotificacionDto: CreateNotificacionDto) {
+    return this.notificacionRepository.save(createNotificacionDto);
   }
 
   findAll() {
-    return this.notificationRepository.find();
+    return this.notificacionRepository.find();
   }
 
   findOne(id: number) {
-    return this.notificationRepository.findOne({
+    return this.notificacionRepository.findOne({
       where: { id_notificacion: id },
     });
   }
 
-  update(updateNotificationDto: UpdateNotificationDto) {
-    return this.notificationRepository.save(updateNotificationDto);
+  update(updateNotificacionDto: UpdateNotificacionDto) {
+    return this.notificacionRepository.save(updateNotificacionDto);
   }
 
   remove(id: number) {
-    return this.notificationRepository.delete(id);
+    return this.notificacionRepository.delete(id);
   }
 }

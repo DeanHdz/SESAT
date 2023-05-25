@@ -17,14 +17,14 @@ export class AsignacionTesis {
   @Column()
   id_asignacion: number;
 
-  @ManyToOne(() => Asignacion, (asignacion) => asignacion.asignacion_tesis)
+  @ManyToOne(() => Asignacion, (asignacion) => asignacion.asignaciones_tesis)
   @JoinColumn({ name: "id_asignacion" })
   asignacion: Asignacion;
 
   @Column()
   id_tesis: number;
 
-  //@ManyToOne(() => Tesis, (tesis) => tesis.asignacion_tesis)
-  //@JoinColumn({ name: "id_tesis" })
-  //tesis: Tesis;
+  @ManyToOne(() => Tesis, (tesis) => tesis.asignaciones_tesis)
+  @JoinColumn({ name: "id_tesis" })
+  tesis: Tesis;
 }

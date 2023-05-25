@@ -14,6 +14,7 @@ import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Programa } from "src/programa/entities/programa.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 import { AsignacionTesis } from "src/asignacion-tesis/entities/asignacion-tesis.entity";
+import { Comite } from "src/comite/entities/comite.entity";
 
 @Entity()
 export class Tesis {
@@ -45,8 +46,15 @@ export class Tesis {
   @Column()
   estado_activo: boolean;
 
-  //@OneToMany(() => AsignacionTesis, (asignacionTesis) => asignacionTesis.tesis, {
-  //  eager: true,
-  //})
-  asignaciones: Asignacion[];
+  @OneToMany(
+    () => AsignacionTesis,
+    (asignacionTesis) => asignacionTesis.tesis,
+    {
+      eager: true,
+    }
+  )
+  asignaciones_tesis: AsignacionTesis[];
+
+  @OneToMany(() => Comite, (comite) => comite.tesis, { eager: true })
+  comites: Comite[];
 }
