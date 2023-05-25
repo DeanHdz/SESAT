@@ -84,7 +84,43 @@ export const TesisRegistryForm = () => {
     Entonces es necesario hacer una consulta a la base de datos y preguntar si existe un
     alumno al menos, usando las propiedades seleccionadas por el administrador
 
-    Posibles fallos: como evitar una asignacion repetida?
+
+    Propiedades para la consulta: TABLA TESIS
+    CASO MAESTRIA
+    maestria
+    modalidad
+    num avance
+
+    CASO DOCTORADO
+    doctorado
+    numAvance
+
+    Para evitar asignaciones repetidas:
+    1. Revisar que el id_tesis de la tabla tesis no esté en asignacion_tesis
+    2. El estatus de la asignacion deberá ser cerrado
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    como evitar una asignacion repetida?
 
     Posibles requisitos para esta logica:
     Mostrar una pantalla de tareas completadas es decir:
