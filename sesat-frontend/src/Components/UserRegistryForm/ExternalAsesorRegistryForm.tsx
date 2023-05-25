@@ -62,14 +62,14 @@ export const ExternalAsesorRegistryForm = () => {
   return (
     <>
       <div className="flex flex-wrap gap-4 m-8 ">
-        <label className="block text-4xl font-bold">Dar de alta Alumno</label>
+        <label className="block text-4xl font-bold">Dar de alta Asesor externo</label>
         <div className="border-b border-light-gray-22 border-solid w-full"></div>
 
         <form
           onSubmit={handleSubmit}
           className="border border-light-gray-22 border-solid rounded p-10 m-4 self-start"
         >
-          <p className="text-3xl">Añadir Alumno</p>
+          <p className="text-3xl">Añadir Asesor Externo</p>
 
           <div className="form-control w-full max-w-xs">
             <label className="label">

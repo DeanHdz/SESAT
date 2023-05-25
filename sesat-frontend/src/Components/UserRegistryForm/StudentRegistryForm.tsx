@@ -172,26 +172,26 @@ export const StudentRegistryForm = () => {
           <p className="text-3xl">Datos del Usuario</p>
           {usuarioPrueba ? (
             <div className="form-control w-full max-w-xs">
-              <label className="label text-black">
-                <span className="label-text text-xl text-dark-blue-10 font-bold">Nombre</span><br/><br/>
+              <label className="label text-black flex flex-col items-start">
+                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Nombre</span>
                 {usuarioPrueba?.nombre}
               </label>
 
-              <label className="label text-black">
-                <span className="label-text text-xl text-dark-blue-10 font-bold">Apellido Paterno</span><br/><br/>
+              <label className="label text-black flex flex-col items-start">
+                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Apellido Paterno</span>
                 {usuarioPrueba?.apellido_pat}
               </label>
-              <label className="label text-black">
-                <span className="label-text text-xl text-dark-blue-10 font-bold">Apellido Materno</span><br/><br/>
+              <label className="label text-black flex flex-col items-start">
+                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Apellido Materno</span>
                   {usuarioPrueba?.apellido_mat}
               </label>
-              <label className="label text-black">
-                <span className="label-text text-xl text-dark-blue-10 font-bold">Correo</span><br/><br/>
+              <label className="label text-black flex flex-col items-start">
+                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Correo</span>
                 {usuarioPrueba?.correo}
               </label>
-              <label className="label text-black">
-                <span className="label-text text-xl text-dark-blue-10 font-bold">Grado de Estudios</span><br/><br/>
-                {usuarioPrueba?.grado_estudio}
+              <label className="label text-black flex flex-col items-start">
+                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Grado de Estudios</span>
+                <span>{usuarioPrueba?.grado_estudio}</span>
               </label>
             </div>
           ) : (

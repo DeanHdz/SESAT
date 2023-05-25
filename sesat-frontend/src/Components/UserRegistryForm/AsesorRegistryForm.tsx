@@ -98,18 +98,18 @@ export const AsesorRegistryForm = () => {
           <p className="text-3xl">Datos de usuario</p>
           {usuarioPrueba ? (
             <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">Nombre</span>
-                {usuarioPrueba?.nombre}
+              <label className="label text-black flex flex-col items-start">
+                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Nombre</span>
+                <span>{usuarioPrueba?.nombre}</span>
               </label>
 
-              <label className="label">
-                <span className="label-text">Apellido Paterno</span>
+              <label className="label text-black flex flex-col items-start">
+                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Apellido Paterno</span>
                 {usuarioPrueba?.apellido_pat}
               </label>
-              <label className="label">
-                <span className="label-text">Apellido Materno</span>
-                {usuarioPrueba?.apellido_mat}
+              <label className="label text-black flex flex-col items-start">
+                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Apellido Materno</span>
+                <span>{usuarioPrueba?.apellido_mat}</span>
               </label>
             </div>
           ) : (

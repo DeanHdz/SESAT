@@ -1,5 +1,5 @@
 import Drawer from "../Components/Drawer/Drawer";
-import AsesorRegistryForm from "../Components/UserRegistryForm/StudentRegistryForm";
+import AsesorRegistryForm from "../Components/UserRegistryForm/AsesorRegistryForm";
 
 export const AsesorRegistryPage = () => {
   return (
