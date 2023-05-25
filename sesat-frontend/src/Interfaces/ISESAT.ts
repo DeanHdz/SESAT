@@ -8,9 +8,10 @@ export namespace SESAT {
     apellido_paterno: string;
     apellido_materno: string;
     password: string;
-    rol: number;
-    estado_activo: boolean;
-    modalidad: number;
+    id_rol: number;
+    id_datos_alumno: number | null;
+    correo: string;
+    id_datos_asesorexterno: number | null;
   }
 
   export interface CreateUsuario {
@@ -19,9 +20,10 @@ export namespace SESAT {
     apellido_paterno: string;
     apellido_materno: string;
     password: string;
-    rol: number;
-    estado_activo: boolean;
-    modalidad: number;
+    id_rol: number;
+    id_datos_alumno: number | null;
+    correo: string;
+    id_datos_asesorexterno: number | null;
   }
 
   export interface UpdateUsuario {
@@ -30,9 +32,10 @@ export namespace SESAT {
     apellido_paterno: string;
     apellido_materno: string;
     password: string;
-    rol: number;
-    estado_activo: boolean;
-    modalidad: number;
+    id_rol: number;
+    id_datos_alumno: number | null;
+    correo: string;
+    id_datos_asesorexterno: number | null;
   }
 
 /*------------------ USUARIO INTERFACE ------------------*/
@@ -292,30 +295,57 @@ export interface LoggedUser {
     clave_usuario: number;
   }
 
-/*------------------ NOTIFICATION INTERFACE ------------------*/
+  /*------------------ NOTIFICATION INTERFACE ------------------*/
 
-export interface Notificacion{
-  id_notificacion: number;
-  clave_usuario: number;
-  titulo: string;
-  descripcion: string;
-  fecha_expedicion: Date;
-}
+  export interface Notificacion{
+    id_notificacion: number;
+    clave_usuario: number;
+    titulo: string;
+    descripcion: string;
+    fecha_expedicion: Date;
+  }
 
-export interface CreateNotificacion{
-  clave_usuario: number;
-  titulo: string;
-  descripcion: string;
-  fecha_expedicion: Date;
-}
+  export interface CreateNotificacion{
+    clave_usuario: number;
+    titulo: string;
+    descripcion: string;
+    fecha_expedicion: Date;
+  }
 
-export interface UpdateNotificacion{
-  id_notificacion: number;
-  clave_usuario: number;
-  titulo: string;
-  descripcion: string;
-  fecha_expedicion: Date;
-}
+  export interface UpdateNotificacion{
+    id_notificacion: number;
+    clave_usuario: number;
+    titulo: string;
+    descripcion: string;
+    fecha_expedicion: Date;
+  }
+
+
+  /*------------------ DATOS ALUMNO INTERFACE ------------------*/
+
+  export interface DatosAlumno{
+    id_datos_alumno: number;
+    grado_estudio: string;
+    modalidad: string;
+    estado_activo: boolean;
+    id_programa: number;
+  }
+
+  export interface CreateDatosAlumno{
+    grado_estudio: string;
+    modalidad: string;
+    estado_activo: boolean;
+    id_programa: number;
+  }
+
+  export interface UpdateDatosAlumno{
+    id_datos_alumno: number;
+    grado_estudio: string;
+    modalidad: string;
+    estado_activo: boolean;
+    id_programa: number;
+  }
+
 
   /*------------------ UPLOAD PDF INTERFACE ------------------*/
   export interface UploadPDF{
@@ -375,6 +405,8 @@ export interface UpdateNotificacion{
     password: string;
     apellido_pat: string;
     apellido_mat: string;
+    correo: string;
+    grado_estudio: string;
   }
 
 }

@@ -21,7 +21,9 @@ import StudentTesisMPage from "../Pages/StudentTesisMPage";
 import StudentTesisPhdPage from "../Pages/StudentTesisPhdPage";
 import StudentTesisMAsesor from "../Pages/StudentTesisMAsesor";
 import StudentTesisAsesorPage from "../Pages/StudentTesisAsesorPage";
-
+import StudentRegistryPage from "../Pages/StudentRegistryPage";
+import AsesorRegistryPage from "../Pages/AsesorRegistryPage";
+import ExternalAsesorRegistryPage from "../Components/UserRegistryForm/ExternalAsesorRegistryForm";
 import MStudentListPage from "../Pages/MStudentListPage";
 import PhdStudentListPage from "../Pages/PhdStudentListPage";
 import NotificationSystemPage from "../Pages/NotificationSystemPage";
@@ -50,6 +52,11 @@ export default function App() {
         <Route path="/send-pdf" element={<SendPDFToDBPage />} />
         <Route path="/admin-board" element={<AdminBoardPage />} />
         <Route path="/admin-board/user-register" element={<UserRegistryPage />} />
+
+        <Route path="/admin-board/user-register/student" element={<StudentRegistryPage />} />
+        <Route path="/admin-board/user-register/asesor" element={<AsesorRegistryPage />} />
+        <Route path="/admin-board/user-register/external-asesor" element={<ExternalAsesorRegistryPage />} />
+
         <Route path="/admin-board/create_assignment" element={<CreateAssignment />} />
         <Route path="/admin-board/assignments" element={<Assignments />} />
         <Route path="/admin-board/assignments-phd" element={<PhdAssignments />} />
