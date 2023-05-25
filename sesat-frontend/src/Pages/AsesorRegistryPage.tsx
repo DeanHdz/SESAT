@@ -1,8 +1,9 @@
 import Drawer from "../Components/Drawer/Drawer";
 import AsesorRegistryForm from "../Components/UserRegistryForm/AsesorRegistryForm";
 
-export const AsesorRegistryPage = () => {
-  return (
+const AsesorRegistryPage = () =>
+{
+  return(
     <div className="overflow-hidden">
       <div className="flex flex-row">
         <div className="w-3/12">
@@ -13,7 +14,7 @@ export const AsesorRegistryPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AsesorRegistryPage
+export default AsesorRegistryPage;

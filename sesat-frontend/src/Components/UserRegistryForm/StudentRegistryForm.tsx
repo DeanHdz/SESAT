@@ -3,6 +3,8 @@ import { SESAT } from "../../Interfaces/ISESAT";
 import { UsuarioPruebaEndpoint } from "../../api/usuario-prueba.endpoint";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
 import { DatosAlumnoEndpoint } from "../../api/datos-alumno.endpoint";
+import { ProgramaEndpoint } from "../../api/programa.endpoint";
+import SelectProgramas from "./SelectProgramas";
 
 export const StudentRegistryForm = () => {
   const [claveUnica, setClaveUnica] = useState("");
@@ -11,9 +13,18 @@ export const StudentRegistryForm = () => {
   const [modalidad, setModalidad] = useState<string>("");
 
   const [hasShownUserInfo, setHasShownUserInfo] = useState(false);
-  const [usuarioPrueba, setUsuarioPrueba] = useState<
-    SESAT.UsuarioPrueba | undefined
-  >();
+  const [usuarioPrueba, setUsuarioPrueba] = useState<SESAT.UsuarioPrueba | undefined>();
+
+  const [listaProgramas, setListaProgramas] = useState<SESAT.Programa[] | undefined>();
+
+  const getListaProgramas = async () =>
+  {
+    setListaProgramas(await ProgramaEndpoint.getProgramas(""))
+  }
+
+  useEffect(() => {
+    getListaProgramas();
+  }, []);
 
   const getUsuarioPrueba = async () => {
     if (claveUnica && claveUnica.length == 6) {
@@ -56,7 +67,7 @@ export const StudentRegistryForm = () => {
           apellido_materno: usuarioPrueba?.apellido_mat! ?? "",
           password: usuarioPrueba?.password! ?? "",
           id_rol: 3,
-          id_datos_alumno: id,
+          id_datos_alumno: id?.id_datos_alumno! ?? null,
           correo: usuarioPrueba?.correo! ?? "",
           id_datos_asesorexterno: null,
         },
@@ -65,7 +76,7 @@ export const StudentRegistryForm = () => {
     } catch (err) {
       console.log(err);
     }
-    window.location.reload();
+    //window.location.reload();
   }
 
   //0 --> Medio tiempo
@@ -136,8 +147,8 @@ export const StudentRegistryForm = () => {
               <option disabled selected>
                 Seleccione una opción
               </option>
-              <option value={"1"}>Activo</option>
               <option value={"0"}>Inactivo</option>
+              <option value={"1"}>Activo</option>
             </select>
           </div>
 
@@ -156,8 +167,11 @@ export const StudentRegistryForm = () => {
               <option disabled selected>
                 Seleccione una opción
               </option>
-              <option value={"0"}>Alumno</option>
-              <option value={"1"}>Asesor</option>
+              {
+                listaProgramas? (
+                  <SelectProgramas programas={listaProgramas} />
+                ) : ("")
+              }
             </select>
           </div>
 
@@ -172,26 +186,26 @@ export const StudentRegistryForm = () => {
           <p className="text-3xl">Datos del Usuario</p>
           {usuarioPrueba ? (
             <div className="form-control w-full max-w-xs">
-              <label className="label text-black flex flex-col items-start">
-                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Nombre</span>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Nombre</span><br/><br/>
                 {usuarioPrueba?.nombre}
               </label>
 
-              <label className="label text-black flex flex-col items-start">
-                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Apellido Paterno</span>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Apellido Paterno</span><br/><br/>
                 {usuarioPrueba?.apellido_pat}
               </label>
-              <label className="label text-black flex flex-col items-start">
-                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Apellido Materno</span>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Apellido Materno</span><br/><br/>
                   {usuarioPrueba?.apellido_mat}
               </label>
-              <label className="label text-black flex flex-col items-start">
-                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Correo</span>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Correo</span><br/><br/>
                 {usuarioPrueba?.correo}
               </label>
-              <label className="label text-black flex flex-col items-start">
-                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Grado de Estudios</span>
-                <span>{usuarioPrueba?.grado_estudio}</span>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Grado de Estudios</span><br/><br/>
+                {usuarioPrueba?.grado_estudio}
               </label>
             </div>
           ) : (

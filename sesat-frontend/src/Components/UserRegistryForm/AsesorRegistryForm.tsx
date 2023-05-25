@@ -5,9 +5,6 @@ import { UsuarioEndpoint } from "../../api/usuario.endpoint";
 
 export const AsesorRegistryForm = () => {
   const [claveUnica, setClaveUnica] = useState("");
-  const [role, setRole] = useState<number>();
-  const [activeStatus, setActiveStatus] = useState<boolean>();
-  const [modalidad, setModalidad] = useState<number>();
 
   const [hasShownUserInfo, setHasShownUserInfo] = useState(false);
   const [usuarioPrueba, setUsuarioPrueba] = useState<
@@ -44,16 +41,17 @@ export const AsesorRegistryForm = () => {
           apellido_paterno: usuarioPrueba?.apellido_mat! ?? "",
           apellido_materno: usuarioPrueba?.apellido_mat! ?? "",
           password: usuarioPrueba?.password! ?? "",
-          id_rol: role! ?? "",
-          estado_activo: activeStatus! ?? "",
-          modalidad: modalidad! ?? "",
+          id_rol: 2,
+          id_datos_alumno: null,
+          correo: usuarioPrueba?.correo! ?? "",
+          id_datos_asesorexterno: null,
         },
         ""
       );
     } catch (err) {
       console.log(err);
     }
-    window.location.reload();
+    //window.location.reload();
   }
 
   //0 --> Medio tiempo
@@ -87,6 +85,7 @@ export const AsesorRegistryForm = () => {
             />
           </div>
 
+
           <div className="ml-auto mt-5 flex justify-end items-center">
             <button type="submit" className="btn shadow rounded">
               Agregar
@@ -98,19 +97,23 @@ export const AsesorRegistryForm = () => {
           <p className="text-3xl">Datos de usuario</p>
           {usuarioPrueba ? (
             <div className="form-control w-full max-w-xs">
-              <label className="label text-black flex flex-col items-start">
-                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Nombre</span>
-                <span>{usuarioPrueba?.nombre}</span>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Nombre</span><br/><br/>
+                {usuarioPrueba?.nombre}
               </label>
 
-              <label className="label text-black flex flex-col items-start">
-                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Apellido Paterno</span>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Apellido Paterno</span><br/><br/>
                 {usuarioPrueba?.apellido_pat}
               </label>
-              <label className="label text-black flex flex-col items-start">
-                <span className="label-text text-xl text-dark-blue-10 font-bold mb-3">Apellido Materno</span>
-                <span>{usuarioPrueba?.apellido_mat}</span>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Apellido Materno</span><br/><br/>
+                  {usuarioPrueba?.apellido_mat}
               </label>
+              <label className="label text-black">
+                <span className="label-text text-xl text-dark-blue-10 font-bold">Correo</span><br/><br/>
+                {usuarioPrueba?.correo}
+              </label>            
             </div>
           ) : (
             <label className="label">

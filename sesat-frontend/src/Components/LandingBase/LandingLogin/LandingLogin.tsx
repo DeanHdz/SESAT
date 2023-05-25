@@ -22,12 +22,11 @@ const LandingLogin = () => {
             name: resp.nombre,
             last_name: resp.apellido_paterno,
             family_name: resp.apellido_materno,
-            role: resp.rol,
-            active_status: resp.estado_activo,
+            role: resp.id_rol,
           })
         );
 
-        switch(resp.rol) //handle boards
+        switch(resp.id_rol) //handle boards
         {
           case 1: //admin
             navigate("/admin-board");

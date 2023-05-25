@@ -2,17 +2,29 @@ import { useEffect, useState } from "react";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { UsuarioPruebaEndpoint } from "../../api/usuario-prueba.endpoint";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
+import { DatosAlumnoEndpoint } from "../../api/datos-alumno.endpoint";
+import { ProgramaEndpoint } from "../../api/programa.endpoint";
+import SelectProgramas from "./SelectProgramas";
 
 export const ExternalAsesorRegistryForm = () => {
   const [claveUnica, setClaveUnica] = useState("");
-  const [role, setRole] = useState<number>();
-  const [activeStatus, setActiveStatus] = useState<boolean>();
-  const [modalidad, setModalidad] = useState<number>();
+  const [program, setProgram] = useState<string>("");
+  const [activeStatus, setActiveStatus] = useState<boolean>(true); //had to default it
+  const [modalidad, setModalidad] = useState<string>("");
 
   const [hasShownUserInfo, setHasShownUserInfo] = useState(false);
-  const [usuarioPrueba, setUsuarioPrueba] = useState<
-    SESAT.UsuarioPrueba | undefined
-  >();
+  const [usuarioPrueba, setUsuarioPrueba] = useState<SESAT.UsuarioPrueba | undefined>();
+
+  const [listaProgramas, setListaProgramas] = useState<SESAT.Programa[] | undefined>();
+
+  const getListaProgramas = async () =>
+  {
+    setListaProgramas(await ProgramaEndpoint.getProgramas(""))
+  }
+
+  useEffect(() => {
+    getListaProgramas();
+  }, []);
 
   const getUsuarioPrueba = async () => {
     if (claveUnica && claveUnica.length == 6) {
@@ -37,6 +49,16 @@ export const ExternalAsesorRegistryForm = () => {
   async function handleSubmit(e: any) {
     e.preventDefault();
     try {
+
+      const id = await DatosAlumnoEndpoint.postDatosAlumno(
+        {
+          grado_estudio: usuarioPrueba?.grado_estudio! ?? "",
+          modalidad: modalidad,
+          estado_activo: activeStatus,
+          id_programa: parseInt(program),
+        }, ""
+      )
+
       await UsuarioEndpoint.postUsuario(
         {
           clave: parseInt(claveUnica),
@@ -44,16 +66,17 @@ export const ExternalAsesorRegistryForm = () => {
           apellido_paterno: usuarioPrueba?.apellido_mat! ?? "",
           apellido_materno: usuarioPrueba?.apellido_mat! ?? "",
           password: usuarioPrueba?.password! ?? "",
-          id_rol: role! ?? "",
-          estado_activo: activeStatus! ?? "",
-          modalidad: modalidad! ?? "",
+          id_rol: 3,
+          id_datos_alumno: id?.id_datos_alumno! ?? null,
+          correo: usuarioPrueba?.correo! ?? "",
+          id_datos_asesorexterno: null,
         },
         ""
       );
     } catch (err) {
       console.log(err);
     }
-    window.location.reload();
+    //window.location.reload();
   }
 
   //0 --> Medio tiempo
@@ -62,7 +85,7 @@ export const ExternalAsesorRegistryForm = () => {
   return (
     <>
       <div className="flex flex-wrap gap-4 m-8 ">
-        <label className="block text-4xl font-bold">Dar de alta Asesor externo</label>
+        <label className="block text-4xl font-bold">Dar de alta Asesor Externo</label>
         <div className="border-b border-light-gray-22 border-solid w-full"></div>
 
         <form
@@ -77,6 +100,7 @@ export const ExternalAsesorRegistryForm = () => {
             </label>
             <input
               type="text"
+              required
               placeholder="0-9"
               maxLength={6}
               className="input rounded input-bordered w-full max-w-xs"
@@ -95,17 +119,14 @@ export const ExternalAsesorRegistryForm = () => {
               required
               className="select select-bordered rounded"
               onChange={(e) => {
-                if (e.target.value == "0") setModalidad(0);
-                else if (e.target.value == "1") {
-                  setModalidad(1);
-                }
+                  setModalidad(e.target.value);
               }}
             >
               <option disabled selected>
                 Seleccione una opción
               </option>
-              <option value={0}>Medio tiempo</option>
-              <option value={1}>Tiempo Completo</option>
+              <option value={"Medio Tiempo"}>Medio tiempo</option>
+              <option value={"Tiempo Completo"}>Tiempo Completo</option>
             </select>
           </div>
 
@@ -126,10 +147,11 @@ export const ExternalAsesorRegistryForm = () => {
               <option disabled selected>
                 Seleccione una opción
               </option>
-              <option value={"1"}>Activo</option>
               <option value={"0"}>Inactivo</option>
+              <option value={"1"}>Activo</option>
             </select>
           </div>
+
           <div className="form-control w-full max-w-xs">
             <label className="label">
               <span className="label-text">Programa</span>
@@ -138,18 +160,18 @@ export const ExternalAsesorRegistryForm = () => {
               required
               className="select select-bordered rounded"
               onChange={(e) => {
-                if (e.target.value == "0") 
-                    setRole(3);
-                else if (e.target.value == "1") {
-                  setRole(2);
+                  setProgram(e.target.value)
                 }
-              }}
+              }
             >
               <option disabled selected>
                 Seleccione una opción
               </option>
-              <option value={"0"}>Alumno</option>
-              <option value={"1"}>Asesor</option>
+              {
+                listaProgramas? (
+                  <SelectProgramas programas={listaProgramas} />
+                ) : ("")
+              }
             </select>
           </div>
 
@@ -159,31 +181,6 @@ export const ExternalAsesorRegistryForm = () => {
             </button>
           </div>
         </form>
-
-        <div className="border border-light-gray-22 border-solid rounded p-10 m-4 self-start">
-          <p className="text-3xl">Datos de usuario</p>
-          {usuarioPrueba ? (
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">Nombre</span>
-                {usuarioPrueba?.nombre}
-              </label>
-
-              <label className="label">
-                <span className="label-text">Apellido Paterno</span>
-                {usuarioPrueba?.apellido_pat}
-              </label>
-              <label className="label">
-                <span className="label-text">Apellido Materno</span>
-                {usuarioPrueba?.apellido_mat}
-              </label>
-            </div>
-          ) : (
-            <label className="label">
-              <span className="label-text">No existe el usuario</span>
-            </label>
-          )}
-        </div>
       </div>
     </>
   );

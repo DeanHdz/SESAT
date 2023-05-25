@@ -23,12 +23,11 @@ import StudentTesisMAsesor from "../Pages/StudentTesisMAsesor";
 import StudentTesisAsesorPage from "../Pages/StudentTesisAsesorPage";
 import StudentRegistryPage from "../Pages/StudentRegistryPage";
 import AsesorRegistryPage from "../Pages/AsesorRegistryPage";
-import ExternalAsesorRegistryPage from "../Components/UserRegistryForm/ExternalAsesorRegistryForm";
+import ExternalAsesorRegistryPage from "../Pages/ExternalAsesorRegistryPage";
 import MStudentListPage from "../Pages/MStudentListPage";
 import PhdStudentListPage from "../Pages/PhdStudentListPage";
 import NotificationSystemPage from "../Pages/NotificationSystemPage";
 import PhdAssignments from "../Pages/PhdAssignments";
-
 
 {/* /view_document/:id/:type   --> id_asignacion, tipo documento(formato(1), acta(2), tesis(3))*/}
 export default function App() {
@@ -54,7 +53,7 @@ export default function App() {
         <Route path="/admin-board/user-register" element={<UserRegistryPage />} />
 
         <Route path="/admin-board/user-register/student" element={<StudentRegistryPage />} />
-        <Route path="/admin-board/user-register/asesor" element={<AsesorRegistryPage />} />
+        <Route path="/admin-board/user-register/asesor" element={< AsesorRegistryPage/>} />
         <Route path="/admin-board/user-register/external-asesor" element={<ExternalAsesorRegistryPage />} />
 
         <Route path="/admin-board/create_assignment" element={<CreateAssignment />} />
