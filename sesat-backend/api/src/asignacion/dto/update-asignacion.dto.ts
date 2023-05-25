@@ -5,7 +5,7 @@ import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class UpdateAsignacionDto extends PartialType(CreateAsignacionDto) {
   @IsNotEmpty()
   @IsNumber()
-  asignacion_id: number;
+  id_asignacion: number;
 
   @IsNotEmpty()
   @IsNumber()

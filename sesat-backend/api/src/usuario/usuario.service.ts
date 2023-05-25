@@ -21,7 +21,7 @@ export class UsuarioService {
   }
 
   findAsesores() {
-    return this.usuarioRepository.find({ where: { rol: 2 } });
+    return this.usuarioRepository.find({ where: { id_rol: 2 } });
   }
 
   findOne(id: number) {

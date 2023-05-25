@@ -16,4 +16,10 @@ export class UsuariosPrueba {
 
     @Column()
     apellido_mat: string;
+
+    @Column()
+    correo: string;
+
+    @Column()
+    grado_estudio: string;
 }

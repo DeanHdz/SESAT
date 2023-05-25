@@ -1,13 +1,6 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateAsignacionDto {
-  @IsNotEmpty()
-  @IsNumber()
-  asesor_externo_id: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  id_tesis: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -40,4 +33,16 @@ export class CreateAsignacionDto {
   @IsNotEmpty()
   @IsNumber()
   estado_entrega: number;
+
+  @IsOptional()
+  @IsString()
+  retroalimentacion: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_formato_de_evaluacion: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_acta_de_evaluacion: number;
 }

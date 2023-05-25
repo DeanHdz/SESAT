@@ -22,4 +22,12 @@ export class UpdateUsuariosPruebaDto extends PartialType(CreateUsuariosPruebaDto
     @IsNotEmpty()
     @IsString()
     apellido_mat: string;
+
+    @IsNotEmpty()
+    @IsString()
+    correo: string;
+
+    @IsNotEmpty()
+    @IsString()
+    grado_estudio: string;
 }

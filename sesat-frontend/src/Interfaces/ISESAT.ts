@@ -168,6 +168,28 @@ export interface LoggedUser {
     estado_entrega: number;
   }
 
+  /*------------------ PROGRAMA INTERFACE ------------------*/
+  
+  export interface AsignacionTesis {
+    id_asignacion_tesis: number;
+    id_asignacion: number;
+    id_tesis: number;
+
+  }
+
+  export interface CreateAsignacionTesis {
+    id_asignacion: number;
+    id_tesis: number;
+
+  }
+
+  export interface UpdateAsignacionTesis {
+    id_asignacion_tesis: number;
+    id_asignacion: number;
+    id_tesis: number;
+
+  }
+
 
   /*------------------ PROGRAMA INTERFACE ------------------*/
   

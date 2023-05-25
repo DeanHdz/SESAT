@@ -18,11 +18,14 @@ export class Usuario {
     password: string;
 
     @Column()
-    rol: number;
+    id_rol: number;
 
     @Column()
-    estado_activo: boolean;
+    id_datos_alumno: number;
 
     @Column()
-    modalidad: number;
+    correo: string;
+    
+    @Column()
+    id_datos_asesorexterno: number;
 }

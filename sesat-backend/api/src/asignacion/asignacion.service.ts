@@ -21,7 +21,7 @@ export class AsignacionService {
   }
 
   findOne(id: number) {
-    return this.asignacionRepository.findOne({ where: { asignacion_id: id } });
+    return this.asignacionRepository.findOne({ where: { id_asignacion: id } });
   }
 
   update(updateAsignacionDto: UpdateAsignacionDto) {

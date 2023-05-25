@@ -13,6 +13,7 @@ import {
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Programa } from "src/programa/entities/programa.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
+import { AsignacionTesis } from "src/asignacion-tesis/entities/asignacion-tesis.entity";
 
 @Entity()
 export class Tesis {
@@ -24,22 +25,7 @@ export class Tesis {
 
   @OneToOne(() => Usuario, { eager: true })
   @JoinColumn({ name: "clave_alumno" })
-  claveAlumno: Usuario;
-
-  @Column()
-  clave_asesor: number;
-
-  //una tesis puede tener multiples asesores, un asesor puede tener multiples tesis
-  @OneToOne(() => Usuario, { eager: true })
-  @JoinColumn({ name: "clave_asesor" })
-  claveAsesor: Usuario;
-
-  @Column()
-  id_programa: number;
-
-  @OneToOne(() => Programa, { eager: true })
-  @JoinColumn({ name: "id_programa" })
-  idPrograma: Programa;
+  alumno: Usuario;
 
   @Column()
   titulo: string;
@@ -51,13 +37,16 @@ export class Tesis {
   generacion: string;
 
   @Column()
-  modalidad: string;
-
-  @OneToMany(() => Asignacion, (asignacion) => asignacion.tesis, {
-    eager: true,
-  })
-  asignaciones: Asignacion[];
+  registrada: boolean;
 
   @Column()
   ultimo_avance: number;
+
+  @Column()
+  estado_activo: boolean;
+
+  //@OneToMany(() => AsignacionTesis, (asignacionTesis) => asignacionTesis.tesis, {
+  //  eager: true,
+  //})
+  asignaciones: Asignacion[];
 }
