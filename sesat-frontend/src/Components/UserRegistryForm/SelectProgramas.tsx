@@ -5,7 +5,7 @@ const SelectProgramas = ({programas} : {programas: SESAT.Programa[]}) =>
   return(
     <>
     {
-      programas.map((programa,i) => <option key={`${i}`} value={ (programa.id_programa + 1) }> {programa.nombreprograma} </option>)
+      programas.map((programa,i) => <option key={`${i}`} value={ (programa.id_programa) }> {programa.nombreprograma} </option>)
     }
     </>
   )

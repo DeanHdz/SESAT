@@ -65,7 +65,7 @@ export const StudentRegistryForm = () => {
         {
           clave: parseInt(claveUnica),
           nombre: usuarioPrueba?.nombre! ?? "",
-          apellido_paterno: usuarioPrueba?.apellido_mat! ?? "",
+          apellido_paterno: usuarioPrueba?.apellido_pat! ?? "",
           apellido_materno: usuarioPrueba?.apellido_mat! ?? "",
           password: usuarioPrueba?.password! ?? "",
           id_rol: 3,

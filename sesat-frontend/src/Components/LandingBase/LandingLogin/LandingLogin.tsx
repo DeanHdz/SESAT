@@ -25,7 +25,7 @@ const LandingLogin = () => {
           })
         );
 
-        /*switch(resp.id_rol) //handle boards
+        switch(resp.id_rol) //handle boards
         {
           case 1: //admin
             navigate("/admin-board");
@@ -37,7 +37,7 @@ const LandingLogin = () => {
           case 3: //alumno
             navigate("/board");
             break;
-        }*/
+        }
       } else {
         setFailed(true);
       }
