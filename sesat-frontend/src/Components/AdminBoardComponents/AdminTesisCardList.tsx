@@ -29,8 +29,9 @@ const AdminTesisCardList = ({ title }: { title: string }) => {
       </label>
       <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
         <select className="select shadow appearance-none rounded border border-solid border-light-gray-22">
-          <option>Tesis Activas</option>
-          <option>Tesis Inactivas</option>
+          <option key="0" value="0">Todo</option>
+          <option key="1" value="inactivo">Tesis Completadas</option>
+          <option key="2" value="activo">Tesis En progreso</option>
         </select>
         <input type="search" placeholder="Buscar alumnos" className="rounded" />
       </div>
