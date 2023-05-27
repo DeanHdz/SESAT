@@ -209,11 +209,11 @@ export namespace SESAT {
 
   export interface CreateTesis {
     clave_alumno: number;
-    titulo: string;
-    fecharegistro: Date;
-    generacion: string;
+    titulo: string | null;
+    fecharegistro: Date | null;
+    generacion: string | null;
     registrada: boolean;
-    ultimo_avance: number;
+    ultimo_avance: number | null; //0 is lacking registry
     estado_activo: boolean;
   }
 

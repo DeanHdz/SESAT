@@ -4,6 +4,8 @@ import { UsuarioPruebaEndpoint } from "../../api/usuario-prueba.endpoint";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
 import { DatosAlumnoEndpoint } from "../../api/datos-alumno.endpoint";
 import { ProgramaEndpoint } from "../../api/programa.endpoint";
+import { TesisEndpoint } from "../../api/tesis.endpoint";
+import { AsignacionEndpoint } from "../../api/asignacion.endpoint";
 import SelectProgramas from "./SelectProgramas";
 
 export const StudentRegistryForm = () => {
@@ -50,7 +52,7 @@ export const StudentRegistryForm = () => {
     e.preventDefault();
     try {
 
-      const id = await DatosAlumnoEndpoint.postDatosAlumno(
+      const id_datos = await DatosAlumnoEndpoint.postDatosAlumno(
         {
           grado_estudio: usuarioPrueba?.grado_estudio! ?? "",
           modalidad: modalidad,
@@ -59,7 +61,7 @@ export const StudentRegistryForm = () => {
         }, ""
       )
 
-      await UsuarioEndpoint.postUsuario(
+      const alumno = await UsuarioEndpoint.postUsuario(
         {
           clave: parseInt(claveUnica),
           nombre: usuarioPrueba?.nombre! ?? "",
@@ -67,12 +69,33 @@ export const StudentRegistryForm = () => {
           apellido_materno: usuarioPrueba?.apellido_mat! ?? "",
           password: usuarioPrueba?.password! ?? "",
           id_rol: 3,
-          id_datos_alumno: id?.id_datos_alumno! ?? null,
+          id_datos_alumno: id_datos?.id_datos_alumno! ?? null,
           correo: usuarioPrueba?.correo! ?? "",
           id_datos_asesorexterno: null,
         },
         ""
       );
+      
+      const tesis = await TesisEndpoint.postTesis(
+        {
+          clave_alumno: alumno?.clave! ?? 0,
+          titulo: null,
+          fecharegistro: null,
+          generacion: null,
+          registrada: false,
+          ultimo_avance: null,
+          estado_activo: true,
+        },
+        ""
+      );
+
+      /*const asignacion = await AsignacionEndpoint.postAsignacion(
+        {
+
+        },
+        ""
+      );*/
+
     } catch (err) {
       console.log(err);
     }
