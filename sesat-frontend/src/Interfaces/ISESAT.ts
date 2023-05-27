@@ -55,20 +55,6 @@ export namespace SESAT {
   
   /*------------------ USUARIO INTERFACE ------------------*/
 
-  
-
-  /*------------------ USUARIO INTERFACE ------------------*/
-
-  export interface LoggedUser {
-    clave: number;
-    name: string;
-    last_name: string;
-    family_name: string;
-    role: number;
-    active_status: boolean;
-    token: string;
-  }
-
   /*------------------ DATOS ALUMNO INTERFACE ------------------*/
 
   export interface DatosAlumno {

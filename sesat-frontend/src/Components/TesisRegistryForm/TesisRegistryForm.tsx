@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { render } from "react-dom";
 import { useNavigate } from "react-router";
-import { AsesorEndpoint } from "../../api/asesor.endpoint";
 import { ProgramaEndpoint } from "../../api/programa.endpoint";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
 import { SESAT } from "../../Interfaces/ISESAT";

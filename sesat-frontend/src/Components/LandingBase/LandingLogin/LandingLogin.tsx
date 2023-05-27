@@ -14,19 +14,18 @@ const LandingLogin = () => {
     e.preventDefault();
     try {
       const resp = await UsuarioEndpoint.getUsuario(parseInt(claveUnica), "");
+      console.log(resp);
       if (resp && resp.password === contraseña) {
         sessionStorage.setItem(
           "loggedUser",
           JSON.stringify({
-            clave: resp.clave,
-            name: resp.nombre,
-            last_name: resp.apellido_paterno,
-            family_name: resp.apellido_materno,
-            role: resp.id_rol,
+            mensage: "Inicio de sesión correcto",
+            usuario: resp,
+            token: "",
           })
         );
 
-        switch(resp.id_rol) //handle boards
+        /*switch(resp.id_rol) //handle boards
         {
           case 1: //admin
             navigate("/admin-board");
@@ -36,11 +35,10 @@ const LandingLogin = () => {
             navigate("/asesor-board");
             break;
           case 3: //alumno
-            navigate("/register");
+            navigate("/board");
             break;
-        }
+        }*/
       } else {
-
         setFailed(true);
       }
     } catch (err) {
