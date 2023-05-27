@@ -21,6 +21,14 @@ export class TesisService {
     return this.tesisRepository.find();
   }
 
+  findActive(){
+    return this.tesisRepository.find({where: {estado_activo: true}})
+  }
+
+  findInactive(){
+    return this.tesisRepository.find({where: {estado_activo: false}})
+  }
+
   findOne(id: number) {
     return this.tesisRepository.findOne({ where: { id_tesis: id } });
   }

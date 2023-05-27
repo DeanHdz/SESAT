@@ -17,7 +17,7 @@ const StudentTesisMPage = () => {
                 <InsiteBaner topic={"Tablero "} />
                 <BreadcrumbContainer paths={paths} links={links} />
                 <div className="w-full p-6 flex justify-center">
-                    <StudentsList title="Tesis de Maestría" />
+                    <StudentsList title="Tesis de Maestría" grade={"Doctorado"}/>
                 </div>
             </div>
 

@@ -10,7 +10,7 @@ const AdminTesisCard = ({tesis} : {tesis: SESAT.Tesis}) => {
             </div>
             <div className="ml-6 block w-auto">
                 <p className="font-bold">{tesis.titulo ? tesis.titulo : "Sin registrar"}</p>                
-                <p className="mt-1 text-sm">{tesis.alumno.nombre}</p>
+                <p className="mt-1 text-sm">{tesis.alumno.nombre + " " + tesis.alumno.apellido_paterno + " " + tesis.alumno.apellido_materno}</p>
             </div>            
         </Link>
     );
