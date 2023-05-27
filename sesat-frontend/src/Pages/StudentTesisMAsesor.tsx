@@ -1,4 +1,4 @@
-import StudentsList from "../Components/AdminBoardComponents/AdminTesisCardList";
+import AdminTesisCardList from "../Components/AdminBoardComponents/AdminTesisCardList";
 import Navbar from "../Components/Navbar/Navbar";
 import InsiteBaner from "../Components/Banner/InsiteBanner";
 import BreadcrumbContainer from "../Components/Breadcrumbs/BreadcrumbContainer";
@@ -17,7 +17,7 @@ const StudentTesisMPage = () => {
                 <InsiteBaner topic={"Tablero "} />
                 <BreadcrumbContainer paths={paths} links={links} />
                 <div className="w-full p-6 flex justify-center">
-                    <StudentsList title="Tesis de Maestría" grade={"Doctorado"}/>
+                    <AdminTesisCardList title="Tesis de Maestría" grade="Maestría"/>
                 </div>
             </div>
 

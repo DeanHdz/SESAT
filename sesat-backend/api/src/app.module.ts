@@ -25,6 +25,7 @@ import { RolModule } from './rol/rol.module';
 import { FuncionModule } from './funcion/funcion.module';
 import { FormatoEvaluacionModule } from './formato-evaluacion/formato-evaluacion.module';
 import { DatosAsesorexternoModule } from './datos-asesorexterno/datos-asesorexterno.module';
+import { VariablesSistemaModule } from './variables-sistema/variables-sistema.module';
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { DatosAsesorexternoModule } from './datos-asesorexterno/datos-asesorexte
     FuncionModule,
     FormatoEvaluacionModule,
     DatosAsesorexternoModule,
+    VariablesSistemaModule,
   ],
   controllers: [AppController],
   providers: [{provide: APP_GUARD, useClass: ThrottlerGuard}],

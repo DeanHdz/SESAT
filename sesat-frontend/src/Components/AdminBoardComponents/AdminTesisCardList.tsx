@@ -3,7 +3,13 @@ import AdminTesisCard from "./AdminTesisCard";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
 
-const AdminTesisCardList = ({ title, grade }: { title: string, grade: string }) => {
+const AdminTesisCardList = ({
+  title,
+  grade,
+}: {
+  title: string;
+  grade: string;
+}) => {
   const [tesis, setTesis] = useState<SESAT.Tesis[]>();
   const [filter, setFilter] = useState("Todo");
 
@@ -40,8 +46,8 @@ const AdminTesisCardList = ({ title, grade }: { title: string, grade: string }) 
   const showTesis = () => {
     if (tesis)
       for (let i = 0; i < tesis.length; i++) {
-        //if(tesis[i].alumno.)
-        return <AdminTesisCard tesis={tesis[i]} />;
+        if (tesis[i].alumno.datos_alumno?.grado_estudio == grade)
+          return <AdminTesisCard tesis={tesis[i]} />;
       }
     else return <></>;
   };

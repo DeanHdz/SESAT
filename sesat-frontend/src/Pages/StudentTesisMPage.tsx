@@ -1,4 +1,4 @@
-import TesisCardList from "../Components/AdminBoardComponents/AdminTesisCardList";
+import AdminTesisCardList from "../Components/AdminBoardComponents/AdminTesisCardList";
 import Drawer from "../Components/Drawer/Drawer";
 
 const StudentTesisMPage = () => {
@@ -8,7 +8,7 @@ const StudentTesisMPage = () => {
         <Drawer />
       </div>
       <div className="w-9/12">
-        <TesisCardList title="Tesis de Maestría" />
+        <AdminTesisCardList title="Tesis de Maestría" grade="Maestría"/>
       </div>
     </div>
   );
