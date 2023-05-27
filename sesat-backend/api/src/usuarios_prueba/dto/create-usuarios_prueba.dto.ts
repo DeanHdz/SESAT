@@ -28,4 +28,8 @@ export class CreateUsuariosPruebaDto {
   @IsNotEmpty()
   @IsString()
   grado_estudio: string;
+
+  @IsNotEmpty()
+  @IsString()
+  generacion: string;
 }

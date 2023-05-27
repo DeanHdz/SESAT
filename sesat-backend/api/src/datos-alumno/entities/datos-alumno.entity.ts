@@ -24,6 +24,9 @@ export class DatosAlumno {
   @Column()
   id_programa: number;
 
+  @Column()
+  generacion: string;
+
   @OneToOne(() => Programa, { eager: true })
   @JoinColumn({ name: "id_programa" })
   programa: Programa;

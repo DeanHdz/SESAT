@@ -30,4 +30,8 @@ export class UpdateUsuariosPruebaDto extends PartialType(CreateUsuariosPruebaDto
     @IsNotEmpty()
     @IsString()
     grado_estudio: string;
+
+    @IsNotEmpty()
+    @IsString()
+    generacion: string;
 }

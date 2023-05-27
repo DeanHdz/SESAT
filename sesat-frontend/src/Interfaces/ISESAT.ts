@@ -63,6 +63,7 @@ export namespace SESAT {
     modalidad: string;
     estado_activo: boolean;
     id_programa: number;
+    generacion: string;
   }
 
   export interface CreateDatosAlumno {
@@ -70,6 +71,7 @@ export namespace SESAT {
     modalidad: string;
     estado_activo: boolean;
     id_programa: number;
+    generacion: string;
   }
 
   export interface UpdateDatosAlumno {
@@ -78,6 +80,7 @@ export namespace SESAT {
     modalidad: string;
     estado_activo: boolean;
     id_programa: number;
+    generacion: string;
   }
 
   /*------------------ DATOS ASESOR EXTERNO INTERFACE ------------------*/
@@ -185,12 +188,14 @@ export namespace SESAT {
   export interface Tesis {
     id_tesis: number;
     clave_alumno: number;
+    alumno: Usuario;
     titulo: string;
     fecharegistro: Date;
     generacion: string;
     registrada: boolean;
     ultimo_avance: number;
     estado_activo: boolean;
+    asignaciones_tesis: AsignacionTesis[];
   }
 
   export interface CreateTesis {

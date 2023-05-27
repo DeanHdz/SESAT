@@ -17,4 +17,8 @@ export class CreateDatosAlumnoDto
   @IsNotEmpty()
   @IsNumber()
   id_programa: number;
+
+  @IsNotEmpty()
+  @IsString()
+  generacion: string;
 }

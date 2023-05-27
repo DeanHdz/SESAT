@@ -22,4 +22,7 @@ export class UsuariosPrueba {
 
     @Column()
     grado_estudio: string;
+
+    @Column()
+    generacion: string;
 }

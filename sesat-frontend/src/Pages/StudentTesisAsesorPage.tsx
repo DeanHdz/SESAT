@@ -1,4 +1,4 @@
-import StudentsCardList from "../Components/AdminBoardComponents/StudentsCardList";
+import StudentsCardList from "../Components/AdminBoardComponents/AdminTesisCardList";
 import Navbar from "../Components/Navbar/Navbar";
 import InsiteBaner from "../Components/Banner/InsiteBanner";
 import BreadcrumbContainer from "../Components/Breadcrumbs/BreadcrumbContainer";
