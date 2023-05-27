@@ -53,7 +53,7 @@ export namespace SESAT {
     id_funcion: number;
     nombre: string;
   }
-  
+
   /*------------------ USUARIO INTERFACE ------------------*/
 
   /*------------------ DATOS ALUMNO INTERFACE ------------------*/
@@ -222,21 +222,21 @@ export namespace SESAT {
 
   /*------------------ COMITE INTERFACE ------------------*/
 
-  export interface Comite{
+  export interface Comite {
     id_comite: number;
     clave_asesor: number;
     id_tesis: number;
     id_funcion: number;
   }
 
-  export interface CreateComite{
+  export interface CreateComite {
     id_comite: number;
     clave_asesor: number;
     id_tesis: number;
     id_funcion: number;
   }
 
-  export interface UpdateComite{
+  export interface UpdateComite {
     id_comite: number;
     clave_asesor: number;
     id_tesis: number;
@@ -247,17 +247,17 @@ export namespace SESAT {
 
   /*------------------ ROL INTERFACE ------------------*/
 
-  export interface Rol{
+  export interface Rol {
     id_rol: number;
     nombre: string;
   }
 
-  export interface CreateRol{
+  export interface CreateRol {
     id_rol: number;
     nombre: string;
   }
 
-  export interface UpdateRol{
+  export interface UpdateRol {
     id_rol: number;
     nombre: string;
   }
@@ -266,20 +266,20 @@ export namespace SESAT {
 
   /*------------------ FORMATO EVALAUCION INTERFACE ------------------*/
 
-  export interface FormatoEvaluacion{
-    id_formato_evaluacion : number;
+  export interface FormatoEvaluacion {
+    id_formato_evaluacion: number;
     documento_rellenado: string;
     id_formato_vacio: number;
   }
 
-  export interface CreateFormatoEvaluacion{
-    id_formato_evaluacion : number;
+  export interface CreateFormatoEvaluacion {
+    id_formato_evaluacion: number;
     documento_rellenado: string;
     id_formato_vacio: number;
   }
 
-  export interface UpdateFormatoEvaluacion{
-    id_formato_evaluacion : number;
+  export interface UpdateFormatoEvaluacion {
+    id_formato_evaluacion: number;
     documento_rellenado: string;
     id_formato_vacio: number;
   }
@@ -288,45 +288,41 @@ export namespace SESAT {
 
   /*------------------ FORMATOS VACIOS INTERFACE ------------------*/
 
-  export interface FormatosVacios{
-    id_formatos_vacios : number;
+  export interface FormatosVacios {
+    id_formatos_vacios: number;
     acta_avaluacion: string;
     formato_evaluacion: number;
   }
 
-  export interface CreateFormatosVacios{
-    id_formatos_vacios : number;
+  export interface CreateFormatosVacios {
+    id_formatos_vacios: number;
     acta_avaluacion: string;
     formato_evaluacion: number;
   }
 
-  export interface UpdateFormatosVacios{
-    id_formatos_vacios : number;
+  export interface UpdateFormatosVacios {
+    id_formatos_vacios: number;
     acta_avaluacion: string;
     formato_evaluacion: number;
   }
-
 
   /*------------------ FORMATOS VACIOS INTERFACE ------------------*/
 
   /*------------------ ACTA EVALUACION INTERFACE ------------------*/
 
-  export interface ActaEvaluacion
-  {
+  export interface ActaEvaluacion {
     id_acta_evaluacion: number;
     documento_rellenado: string;
     id_acta_vacia: number;
   }
 
-  export interface CreateActaEvaluacion
-  {
+  export interface CreateActaEvaluacion {
     id_acta_evaluacion: number;
     documento_rellenado: string;
     id_acta_vacia: number;
   }
 
-  export interface UpdateActaEvaluacion
-  {
+  export interface UpdateActaEvaluacion {
     id_acta_evaluacion: number;
     documento_rellenado: string;
     id_acta_vacia: number;
@@ -491,5 +487,10 @@ export namespace SESAT {
     correo: string;
     grado_estudio: string;
     generacion: string;
+  }
+
+  export interface VariablesSistema {
+    id_variables_sistema: number;
+    indice_clave_asesorexterno: number;
   }
 }
