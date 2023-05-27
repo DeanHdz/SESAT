@@ -38,4 +38,40 @@ export namespace VariablesSistemaEndpoint {
         }
       });
   };
+
+  export const postVariablesSistema = async (
+    createVariablesSistemaDto: SESAT.CreateVariablesSistema,
+    token: string
+  ): Promise<SESAT.VariablesSistema | undefined> => {
+    return await axios
+      .post(`${import.meta.env.VITE_API_HOSTNAME}/variables-sistema`, createVariablesSistemaDto, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then(({ data }) => {
+        if (data) {
+          return data;
+        }
+      });
+  };
+
+  export const putVariablesSistema = async (
+    updateVariablesSistemaDto: SESAT.UpdateVariablesSistema,
+    token: string
+  ): Promise<SESAT.VariablesSistema | undefined> => {
+    return await axios
+      .put(`${import.meta.env.VITE_API_HOSTNAME}/variables-sistema`, updateVariablesSistemaDto, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then(({ data }) => {
+        if (data) {
+          return data;
+        }
+      });
+  };
 }

@@ -493,4 +493,13 @@ export namespace SESAT {
     id_variables_sistema: number;
     indice_clave_asesorexterno: number;
   }
+
+  export interface CreateVariablesSistema {
+    indice_clave_asesorexterno: number;
+  }
+
+  export interface UpdateVariablesSistema {
+    id_variables_sistema: number;
+    indice_clave_asesorexterno: number;
+  }
 }
