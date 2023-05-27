@@ -1,7 +1,7 @@
 import { Comentario } from "src/comentario/entities/comentario.entity";
 import { Comite } from "src/comite/entities/comite.entity";
 import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
-import { DatosAsesorExterno } from "src/datos-asesor-externo/entities/datos-asesor-externo.entity";
+import { DatosAsesorexterno } from "src/datos-asesorexterno/entities/datos-asesorexterno.entity";
 import { Notificacion } from "src/notification/entities/notification.entity";
 import { Rol } from "src/rol/entities/rol.entity";
 import {
@@ -48,14 +48,11 @@ export class Usuario {
   correo: string;
 
   @Column()
-  id_datos_asesorexterno: number;
+  id_datos_asesorexterno: DatosAsesorexterno;
 
-  @OneToOne(() => DatosAsesorExterno, { eager: true })
+  @OneToOne(() => DatosAsesorexterno, { eager: true })
   @JoinColumn({ name: "id_datos_asesorexterno" })
-  datos_asesorexterno: DatosAsesorExterno;
-
-  @OneToMany(() => Comite, (comite) => comite.asesor, { eager: true })
-  comites: Comite[];
+  datos_asesorexterno: DatosAsesorexterno;
 
   @OneToMany(() => Notificacion, (notificacion) => notificacion.usuario, {
     eager: true,

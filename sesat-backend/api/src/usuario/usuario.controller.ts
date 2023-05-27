@@ -14,7 +14,7 @@ export class UsuarioController {
     return this.usuarioService.create(createUsuarioDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.usuarioService.findAll();

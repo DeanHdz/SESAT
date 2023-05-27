@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class CreateDatosAsesorExternoDto {
+export class CreateDatosAsesorexternoDto {
     @IsNotEmpty()
     @IsString()
     telefono: string;

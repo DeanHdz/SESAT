@@ -1,4 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { DatosAsesorexterno } from "src/datos-asesorexterno/entities/datos-asesorexterno.entity";
 
 export class CreateUsuarioDto {
     @IsNotEmpty()
@@ -35,5 +36,5 @@ export class CreateUsuarioDto {
 
     @IsOptional()
     @IsNumber()
-    id_datos_asesorexterno: number;
+    id_datos_asesorexterno: DatosAsesorexterno;
 }

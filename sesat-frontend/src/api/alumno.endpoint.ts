@@ -1,13 +1,13 @@
 import axios from "axios";
 import { SESAT } from "../Interfaces/ISESAT";
 
-export namespace AlumnoEndpoint {
-  export const getAlumno = async (
+export namespace GetDatosAlumnoEndpoint {
+  export const getDatosAlumno = async (
     id: number,
     token: string
-  ): Promise<SESAT.Alumno | undefined> => {
+  ): Promise<SESAT.DatosAlumno | undefined> => {
     return await axios
-      .get<SESAT.Alumno>(`${import.meta.env.VITE_API_HOSTNAME}/alumno/` + id, {
+      .get<SESAT.DatosAlumno>(`${import.meta.env.VITE_API_HOSTNAME}/datos-alumno/` + id, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,
@@ -20,11 +20,11 @@ export namespace AlumnoEndpoint {
       });
   };
 
-  export const getAlumnos = async (
+  export const getDatosAlumnos = async (
     token: string
-  ): Promise<SESAT.Alumno[] | undefined> => {
+  ): Promise<SESAT.DatosAlumno[] | undefined> => {
     return await axios
-      .get<SESAT.Alumno[]>(`${import.meta.env.VITE_API_HOSTNAME}/alumno`, {
+      .get<SESAT.getDATA[]>(`${import.meta.env.VITE_API_HOSTNAME}/datos-alumno`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

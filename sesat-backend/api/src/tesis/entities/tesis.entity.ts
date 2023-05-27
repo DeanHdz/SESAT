@@ -54,7 +54,4 @@ export class Tesis {
     }
   )
   asignaciones_tesis: AsignacionTesis[];
-
-  @OneToMany(() => Comite, (comite) => comite.tesis, { eager: true })
-  comites: Comite[];
 }

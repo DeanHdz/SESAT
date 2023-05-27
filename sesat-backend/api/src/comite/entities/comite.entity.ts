@@ -18,14 +18,14 @@ export class Comite {
   @Column()
   clave_asesor: number;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.comites)
-  @JoinColumn({ name: "clave" })
+  @OneToOne(() => Usuario, { eager: true })
+  @JoinColumn({ name: "clave_asesor" })
   asesor: Usuario;
 
   @Column()
   id_tesis: number;
 
-  @ManyToOne(() => Tesis, (tesis) => tesis.comites)
+  @OneToOne(() => Tesis, {eager: true})
   @JoinColumn({ name: "id_tesis" })
   tesis: Tesis;
 
