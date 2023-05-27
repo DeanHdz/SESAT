@@ -8,7 +8,7 @@ const StudentTesisPhdPage = () => {
                 <Drawer />
             </div>
             <div className="w-9/12">
-                <AdminTesisCardList title="Tesis de Doctorado"/>                
+                <AdminTesisCardList title="Tesis de Doctorado" grade={"Maestría"}/>                
             </div>
 
         </div>

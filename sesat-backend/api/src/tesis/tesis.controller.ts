@@ -17,6 +17,16 @@ export class TesisController {
     return this.tesisService.findAll();
   }
 
+  @Get('/active')
+  findActive() {
+    return this.tesisService.findActive();
+  }
+
+  @Get('/inactive')
+  findInactive() {
+    return this.tesisService.findInactive();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tesisService.findOne(+id);
