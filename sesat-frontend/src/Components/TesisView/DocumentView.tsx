@@ -1,6 +1,6 @@
 
 import FullPDFViewer from "../PDFViewer/FullPDFViewer";
-import { ActaEvaluacion_Endpoint } from "../../api/acta-evaluacion.endpoint";
+//import { ActaEvaluacion_Endpoint } from "../../api/acta-evaluacion.endpoint";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
 import { decode } from "base64-arraybuffer";
 import { useLocation } from "react-router-dom";
@@ -19,17 +19,18 @@ import ProcessingAnim from "../ProcessingAnim/ProcessingAnim";
 
 const DocumentView = () => {
 
-
+  /*
   const [pdfFile, setPdfFile] = useState<Uint8Array | null>(null);
   const location = useLocation();
   const id_assign: string =location.state.id_assign; //  "102"; //
   const pdfType: string = location.state.pdfType; //"2"; //
+  */
   
 
 
   
     /*Esta funcion se ejecuta cada vez que el componente se renderiza */
-  
+  /*
   useEffect(() => {
 
 
@@ -84,8 +85,8 @@ const DocumentView = () => {
         **JSON Parse:
             https://www.w3schools.com/js/js_json_parse.asp
 
-   */}
-
+   }*/
+   /*
     async function requestActa() {
       if (id_assign) {
         try {
@@ -142,6 +143,6 @@ const DocumentView = () => {
       <ProcessingAnim title="Procesando..."/>
     );
 
-  }
+  }*/
 };
 export default DocumentView;

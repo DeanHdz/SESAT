@@ -1,4 +1,4 @@
-import CustomCalendar from "../CustomCalendar/CustomCalendar";
+/*import CustomCalendar from "../CustomCalendar/CustomCalendar";
 import { SecondaryButton } from "../../Components/Buttons/SecondaryButton";
 import { useEffect, useState } from "react";
 import autosize from 'autosize';
@@ -9,9 +9,10 @@ import { SESAT } from "../../Interfaces/ISESAT";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
 import { UsuarioEndpoint  } from "../../api/usuario.endpoint";
 import { ProgramaEndpoint  } from "../../api/programa.endpoint";
-
+*/
 
 const ReportForm = ({claveUnica = 295282}:{claveUnica: number}) => {
+  /*
   const [tesis, setTesis] = useState<SESAT.Tesis | undefined>();  
   const [alumno, setAlumno] = useState<SESAT.Usuario | undefined>();
   const [programa, setPrograma] = useState<SESAT.Programa | undefined>();
@@ -445,6 +446,6 @@ const ReportForm = ({claveUnica = 295282}:{claveUnica: number}) => {
         </div>
       )
   );
-};
+                */};
 
 export default ReportForm;
