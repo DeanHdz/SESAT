@@ -24,12 +24,16 @@ export const TesisRegistryForm = () => {
 
   const [isDisplayingExternalAsesor, setIsDisplayingExternalAsesor] = useState(true);
 
+  const [nombreExterno, setNombreExterno] = useState<string>()
+  const [apPatExterno, setApPatExterno] = useState<string>()
+  const [apMatExterno, setApMatExterno] = useState<string>()
+  const [correo, setCorreo] = useState<string>();
+  const [telefono, setTelefono] = useState<string>();
+  const [institucion, setInstitucion] = useState<string>();
+
   const [nombre, setNombre] = useState("");
-  const [correo, setCorreo] = useState("");
   const [asesor, setAsesor] = useState("");
   const [coAsesor, setCoAsesor] = useState("");
-  const [programa, setPrograma] = useState("");
-  const [modalidad, setModalidad] = useState("");
 
   const [fileSelected, setFileSelected] = useState<Blob | undefined>();
   const [idenfificador, setIdentificador] = useState("");
@@ -318,7 +322,7 @@ export const TesisRegistryForm = () => {
                       className="select h-1/4 py-2 px-10 shadow appearance-none rounded w-5/6 mb-10 border border-solid border-light-gray-22"
                       required
                       onChange={(e) => {
-                        setAsesor(e.target.value);
+                        setCoAsesor(e.target.value);
                       }}
                     >
                       <option disabled selected>
@@ -340,10 +344,10 @@ export const TesisRegistryForm = () => {
                       <input
                         className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
                         type="text"
-                        placeholder="Nombre/Tema completo de la tesis"
+                        placeholder="Nombre"
                         required
                         onChange={(e) => {
-                          setNombre(e.target.value);
+                          setNombreExterno(e.target.value);
                         }}
                       />
 
@@ -353,10 +357,10 @@ export const TesisRegistryForm = () => {
                       <input
                         className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
                         type="text"
-                        placeholder="Nombre/Tema completo de la tesis"
+                        placeholder="Apellido Paterno"
                         required
                         onChange={(e) => {
-                          setNombre(e.target.value);
+                          setApPatExterno(e.target.value);
                         }}
                       />
 
@@ -366,10 +370,10 @@ export const TesisRegistryForm = () => {
                       <input
                         className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
                         type="text"
-                        placeholder="Nombre/Tema completo de la tesis"
+                        placeholder="Apellido Materno"
                         required
                         onChange={(e) => {
-                          setNombre(e.target.value);
+                          setApMatExterno(e.target.value);
                         }}
                       />
                     </div>
@@ -380,10 +384,10 @@ export const TesisRegistryForm = () => {
                       <input
                         className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
                         type="text"
-                        placeholder="Nombre/Tema completo de la tesis"
+                        placeholder="Correo"
                         required
                         onChange={(e) => {
-                          setNombre(e.target.value);
+                          setCorreo(e.target.value);
                         }}
                       />
 
@@ -393,10 +397,11 @@ export const TesisRegistryForm = () => {
                       <input
                         className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
                         type="text"
-                        placeholder="Nombre/Tema completo de la tesis"
+                        maxLength={10}
+                        placeholder="Número de teléfono a 10 dígitos"
                         required
                         onChange={(e) => {
-                          setNombre(e.target.value);
+                          setTelefono(e.target.value);
                         }}
                       />
 
@@ -409,7 +414,7 @@ export const TesisRegistryForm = () => {
                         placeholder="Nombre/Tema completo de la tesis"
                         required
                         onChange={(e) => {
-                          setNombre(e.target.value);
+                          setInstitucion(e.target.value);
                         }}
                       />
                     </div>
