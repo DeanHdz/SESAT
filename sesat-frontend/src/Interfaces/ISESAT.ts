@@ -11,6 +11,7 @@ export namespace SESAT {
     id_datos_alumno: number | null;
     correo: string;
     id_datos_asesorexterno: number | null;
+    datos_alumno?: DatosAlumno;
   }
 
   export interface CreateUsuario {
@@ -213,7 +214,7 @@ export namespace SESAT {
     clave_alumno: number;
     titulo: string;
     fecharegistro: Date;
-    generacion: string;
+    generacion: string | undefined;
     registrada: boolean;
     ultimo_avance: number;
     estado_activo: boolean;
@@ -489,5 +490,6 @@ export namespace SESAT {
     apellido_mat: string;
     correo: string;
     grado_estudio: string;
+    generacion: string;
   }
 }
