@@ -5,7 +5,6 @@ import { UsuarioEndpoint } from "../../api/usuario.endpoint";
 import { DatosAlumnoEndpoint } from "../../api/datos-alumno.endpoint";
 import { ProgramaEndpoint } from "../../api/programa.endpoint";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
-import { AsignacionEndpoint } from "../../api/asignacion.endpoint";
 import SelectProgramas from "./SelectProgramas";
 
 export const StudentRegistryForm = () => {
@@ -58,6 +57,7 @@ export const StudentRegistryForm = () => {
           modalidad: modalidad,
           estado_activo: activeStatus,
           id_programa: parseInt(program),
+          generacion: usuarioPrueba?.generacion! ?? "",
         }, ""
       )
 

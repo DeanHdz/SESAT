@@ -29,7 +29,6 @@ export class TesisService {
     return this.tesisRepository.findOne({ where: { clave_alumno: id } });
   }
  
-
   update(updateTesisDto: UpdateTesisDto) {
     return this.tesisRepository.save(updateTesisDto);
   }
