@@ -76,7 +76,7 @@ export const StudentRegistryForm = () => {
         ""
       );
       
-      const tesis = await TesisEndpoint.postTesis(
+      await TesisEndpoint.postTesis(
         {
           clave_alumno: alumno?.clave! ?? 0,
           titulo: null,
@@ -88,13 +88,6 @@ export const StudentRegistryForm = () => {
         },
         ""
       );
-
-      /*const asignacion = await AsignacionEndpoint.postAsignacion(
-        {
-
-        },
-        ""
-      );*/
 
     } catch (err) {
       console.log(err);
