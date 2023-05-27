@@ -411,7 +411,7 @@ export const TesisRegistryForm = () => {
                       <input
                         className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-10"
                         type="text"
-                        placeholder="Nombre/Tema completo de la tesis"
+                        placeholder="Institución"
                         required
                         onChange={(e) => {
                           setInstitucion(e.target.value);

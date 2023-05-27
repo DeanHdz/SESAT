@@ -1,50 +1,40 @@
 import { useEffect, useState } from "react";
 import { SESAT } from "../../Interfaces/ISESAT";
-import { UsuarioPruebaEndpoint } from "../../api/usuario-prueba.endpoint";
+import { VariablesSistemaEndpoint } from "../../api/variables-sistema.endpoint";
+import { DatosAsesorExternoEndpoint } from "../../api/datos-asesorexterno.endpoint";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
 
 export const ExternalAsesorRegistryForm = () => {
-  const [claveUnica, setClaveUnica] = useState("");
+  const [nombre, setNombre] = useState<string>();
+  const [apPaterno, setApPaterno] = useState<string>();
+  const [apMaterno, setApMaterno] = useState<string>();
+  const [correo, setCorreo] = useState<string>();
+  const [telefono, setTelefono] = useState<string>();
+  const [institucion, setInstitucion] = useState<string>();
 
-
-  const [usuarioPrueba, setUsuarioPrueba] = useState<
-    SESAT.UsuarioPrueba | undefined
-  >();
-
-  const getUsuarioPrueba = async () => {
-    if (claveUnica && claveUnica.length == 6) {
-      setUsuarioPrueba(
-        await UsuarioPruebaEndpoint.getUsuarioPrueba(parseInt(claveUnica), "")
-      );
-      setHasShownUserInfo(true);
-    }
-
-    if (hasShownUserInfo == true) {
-      setUsuarioPrueba(
-        await UsuarioPruebaEndpoint.getUsuarioPrueba(parseInt(claveUnica), "")
-      );
-      setHasShownUserInfo(false);
-    }
-  };
-
-  useEffect(() => {
-    getUsuarioPrueba();
-  }, [claveUnica]);
 
   async function handleSubmit(e: any) {
     e.preventDefault();
     try {
+      const vars = await VariablesSistemaEndpoint.getVariablesSistema(1,"");
+      const id_datos = await DatosAsesorExternoEndpoint.postDatosAsesorExterno(
+        {
+          telefono: telefono! ?? "",
+          institucion: institucion! ?? "",
+        },
+        ""
+      )
       await UsuarioEndpoint.postUsuario(
         {
-          clave: parseInt(claveUnica),
-          nombre: usuarioPrueba?.nombre! ?? "",
-          apellido_paterno: usuarioPrueba?.apellido_mat! ?? "",
-          apellido_materno: usuarioPrueba?.apellido_mat! ?? "",
-          password: usuarioPrueba?.password! ?? "",
-          id_rol: 2,
+          clave: vars?.indice_clave_asesorexterno! ?? 0,
+          nombre: nombre! ?? "",
+          apellido_paterno: apPaterno! ?? "",
+          apellido_materno: apMaterno! ?? "",
+          password: "pass1234", //always gonna be default
+          id_rol: 4,
           id_datos_alumno: null,
-          correo: usuarioPrueba?.correo! ?? "",
-          id_datos_asesorexterno: null,
+          correo: correo! ?? "",
+          id_datos_asesorexterno: id_datos?.id_datos_asesorexterno! ?? null,
         },
         ""
       );
@@ -55,40 +45,95 @@ export const ExternalAsesorRegistryForm = () => {
   }
 
   return (
-    
-      <div className="flex flex-wrap gap-4 m-8 ">
-        <label className="block text-4xl font-bold">Dar de alta Asesor</label>
-        <div className="border-b border-light-gray-22 border-solid w-full"></div>
+    <div className="flex flex-wrap gap-4 m-8 ">
+      <label className="block text-4xl font-bold">
+        Dar de alta Asesor
+        </label>
+      <div className="border-b border-light-gray-22 border-solid w-full"></div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="border border-light-gray-22 border-solid rounded p-10 m-4 self-start"
-        >
-          <p className="text-3xl">Añadir Asesor Externo</p>
+      <form
+        onSubmit={handleSubmit}
+        className="border border-light-gray-22 border-solid rounded p-10 m-4 self-start"
+      >
+        <p className="text-3xl">Añadir Asesor Externo</p>
 
-          <div className="form-control w-full max-w-xs">
-            <label className="label">
-              <span className="label-text">Clave Única</span>
-            </label>
-            <input
-              type="text"
-              placeholder="0-9"
-              maxLength={6}
-              className="input rounded input-bordered w-full max-w-xs"
-              value={claveUnica}
-              onChange={(e) => {
-                setClaveUnica(e.target.value);
-              }}
-            />
-          </div>
+        <div className="form-control w-full max-w-xs">
+          <label className="label">
+            <span className="label-text">Nombre</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Nombre"
+            className="input rounded input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setNombre(e.target.value);
+            }}
+          />
+          <label className="label">
+            <span className="label-text">Apellido Paterno</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Apellido Paterno"
+            className="input rounded input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setApPaterno(e.target.value);
+            }}
+          />
+          <label className="label">
+            <span className="label-text">Apellido Materno</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Apellido Paterno"
+            className="input rounded input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setApMaterno(e.target.value);
+            }}
+          />
+          <label className="label">
+            <span className="label-text">Correo</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Correo"
+            className="input rounded input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setNombre(e.target.value);
+            }}
+          />
+          <label className="label">
+            <span className="label-text">Teléfono</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Número de teléfono a 10 dígitos"
+            maxLength={10}
+            className="input rounded input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setNombre(e.target.value);
+            }}
+          />
+          <label className="label">
+            <span className="label-text">Institución</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Institución"
+            className="input rounded input-bordered w-full max-w-xs"
+            onChange={(e) => {
+              setNombre(e.target.value);
+            }}
+          />
+        </div>
 
-          <div className="ml-auto mt-5 flex justify-end items-center">
-            <button type="submit" className="btn shadow rounded">
-              Agregar
-            </button>
-          </div>
-        </form>
-      </div>
+        <div className="ml-auto mt-5 flex justify-end items-center">
+          <button type="submit" className="btn shadow rounded">
+            Agregar
+          </button>
+        </div>
+      </form>
+    </div>
   )
 };
 
