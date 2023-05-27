@@ -5,8 +5,6 @@ const UserIcon = () =>
 {
   const [user, setUser] = useState<SESAT.LoggedUser>(JSON.parse(sessionStorage.getItem("loggedUser") || '{}'));
 
-  console.log(user.usuario);
-
   return(
     <label tabIndex={0} className="btn btn-ghost btn-circle avatar placeholder">
       <div className="bg-[#31325c] text-neutral-content rounded-full w-[40px]">

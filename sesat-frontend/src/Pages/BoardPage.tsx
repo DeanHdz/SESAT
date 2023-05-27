@@ -3,15 +3,17 @@ import InsiteBaner from "../Components/Banner/InsiteBanner";
 import BreadcrumbContainer from "../Components/Breadcrumbs/BreadcrumbContainer";
 import Board from "../Components/Board/Board";
 import Footer from "../Components/Footer/Footer";
-let paths: string[] = [];
-paths.push("Tablero");
-
-let links: string[] = [];
-links.push("/board");
+import { useEffect } from "react";
 
 const BoardPage = () =>
 {
-  return(            
+  let paths: string[] = [];
+  paths.push("Tablero");
+
+  let links: string[] = [];
+  links.push("/board");
+  
+  return(   
     <div className="overflow-hidden">
       <Navbar />
       <InsiteBaner topic={"Tablero "} />
