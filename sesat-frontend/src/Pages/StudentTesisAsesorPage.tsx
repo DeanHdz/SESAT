@@ -17,7 +17,7 @@ const StudentTesisAsesorPage = () => {
                 <InsiteBaner topic={"Tablero "} />
                 <BreadcrumbContainer paths={paths} links={links} />
                 <div className="w-full p-6 flex justify-center">
-                    <StudentsCardList title="Tesis de Doctorado" />
+                    <StudentsCardList title="Tesis de Doctorado" grade="Doctorado"/>
                 </div>
             </div>
 

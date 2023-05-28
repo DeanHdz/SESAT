@@ -17,7 +17,6 @@ const BoardPage = () => {
       <Navbar />
       <InsiteBaner topic={"Tablero "} />
       <BreadcrumbContainer paths={paths} links={links} />
-      <AsesorBoard />
       <BoardAsesor />
     </div>
   )

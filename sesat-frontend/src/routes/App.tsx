@@ -65,10 +65,10 @@ export default function App() {
         <Route path="/admin-board/view-tesis-phd/view_tesis" element={<TesisViewPage />} />  
         <Route path="/admin-board/view-students-M" element={<MStudentListPage />} />
         <Route path="/admin-board/view-students-Phd" element={<PhdStudentListPage />} />
-        <Route path="/board-asesor/view-tesis-masters" element={<StudentTesisMAsesor />} />
-        <Route path="/board-asesor/view-tesis-phd" element={<StudentTesisAsesorPage />} />
-        <Route path="/board-asesor/view-tesis-masters/view_tesis" element={<TesisViewPage />} />  
-        <Route path="/board-asesor/view-tesis-phd/view_tesis" element={<TesisViewPage />} />  
+        <Route path="/asesor-board/view-tesis-masters" element={<StudentTesisMAsesor />} />
+        <Route path="/asesor-board/view-tesis-phd" element={<StudentTesisAsesorPage />} />
+        <Route path="/asesor-board/view-tesis-masters/view_tesis" element={<TesisViewPage />} />  
+        <Route path="/asesor-board/view-tesis-phd/view_tesis" element={<TesisViewPage />} />  
       </Routes>
     </ScrollToTop>
   );

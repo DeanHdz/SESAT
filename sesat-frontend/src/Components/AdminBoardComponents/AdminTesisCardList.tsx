@@ -12,6 +12,11 @@ const AdminTesisCardList = ({
 }) => {
   const [tesis, setTesis] = useState<SESAT.Tesis[]>();
   const [filter, setFilter] = useState("Todo");
+  const [search, setSearch] = useState("");
+
+  const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  }
 
   const onChangeFilter = (e: ChangeEvent<HTMLSelectElement>) => {
     setFilter(e.target.value);
@@ -74,7 +79,14 @@ const AdminTesisCardList = ({
             Tesis En progreso
           </option>
         </select>
-        <input type="search" placeholder="Buscar alumnos" className="rounded" />
+        <input
+          type="search"
+          onChange={(e) => {
+            onChangeSearch(e);
+          }}
+          placeholder="Buscar alumnos"
+          className="rounded"
+        />
       </div>
       {showTesis()}
     </div>
