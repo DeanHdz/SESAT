@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import { CreateComiteDto } from './dto/create-comite.dto';
 import { UpdateComiteDto } from './dto/update-comite.dto';
+import { Comite } from './entities/comite.entity';
 
 @Injectable()
 export class ComiteService {
-  create(createComiteDto: CreateComiteDto) {
-    return 'This action adds a new comite';
+  constructor(
+    @InjectRepository(Comite)
+    private comiteRepository: Repository<Comite>
+  ) {}
+  
+  create(CreateComiteDto: CreateComiteDto) {
+    return this.comiteRepository.save(CreateComiteDto);
   }
 
   findAll() {
-    return `This action returns all comite`;
+    return this.comiteRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} comite`;
+    return this.comiteRepository.findOne({ where: { id_comite: id } });
   }
 
-  update(id: number, updateComiteDto: UpdateComiteDto) {
-    return `This action updates a #${id} comite`;
+  update(UpdateComiteDto: UpdateComiteDto) {
+    return this.comiteRepository.save(UpdateComiteDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} comite`;
+    return this.comiteRepository.delete(id);
   }
 }

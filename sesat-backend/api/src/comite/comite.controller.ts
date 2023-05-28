@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { ComiteService } from './comite.service';
 import { CreateComiteDto } from './dto/create-comite.dto';
 import { UpdateComiteDto } from './dto/update-comite.dto';
 
 @Controller('comite')
-export class ComiteController {
+export class ComiteController 
+{
   constructor(private readonly comiteService: ComiteService) {}
 
   @Post()
-  create(@Body() createComiteDto: CreateComiteDto) {
-    return this.comiteService.create(createComiteDto);
+  create(@Body() CreateComiteDto: CreateComiteDto) {
+    return this.comiteService.create(CreateComiteDto);
   }
 
   @Get()
@@ -22,9 +23,9 @@ export class ComiteController {
     return this.comiteService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateComiteDto: UpdateComiteDto) {
-    return this.comiteService.update(+id, updateComiteDto);
+  @Put(':id')
+  update(@Body() updateComiteDto: UpdateComiteDto) {
+    return this.comiteService.update(updateComiteDto);
   }
 
   @Delete(':id')
