@@ -6,6 +6,11 @@ import { SESAT } from "../../Interfaces/ISESAT";
 import SelectAsesores from "./SelectAsesores";
 import SelectProgramas from "./SelectProgramas";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
+import { ComiteEndpoint } from "../../api/comite.endpoint";
+import { AsignacionEndpoint } from "../../api/asignacion.endpoint";
+import { AsignacionTesisEndpoint } from "../../api/asignacion-tesis.endpoint";
+
+
 import { encode } from "base64-arraybuffer";
 
 export const TesisRegistryForm = () => {
@@ -198,25 +203,48 @@ export const TesisRegistryForm = () => {
           }          
         };
       }*/
-
-      if (user && tesis) {
-        const resp = await TesisEndpoint.putTesis(
-          {
-            id_tesis: tesis.id_tesis,
-            clave_alumno: user.usuario.clave,
-            titulo: nombre,
-            fecharegistro: new Date(),
-            generacion: user.usuario.datos_alumno?.generacion,
-            registrada: true,
-            ultimo_avance: 1,
-            estado_activo: true,
-          },
-          ""
-        );
-        if (resp) {
-          navigate("/board");
+      if(isDisplayingExternalAsesor == true)
+      {
+        if (user && tesis) {
+          const resp = await TesisEndpoint.putTesis(
+            {
+              id_tesis: tesis.id_tesis,
+              clave_alumno: user.usuario.clave,
+              titulo: nombre,
+              fecharegistro: new Date(),
+              generacion: user.usuario.datos_alumno?.generacion,
+              registrada: true,
+              ultimo_avance: 1,
+              estado_activo: true,
+            },
+            ""
+          );
+          await ComiteEndpoint.postComite(
+            {
+              clave_asesor: parseInt(asesor! ?? 0),
+              id_tesis: resp?.id_tesis! ?? 0,
+              id_funcion: 1,
+            }, 
+            ""
+          );
+          await ComiteEndpoint.postComite(
+            {
+              clave_asesor: parseInt(coAsesor! ?? 0),
+              id_tesis: resp?.id_tesis! ?? 0,
+              id_funcion: 2,
+            }, 
+            ""
+          );
+          /*if (resp) {
+            navigate("/board");
+          }*/
         }
       }
+      else
+      {
+
+      }
+      
     } catch (err) {
       console.log(err);
     }

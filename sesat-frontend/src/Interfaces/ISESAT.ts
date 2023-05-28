@@ -230,7 +230,6 @@ export namespace SESAT {
   }
 
   export interface CreateComite {
-    id_comite: number;
     clave_asesor: number;
     id_tesis: number;
     id_funcion: number;

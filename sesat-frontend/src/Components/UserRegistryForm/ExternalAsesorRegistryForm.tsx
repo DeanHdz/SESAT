@@ -38,6 +38,12 @@ export const ExternalAsesorRegistryForm = () => {
         },
         ""
       );
+      if(vars){
+        await VariablesSistemaEndpoint.putVariablesSistema({
+          id_variables_sistema: 1,
+          indice_clave_asesorexterno: vars?.indice_clave_asesorexterno + 1,
+        },"")
+      }
     } catch (err) {
       console.log(err);
     }
@@ -99,7 +105,7 @@ export const ExternalAsesorRegistryForm = () => {
             placeholder="Correo"
             className="input rounded input-bordered w-full max-w-xs"
             onChange={(e) => {
-              setNombre(e.target.value);
+              setCorreo(e.target.value);
             }}
           />
           <label className="label">
@@ -111,7 +117,7 @@ export const ExternalAsesorRegistryForm = () => {
             maxLength={10}
             className="input rounded input-bordered w-full max-w-xs"
             onChange={(e) => {
-              setNombre(e.target.value);
+              setTelefono(e.target.value);
             }}
           />
           <label className="label">
@@ -122,7 +128,7 @@ export const ExternalAsesorRegistryForm = () => {
             placeholder="Institución"
             className="input rounded input-bordered w-full max-w-xs"
             onChange={(e) => {
-              setNombre(e.target.value);
+              setInstitucion(e.target.value);
             }}
           />
         </div>
