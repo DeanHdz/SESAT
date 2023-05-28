@@ -16,7 +16,7 @@ const AdminTesisCardList = ({
 
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-  }
+  };
 
   const onChangeFilter = (e: ChangeEvent<HTMLSelectElement>) => {
     setFilter(e.target.value);
@@ -49,10 +49,19 @@ const AdminTesisCardList = ({
   }, [filter]);
 
   const showTesis = () => {
+    let nombre = "";
     if (tesis)
       for (let i = 0; i < tesis.length; i++) {
+        nombre =
+          tesis[i].alumno.nombre +
+          tesis[i].alumno.apellido_paterno +
+          tesis[i].alumno.apellido_materno;
         if (tesis[i].alumno.datos_alumno?.grado_estudio == grade)
-          return <AdminTesisCard tesis={tesis[i]} />;
+          if (
+            parseInt(search) == tesis[i].clave_alumno ||
+            nombre.toLowerCase().includes(search.toLowerCase())
+          )
+            return <AdminTesisCard tesis={tesis[i]} />;
       }
     else return <></>;
   };
