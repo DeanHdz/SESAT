@@ -169,6 +169,7 @@ export const TesisRegistryForm = () => {
   }
 
   async function handleSubmit(e: any) {
+    console.log("handleSubmit");
     e.preventDefault();
     try {
       /*if (fileSelected) {
@@ -209,7 +210,7 @@ export const TesisRegistryForm = () => {
             },
             ""
           );
-          const comite = await ComiteEndpoint.postComite(
+          await ComiteEndpoint.postComite(
             {
               clave_asesor: parseInt(asesor! ?? 0),
               id_tesis: resp?.id_tesis! ?? 0,
@@ -217,20 +218,54 @@ export const TesisRegistryForm = () => {
             },
             ""
           );
-          console.log(comite);
+          const vars = await VariablesSistemaEndpoint.getVariablesSistema(
+            1,
+            ""
+          );
+          const id_datos =
+            await DatosAsesorExternoEndpoint.postDatosAsesorExterno(
+              {
+                telefono: telefono! ?? "",
+                institucion: institucion! ?? "",
+              },
+              ""
+            );
+          const externo = await UsuarioEndpoint.postUsuario(
+            {
+              clave: vars?.indice_clave_asesorexterno! ?? 0,
+              nombre: nombre! ?? "",
+              apellido_paterno: apPatExterno! ?? "",
+              apellido_materno: apMatExterno! ?? "",
+              password: "pass1234", //always gonna be default
+              id_rol: 4,
+              id_datos_alumno: null,
+              correo: correo! ?? "",
+              id_datos_asesorexterno: id_datos?.id_datos_asesorexterno! ?? null,
+            },
+            ""
+          );
+          if (vars) {
+            await VariablesSistemaEndpoint.putVariablesSistema(
+              {
+                id_variables_sistema: 1,
+                indice_clave_asesorexterno:
+                  vars?.indice_clave_asesorexterno + 1,
+              },
+              ""
+            );
+          }
           const last = await ComiteEndpoint.postComite(
             {
-              clave_asesor: parseInt(coAsesor! ?? 0),
+              clave_asesor: externo?.clave! ?? 0,
               id_tesis: resp?.id_tesis! ?? 0,
               id_funcion: 2,
             },
             ""
           );
-          //if (last) {
-            //navigate("/board");
-          //}
+          if (last) {
+            navigate("/board");
+          }
         } else {
-          console.log("in");
           if (user && tesis) {
             const resp = await TesisEndpoint.putTesis(
               {
@@ -245,7 +280,7 @@ export const TesisRegistryForm = () => {
               },
               ""
             );
-            await ComiteEndpoint.postComite(
+            const comite = await ComiteEndpoint.postComite(
               {
                 clave_asesor: parseInt(asesor! ?? 0),
                 id_tesis: resp?.id_tesis! ?? 0,
@@ -253,46 +288,9 @@ export const TesisRegistryForm = () => {
               },
               ""
             );
-            const vars = await VariablesSistemaEndpoint.getVariablesSistema(
-              1,
-              ""
-            );
-            const id_datos =
-              await DatosAsesorExternoEndpoint.postDatosAsesorExterno(
-                {
-                  telefono: telefono! ?? "",
-                  institucion: institucion! ?? "",
-                },
-                ""
-              );
-            const externo = await UsuarioEndpoint.postUsuario(
-              {
-                clave: vars?.indice_clave_asesorexterno! ?? 0,
-                nombre: nombre! ?? "",
-                apellido_paterno: apPatExterno! ?? "",
-                apellido_materno: apMatExterno! ?? "",
-                password: "pass1234", //always gonna be default
-                id_rol: 4,
-                id_datos_alumno: null,
-                correo: correo! ?? "",
-                id_datos_asesorexterno:
-                  id_datos?.id_datos_asesorexterno! ?? null,
-              },
-              ""
-            );
-            if (vars) {
-              await VariablesSistemaEndpoint.putVariablesSistema(
-                {
-                  id_variables_sistema: 1,
-                  indice_clave_asesorexterno:
-                    vars?.indice_clave_asesorexterno + 1,
-                },
-                ""
-              );
-            }
             const last = await ComiteEndpoint.postComite(
               {
-                clave_asesor: externo?.clave! ?? 0,
+                clave_asesor: parseInt(coAsesor! ?? 0),
                 id_tesis: resp?.id_tesis! ?? 0,
                 id_funcion: 2,
               },
@@ -304,7 +302,7 @@ export const TesisRegistryForm = () => {
           }
         }
       }
-    }catch (err) {
+    } catch (err) {
       console.log(err);
     }
   }
@@ -384,29 +382,11 @@ export const TesisRegistryForm = () => {
                 }}
               >
                 Cambiar Tipo
-              </button>             
+              </button>
             </div>
 
             <div className="border border-black w-5/6 mt-5">
               {isDisplayingExternalAsesor ? (
-                <div>
-                  <label className="mb-3 block text-lg font-bold">Nombre</label>
-                  <select
-                    className="select h-1/4 py-2 px-10 shadow appearance-none rounded w-5/6 mb-10 border border-solid border-light-gray-22"
-                  required
-                    onChange={(e) => {
-                      setCoAsesor(e.target.value);
-                    }}
-                  >
-                    <option disabled selected>
-                      Nombre completo Asesor/a
-                    </option>
-                    {
-                      renderSelectAsesores() //display las opciones de asesores de manera condicional
-                    }
-                  </select>
-                </div>
-              ) : (
                 <div className="flex flex-row">
                   <div className="w-3/6">
                     <label className="mb-3 block text-lg font-bold">
@@ -490,14 +470,35 @@ export const TesisRegistryForm = () => {
                     />
                   </div>
                 </div>
+              ) : (
+                <div>
+                  <label className="mb-3 block text-lg font-bold">Nombre</label>
+                  <select
+                    className="select h-1/4 py-2 px-10 shadow appearance-none rounded w-5/6 mb-10 border border-solid border-light-gray-22"
+                    required
+                    onChange={(e) => {
+                      setCoAsesor(e.target.value);
+                    }}
+                  >
+                    <option disabled selected>
+                      Nombre completo Asesor/a
+                    </option>
+                    {
+                      renderSelectAsesores() //display las opciones de asesores de manera condicional
+                    }
+                  </select>
+                </div>
               )}
             </div>
             <div className="w-5/6 flex justify-end items-center mt-10">
               <button
                 type="submit"
                 className="btn shadow rounded hover:border hover:border-[#003067]"
-                onClick={(e) => {
-                  handleSubmit(e)
+                onClick={() => {
+                  console.log("Pressed");
+                  console.log(correo);
+                  console.log(telefono);
+                  console.log(institucion);
                 }}
               >
                 Registrar Tesis
