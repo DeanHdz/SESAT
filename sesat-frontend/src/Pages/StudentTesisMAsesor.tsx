@@ -10,19 +10,22 @@ let links: string[] = [];
 links.push("/BoardAsesor");
 
 const StudentTesisMPage = () => {
-    return (
-        <div className="flex flex-row">
-            <div className="w-9/12">
-                <Navbar />
-                <InsiteBaner topic={"Tablero "} />
-                <BreadcrumbContainer paths={paths} links={links} />
-                <div className="w-full p-6 flex justify-center">
-                    <AdminTesisCardList title="Tesis de Maestría" grade="Maestría"/>
-                </div>
-            </div>
-
+  return (
+    <div className="flex flex-row">
+      <div className="w-9/12">
+        <Navbar />
+        <InsiteBaner topic={"Tablero "} />
+        <BreadcrumbContainer paths={paths} links={links} />
+        <div className="w-full p-6 flex justify-center">
+          <AdminTesisCardList
+            title="Tesis de Maestría"
+            grade="Maestría"
+            role="Asesor"
+          />
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default StudentTesisMPage;

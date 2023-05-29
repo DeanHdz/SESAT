@@ -25,6 +25,11 @@ export class UsuarioController {
     return this.usuarioService.findAsesores();
   }
 
+  @Get('/alumnos')
+  findAlumnos() {
+    return this.usuarioService.findAlumnos();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(+id);

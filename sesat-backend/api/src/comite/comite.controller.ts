@@ -1,11 +1,18 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
-import { ComiteService } from './comite.service';
-import { CreateComiteDto } from './dto/create-comite.dto';
-import { UpdateComiteDto } from './dto/update-comite.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from "@nestjs/common";
+import { ComiteService } from "./comite.service";
+import { CreateComiteDto } from "./dto/create-comite.dto";
+import { UpdateComiteDto } from "./dto/update-comite.dto";
 
-@Controller('comite')
-export class ComiteController 
-{
+@Controller("comite")
+export class ComiteController {
   constructor(private readonly comiteService: ComiteService) {}
 
   @Post()
@@ -18,18 +25,28 @@ export class ComiteController
     return this.comiteService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.comiteService.findOne(+id);
   }
 
-  @Put(':id')
+  @Get("/per-asesor/:id")
+  findPerAsesor(@Param("id") id: string) {
+    return this.comiteService.findPerAsesor(+id);
+  }
+
+  @Get("/per-tesis/:id")
+  findPerTesis(@Param("id") id: string) {
+    return this.comiteService.findPerTesis(+id);
+  }
+
+  @Put(":id")
   update(@Body() updateComiteDto: UpdateComiteDto) {
     return this.comiteService.update(updateComiteDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.comiteService.remove(+id);
   }
 }

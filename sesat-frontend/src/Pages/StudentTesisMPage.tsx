@@ -8,7 +8,11 @@ const StudentTesisMPage = () => {
         <Drawer />
       </div>
       <div className="w-9/12">
-        <AdminTesisCardList title="Tesis de Maestría" grade="Maestría"/>
+        <AdminTesisCardList
+          title="Tesis de Maestría"
+          grade="Maestría"
+          role="Admin"
+        />
       </div>
     </div>
   );

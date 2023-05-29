@@ -227,6 +227,10 @@ export namespace SESAT {
     clave_asesor: number;
     id_tesis: number;
     id_funcion: number;
+    asesor: Usuario;
+    tesis: Tesis;
+    funcion: Funcion;
+
   }
 
   export interface CreateComite {
@@ -408,6 +412,7 @@ export namespace SESAT {
     modalidad: string;
     estado_activo: boolean;
     id_programa: number;
+    programa: Programa | null; //Probablemente de problemas
   }
 
   export interface CreateDatosAlumno {

@@ -1,4 +1,4 @@
-import LandingNavbar from "../Components/Navbar/landingNavbar"
+import LandingNavbar from "../Components/Navbar/LandingNavbar"
 import LandingBanner from "../Components/Banner/LandingBanner"
 import LandingBase from "../Components/LandingBase/LandingBase"
 

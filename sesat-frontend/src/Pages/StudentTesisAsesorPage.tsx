@@ -10,19 +10,22 @@ let links: string[] = [];
 links.push("/BoardAsesor");
 
 const StudentTesisAsesorPage = () => {
-    return (
-        <div className="flex flex-row">
-            <div className="w-9/12">
-                <Navbar />
-                <InsiteBaner topic={"Tablero "} />
-                <BreadcrumbContainer paths={paths} links={links} />
-                <div className="w-full p-6 flex justify-center">
-                    <StudentsCardList title="Tesis de Doctorado" grade="Doctorado"/>
-                </div>
-            </div>
-
+  return (
+    <div className="flex flex-row">
+      <div className="w-9/12">
+        <Navbar />
+        <InsiteBaner topic={"Tablero "} />
+        <BreadcrumbContainer paths={paths} links={links} />
+        <div className="w-full p-6 flex justify-center">
+          <StudentsCardList
+            title="Tesis de Doctorado"
+            grade="Doctorado"
+            role="Asesor"
+          />
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default StudentTesisAsesorPage;

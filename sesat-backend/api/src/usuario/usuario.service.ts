@@ -24,6 +24,10 @@ export class UsuarioService {
     return this.usuarioRepository.find({ where: { id_rol: 2 } });
   }
 
+  findAlumnos() {
+    return this.usuarioRepository.find({ where: { id_rol: 3 } });
+  }
+
   findOne(id: number) {
     return this.usuarioRepository.findOne({ where: { clave: id } });
   }

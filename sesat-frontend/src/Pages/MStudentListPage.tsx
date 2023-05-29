@@ -8,7 +8,7 @@ const MStudentListPage = () => {
                 <Drawer />
             </div>
             <div className="w-9/12">
-                <StudentsProfileList title="Alumnos de Maestría"/>                
+                <StudentsProfileList title="Perfiles de Alumnos"/>                
             </div>
         </div>
     );

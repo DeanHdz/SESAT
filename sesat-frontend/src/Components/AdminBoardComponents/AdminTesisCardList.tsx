@@ -2,17 +2,24 @@ import { useEffect, useState, ChangeEvent } from "react";
 import AdminTesisCard from "./AdminTesisCard";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
+import { ComiteEndpoint } from "../../api/comite.endpoint";
 
 const AdminTesisCardList = ({
   title,
   grade,
+  role,
 }: {
   title: string;
   grade: string;
+  role: string;
 }) => {
+  const [user, setUser] = useState<SESAT.LoggedUser>(
+    JSON.parse(sessionStorage.getItem("loggedUser") || "{}")
+  );
   const [tesis, setTesis] = useState<SESAT.Tesis[]>();
   const [filter, setFilter] = useState("Todo");
   const [search, setSearch] = useState("");
+  const [comite, setComite] = useState<SESAT.Comite[]>();
 
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -22,56 +29,84 @@ const AdminTesisCardList = ({
     setFilter(e.target.value);
   };
 
+  let tesisCards = [];
+
   useEffect(() => {
+    //let tes: SESAT.Tesis[] | undefined;
     switch (filter) {
       case "activo":
-        TesisEndpoint.getTesisActivas("").then((theses) => {
-          if (theses) {
-            setTesis(theses);
-          }
-        });
+        if (role == "Admin") {
+          TesisEndpoint.getTesisActivas("").then((theses) => {
+            if (theses) {
+              setTesis(theses);
+            }
+          });
+        } else {
+          ComiteEndpoint.getPerAsesor(user.usuario.clave, "").then((comite) => {
+            if (comite) {
+              setTesis(comite.map((c) => c.tesis));
+              console.log(comite.map((c) => c.tesis));
+            }
+          });
+        }
         break;
       case "inactivo":
-        TesisEndpoint.getTesisInactivas("").then((theses) => {
-          if (theses) {
-            setTesis(theses);
-          }
-        });
+        if (role == "Admin") {
+          TesisEndpoint.getTesisInactivas("").then((theses) => {
+            if (theses) {
+              setTesis(theses);
+            }
+          });
+        } else {
+          ComiteEndpoint.getPerAsesor(user.usuario.clave, "").then((comite) => {
+            if (comite) {
+              setTesis(comite.map((c) => c.tesis));
+              console.log(comite.map((c) => c.tesis));
+            }
+          });
+        }
         break;
       default:
-        TesisEndpoint.getTheses("").then((theses) => {
-          if (theses) {
-            setTesis(theses);
-          }
-        });
+        if (role == "Admin") {
+          TesisEndpoint.getTheses("").then((theses) => {
+            if (theses) {
+              setTesis(theses);
+            }
+          });
+        } else {
+          ComiteEndpoint.getPerAsesor(user.usuario.clave, "").then((comite) => {
+            if (comite) {
+              setTesis(comite.map((c) => c.tesis));
+              console.log(comite.map((c) => c.tesis));
+            }
+          });
+        }
         break;
     }
   }, [filter]);
 
-  const showTesis = () => {
-    let nombre = "";
-    if (tesis)
-      for (let i = 0; i < tesis.length; i++) {
-        nombre =
-          tesis[i].alumno.nombre +
-          tesis[i].alumno.apellido_paterno +
-          tesis[i].alumno.apellido_materno;
-        if (tesis[i].alumno.datos_alumno?.grado_estudio == grade)
-          if (
-            parseInt(search) == tesis[i].clave_alumno ||
-            nombre.toLowerCase().includes(search.toLowerCase())
-          )
-            return <AdminTesisCard tesis={tesis[i]} />;
-      }
-    else return <></>;
-  };
+  let nombre = "";
+  if (tesis)
+    for (let i = 0; i < tesis.length; i++) {
+      nombre =
+        tesis[i].alumno.nombre +
+        " " +
+        tesis[i].alumno.apellido_paterno +
+        " " +
+        tesis[i].alumno.apellido_materno;
+      if (tesis[i].alumno.datos_alumno?.grado_estudio == grade)
+        if (
+          parseInt(search) == tesis[i].clave_alumno ||
+          nombre.toLowerCase().includes(search.toLowerCase())
+        )
+          //if(role == "Asesor" && tesis[i] == )
+          tesisCards.push(<AdminTesisCard tesis={tesis[i]} />);
+    }
+  else return <></>;
 
-  return (
-    <div className="w-full p-6 flex flex-col">
-      <label className="m-3 block text-2xl font-bold cursor-pointer">
-        {title}
-      </label>
-      <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
+  const showFilter = () => {
+    if (role == "Admin") {
+      return (
         <select
           onChange={(e) => {
             onChangeFilter(e);
@@ -88,6 +123,17 @@ const AdminTesisCardList = ({
             Tesis En progreso
           </option>
         </select>
+      );
+    }
+  };
+
+  return (
+    <div className="w-full p-6 flex flex-col">
+      <label className="m-3 block text-2xl font-bold cursor-pointer">
+        {title}
+      </label>
+      <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
+        {showFilter()}
         <input
           type="search"
           onChange={(e) => {
@@ -97,7 +143,7 @@ const AdminTesisCardList = ({
           className="rounded"
         />
       </div>
-      {showTesis()}
+      {tesisCards}
     </div>
   );
 };

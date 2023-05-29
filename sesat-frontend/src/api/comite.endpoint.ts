@@ -7,8 +7,43 @@ export namespace ComiteEndpoint {
     token: string
   ): Promise<SESAT.Comite | undefined> => {
     return await axios
-      .get<SESAT.Comite>(
-        `${import.meta.env.VITE_API_HOSTNAME}/comite/` + id,
+      .get<SESAT.Comite>(`${import.meta.env.VITE_API_HOSTNAME}/comite/` + id, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then(({ data }) => {
+        if (data) {
+          return data;
+        }
+      });
+  };
+
+  export const getAllComites = async (
+    token: string
+  ): Promise<SESAT.Comite[] | undefined> => {
+    return await axios
+      .get<SESAT.Comite[]>(`${import.meta.env.VITE_API_HOSTNAME}/comite`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then(({ data }) => {
+        if (data) {
+          return data;
+        }
+      });
+  };
+
+  export const getPerAsesor = async (
+    id: number,
+    token: string
+  ): Promise<SESAT.Comite[] | undefined> => {
+    return await axios
+      .get<SESAT.Comite[]>(
+        `${import.meta.env.VITE_API_HOSTNAME}/comite/per-asesor/` + id,
         {
           headers: {
             "Content-Type": "application/json",
@@ -23,12 +58,13 @@ export namespace ComiteEndpoint {
       });
   };
 
-  export const getAllComites = async (
+  export const getPerTesis = async (
+    id: number,
     token: string
   ): Promise<SESAT.Comite[] | undefined> => {
     return await axios
       .get<SESAT.Comite[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/comite`,
+        `${import.meta.env.VITE_API_HOSTNAME}/comite/per-tesis/` + id,
         {
           headers: {
             "Content-Type": "application/json",
@@ -48,16 +84,12 @@ export namespace ComiteEndpoint {
     token: string
   ): Promise<SESAT.Comite | undefined> => {
     return await axios
-      .post(
-        `${import.meta.env.VITE_API_HOSTNAME}/comite`,
-        CreateComiteDto,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
+      .post(`${import.meta.env.VITE_API_HOSTNAME}/comite`, CreateComiteDto, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      })
       .then(({ data }) => {
         if (data) {
           return data;
@@ -70,16 +102,12 @@ export namespace ComiteEndpoint {
     token: string
   ): Promise<SESAT.Usuario | undefined> => {
     return await axios
-      .put(
-        `${import.meta.env.VITE_API_HOSTNAME}/comite`,
-        UpdateComiteDto,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
+      .put(`${import.meta.env.VITE_API_HOSTNAME}/comite`, UpdateComiteDto, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      })
       .then(({ data }) => {
         if (data) {
           return data;
