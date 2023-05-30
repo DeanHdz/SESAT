@@ -7,10 +7,6 @@ import SelectAsesores from "./SelectAsesores";
 import SelectProgramas from "./SelectProgramas";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
 import { ComiteEndpoint } from "../../api/comite.endpoint";
-import { AsignacionEndpoint } from "../../api/asignacion.endpoint";
-import { AsignacionTesisEndpoint } from "../../api/asignacion-tesis.endpoint";
-import { DatosAsesorExternoEndpoint } from "../../api/datos-asesorexterno.endpoint";
-import { VariablesSistemaEndpoint } from "../../api/variables-sistema.endpoint";
 
 import { encode } from "base64-arraybuffer";
 import { TbFileSpreadsheet } from "react-icons/tb";
@@ -29,16 +25,6 @@ export const TesisRegistryForm = () => {
   useEffect(() => {
     GetTesis();
   }, []);
-
-  const [isDisplayingExternalAsesor, setIsDisplayingExternalAsesor] =
-    useState(false);
-
-  const [nombreExterno, setNombreExterno] = useState<string>();
-  const [apPatExterno, setApPatExterno] = useState<string>();
-  const [apMatExterno, setApMatExterno] = useState<string>();
-  const [correo, setCorreo] = useState<string>();
-  const [telefono, setTelefono] = useState<string>();
-  const [institucion, setInstitucion] = useState<string>();
 
   const [nombre, setNombre] = useState("");
   const [asesor, setAsesor] = useState("");
@@ -195,111 +181,38 @@ export const TesisRegistryForm = () => {
           }          
         };
       }*/
-      if (isDisplayingExternalAsesor == true) {
-        if (user && tesis) {
-          const resp = await TesisEndpoint.putTesis(
-            {
-              id_tesis: tesis.id_tesis,
-              clave_alumno: user.usuario.clave,
-              titulo: nombre,
-              fecharegistro: new Date(),
-              generacion: user.usuario.datos_alumno?.generacion,
-              registrada: true,
-              ultimo_avance: 1,
-              estado_activo: true,
-            },
-            ""
-          );
-          await ComiteEndpoint.postComite(
-            {
-              clave_asesor: parseInt(asesor! ?? 0),
-              id_tesis: resp?.id_tesis! ?? 0,
-              id_funcion: 1,
-            },
-            ""
-          );
-          const vars = await VariablesSistemaEndpoint.getVariablesSistema(
-            1,
-            ""
-          );
-          const id_datos =
-            await DatosAsesorExternoEndpoint.postDatosAsesorExterno(
-              {
-                telefono: telefono! ?? "",
-                institucion: institucion! ?? "",
-              },
-              ""
-            );
-          const externo = await UsuarioEndpoint.postUsuario(
-            {
-              clave: vars?.indice_clave_asesorexterno! ?? 0,
-              nombre: nombre! ?? "",
-              apellido_paterno: apPatExterno! ?? "",
-              apellido_materno: apMatExterno! ?? "",
-              password: "pass1234", //always gonna be default
-              id_rol: 4,
-              id_datos_alumno: null,
-              correo: correo! ?? "",
-              id_datos_asesorexterno: id_datos?.id_datos_asesorexterno! ?? null,
-            },
-            ""
-          );
-          if (vars) {
-            await VariablesSistemaEndpoint.putVariablesSistema(
-              {
-                id_variables_sistema: 1,
-                indice_clave_asesorexterno:
-                  vars?.indice_clave_asesorexterno + 1,
-              },
-              ""
-            );
-          }
-          const last = await ComiteEndpoint.postComite(
-            {
-              clave_asesor: externo?.clave! ?? 0,
-              id_tesis: resp?.id_tesis! ?? 0,
-              id_funcion: 2,
-            },
-            ""
-          );
-          if (last) {
-            navigate("/board");
-          }
-        } else {
-          if (user && tesis) {
-            const resp = await TesisEndpoint.putTesis(
-              {
-                id_tesis: tesis.id_tesis,
-                clave_alumno: user.usuario.clave,
-                titulo: nombre,
-                fecharegistro: new Date(),
-                generacion: user.usuario.datos_alumno?.generacion,
-                registrada: true,
-                ultimo_avance: 1,
-                estado_activo: true,
-              },
-              ""
-            );
-            const comite = await ComiteEndpoint.postComite(
-              {
-                clave_asesor: parseInt(asesor! ?? 0),
-                id_tesis: resp?.id_tesis! ?? 0,
-                id_funcion: 1,
-              },
-              ""
-            );
-            const last = await ComiteEndpoint.postComite(
-              {
-                clave_asesor: parseInt(coAsesor! ?? 0),
-                id_tesis: resp?.id_tesis! ?? 0,
-                id_funcion: 2,
-              },
-              ""
-            );
-            if (last) {
-              navigate("/board");
-            }
-          }
+      if (user && tesis) {
+        const resp = await TesisEndpoint.putTesis(
+          {
+            id_tesis: tesis.id_tesis,
+            clave_alumno: user.usuario.clave,
+            titulo: nombre,
+            fecharegistro: new Date(),
+            generacion: user.usuario.datos_alumno?.generacion,
+            registrada: true,
+            ultimo_avance: 1,
+            estado_activo: true,
+          },
+          ""
+        );
+        const comite = await ComiteEndpoint.postComite(
+          {
+            clave_asesor: parseInt(asesor! ?? 0),
+            id_tesis: resp?.id_tesis! ?? 0,
+            id_funcion: 1,
+          },
+          ""
+        );
+        const last = await ComiteEndpoint.postComite(
+          {
+            clave_asesor: parseInt(coAsesor! ?? 0),
+            id_tesis: resp?.id_tesis! ?? 0,
+            id_funcion: 2,
+          },
+          ""
+        );
+        if (last) {
+          navigate("/board");
         }
       }
     } catch (err) {
@@ -363,143 +276,43 @@ export const TesisRegistryForm = () => {
             <div className="flex flex-row items-start align-middle">
               <div className="w-[200px]">
                 <label className="inline-block pl-[0.15rem] hover:cursor-pointer text-lg font-bold">
-                  {isDisplayingExternalAsesor ? (
-                    <> Coasesor </>
-                  ) : (
-                    <> Coasesor Externo </>
-                  )}
+                  Coasesor
                 </label>
               </div>
               <button
                 className="btn shadow rounded hover:border hover:border-[#003067]"
                 type="button"
                 onClick={() => {
-                  if (isDisplayingExternalAsesor == true) {
-                    setIsDisplayingExternalAsesor(false);
-                  } else {
-                    setIsDisplayingExternalAsesor(true);
-                  }
+                  navigate("/register-ext");
                 }}
               >
                 Cambiar Tipo
               </button>
             </div>
 
-            <div className="border border-black w-5/6 mt-5">
-              {isDisplayingExternalAsesor ? (
-                <div className="flex flex-row">
-                  <div className="w-3/6">
-                    <label className="mb-3 block text-lg font-bold">
-                      Nombre
-                    </label>
-                    <input
-                      className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
-                      type="text"
-                      placeholder="Nombre"
-                      required
-                      onChange={(e) => {
-                        setNombreExterno(e.target.value);
-                      }}
-                    />
-
-                    <label className="mb-3 block text-lg font-bold">
-                      Apellido Paterno
-                    </label>
-                    <input
-                      className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
-                      type="text"
-                      placeholder="Apellido Paterno"
-                      required
-                      onChange={(e) => {
-                        setApPatExterno(e.target.value);
-                      }}
-                    />
-
-                    <label className="mb-3 block text-lg font-bold">
-                      Apellido Materno
-                    </label>
-                    <input
-                      className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
-                      type="text"
-                      placeholder="Apellido Materno"
-                      required
-                      onChange={(e) => {
-                        setApMatExterno(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="w-3/6">
-                    <label className="mb-3 block text-lg font-bold">
-                      Correo
-                    </label>
-                    <input
-                      className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
-                      type="text"
-                      placeholder="Correo"
-                      required
-                      onChange={(e) => {
-                        setCorreo(e.target.value);
-                      }}
-                    />
-
-                    <label className="mb-3 block text-lg font-bold">
-                      Teléfono
-                    </label>
-                    <input
-                      className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-5"
-                      type="text"
-                      maxLength={10}
-                      placeholder="Número de teléfono a 10 dígitos"
-                      required
-                      onChange={(e) => {
-                        setTelefono(e.target.value);
-                      }}
-                    />
-
-                    <label className="mb-3 block text-lg font-bold">
-                      Institución
-                    </label>
-                    <input
-                      className="py-2 px-10 shadow appearance-none rounded w-5/6 mb-10"
-                      type="text"
-                      placeholder="Institución"
-                      required
-                      onChange={(e) => {
-                        setInstitucion(e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <label className="mb-3 block text-lg font-bold">Nombre</label>
-                  <select
-                    className="select h-1/4 py-2 px-10 shadow appearance-none rounded w-5/6 mb-10 border border-solid border-light-gray-22"
-                    required
-                    onChange={(e) => {
-                      setCoAsesor(e.target.value);
-                    }}
-                  >
-                    <option disabled selected>
-                      Nombre completo Asesor/a
-                    </option>
-                    {
-                      renderSelectAsesores() //display las opciones de asesores de manera condicional
-                    }
-                  </select>
-                </div>
-              )}
+            <div className="w-5/6 mt-5">
+              <div>
+                <label className="mb-3 block text-lg font-bold">Nombre</label>
+                <select
+                  className="select h-1/4 py-2 px-10 shadow appearance-none rounded w-5/6 mb-10 border border-solid border-light-gray-22"
+                  required
+                  onChange={(e) => {
+                    setCoAsesor(e.target.value);
+                  }}
+                >
+                  <option disabled selected>
+                    Nombre completo Asesor/a
+                  </option>
+                  {
+                    renderSelectAsesores() //display las opciones de asesores de manera condicional
+                  }
+                </select>
+              </div>
             </div>
             <div className="w-5/6 flex justify-end items-center mt-10">
               <button
                 type="submit"
                 className="btn shadow rounded hover:border hover:border-[#003067]"
-                onClick={() => {
-                  console.log("Pressed");
-                  console.log(correo);
-                  console.log(telefono);
-                  console.log(institucion);
-                }}
               >
                 Registrar Tesis
               </button>

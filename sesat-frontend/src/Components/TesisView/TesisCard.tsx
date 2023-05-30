@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
 import { useNavigate } from "react-router-dom";
+import { AsignacionTesisEndpoint } from "../../api/asignacion-tesis.endpoint";
+import { AsignacionEndpoint } from "../../api/asignacion.endpoint";
 
 const TesisCard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<SESAT.LoggedUser>(
     JSON.parse(sessionStorage.getItem("loggedUser") || "{}")
   );
+
   const [tesis, setTesis] = useState<SESAT.Tesis>();
 
   const GetTesis = async () => {
@@ -16,14 +19,27 @@ const TesisCard = () => {
       setTesis(await TesisEndpoint.getTesisPerStudent(user.usuario.clave, ""));
   };
 
+  const [asignacion, setAsignacion] = useState<SESAT.Asignacion>();
+
+  const GetAsignacion = async () =>
+  {
+    if(tesis && tesis.asignaciones_tesis.length > 0)
+      setAsignacion(await AsignacionEndpoint.getAsignacion(tesis.asignaciones_tesis[tesis.asignaciones_tesis.length - 1].id_asignacion,""));
+  }
+
   useEffect(() => {
     GetTesis();
   }, []);
 
+  useEffect(() => {
+    GetAsignacion();
+  }, [])
+
+
   if (tesis) {
     return (
       <div className="bg-light-blue-10 lg:flex lg:flex-row p-6 h-fit rounded border border-light-gray-22 border-solid">
-        {tesis?.registrada == false ? (
+        {tesis?.registrada === false ? (
           <div>
             <div className="flex flex-row justify-center align-middle items-center">
               <div className="font-SESAT font-bold text-2xl ">
@@ -45,20 +61,23 @@ const TesisCard = () => {
         ) : (
           <div>
             <div className="p-2 bg-light-blue-10 block lg:w-5/12 h-[180px] !overflow-hidden">
-              <SimplePDFViewer />
+              {asignacion ? 
+                ( <SimplePDFViewer /> )
+                :
+                ( <div className="flex justify-center align-middle items-center">
+                    No hay documento por mostrar
+                  </div> 
+                )
+              }
             </div>
             <div className="block justify-center items-center w-7/12">
               <label className="m-3 block text-2xl font-bold">
                 {" "}
-                Nombre de la Tesis{" "}
-              </label>
-              <label className="m-3 mt-10 block text-sm font-normal">
-                {" "}
-                Modificado: dd/mm/yyyy{" "}
+                {tesis.titulo}{" "}
               </label>
               <label className="m-3 mt-10 block text-sm font-bold">
                 {" "}
-                Última versión realizada{" "}
+                Última versión realizada: {tesis.ultimo_avance}{" "}
               </label>
               <div className="w-full flex justify-end items-end">
                 <button className="btn shadow rounded"> Ver Tesis </button>

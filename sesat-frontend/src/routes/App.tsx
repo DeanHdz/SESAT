@@ -28,7 +28,7 @@ import MStudentListPage from "../Pages/MStudentListPage";
 import PhdStudentListPage from "../Pages/PhdStudentListPage";
 import NotificationSystemPage from "../Pages/NotificationSystemPage";
 import PhdAssignments from "../Pages/PhdAssignments";
-
+import TesisRegistryExtPage from "../Pages/TesisRegistryExtPage";
 {/* /view_document/:id/:type   --> id_asignacion, tipo documento(formato(1), acta(2), tesis(3))*/}
 export default function App() {
   return (
@@ -38,6 +38,8 @@ export default function App() {
         <Route path="/board" element={<BoardPage />} />
         <Route path="/asesor-board" element={<BoardPageAsesor />} />
         <Route path="/register" element={<TesisRegistryPage />} />
+        <Route path="/register-ext" element={<TesisRegistryExtPage />} />
+
         <Route path="/assignment" element={<AssignmentPage />} />
         <Route path="/view_tesis" element={<TesisViewPage />} />
         <Route path="/profile" element={<ProfilePage />} />

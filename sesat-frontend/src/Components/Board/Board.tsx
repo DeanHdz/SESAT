@@ -2,7 +2,7 @@ import { TbPointFilled } from "react-icons/tb";
 import TesisCard from "../TesisView/TesisCard";
 import ReminderCard from "../ReminderCard/ReminderCard";
 import CommentNew from "../CommentSection/CommentNew";
-import Contact from "../Contact/Contact";
+import ContactContainer from "../Contact/ContactContainer";
 import AssignmentCard from "../NewAssignment/AssignmentCard";
 
 const Board = () => {
@@ -11,7 +11,7 @@ const Board = () => {
       <div className="block w-11/12 lg:w-8/12 mr-6">
       <TesisCard />
         <div className="block mt-10 p-6 h-fit rounded border border-light-gray-22 border-solid">
-          <label className="m-3 block text-2xl font-bold">Asignaciones</label>
+          <label className="m-3 block text-2xl font-bold">Asignacion Activa</label>
           <AssignmentCard />
         </div>
         <div className="block h-fit">
@@ -19,9 +19,7 @@ const Board = () => {
             <div className="block w-3/6">
               <div className="mt-10 p-6 mr-6 bg-light-blue-10 rounded border border-light-gray-22 border-solid">
                 <label className="mb-3 block text-lg font-bold">Contacto</label>
-                <Contact />
-                <Contact />
-                <Contact />
+                <ContactContainer />
               </div>
             </div>
             <div className="block w-3/6">
