@@ -13,7 +13,7 @@ import { decode, encode } from "base64-arraybuffer";
 
 @Controller('acta-evaluacion')
 export class ActaEvaluacionController {
-  constructor(
+  /*constructor(
     private readonly actaEvaluacionService: ActaEvaluacionService        
     ) {}
 
@@ -25,14 +25,14 @@ export class ActaEvaluacionController {
       return this.actaEvaluacionService.createActaEvaluacion(createActaEvaluacion);
     }
 
-  //el id de asignacion
-  @Post(':id')
-  async create(@Param('id') id: string, @Body() createFormulario: CreateFormulario) {
+  //el id de acta
+  @Put()
+  async create(@Body() createFormulario: CreateFormulario) {
   
     var createActa: CreateActaEvaluacionDto;    
     //obtener formato de la BD para rellenarlo, el resultado 
     //por default se carga en un ArrayBuffer aunque sea un string       
-    var emptyFormat = await this.formatosRepository.findOne({where:{id_formatos_vacios: 888}});
+    var emptyFormat = await this.formatosRepository.findOne({where:{id_formatos_vacios: 1}});
     var buffer = emptyFormat.acta_evaluacion;    
 
     var logger = new Logger('PDFDetails');               
@@ -68,7 +68,7 @@ export class ActaEvaluacionController {
         logger.log('PDF Fields: ', fieldNames);*/
         
         //Editar campos del PDF
-      
+      /*
         var form = pdfDoc.getForm();
         
         form.getTextField('posgrado').setText("Ciencias de la Computación");
@@ -128,14 +128,15 @@ export class ActaEvaluacionController {
         logger.log(error);
       }  
 
-      //Crear DTO       
-      //createActa = new CreateActaEvaluacionDto(102,parseInt(id),base64,888);
+      //Crear DTO    !!  
+
+      createActa = new CreateActaEvaluacionDto(102,parseInt(id),base64,888);
         
       //insetar PDF en la base de datos 
       return this.actaEvaluacionService.create(createActa);        
-  }
+  }*/
 
-
+/*
   @Get()
   findAll() {
     return this.actaEvaluacionService.findAll();
@@ -147,14 +148,14 @@ export class ActaEvaluacionController {
     logger.log('Requesting acta: id=' + id);
     return this.actaEvaluacionService.findOne(+id);
   }
-  
-  @Put(':id')
+  */
+  /*@Put(':id')
   update(@Param('id') id: string, @Body() updateActaEvaluacionDto: UpdateActaEvaluacionDto) {
     return this.actaEvaluacionService.update(updateActaEvaluacionDto);
-  }
-
+  }*/
+/*
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.actaEvaluacionService.remove(+id);
-  }
+  }*/
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { UploadPDF_Endpoint } from "../../api/uploadpdf.enpoint";
+import { FormatosVaciosEndpoint } from "../../api/formatos-vacios.endpoint";
 import { encode } from "base64-arraybuffer";
 
 export const PDFUploadForm = () => {
@@ -8,7 +9,7 @@ export const PDFUploadForm = () => {
 
   //Nota: el archivo seleccionado requiere ser leido para obtener los datos binarios del contenido
   //El hecho de que esté seleccionado solo nos da los metadatos
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: any) { //hard coded to 1 for now ::)
     event.preventDefault();
     try {
       if (fileSelected) {
@@ -22,10 +23,11 @@ export const PDFUploadForm = () => {
           //const base64String = fromByteArray(uint8View);
           const base64String = encode(uint8View);
           console.log(base64String);
-          const resp = await UploadPDF_Endpoint.postPDF(
+          const resp = await FormatosVaciosEndpoint.putFormatosVacios(
             {
-              id_formatos: parseInt(idenfificador),
+              id_formatos_vacios: 1,
               acta_evaluacion: base64String,
+              formato_evaluacion: null,
             },
             ""
           );
@@ -48,11 +50,11 @@ export const PDFUploadForm = () => {
               <label className="mb-3 block text-lg font-bold">
                 Identificador
               </label>
-
               <input
                 className="h-1/4 py-2 px-10 shadow appearance-none rounded w-full mb-10"
-                type="text"
-                placeholder="AAAA"
+                type="number"
+                maxLength={1}
+                placeholder="0"
                 required
                 value={idenfificador}
                 onChange={(e) => {

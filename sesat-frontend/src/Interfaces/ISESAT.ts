@@ -292,20 +292,20 @@ export namespace SESAT {
 
   export interface FormatosVacios {
     id_formatos_vacios: number;
-    acta_evaluacion: string;
-    formato_evaluacion: number;
+    acta_evaluacion: string | null;
+    formato_evaluacion: string | null;
   }
 
   export interface CreateFormatosVacios {
     id_formatos_vacios: number;
-    acta_evaluacion: string;
-    formato_evaluacion: number;
+    acta_evaluacion: string | null;
+    formato_evaluacion: string | null;
   }
 
   export interface UpdateFormatosVacios {
     id_formatos_vacios: number;
-    acta_evaluacion: string;
-    formato_evaluacion: number;
+    acta_evaluacion: string | null;
+    formato_evaluacion: string | null;
   }
 
   /*------------------ FORMATOS VACIOS INTERFACE ------------------*/

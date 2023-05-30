@@ -5,6 +5,10 @@ import TesisRegistryForm from "../Components/TesisRegistryForm/TesisRegistryForm
 import NewAssignment from "../Components/NewAssignment/NewAssignment";
 import TesisView from "../Components/TesisView/TesisView";
 import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { SESAT } from "../Interfaces/ISESAT";
+import { AsignacionEndpoint } from "../api/asignacion.endpoint";
+import { useNavigate } from "react-router-dom";
 
 let paths: string[] = [];
 paths.push("Ver Tesis");
@@ -23,10 +27,7 @@ const TesisViewPage = () => {
       <Navbar />
       <InsiteBaner topic={"Ver Tesis "} />
       <BreadcrumbContainer paths={paths} links={links} />      
-      <TesisView tesis={tesis}/>
-      
-      
-
+      <TesisView tesis={tesis} />
     </div>
   );
 };

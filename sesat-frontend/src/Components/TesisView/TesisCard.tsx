@@ -61,7 +61,7 @@ const TesisCard = () => {
         ) : (
           <div className="w-full">
             <div className=" flex flex-row h-[200px]">
-              <div className="p-2 bg-light-blue-10 block border border-black">
+              <div className="p-2 bg-light-blue-10 block border border-black w-[250px] h-[250px]">
                 {asignacion?.documento ? (
                   <SimplePDFViewer asignacion={asignacion} />
                 ) : (

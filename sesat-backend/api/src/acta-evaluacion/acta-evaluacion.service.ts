@@ -32,6 +32,10 @@ export class ActaEvaluacionService {
     return this.actaEvalRepo.save(updateActaEvaluacionDto);
   }
 
+  updateDocument(id: number, updateActaEvaluacionDto: UpdateActaEvaluacionDto){
+    return this.actaEvalRepo.findOne({where: {id_acta_evaluacion: id}});
+  }
+
   remove(id: number) {
     return this.actaEvalRepo.delete(id);
   }

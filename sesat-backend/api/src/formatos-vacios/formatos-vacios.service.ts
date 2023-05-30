@@ -24,7 +24,7 @@ export class FormatosVaciosService {
     return this.formatoVacioRepo.findOne({ where: { id_formatos_vacios: id } });
   }
 
-  update(id: number, updateFormatosVacioDto: UpdateFormatosVacioDto) {
+  update(updateFormatosVacioDto: UpdateFormatosVacioDto) {
     return this.formatoVacioRepo.save(updateFormatosVacioDto);
   }
 

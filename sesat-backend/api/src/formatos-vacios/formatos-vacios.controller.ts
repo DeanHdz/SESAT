@@ -22,9 +22,9 @@ export class FormatosVaciosController {
     return this.formatosVaciosService.findOne(+id);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateFormatosVacioDto: UpdateFormatosVacioDto) {
-    return this.formatosVaciosService.update(+id, updateFormatosVacioDto);
+  @Put()
+  update(@Body() updateFormatosVacioDto: UpdateFormatosVacioDto) {
+    return this.formatosVaciosService.update(updateFormatosVacioDto);
   }
 
   @Delete(':id')

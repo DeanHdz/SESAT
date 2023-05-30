@@ -1,20 +1,19 @@
-/*import CustomCalendar from "../CustomCalendar/CustomCalendar";
+import CustomCalendar from "../CustomCalendar/CustomCalendar";
 import { SecondaryButton } from "../../Components/Buttons/SecondaryButton";
 import { useEffect, useState } from "react";
 import autosize from 'autosize';
-import { ActaEvaluacion_Endpoint } from "../../api/acta-evaluacion.endpoint";
 import { useNavigate } from "react-router-dom";
 import ProcessingAnim from "../ProcessingAnim/ProcessingAnim";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
 import { UsuarioEndpoint  } from "../../api/usuario.endpoint";
 import { ProgramaEndpoint  } from "../../api/programa.endpoint";
-*/
+import { ActaEvaluacionEndpoint } from "../../api/acta-evaluacion.endpoint";
 
-const ReportForm = ({claveUnica = 295282}:{claveUnica: number}) => {
+
+
+const ReportForm = ({tesis, asignacion}:{tesis: SESAT.Tesis, asignacion: SESAT.Asignacion}) => {
   /*
-  const [tesis, setTesis] = useState<SESAT.Tesis | undefined>();  
-  const [alumno, setAlumno] = useState<SESAT.Usuario | undefined>();
   const [programa, setPrograma] = useState<SESAT.Programa | undefined>();
 
 
@@ -73,38 +72,6 @@ const ReportForm = ({claveUnica = 295282}:{claveUnica: number}) => {
     //nombre programa
   }, []);
   
-
-  const getTesis = async () => {
-    setTesis(
-      await TesisEndpoint.getTesisPerStudent(
-        claveUnica,
-        ""
-      )
-    )
-    setReceived(true);
-  } 
-
-  const getAlumno = async () => {
-    setAlumno(
-      await UsuarioEndpoint.getUsuario(
-        claveUnica,
-        ""
-      )
-    )
-  }
-
-  const getPrograma = async () => {
-    if(tesis){
-      setPrograma(
-        await ProgramaEndpoint.getPrograma(
-          tesis?.id_programa,
-          ""
-        )
-      )      
-    }
-    
-  }
-
   useEffect(() => {
     let p = (parseInt(documentoAvance) + parseInt(exposicion) + parseInt(dominioTema) + parseInt(gradoAvance))/4;
     setPromedio(isNaN(p) ? "0" : p.toString());
@@ -115,7 +82,7 @@ const ReportForm = ({claveUnica = 295282}:{claveUnica: number}) => {
     e.preventDefault();
     try {
       setLoading(true);      
-      const resp = await ActaEvaluacion_Endpoint.postActaForm(
+      const resp = await ActaEvaluacionEndpoint.putActaEvaluacion(
         parseInt(id_asignacion),
         {
 
@@ -446,6 +413,7 @@ const ReportForm = ({claveUnica = 295282}:{claveUnica: number}) => {
         </div>
       )
   );
-                */};
+  */
+};
 
-export default ReportForm;
+export default ReportForm
