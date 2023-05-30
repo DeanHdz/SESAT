@@ -22,7 +22,7 @@ export class AsignacionController {
     return this.asignacionService.findOne(+id);
   }
 
-  @Put(':id')
+  @Put()
   update(@Body() updateAsignacionDto: UpdateAsignacionDto) {
     return this.asignacionService.update(updateAsignacionDto);
   }

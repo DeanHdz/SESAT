@@ -13,28 +13,28 @@ const TesisCard = () => {
   );
 
   const [tesis, setTesis] = useState<SESAT.Tesis>();
+  const [asignacion, setAsignacion] = useState<SESAT.Asignacion>();
 
   const GetTesis = async () => {
     if (user)
-      setTesis(await TesisEndpoint.getTesisPerStudent(user.usuario.clave, ""));
+      TesisEndpoint.getTesisPerStudent(user.usuario.clave, "").then((tesis) => {
+        if (tesis) {
+          setTesis(tesis);
+          if (tesis.asignaciones_tesis.length > 0)
+            AsignacionEndpoint.getAsignacion(
+              tesis.asignaciones_tesis[tesis.asignaciones_tesis.length - 1]
+                .id_asignacion,
+              ""
+            ).then((asignacion) => {
+              if (asignacion) setAsignacion(asignacion);
+            });
+        }
+      });
   };
-
-  const [asignacion, setAsignacion] = useState<SESAT.Asignacion>();
-
-  const GetAsignacion = async () =>
-  {
-    if(tesis && tesis.asignaciones_tesis.length > 0)
-      setAsignacion(await AsignacionEndpoint.getAsignacion(tesis.asignaciones_tesis[tesis.asignaciones_tesis.length - 1].id_asignacion,""));
-  }
 
   useEffect(() => {
     GetTesis();
   }, []);
-
-  useEffect(() => {
-    GetAsignacion();
-  }, [])
-
 
   if (tesis) {
     return (
@@ -61,15 +61,14 @@ const TesisCard = () => {
         ) : (
           <div className="w-full">
             <div className=" flex flex-row h-[200px]">
-              <div className="p-2 bg-light-blue-10 block border border-black"> 
-                {asignacion ? 
-                  ( <SimplePDFViewer /> )
-                  :
-                  ( <div className="flex justify-center text-center w-full h-full align-middle items-center">
-                      No hay documento por mostrar
-                    </div> 
-                  )
-                }
+              <div className="p-2 bg-light-blue-10 block border border-black">
+                {asignacion?.documento ? (
+                  <SimplePDFViewer asignacion={asignacion} />
+                ) : (
+                  <div className="flex justify-center text-center w-full h-full align-middle items-center">
+                    No hay documento por mostrar
+                  </div>
+                )}
               </div>
               <div className=" flex flex-col justify-center items-start align-middle  w-7/12">
                 <label className="m-3 block text-2xl font-bold">

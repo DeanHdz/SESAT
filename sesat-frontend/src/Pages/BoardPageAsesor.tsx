@@ -9,7 +9,7 @@ let paths: string[] = [];
 paths.push("Tablero Asesor");
 
 let links: string[] = [];
-links.push("/BoardAsesor");
+links.push("/asesor-board");
 
 const BoardPage = () => {
   return (
