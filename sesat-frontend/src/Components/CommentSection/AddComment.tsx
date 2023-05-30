@@ -15,19 +15,19 @@ const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
     try {
       ComentarioEndpoint.postComentario(
         {
-          clave_usuario: user.clave,
+          clave_usuario: user.usuario.clave,
           id_asignacion: id_asignacion,
           texto: comment,
         },
         ""
       );
 
-      if (user.role === 3) {
+      if (user.usuario.id_rol === 3) {
         NotificacionEndpoint.postNotificacion(
           {
-            clave_usuario: user.clave,
+            clave_usuario: user.usuario.clave,
             titulo: "Nuevo Comentario",
-            descripcion: user.name + " hizo un nuevo comentario",
+            descripcion: user.usuario.nombre + " hizo un nuevo comentario",
             fecha_expedicion: new Date(),
           },
           ""

@@ -9,6 +9,7 @@ import { SESAT } from "../Interfaces/ISESAT";
 import { AsignacionEndpoint } from "../api/asignacion.endpoint";
 
 import LoadingAnimation from "../Components/LoadingAnimation/LoadingAnimation";
+import { useLocation } from "react-router-dom";
 
 let paths: string[] = [];
 paths.push("Avance # de Tesis");
@@ -18,15 +19,9 @@ links.push("/board");
 links.push("assignment");
 
 const AssignmentPage = () => {
-  const [asignacion, setAsignacion] = useState<SESAT.Asignacion | undefined>();
-
-  const getAsignacion = async () => {
-    setAsignacion(await AsignacionEndpoint.getAsignacion(1, ""));
-  };
-
-  useEffect(() => {
-    getAsignacion();
-  }, []);
+  
+  const location = useLocation();
+  const asignacion = location.state.asignacion;
 
   if (asignacion == null)
   {
@@ -49,7 +44,7 @@ const AssignmentPage = () => {
                 <h1 className="font-SESAT my-4">Comentarios</h1>
               </article>
               <div className="container px-0 mx-auto sm:px-5">
-                <CommentSection id_asignacion={asignacion?.asignacion_id} />
+                <CommentSection id_asignacion={asignacion?.id_asignacion} />
               </div>
             </div>
           </div>

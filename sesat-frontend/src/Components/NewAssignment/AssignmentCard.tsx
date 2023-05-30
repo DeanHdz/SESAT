@@ -102,11 +102,22 @@ const AssignmentCard = () => {
         </div>
         <div className="ml-6 block w-auto">
           <p className="font-bold"> {asignacion.titulo} </p>
-          <p> {user.usuario.datos_alumno?.id_programa} </p>
+          <p> {user.usuario.datos_alumno?.programa?.nombreprograma} </p>
           <p className="mt-1 text-sm"> {asignacion.cierre.toString()} </p>
         </div>
         <div className="ml-auto flex justify-end items-center">
-          <button className="btn shadow rounded"> Ver detalles </button>
+          <button
+          className="btn shadow rounded"
+          onClick={(e)=>
+          {
+            navigate("/assignment", {
+              state:
+              {
+                asignacion: asignacion
+              }
+            })
+          }}
+          > Ver detalles </button>
         </div>
       </div>
     );

@@ -18,11 +18,9 @@ const modalData: IModalData = {
 
 const TesisView = ({tesis}:{tesis: SESAT.Tesis}) => {
 
-  const avance: string = "04";
   const navigate = useNavigate();
   const [id_asignacion, setIdAsignacion] = useState("102");
   const [asesorName, setAsesorName] = useState("");
-  const [comite, setComite] = useState<SESAT.Comite[]>();
 
   useEffect(() => 
   {
