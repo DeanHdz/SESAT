@@ -25,7 +25,8 @@ const DocumentView = () => {
 
   /*Esta funcion se ejecuta cada vez que el componente se renderiza */
 
-  useEffect(() => {
+  useEffect(() => 
+  {
     async function decodeBase64Async(jsonString: string) {
       var decodedBuffer: Uint8Array = await new Promise((resolve, reject) => {
         //Almacenar los atributos del objeto JSON en un arreglo

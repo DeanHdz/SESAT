@@ -2,7 +2,7 @@ import { IReply } from "../../Interfaces/IReply"
 import { IComment } from "../../Interfaces/IComment"
 import { SESAT } from "../../Interfaces/ISESAT";
 import { RespuestaEndpoint } from "../../api/respuesta.endpoint";
-import UserIcon from "../UserIcon/UserIcon"
+import UserIcon2 from "../UserIcon/UserIcon2"
 import Reply from "./Reply"
 import { useState, useEffect } from "react";
 
@@ -43,7 +43,7 @@ const Comment = ({userName, date, body, comment_id}:{userName: string, date: str
       <div className="flex-col w-full bg-white border-b-2 border-l-2 border-gray-200 mt-2">
         <div className="flex flex-row">
           {/*User Image*/}
-          <UserIcon userName="BG"/>
+          <UserIcon2 initials={userName[0]}/>
           {/*User Image*/}
           <div className="flex-col mt-1">
               {/*User name and date of comment is here*/}
