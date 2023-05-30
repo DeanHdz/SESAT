@@ -9,7 +9,7 @@ const StudentsPhdAssignamentsList = ({ title, program }: { title: string, progra
             </div>
 
             <AdminAssignmentCard title="Registro" />
-            <AdminAssignmentCard title="Seminario de Avance de Tesis 1" />
+            <AdminAssignmentCard title="Seminario de Avance de Tesis 1" status=""/>
             <AdminAssignmentCard title="Seminario de Avance de Tesis 2" />
             <AdminAssignmentCard title="Seminario de Avance de Tesis 3" />
             <AdminAssignmentCard title="Seminario de Avance de Tesis 4" />

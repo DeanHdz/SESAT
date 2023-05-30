@@ -7,7 +7,8 @@ const StudentsProfileList = ({ title }: { title: string }) => {
   const [users, setUsers] = useState<SESAT.Usuario[]>();
   const [search, setSearch] = useState("");
 
-  const usuarios = [];
+  const usuarios: never[] = [];
+  let nombre = "";
 
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -17,25 +18,7 @@ const StudentsProfileList = ({ title }: { title: string }) => {
     UsuarioEndpoint.getAlumnos("").then((usuarios) => {
       if (usuarios) setUsers(usuarios);
     });
-  }, [search]);
-
-  let nombre = "";
-  if (users)
-    for (let i = 0; i < users.length; i++) {
-      nombre =
-        users[i].nombre +
-        " " +
-        users[i].apellido_paterno +
-        " " +
-        users[i].apellido_materno;
-        if (
-          parseInt(search) == users[i].clave ||
-          nombre.toLowerCase().includes(search.toLowerCase())
-        )
-          //if(role == "Asesor" && tesis[i] == )
-          usuarios.push(<StudentProfile user={users[i]} />);
-    }
-  else return <></>;
+  }, []);
 
   return (
     <div className="w-full p-6 flex flex-col">
@@ -52,9 +35,41 @@ const StudentsProfileList = ({ title }: { title: string }) => {
           className="rounded"
         />
       </div>
-      {usuarios}
+      {users?.map((user, i) => (
+        <>
+          {parseInt(search) == user.clave ||
+          (
+            user.nombre +
+            " " +
+            user.apellido_paterno +
+            " " +
+            user.apellido_materno
+          )
+            .toLowerCase()
+            .includes(search.toLowerCase()) ? (
+            <StudentProfile user={user} />
+          ) : (
+            <></>
+          )}
+        </>
+      ))}
     </div>
   );
 };
+
+/*
+if (users)
+      for (let i = 0; i < users.length; i++) {
+        nombre =
+          users[i].nombre +
+          " " +
+          users[i].apellido_paterno +
+          " " +
+          users[i].apellido_materno;
+        if (
+          parseInt(search) == users[i].clave ||
+          nombre.toLowerCase().includes(search.toLowerCase())
+        )
+*/
 
 export default StudentsProfileList;

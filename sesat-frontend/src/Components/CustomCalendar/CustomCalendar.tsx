@@ -6,18 +6,19 @@ import "react-datepicker/dist/react-datepicker.css";
   import  { FC } from "react";
   import { CalendarProps } from "../../Interfaces/ICalendarProps";
 
-  const CustomCalendar: FC<CalendarProps> = ({setSelectedDate}) =>{
+  const CustomCalendar = () =>{
     const [startDate, setStartDate] = useState(new Date());
 
 
     function onChangeDateHandler(value: Date){      
-      setStartDate(value);                  
+      setStartDate(value);                 
     }
+
     return(
       <div>
         <DatePicker
           selected = {startDate}
-          onSelect={setSelectedDate}
+          //onSelect={setSelectedDate}
           onChange={onChangeDateHandler}
           className="rounded"
         />

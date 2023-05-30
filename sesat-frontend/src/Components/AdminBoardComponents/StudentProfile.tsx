@@ -20,8 +20,8 @@ const StudentProfile = ({ user }: { user: SESAT.Usuario }) => {
   const [programSelected, setProgramSelected] = useState("");
   const [estado, setEstado] = useState<boolean>();
 
-
   useEffect(() => {
+    console.log("UE");
     TesisEndpoint.getTesisPerStudent(user.clave, "").then((tesis) => {
       if (tesis) {
         ComiteEndpoint.getPerTesis(tesis.id_tesis, "").then((comite) => {
@@ -42,65 +42,6 @@ const StudentProfile = ({ user }: { user: SESAT.Usuario }) => {
       }
     });
   }, []);
-
-  useEffect(() => {
-    ProgramaEndpoint.getProgramas("").then((programas) => {
-      if (programas) {
-        setPrograms(programas);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    UsuarioEndpoint.getAsesores("").then((asesor) => {
-      if (asesor) {
-        setAsesor(asesor);
-      }
-    });
-  }, []);
-
-  async function handleSubmit(e: any) {
-    try {
-      e.preventDefault();
-      DatosAlumnoEndpoint.putDatosAlumno(
-        {
-          id_datos_alumno: user.id_datos_alumno! ?? 0,
-          grado_estudio: user.datos_alumno?.grado_estudio! ?? "",
-          modalidad: user.datos_alumno?.modalidad! ?? "",
-          estado_activo: estado! ?? user.datos_alumno?.estado_activo,
-          id_programa:
-            parseInt(programSelected)! ?? user.datos_alumno?.id_programa,
-          generacion: user.datos_alumno?.generacion! ?? "",
-        },
-        ""
-      );
-
-      TesisEndpoint.getTesisPerStudent(user.clave, "").then((tesis) => {
-        if (tesis) {
-          console.log("Tesis" + tesis);
-          ComiteEndpoint.getPerTesis(tesis.id_tesis, "").then((comite) => {
-            if (comite) {
-              comite.forEach((c) => {
-                if (c.id_tesis == tesis.id_tesis) {
-                  ComiteEndpoint.putComite(
-                    {
-                      id_comite: c.id_comite,
-                      clave_asesor: claveAsesor! ?? c.clave_asesor,
-                      id_tesis: c.id_tesis,
-                      id_funcion: c.id_funcion,
-                    },
-                    ""
-                  );
-                }
-              });
-            }
-          });
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   return (
     <div className="flex flex-col mb-1 p-2 bg-light-blue-10 rounded border border-light-gray-22 border-solid">
@@ -132,11 +73,10 @@ const StudentProfile = ({ user }: { user: SESAT.Usuario }) => {
             <span className="font-bold">Asesor: </span>
             <span>{asesorName ? asesorName : "Sin registrar"}</span>
           </div>
-          
         </div>
       </div>
       <div className="flex align-middle justify-end mr-4">
-          <StudentProfileModal />
+        <StudentProfileModal user={user} />
       </div>
     </div>
   );

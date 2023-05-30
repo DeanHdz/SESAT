@@ -40,7 +40,7 @@ export class ComiteController {
     return this.comiteService.findPerTesis(+id);
   }
 
-  @Put(":id")
+  @Put()
   update(@Body() updateComiteDto: UpdateComiteDto) {
     return this.comiteService.update(updateComiteDto);
   }
