@@ -13,7 +13,6 @@ const ContactContainer = () =>
     JSON.parse(sessionStorage.getItem("loggedUser") || "{}")
   );
 
-  const [tesis, setTesis] = useState<SESAT.Tesis>();
   const [comite, setComite] = useState<SESAT.Comite[]>();
 
   useEffect(() => {

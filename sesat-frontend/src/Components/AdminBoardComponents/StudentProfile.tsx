@@ -1,15 +1,12 @@
-import { Link } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
-import { IProfileDetail } from "../../Interfaces/IProfileDetail";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { SESAT } from "../../Interfaces/ISESAT";
 import { ComiteEndpoint } from "../../api/comite.endpoint";
 import { TesisEndpoint } from "../../api/tesis.endpoint";
 import { ProgramaEndpoint } from "../../api/programa.endpoint";
-import React from "react";
 import { UsuarioEndpoint } from "../../api/usuario.endpoint";
 import { DatosAlumnoEndpoint } from "../../api/datos-alumno.endpoint";
-import { test } from "node:test";
+import StudentProfileModal from "../Modal/StudentProfileModal";
 
 const StudentProfile = ({ user }: { user: SESAT.Usuario }) => {
   //const [tesis, setTesis] = useState<SESAT.Tesis>();
@@ -22,6 +19,7 @@ const StudentProfile = ({ user }: { user: SESAT.Usuario }) => {
   const [correo, setCorreo] = useState("");
   const [programSelected, setProgramSelected] = useState("");
   const [estado, setEstado] = useState<boolean>();
+
 
   useEffect(() => {
     TesisEndpoint.getTesisPerStudent(user.clave, "").then((tesis) => {
@@ -105,9 +103,9 @@ const StudentProfile = ({ user }: { user: SESAT.Usuario }) => {
   }
 
   return (
-    <div className="flex flex-row mb-1 p-2 bg-light-blue-10 rounded border border-light-gray-22 border-solid">
-      <div className="flex flex-wrap gap-4 m-8 place-content-start">
-        <div className="avatar online placeholder w -16 h-16">
+    <div className="flex flex-col mb-1 p-2 bg-light-blue-10 rounded border border-light-gray-22 border-solid">
+      <div className="flex flex-wrap ml-4 gap-4 mt-4 place-content-start">
+        <div className="avatar online placeholder w-16 h-16">
           <div className="bg-neutral-focus text-neutral-content rounded-full w-16 h-16">
             <span className="text-xl">
               {user.nombre[0] + user.apellido_paterno[0]}
@@ -122,91 +120,7 @@ const StudentProfile = ({ user }: { user: SESAT.Usuario }) => {
               " " +
               user.apellido_materno}
           </span>
-
-          {/* The button to open modal */}
-
-          <PrimaryButton id="ListedStudentProfile_Edit" text="Editar Perfil" />
-
-          {/* Put this part before </body> tag */}
-          <input
-            type="checkbox"
-            id="ListedStudentProfile_Edit"
-            className="modal-toggle"
-          />
-          <div className="modal">
-            <div className="modal-box relative">
-              <label
-                htmlFor="ListedStudentProfile_Edit"
-                className="btn btn-sm btn-circle absolute right-2 top-2"
-              >
-                ✕
-              </label>
-              <form onSubmit={handleSubmit}>
-                <h3 className="text-2xl font-bold">Editar Perfil</h3>
-                <div className="flex flex-col">
-                  <div className="form-control w-full">
-                    <label className="label">
-                      <span className="label-text font-bold">Programa: </span>
-                    </label>
-                    <select
-                      className="select select-bordered"
-                      onChange={(e) => {
-                        setProgramSelected(e.target.value);
-                      }}
-                    >
-                      {programs?.map((program) => (
-                        <option value={program.id_programa}>
-                          {program.nombreprograma}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-control w-full max-w-xs">
-                    <label className="label">
-                      <span className="label-text font-bold">
-                        Estado del alumno:{" "}
-                      </span>
-                    </label>
-                    <select
-                      className="select select-bordered"
-                      onChange={(e) => {
-                        setEstado(e.target.value.toLowerCase() === "true");
-                      }}
-                    >
-                      <option value={"true"}>Activo</option>
-                      <option value={"false"}>Inactivo</option>
-                    </select>
-                  </div>
-                  <div className="form-control w-full">
-                    <label className="label">
-                      <span className="label-text font-bold">Asesor: </span>
-                    </label>
-                    <select
-                      className="select select-bordered"
-                      onChange={(e) => {
-                        setClaveAsesor(parseInt(e.target.value));
-                      }}
-                    >
-                      {asesor?.map((asesor) => (
-                        <option value={asesor.clave}>
-                          {asesor.nombre +
-                            " " +
-                            asesor.apellido_paterno +
-                            " " +
-                            asesor.apellido_materno}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <button type="submit" className="btn bg-stone-500 my-2">
-                    Modificar
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div className="flex flex-col">
+          <div className="mt-2 flex flex-col">
             <span className="font-bold">Programa: </span>
             <span>{user.datos_alumno?.programa?.nombreprograma}</span>
             <span className="font-bold">Estado del alumno: </span>
@@ -218,7 +132,11 @@ const StudentProfile = ({ user }: { user: SESAT.Usuario }) => {
             <span className="font-bold">Asesor: </span>
             <span>{asesorName ? asesorName : "Sin registrar"}</span>
           </div>
+          
         </div>
+      </div>
+      <div className="flex align-middle justify-end mr-4">
+          <StudentProfileModal />
       </div>
     </div>
   );
