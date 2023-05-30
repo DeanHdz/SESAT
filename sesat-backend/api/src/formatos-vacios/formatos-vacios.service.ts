@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { CreateFormatosVacioDto } from './dto/create-formatos-vacio.dto';
-import { UpdateFormatosVacioDto } from './dto/update-formatos-vacio.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { FormatosVacios } from './entities/formatos-vacios.entity';
-import { Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { CreateFormatosVacioDto } from "./dto/create-formatos-vacio.dto";
+import { UpdateFormatosVacioDto } from "./dto/update-formatos-vacio.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { FormatosVacios } from "./entities/formatos-vacios.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class FormatosVaciosService {
   constructor(
     @InjectRepository(FormatosVacios)
     private formatoVacioRepo: Repository<FormatosVacios>
-  ){}
+  ) {}
 
   create(createFormatosVacioDto: CreateFormatosVacioDto) {
     return this.formatoVacioRepo.save(createFormatosVacioDto);
@@ -21,7 +21,7 @@ export class FormatosVaciosService {
   }
 
   findOne(id: number) {
-    return this.formatoVacioRepo.findOne({where:{id_formatos:id}});
+    return this.formatoVacioRepo.findOne({ where: { id_formatos_vacios: id } });
   }
 
   update(id: number, updateFormatosVacioDto: UpdateFormatosVacioDto) {

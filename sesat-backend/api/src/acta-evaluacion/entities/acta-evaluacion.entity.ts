@@ -1,10 +1,10 @@
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 import { FormatosVacios } from "src/formatos-vacios/entities/formatos-vacios.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class ActaEvaluacion {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id_acta_evaluacion: number;
 
   @Column({ type: "bytea" })

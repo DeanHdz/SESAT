@@ -276,8 +276,7 @@ export namespace SESAT {
   }
 
   export interface CreateFormatoEvaluacion {
-    id_formato_evaluacion: number;
-    documento_rellenado: string;
+    documento_rellenado: string | null;
     id_formato_vacio: number;
   }
 
@@ -293,19 +292,19 @@ export namespace SESAT {
 
   export interface FormatosVacios {
     id_formatos_vacios: number;
-    acta_avaluacion: string;
+    acta_evaluacion: string;
     formato_evaluacion: number;
   }
 
   export interface CreateFormatosVacios {
     id_formatos_vacios: number;
-    acta_avaluacion: string;
+    acta_evaluacion: string;
     formato_evaluacion: number;
   }
 
   export interface UpdateFormatosVacios {
     id_formatos_vacios: number;
-    acta_avaluacion: string;
+    acta_evaluacion: string;
     formato_evaluacion: number;
   }
 
@@ -320,8 +319,7 @@ export namespace SESAT {
   }
 
   export interface CreateActaEvaluacion {
-    id_acta_evaluacion: number;
-    documento_rellenado: string;
+    documento_rellenado: string | null;
     id_acta_vacia: number;
   }
 
@@ -464,14 +462,6 @@ export namespace SESAT {
     observaciones: string;
 
     /*Pendiente comite de evaluacion a que se refiere? */
-  }
-
-  //!!! Modify?
-
-  export interface ActaEvaluacion {
-    id_acta: number;
-    documento_rellenado: string;
-    id_acta_vacia: number;
   }
 
   /*------------------ MISCELANEOUS -----------*/

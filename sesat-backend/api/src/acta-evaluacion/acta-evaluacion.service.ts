@@ -16,6 +16,10 @@ export class ActaEvaluacionService {
     return this.actaEvalRepo.save(createActaEvaluacionDto);
   } 
 
+  createActaEvaluacion(createActaEvaluacionDto: CreateActaEvaluacionDto) {
+    return this.actaEvalRepo.save(createActaEvaluacionDto)
+  }
+
   findAll() {
     return this.actaEvalRepo.find();
   }

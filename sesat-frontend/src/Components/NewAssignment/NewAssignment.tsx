@@ -12,6 +12,11 @@ import TimePicker from "react-time-picker";
 import { AsignacionEndpoint } from "../../api/asignacion.endpoint";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
+import { TesisEndpoint } from "../../api/tesis.endpoint";
+import { AsignacionTesisEndpoint } from "../../api/asignacion-tesis.endpoint";
+import { ActaEvaluacionEndpoint } from "../../api/acta-evaluacion.endpoint";
+import { FormatosVaciosEndpoint } from "../../api/formatos-vacios.endpoint";
+import { FormatoEvaluacion } from "../../api/formato-evaluacion.endpoint";
 
 const NewAssignment = ({
   title,
@@ -57,23 +62,72 @@ const NewAssignment = ({
   }
 
   const handleSubmit = (e: any) => {
-    e.preventDefault();
-    AsignacionEndpoint.postAsignacion(
-      {
-        num_avance: parseInt(avance),
-        titulo: title,
-        descripcion: description,
-        apertura: new Date(startDate),
-        cierre: endDate,
-        calificacion: null,
-        documento: null,
-        estado_entrega: 0,
-        retroalimentacion: null,
-        id_formato_evaluacion: null,
-        id_acta_evaluacion: null,
-      },
-      ""
-    );
+    try {
+      e.preventDefault();
+      console.log("Handle Submit");
+      TesisEndpoint.getTheses("").then((tesis) => {
+        if (tesis) {
+          console.log("Tesis");
+          tesis.forEach((t) => {
+            console.log("Each Tesis");
+            if (t.ultimo_avance === parseInt(avance)) {
+              console.log("Acta");
+              ActaEvaluacionEndpoint.postActaEvaluacion(
+                {
+                  documento_rellenado: null,
+                  id_acta_vacia: 1,
+                },
+                ""
+              ).then((acta) => {
+                if (acta) {
+                  console.log("Formato");
+                  FormatoEvaluacion.postFormatoEvaluacion(
+                    {
+                      documento_rellenado: null,
+                      id_formato_vacio: 1,
+                    },
+                    ""
+                  ).then((formato) => {
+                    if (formato) {
+                      console.log("Asignacion");
+                      AsignacionEndpoint.postAsignacion(
+                        {
+                          num_avance: parseInt(avance),
+                          titulo: title,
+                          descripcion: description,
+                          apertura: new Date(startDate),
+                          cierre: endDate,
+                          calificacion: null,
+                          documento: null,
+                          estado_entrega: 0,
+                          retroalimentacion: null,
+                          id_formato_evaluacion: formato.id_formato_evaluacion,
+                          id_acta_evaluacion: acta.id_acta_evaluacion,
+                        },
+                        ""
+                      ).then((asignacion) => {
+                        if (asignacion) {
+                          console.log("AsignacionTesis");
+                          AsignacionTesisEndpoint.postAsignacionTesis(
+                            {
+                              id_asignacion: asignacion?.id_asignacion,
+                              id_tesis: t.id_tesis,
+                            },
+                            ""
+                          );
+                        }
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -153,7 +207,7 @@ const NewAssignment = ({
               <button
                 type="button"
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                onClick={() => window.location.reload()}
+                //onClick={() => window.location.reload()}
               >
                 Descartar
               </button>

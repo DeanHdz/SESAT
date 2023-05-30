@@ -20,6 +20,11 @@ export class ActaEvaluacionController {
     @InjectRepository(FormatosVacios)
     private readonly formatosRepository: Repository<FormatosVacios>;
   
+    @Post()
+    createActaEvaluacion(@Body() createActaEvaluacion: CreateActaEvaluacionDto){
+      return this.actaEvaluacionService.createActaEvaluacion(createActaEvaluacion);
+    }
+
   //el id de asignacion
   @Post(':id')
   async create(@Param('id') id: string, @Body() createFormulario: CreateFormulario) {
@@ -27,7 +32,7 @@ export class ActaEvaluacionController {
     var createActa: CreateActaEvaluacionDto;    
     //obtener formato de la BD para rellenarlo, el resultado 
     //por default se carga en un ArrayBuffer aunque sea un string       
-    var emptyFormat = await this.formatosRepository.findOne({where:{id_formatos: 888}});
+    var emptyFormat = await this.formatosRepository.findOne({where:{id_formatos_vacios: 888}});
     var buffer = emptyFormat.acta_evaluacion;    
 
     var logger = new Logger('PDFDetails');               
@@ -124,7 +129,7 @@ export class ActaEvaluacionController {
       }  
 
       //Crear DTO       
-      createActa = new CreateActaEvaluacionDto(102,parseInt(id),base64,888);
+      //createActa = new CreateActaEvaluacionDto(102,parseInt(id),base64,888);
         
       //insetar PDF en la base de datos 
       return this.actaEvaluacionService.create(createActa);        

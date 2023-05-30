@@ -1,24 +1,18 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 //Esta clase representa lo que el usuario envia desde el lado del cliente
 
 export class CreateActaEvaluacionDto {
-  @IsNotEmpty()
-  @IsNumber()
-  id_acta_evaluacion: number;
-
-  @IsNotEmpty()
+  @IsOptional()
   documento_rellenado: string;
 
   @IsNotEmpty()
   @IsNumber()
   id_acta_vacia: number;
 
-  //NOTA: id_acta deberia ser auto incrementado?
-
   /* Comentado en lo que se para que sirve*/
 
-  constructor(
+  /*constructor(
     id_acta: number,
     id_asign: number,
     document: string,
@@ -28,5 +22,5 @@ export class CreateActaEvaluacionDto {
     //this.id_asignacion = id_asign;
     this.documento_rellenado = document;
     this.id_acta_vacia = id_actaVacia;
-  }
+  }*/
 }

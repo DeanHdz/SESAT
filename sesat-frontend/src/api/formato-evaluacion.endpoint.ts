@@ -1,14 +1,14 @@
 import axios from "axios";
 import { SESAT } from "../Interfaces/ISESAT";
 
-export namespace FormatosVaciosEndpoint {
-  export const getFormatosVacios = async (
+export namespace FormatoEvaluacion {
+  export const getFormatoEvaluacion = async (
     id: number,
     token: string
-  ): Promise<SESAT.FormatosVacios | undefined> => {
+  ): Promise<SESAT.FormatoEvaluacion | undefined> => {
     return await axios
-      .get<SESAT.FormatosVacios>(
-        `${import.meta.env.VITE_API_HOSTNAME}/formatos-vacios/` + id,
+      .get<SESAT.FormatoEvaluacion>(
+        `${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion/` + id,
         {
           headers: {
             "Content-Type": "application/json",
@@ -23,12 +23,12 @@ export namespace FormatosVaciosEndpoint {
       });
   };
 
-  export const getAllFormatosVacioss = async (
+  export const getAllFormatoEvaluacions = async (
     token: string
-  ): Promise<SESAT.FormatosVacios[] | undefined> => {
+  ): Promise<SESAT.FormatoEvaluacion[] | undefined> => {
     return await axios
-      .get<SESAT.FormatosVacios[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/formatos-vacios`,
+      .get<SESAT.FormatoEvaluacion[]>(
+        `${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,14 +43,14 @@ export namespace FormatosVaciosEndpoint {
       });
   };
 
-  export const postFormatosVacios = async (
-    CreateFormatosVaciosDto: SESAT.CreateFormatosVacios,
+  export const postFormatoEvaluacion = async (
+    CreateformatoEvaluacionDto: SESAT.CreateFormatoEvaluacion,
     token: string
-  ): Promise<SESAT.FormatosVacios | undefined> => {
+  ): Promise<SESAT.FormatoEvaluacion | undefined> => {
     return await axios
       .post(
-        `${import.meta.env.VITE_API_HOSTNAME}/formatos-vacios`,
-        CreateFormatosVaciosDto,
+        `${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion`,
+        CreateformatoEvaluacionDto,
         {
           headers: {
             "Content-Type": "application/json",
@@ -65,14 +65,14 @@ export namespace FormatosVaciosEndpoint {
       });
   };
 
-  export const putFormatosVacios = async (
-    UpdateFormatosVaciosDto: SESAT.UpdateFormatosVacios,
+  export const putFormatoEvaluacion = async (
+    UpdateformatoEvaluacionDto: SESAT.UpdateFormatoEvaluacion,
     token: string
   ): Promise<SESAT.Usuario | undefined> => {
     return await axios
       .put(
-        `${import.meta.env.VITE_API_HOSTNAME}/formatos-vacios`,
-        UpdateFormatosVaciosDto,
+        `${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion`,
+        UpdateformatoEvaluacionDto,
         {
           headers: {
             "Content-Type": "application/json",
@@ -87,12 +87,12 @@ export namespace FormatosVaciosEndpoint {
       });
   };
 
-  export const deleteFormatosVacios = async (
+  export const deleteFormatoEvaluacion = async (
     id: number,
     token: string
-  ): Promise<SESAT.FormatosVacios | undefined> => {
+  ): Promise<SESAT.FormatoEvaluacion | undefined> => {
     return await axios
-      .delete(`${import.meta.env.VITE_API_HOSTNAME}/formatos-vacios/` + id, {
+      .delete(`${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion/` + id, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,
