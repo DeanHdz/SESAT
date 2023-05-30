@@ -99,7 +99,6 @@ const AdminTesisCardList = ({
           parseInt(search) == tesis[i].clave_alumno ||
           nombre.toLowerCase().includes(search.toLowerCase())
         )
-          //if(role == "Asesor" && tesis[i] == )
           tesisCards.push(<AdminTesisCard tesis={tesis[i]} />);
     }
   else return <></>;

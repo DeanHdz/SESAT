@@ -7,9 +7,7 @@ const StudentsProfileList = ({ title }: { title: string }) => {
   const [users, setUsers] = useState<SESAT.Usuario[]>();
   const [search, setSearch] = useState("");
 
-  let nombre = "";
-
-  let usuarios = [];
+  const usuarios = [];
 
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -21,6 +19,7 @@ const StudentsProfileList = ({ title }: { title: string }) => {
     });
   }, [search]);
 
+  let nombre = "";
   if (users)
     for (let i = 0; i < users.length; i++) {
       nombre =
@@ -29,11 +28,12 @@ const StudentsProfileList = ({ title }: { title: string }) => {
         users[i].apellido_paterno +
         " " +
         users[i].apellido_materno;
-      if (
-        parseInt(search) == users[i].clave ||
-        nombre.toLowerCase().includes(search.toLowerCase())
-      )
-        usuarios.push(<StudentProfile user={users[i]} />);
+        if (
+          parseInt(search) == users[i].clave ||
+          nombre.toLowerCase().includes(search.toLowerCase())
+        )
+          //if(role == "Asesor" && tesis[i] == )
+          usuarios.push(<StudentProfile user={users[i]} />);
     }
   else return <></>;
 
