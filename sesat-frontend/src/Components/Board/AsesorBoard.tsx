@@ -1,6 +1,5 @@
 import TesisCard from "../TesisView/TesisCard";
 
-
 const AsesorBoard = () => {
     return (
         <form className="mt-10 lg:flex lg:flex-row w-11/12 m-auto  flex justify-center">

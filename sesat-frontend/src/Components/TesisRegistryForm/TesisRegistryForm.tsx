@@ -253,22 +253,6 @@ export const TesisRegistryForm = () => {
                 renderSelectAsesores() //display las opciones de asesores de manera condicional
               }
             </select>
-
-            <div className="w-5/6">
-              <label className="mb-3 block text-lg font-bold">
-                Subir un archivo (opcional)
-              </label>
-              <input
-                type="file"
-                className="file-input w-full mb-10 hover:border-[#003067] border border-solid border-light-gray-22"
-                onChange={(e) => {
-                  const uploadedFile = e.target.files?.[0];
-                  if (uploadedFile) {
-                    setFileSelected(uploadedFile);
-                  }
-                }}
-              />
-            </div>
           </div>
         </div>
         <div className="w-5/6 md:w-3/6">

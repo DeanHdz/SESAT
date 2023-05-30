@@ -8,10 +8,10 @@ import { useEffect } from "react";
 const BoardPage = () =>
 {
   let paths: string[] = [];
-  paths.push("Tablero");
+  //paths.push("Tablero");
 
   let links: string[] = [];
-  links.push("/board");
+  //links.push("/board");
   
   return(   
     <div className="overflow-hidden">

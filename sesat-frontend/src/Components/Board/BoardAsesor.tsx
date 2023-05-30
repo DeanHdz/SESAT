@@ -5,15 +5,15 @@ import HomeCard from "../AdminBoardComponents/HomeCard";
 const AsesorBoard2 = () => {
     return (
         <div className="w-full p-6 flex justify-center">
-    <div className="flex flex-row">
-        <div className="w-1/3 mr-4">
+    <div className="flex flex-row gap-4">
+        <div className="w-1/3">
             <HomeCard title="Asesorados Maestría" webLink="view-tesis-masters" />
         </div>
-        <div className="w-1/3 mr-4">
-        <HomeCard title="Asesorados Doctorado" webLink="view-tesis-phd" />
+        <div className="w-1/3">
+            <HomeCard title="Asesorados Doctorado" webLink="view-tesis-phd" />
         </div>
         <div className="w-1/3">
-        <CalendarCard title="Calendario de actividades"/>  
+            <CalendarCard title="Asignaciones Activas"/> 
         </div>
     </div>
 </div>

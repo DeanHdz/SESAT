@@ -59,29 +59,31 @@ const TesisCard = () => {
             </div>
           </div>
         ) : (
-          <div>
-            <div className="p-2 bg-light-blue-10 block lg:w-5/12 h-[180px] !overflow-hidden">
-              {asignacion ? 
-                ( <SimplePDFViewer /> )
-                :
-                ( <div className="flex justify-center align-middle items-center">
-                    No hay documento por mostrar
-                  </div> 
-                )
-              }
-            </div>
-            <div className="block justify-center items-center w-7/12">
-              <label className="m-3 block text-2xl font-bold">
-                {" "}
-                {tesis.titulo}{" "}
-              </label>
-              <label className="m-3 mt-10 block text-sm font-bold">
-                {" "}
-                Última versión realizada: {tesis.ultimo_avance}{" "}
-              </label>
-              <div className="w-full flex justify-end items-end">
-                <button className="btn shadow rounded"> Ver Tesis </button>
+          <div className="w-full">
+            <div className=" flex flex-row h-[200px]">
+              <div className="p-2 bg-light-blue-10 block border border-black"> 
+                {asignacion ? 
+                  ( <SimplePDFViewer /> )
+                  :
+                  ( <div className="flex justify-center text-center w-full h-full align-middle items-center">
+                      No hay documento por mostrar
+                    </div> 
+                  )
+                }
               </div>
+              <div className=" flex flex-col justify-center items-start align-middle  w-7/12">
+                <label className="m-3 block text-2xl font-bold">
+                  {" "}
+                  {tesis.titulo}{" "}
+                </label>
+                <label className="m-3 mt-10 block text-sm font-bold">
+                  {" "}
+                  Última versión realizada: {tesis.ultimo_avance}{" "}
+                </label>
+              </div>
+            </div>
+            <div className="w-full flex justify-end items-end">
+              <button className="btn shadow rounded"> Ver Tesis </button>
             </div>
           </div>
         )}

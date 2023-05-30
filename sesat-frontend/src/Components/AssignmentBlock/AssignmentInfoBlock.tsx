@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { AsignacionEndpoint } from "../../api/asignacion.endpoint";
 import { SESAT } from "../../Interfaces/ISESAT";
 
-const AssignmentInfoBlock = ({asignacion}:{asignacion:SESAT.Asignacion | undefined}) => {
+const AssignmentInfoBlock = ({asignacion}:{asignacion:SESAT.Asignacion}) => {
   return (
     <div className="">
       <article className="prose">
-        <h1 className="font-SESAT mt-2">{asignacion != undefined ? asignacion.titulo: ""}</h1>
-        <h3 className="ml-4">{asignacion?.descripcion}</h3>
+        <h1 className="font-SESAT mt-2">{asignacion.titulo}</h1>
+        <h3 className="ml-4">{asignacion.descripcion}</h3>
       </article>
       <div className=" mt-4 w-full bg-[#f8f9fa] shadow-md px-6 py-6">
         <div className="pt-[7px]">
@@ -20,14 +20,14 @@ const AssignmentInfoBlock = ({asignacion}:{asignacion:SESAT.Asignacion | undefin
           Abierto:{" "}
           <span className="font-normal text-gray-500">
             {" "}
-            {asignacion?.apertura.toLocaleString()}{" "}
+            {asignacion.apertura.toLocaleString()}{" "}
           </span>
         </div>
         <div className="font-bold mt-2">
           Pendiente:{" "}
           <span className="font-normal text-gray-500">
             {" "}
-            {asignacion?.cierre.toLocaleString()}{" "}
+            {asignacion.cierre.toLocaleString()}{" "}
           </span>
         </div>
         <div className="divider mt-2 mb-2"></div>
