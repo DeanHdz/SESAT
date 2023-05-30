@@ -103,7 +103,7 @@ const AssignmentCard = () => {
         <div className="ml-6 block w-auto">
           <p className="font-bold"> {asignacion.titulo} </p>
           <p> {user.usuario.datos_alumno?.id_programa} </p>
-          <p className="mt-1 text-sm"> {asignacion.cierre.toISOString()} </p>
+          <p className="mt-1 text-sm"> {asignacion.cierre.toString()} </p>
         </div>
         <div className="ml-auto flex justify-end items-center">
           <button className="btn shadow rounded"> Ver detalles </button>
