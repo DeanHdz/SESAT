@@ -12,6 +12,7 @@ const CreateAssignment = () => {
   const location = useLocation();
 
   const title = location.state.title;
+  const avance = location.state.avance;
 
   console.log(title);
 
@@ -21,7 +22,7 @@ const CreateAssignment = () => {
         <Drawer />
       </div>
       <div className="w-9/12">
-        <NewAssignment program="Programa" title={title} />
+        <NewAssignment title={title} avance={avance} />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateAsignacionDto {
 
@@ -15,18 +15,18 @@ export class CreateAsignacionDto {
   descripcion: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   apertura: Date;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   cierre: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   calificacion: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   documento: string;
 
@@ -38,11 +38,11 @@ export class CreateAsignacionDto {
   @IsString()
   retroalimentacion: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   id_formato_de_evaluacion: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   id_acta_de_evaluacion: number;
 }

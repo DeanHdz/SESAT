@@ -2,16 +2,17 @@ import { useNavigate } from "react-router-dom";
 
 const AdminAssignmentCard = ({
   title,
-  status,
+  avance,
 }: {
   title: string;
-  status: string;
+  avance: number;
 }) => {
   const navigate = useNavigate();
   function handleClick() {
     navigate("/admin-board/create_assignment", {
       state: {
         title: title,
+        avance: avance,
       },
     });
   }

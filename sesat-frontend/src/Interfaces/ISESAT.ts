@@ -126,12 +126,12 @@ export namespace SESAT {
     descripcion: string;
     apertura: Date;
     cierre: Date;
-    calificacion: number;
-    documento: string;
+    calificacion: number | null;
+    documento: string | null;
     estado_entrega: number;
-    retroalimentacion: string;
-    id_formato_evaluacion: number;
-    id_acta_evaluacion: number;
+    retroalimentacion: string | null;
+    id_formato_evaluacion: number | null;
+    id_acta_evaluacion: number | null;
   }
 
   export interface UpdateAsignacion {

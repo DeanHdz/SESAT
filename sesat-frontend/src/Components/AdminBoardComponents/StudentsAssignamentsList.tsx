@@ -37,7 +37,9 @@ const StudentAssignamentsList = ({
 
   return (
     <div className="w-full p-6 flex flex-col">
-      <label className="mb-3 block text-4xl font-bold">{"Alumnos de " + modalidad}</label>
+      <label className="mb-3 block text-4xl font-bold">
+        {"Alumnos de " + modalidad}
+      </label>
       <label className=" block text-xl font-bold">{title}</label>
       <div className="mt-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-start">
         <label className=" block text-xl font-light">
@@ -47,15 +49,15 @@ const StudentAssignamentsList = ({
 
       <AdminAssignmentCard
         title="Seminario de Tesis I (20% de avance)"
-        status={status1}
+        avance={1}
       />
       <AdminAssignmentCard
         title="Seminario de Tesis II (50% de avance)"
-        status={status2}
+        avance={2}
       />
       <AdminAssignmentCard
         title="Seminario de Tesis III (90% de avance)"
-        status={status3}
+        avance={3}
       />
 
       <div className="mt-14 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-start">
@@ -64,20 +66,20 @@ const StudentAssignamentsList = ({
         </label>
       </div>
 
-      <AdminAssignmentCard title="Avance 1" status={status5} />
+      <AdminAssignmentCard title="Avance 1" avance={1} />
       <AdminAssignmentCard
         title="Seminario de Tesis I (20% de la tesis)"
-        status={status6}
+        avance={2}
       />
-      <AdminAssignmentCard title="Avance 3" status={status7} />
+      <AdminAssignmentCard title="Avance 3" avance={3} />
       <AdminAssignmentCard
         title="Seminario de Tesis II (50% de la tesis)"
-        status={status8}
+        avance={4}
       />
-      <AdminAssignmentCard title="Avance 5" status={status9} />
+      <AdminAssignmentCard title="Avance 5" avance={5} />
       <AdminAssignmentCard
         title="Seminario de Tesis III (90% de la tesis)"
-        status={status10}
+        avance={6}
       />
     </div>
   );
