@@ -13,19 +13,19 @@ import { join } from "path";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { RespuestaModule } from "./respuesta/respuesta.module";
 import { ComentarioModule } from "./comentario/comentario.module";
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from "./auth/auth.module";
 import { APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
-import { NotificationModule } from './notification/notification.module';
-import { UsuariosPruebaModule } from './usuarios_prueba/usuarios_prueba.module';
-import { AsignacionTesisModule } from './asignacion-tesis/asignacion-tesis.module';
-import { ComiteModule } from './comite/comite.module';
-import { DatosAlumnoModule } from './datos-alumno/datos-alumno.module';
-import { RolModule } from './rol/rol.module';
-import { FuncionModule } from './funcion/funcion.module';
-import { FormatoEvaluacionModule } from './formato-evaluacion/formato-evaluacion.module';
-import { DatosAsesorexternoModule } from './datos-asesorexterno/datos-asesorexterno.module';
-import { VariablesSistemaModule } from './variables-sistema/variables-sistema.module';
+import { NotificationModule } from "./notification/notification.module";
+import { UsuariosPruebaModule } from "./usuarios_prueba/usuarios_prueba.module";
+import { AsignacionTesisModule } from "./asignacion-tesis/asignacion-tesis.module";
+import { ComiteModule } from "./comite/comite.module";
+import { DatosAlumnoModule } from "./datos-alumno/datos-alumno.module";
+import { RolModule } from "./rol/rol.module";
+import { FuncionModule } from "./funcion/funcion.module";
+import { FormatoEvaluacionModule } from "./formato-evaluacion/formato-evaluacion.module";
+import { DatosAsesorexternoModule } from "./datos-asesorexterno/datos-asesorexterno.module";
+import { VariablesSistemaModule } from "./variables-sistema/variables-sistema.module";
 
 @Module({
   imports: [
@@ -42,13 +42,13 @@ import { VariablesSistemaModule } from './variables-sistema/variables-sistema.mo
       ],
       inject: [ConfigService],
       useFactory: (configService: ConfigService): TypeOrmModule => ({
-        type: "postgres",
-        host: "localhost",
-        port: 5432,
-        username: "postgres",
-        password: "pc2sesat",
-        database: "SESAT",
-        schema: "public",
+        type: process.env.DB_TYPE,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        schema: process.env.DB_SCHEMA,
         synchronize: false,
         entities: ["dist/**/entities/*.entity.js"],
       }),
@@ -77,6 +77,6 @@ import { VariablesSistemaModule } from './variables-sistema/variables-sistema.mo
     VariablesSistemaModule,
   ],
   controllers: [AppController],
-  providers: [{provide: APP_GUARD, useClass: ThrottlerGuard}],
+  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}
