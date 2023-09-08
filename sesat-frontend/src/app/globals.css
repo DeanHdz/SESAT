@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "SESAT";
+  src: url("../../public/Fonts/Myriad-Pro-Semibold.ttf");
+}
+
+@layer utilites {
+  .\[appearance\:textfield\] {
+    -webkit-appearance: textfield;
+            appearance: textfield;
+  }
+}
+
+/*Custom CSS Classes########################*/
+/*
+Docs:
+https://csstailwind.com/how-to-add-custom-css-or-classes-in-tailwindcss/
+*/
+
+.gray__border{
+  border-width: 1px;  
+  border-color: #d5d3dd;
+  border-style: solid;
+  border-radius: 0.4rem;
+}
