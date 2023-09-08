@@ -22,6 +22,11 @@ export class AsignacionTesisController {
     return this.asignacionTesisService.findOne(+id);
   }
 
+  @Get('/final-document/:id')
+  findDocumentByID(@Param('id') id: string) {
+    return this.asignacionTesisService.findDocumentByID(+id);
+  }
+
   @Put()
   update(@Body() updateAsignacionTesiDto: UpdateAsignacionTesiDto) {
     return this.asignacionTesisService.update(updateAsignacionTesiDto);

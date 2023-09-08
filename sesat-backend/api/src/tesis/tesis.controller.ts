@@ -27,10 +27,31 @@ export class TesisController {
     return this.tesisService.findInactive();
   }
 
+  @Get('/completed/mdegree/half-time')
+  findCompletedMDegreeHalfTime() {
+    return this.tesisService.findCompletedMDegreeHalfTime();
+  }
+
+  @Get('/completed/mdegree/full-time')
+  findCompletedMDegreeFullTime() {
+    return this.tesisService.findCompletedMDegreeFullTime();
+  }
+
+  @Get('/completed/phd')
+  findInactivePhd() {    
+    return this.tesisService.findCompletedPhd();
+  }
+
+  @Get('/basic-info/:id')
+  findOneBasicInfo(@Param('id') id: string) {
+    return this.tesisService.findOneBasicInfo(+id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tesisService.findOne(+id);
   }
+
   @Get('/per-student/:id')
   findTesisPerStudent(@Param('id') id: string) {
     return this.tesisService.findTesisPerStudent(+id);
