@@ -30,6 +30,11 @@ export class ComiteController {
     return this.comiteService.findOne(+id);
   }
 
+  @Get("/findasesor-by-id-tesis/:id")
+  findAsesorByIDTesis(@Param("id") id: string) {
+    return this.comiteService.findAsesorByIDTesis(+id);
+  }
+
   @Get("/per-asesor/:id")
   findPerAsesor(@Param("id") id: string) {
     return this.comiteService.findPerAsesor(+id);

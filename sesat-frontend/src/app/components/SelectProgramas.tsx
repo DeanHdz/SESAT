@@ -1,4 +1,5 @@
-import { Programa } from "@/types/ISESAT"
+import { Programa } from "../../../types/ISESAT"
+
 
 
 const SelectProgramas = ({programas} : {programas: Programa[]}) =>

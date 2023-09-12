@@ -1,6 +1,7 @@
 "use client";
 import { FormEventHandler, useEffect, useState } from "react";
-import { UsuarioPrueba } from "@/types/ISESAT";
+import { UsuarioPrueba } from "../../../types/ISESAT";
+
 
 
 export const AsesorRegistryForm = () => {

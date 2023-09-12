@@ -1,4 +1,5 @@
-import { UpdateFormatosVacios } from "@/types/ISESAT";
+import { UpdateFormatosVacios } from "../types/ISESAT";
+
 
 
 

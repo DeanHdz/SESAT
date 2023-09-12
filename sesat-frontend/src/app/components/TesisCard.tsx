@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
-import { Asignacion, LoggedUser, Tesis } from "@/types/ISESAT";
+
 import SimplePDFViewer from "./SimplePDFViewer";
+import { Asignacion, LoggedUser, Tesis } from "../../../types/ISESAT";
 
 const TesisCard = () => {
   const navigate = useRouter();

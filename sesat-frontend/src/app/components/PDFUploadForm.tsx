@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { FormatosVaciosEndpoint } from "../../utils/formatos-vacios.endpoint";
 import { encode } from "base64-arraybuffer";
+import { FormatosVaciosEndpoint } from "../../../utils/formatos-vacios.endpoint";
 
 export const PDFUploadForm = () => {
   const [fileSelected, setFileSelected] = useState<Blob | undefined>();

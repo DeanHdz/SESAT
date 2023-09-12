@@ -1,7 +1,8 @@
 
 import { useState, useEffect, ChangeEvent } from "react";
 import StudentProfileModal from "./StudentProfileModal";
-import { Programa, Usuario } from "@/types/ISESAT";
+import { Programa, Usuario } from "../../../types/ISESAT";
+
 
 
 const StudentProfile = ({ user }: { user: Usuario }) => {

@@ -4,6 +4,7 @@ import { And, Repository } from "typeorm";
 import { CreateComiteDto } from "./dto/create-comite.dto";
 import { UpdateComiteDto } from "./dto/update-comite.dto";
 import { Comite } from "./entities/comite.entity";
+import { Usuario } from "src/usuario/entities/usuario.entity";
 
 @Injectable()
 export class ComiteService {
@@ -22,6 +23,22 @@ export class ComiteService {
 
   findOne(id: number) {
     return this.comiteRepository.findOne({ where: { id_comite: id } });
+  }
+
+  async findAsesorByIDTesis(id: number) {
+    const resp = await this.comiteRepository
+    .createQueryBuilder("comite") 
+
+    .select("usuario.nombre")     
+    .addSelect("usuario.apellido_paterno")
+    .addSelect("usuario.apellido_materno") 
+
+    .from(Usuario, 'usuario')            
+    .where('comite.clave_asesor = usuario.clave')  
+    .andWhere('comite.id_tesis = :id_tesis', { id_tesis: id })            
+    .getRawOne()     // fetch raw results, which will give us one data ROW comibined from all the tables.
+                      //otherwise it won't return anything
+    return resp;
   }
 
   findPerAsesor(id: number) {

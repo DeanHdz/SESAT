@@ -1,4 +1,5 @@
-import { Usuario } from "@/types/ISESAT";
+import { Usuario } from "../../../types/ISESAT";
+
 
 
 const Contact = ({asesor} : {asesor: Usuario}) => {

@@ -1,5 +1,5 @@
-import { Asignacion } from "@/types/ISESAT";
-import { Itable } from "@/types/ITable";
+import { Asignacion } from "../../../types/ISESAT";
+import { Itable } from "../../../types/ITable";
 import Table from "./Table";
 
 

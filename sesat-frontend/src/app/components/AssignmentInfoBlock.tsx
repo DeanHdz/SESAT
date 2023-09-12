@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { encode } from "base64-arraybuffer";
-import { Asignacion } from "@/types/ISESAT";
+import { Asignacion } from "../../../types/ISESAT";
+
 
 const AssignmentInfoBlock = ({
   asignacion,

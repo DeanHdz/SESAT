@@ -1,3 +1,34 @@
+
+
+
+
+export async function fetchAsesorByIDTesis(
+  id: string,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/findasesor-by-id-tesis/${id}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    next:{
+      revalidate: 20
+    },
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+  return result;
+
+}
 /*
 import { SESAT } from "@/types/ISESAT";
 

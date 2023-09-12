@@ -1,6 +1,7 @@
 
-import { ButtonProps } from "@/types/IButtonProps";
+
 import { FC } from "react";
+import { ButtonProps } from "../../../types/IButtonProps";
 
 export const PrimaryButton: FC<ButtonProps> = ({onClick, id, text}) => {
     return (

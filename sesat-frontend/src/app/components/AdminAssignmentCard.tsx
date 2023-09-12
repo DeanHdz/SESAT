@@ -104,9 +104,9 @@ const AdminAssignmentCard = ({
               y2="112"
               fill="none"
               stroke="#000"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="16"
             ></line>
             <line
               x1="112"
@@ -115,9 +115,9 @@ const AdminAssignmentCard = ({
               y2="144"
               fill="none"
               stroke="#000"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="16"
             ></line>
             <rect
               x="40"
@@ -127,9 +127,9 @@ const AdminAssignmentCard = ({
               rx="8"
               fill="none"
               stroke="#000"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="16"
             ></rect>
             <line
               x1="80"
@@ -138,9 +138,9 @@ const AdminAssignmentCard = ({
               y2="216"
               fill="none"
               stroke="#000"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="16"
             ></line>
           </svg>
       </div>

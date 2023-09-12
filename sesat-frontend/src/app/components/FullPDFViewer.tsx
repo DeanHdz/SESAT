@@ -1,4 +1,5 @@
-"use client"
+/*
+"use client";
 
 import { ReactElement } from "react";
 
@@ -98,3 +99,5 @@ export default function FullPDFViewer({ file }: { file: string | Uint8Array}) {
     </div>    
   );
 }
+
+*/

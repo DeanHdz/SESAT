@@ -1,7 +1,7 @@
 "use client";
 import { Calendar } from "./Calendar";
 import HomeCard from "./HomeCard";
-import AdminNavbar from "./AdminNavbar";
+
 
 const AdminBoard = () => {
 

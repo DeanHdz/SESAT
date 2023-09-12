@@ -141,6 +141,10 @@ export async function fetchDocumentByID(
   };
   const response = await fetch(url, options);
 
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
   const result = await response.json();
 
 
