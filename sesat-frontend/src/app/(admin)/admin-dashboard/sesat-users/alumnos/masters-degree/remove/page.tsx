@@ -97,8 +97,8 @@ const RemoveAsesorForm = () => {
         </div>
       </div>
 
-      <div className='mt-6 bg-light-blue-15 gray__border p-3'>
-        <table className="table">
+      <div className='mt-6 bg-white gray__border p-3'>
+        <table className="table table-zebra">
           {/*Table head */}
           <thead>
             <tr>
@@ -125,7 +125,7 @@ const RemoveAsesorForm = () => {
                     key={user.clave}
                     onClick={() => setSelectedUser(user)}
                     /** Visualizar la seleccion de un renglon*/
-                    className={selectedUser?.clave === user.clave ? 'bg-dark-blue-10 rounded text-white cursor-pointer' : 'cursor-pointer'}
+                    className={selectedUser?.clave === user.clave ? '!bg-dark-blue-10 rounded !text-white cursor-pointer' : 'cursor-pointer'}
                   >
                     <td>{user.clave}</td>
                     <td>{`${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`}</td>
@@ -144,7 +144,7 @@ const RemoveAsesorForm = () => {
 
 
       <div className="w-full mt-6 flex justify-end">
-        <button type="submit" className="btn shadow rounded">
+        <button type="submit" className="primary__btn">
           Dar de baja del sistema SESAT
         </button>
       </div>

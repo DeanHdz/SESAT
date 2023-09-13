@@ -26,7 +26,7 @@ export const AsesorRegistryForm = () => {
   >();
 
 
-  
+
 
 
 
@@ -52,9 +52,9 @@ export const AsesorRegistryForm = () => {
   };
 
   const handleUserTypeChange = (event: any) => {
-    setUserType(event.target.value);    
+    setUserType(event.target.value);
   };
-  
+
 
 
   {/** Commented for testing ui
@@ -119,60 +119,60 @@ export const AsesorRegistryForm = () => {
         </div>
 
         <div className="h-fit w-full gray__border mt-10 p-6">
-          <span className="font-bold ">Complete los siguientes datos para realizar el registro.</span>          
-          
-            <div className={`h-fit w-full my-10`}>
-              <div className="flex flex-col mt-10">
-                <span className="mt-3">Ingrese la clave única o el nombre del alumno para buscar, seleccione una opción.</span>
-                <div className="mt-6">
+          <span className="font-bold ">Complete los siguientes datos para realizar el registro.</span>
+
+          <div className={`h-fit w-full my-10`}>
+            <div className="flex flex-col mt-10">
+              <span className="mt-3">Ingrese la clave única o el nombre del alumno para buscar, seleccione una opción.</span>
+              <div className="mt-6">
 
 
-                  <input
-                    type="text"
-                    placeholder="Nombre o clave única"
-                    maxLength={6}
-                    className="gray__border input-bordered w-full max-w-lg"
-                    value={claveUnica}
-                    onChange={(e) => {
-                      setClaveUnica(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="mt-6 bg-light-blue-15 gray__border p-3">
-                <div className="overflow-x-auto">
-
-                  <table className="table">
-                    {/*Table head */}
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>Clave Única</th>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {usuariosPrueba?.map((user) => (
-                        <tr
-                          key={user.clave_unica}
-                          onClick={() => setSelectedUser(user)}
-                          /** Visualizar la seleccion de un renglon*/
-                          className={selectedUser?.clave_unica === user.clave_unica ? 'bg-white cursor-pointer' : 'cursor-pointer'}
-                        >
-                          <td>{user.clave_unica}</td>
-                          <td>{`${user.nombre} ${user.apellido_pat} ${user.apellido_mat}`}</td>
-                          <td>{user.correo}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  
-                </div>
+                <input
+                  type="text"
+                  placeholder="Nombre o clave única"
+                  maxLength={6}
+                  className="gray__border input-bordered w-full max-w-lg"
+                  value={claveUnica}
+                  onChange={(e) => {
+                    setClaveUnica(e.target.value);
+                  }}
+                />
               </div>
             </div>
-          
+
+            <div className="mt-6 bg-white gray__border p-3">
+              <div className="overflow-x-auto">
+
+                <table className="table">
+                  {/*Table head */}
+                  <thead>
+                    <tr className="text-dark-blue-20">
+                      <th></th>
+                      <th>Clave Única</th>
+                      <th>Nombre</th>
+                      <th>Correo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {usuariosPrueba?.map((user) => (
+                      <tr
+                        key={user.clave_unica}
+                        onClick={() => setSelectedUser(user)}
+                        /** Visualizar la seleccion de un renglon*/
+                        className={selectedUser?.clave_unica === user.clave_unica ? '!bg-dark-blue-10 rounded !text-white cursor-pointer' : 'cursor-pointer'}
+                      >
+                        <td>{user.clave_unica}</td>
+                        <td>{`${user.nombre} ${user.apellido_pat} ${user.apellido_mat}`}</td>
+                        <td>{user.correo}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+
 
 
 
@@ -181,7 +181,7 @@ export const AsesorRegistryForm = () => {
 
 
           <div className="w-full mt-6 flex justify-end">
-            <button type="submit" className="btn shadow rounded">
+            <button type="submit" className="primary__btn">
               Registrar alumno en SESAT
             </button>
           </div>

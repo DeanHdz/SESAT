@@ -148,13 +148,13 @@ export const AsesorRegistryForm = () => {
                 </div>
               </div>
 
-              <div className="mt-6 bg-light-blue-15 gray__border p-3">
+              <div className="mt-6 bg-white gray__border p-3">
                 <div className="overflow-x-auto">
 
-                  <table className="table">
+                  <table className="table table-zebra">
                     {/*Table head */}
                     <thead>
-                      <tr>
+                    <tr className="text-dark-blue-20">
                         <th></th>
                         <th>Clave Única</th>
                         <th>Nombre</th>
@@ -259,7 +259,7 @@ export const AsesorRegistryForm = () => {
 
 
           <div className="w-full mt-6 flex justify-end">
-            <button type="submit" className="btn shadow rounded">
+            <button type="submit" className="primary__btn">
               Registrar asesor en SESAT
             </button>
           </div>

@@ -140,13 +140,13 @@ export const AsesorRegistryForm = () => {
                 </div>
               </div>
 
-              <div className="mt-6 bg-light-blue-15 gray__border p-3">
+              <div className="mt-6 bg-white gray__border p-3">
                 <div className="overflow-x-auto">
 
-                  <table className="table">
+                  <table className="table table-zebra">
                     {/*Table head */}
                     <thead>
-                      <tr>
+                    <tr className="text-dark-blue-20">
                         <th></th>
                         <th>Clave Única</th>
                         <th>Nombre</th>
@@ -159,7 +159,7 @@ export const AsesorRegistryForm = () => {
                           key={user.clave_unica}
                           onClick={() => setSelectedUser(user)}
                           /** Visualizar la seleccion de un renglon*/
-                          className={selectedUser?.clave_unica === user.clave_unica ? 'bg-white cursor-pointer' : 'cursor-pointer'}
+                          className={selectedUser?.clave_unica === user.clave_unica ? '!bg-dark-blue-10 rounded !text-white' : 'cursor-pointer'}
                         >
                           <td>{user.clave_unica}</td>
                           <td>{`${user.nombre} ${user.apellido_pat} ${user.apellido_mat}`}</td>
@@ -181,7 +181,7 @@ export const AsesorRegistryForm = () => {
 
 
           <div className="w-full mt-6 flex justify-end">
-            <button type="submit" className="btn shadow rounded">
+            <button type="submit" className="primary__btn">
               Registrar alumno en SESAT
             </button>
           </div>

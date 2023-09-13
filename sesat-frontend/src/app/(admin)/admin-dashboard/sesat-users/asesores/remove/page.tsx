@@ -98,11 +98,11 @@ const RemoveAsesorForm = () => {
         </div>
       </div>
 
-      <div className='mt-6 bg-light-blue-15 gray__border p-3'>
-        <table className="table">
+      <div className='mt-6 bg-white gray__border p-3'>
+        <table className="table table-zebra">
           {/*Table head */}
           <thead>
-            <tr>
+          <tr className="text-dark-blue-20">
               <th>Clave Única</th>
               <th>Nombre</th>
               <th>Correo</th>
@@ -145,7 +145,7 @@ const RemoveAsesorForm = () => {
 
 
       <div className="w-full mt-6 flex justify-end">
-        <button type="submit" className="btn shadow rounded">
+        <button type="submit" className="primary__btn">
           Dar de baja del sistema SESAT
         </button>
       </div>
