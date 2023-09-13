@@ -48,6 +48,65 @@
     -ms-user-select: none;
     /* Internet Explorer/Edge */
   }
+
+  .primary__btn {
+    background-color: #03396c;
+    border-radius: 6px;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+  }
+
+  .secondary__btn {
+    background-color: white;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: #d5d3dd;
+    border-style: solid; 
+    color: #ef3a3a;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 8px;
+    padding-bottom: 8px;       
+
+  }
+
+  .primary__btn:focus, .secondary__btn:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .primary__btn:active {
+    background-color: #06447d;
+  }
+
+  .secondary__btn:active {
+    color: white;
+    background-color: #ef3a3a;
+  }
+
+  .primary__btn:hover, .secondary__btn:hover {
+    scale: 102%;
+    transition: all;
+    transition-duration: 150ms;
+  }
+
+  .gray__border {
+    border-width: 1px;
+    border-color: #d5d3dd;
+    border-style: solid;
+    border-radius: 6px;
+  }  
+  
 }
 
 /*Custom CSS Classes########################*/
@@ -56,9 +115,3 @@ Docs:
 https://csstailwind.com/how-to-add-custom-css-or-classes-in-tailwindcss/
 */
 
-.gray__border {
-  border-width: 1px;
-  border-color: #d5d3dd;
-  border-style: solid;
-  border-radius: 0.4rem;
-}
