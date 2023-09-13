@@ -72,12 +72,12 @@ const RemoveAsesorForm = () => {
     <form className="w-full flex flex-col">
 
 
-      <label className="mb-6 block text-4xl font-bold">Alumnos de maestría</label>
+      <label className="mb-6 block text-4xl font-bold">Alumnos de doctorado</label>
 
       <div className="tabs">
-        <a href="/admin-dashboard/sesat-users/alumnos/masters-degree" className={`tab tab-lifted ${cssTab0}`} onClick={() => { setActiveTab(1) }}>Alumnos de maestría registrados en SESAT</a>
-        <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/register" className={`tab tab-lifted ${cssTab1}`} onClick={() => { setActiveTab(2) }}>Registrar alumno</a>
-        <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/remove" className={`tab tab-lifted ${cssTab2}`} onClick={() => { setActiveTab(3) }}>Baja de alumno</a>
+        <a href="/admin-dashboard/sesat-users/alumnos/phd" className={`tab tab-lifted ${cssTab0}`} onClick={() => { setActiveTab(1) }}>Alumnos de doctorado registrados en SESAT</a>
+        <a href="/admin-dashboard/sesat-users/alumnos/phd/register" className={`tab tab-lifted ${cssTab1}`} onClick={() => { setActiveTab(2) }}>Registrar alumno</a>
+        <a href="/admin-dashboard/sesat-users/alumnos/phd/remove" className={`tab tab-lifted ${cssTab2}`} onClick={() => { setActiveTab(3) }}>Baja de alumno</a>
       </div>
 
 

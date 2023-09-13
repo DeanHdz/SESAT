@@ -9,7 +9,11 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
   const [showModal, setShowModal] = useState(false);
   const [activeStatus, setActiveStatus] = useState<boolean>(true); //had to default it
   const [program, setProgram] = useState<string>("");
-  
+
+  const [cssTab0, setCssTab0] = useState("tab-active");
+  const [cssTab1, setCssTab1] = useState("");
+  const [cssTab2, setCssTab2] = useState("");
+
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -23,6 +27,27 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     /*setAsesores(await UsuarioEndpoint.getAsesores(""));*/
   };
 
+
+  function setActiveTab(tab: number) {
+    switch (tab) {
+      case 1:
+        setCssTab0("tab-active");
+        setCssTab1("");
+        setCssTab2("");
+        break;
+      case 2:
+        setCssTab0("");
+        setCssTab1("tab-active");
+        setCssTab2("");
+        break;
+
+      default:
+        setCssTab0("");
+        setCssTab1("");
+        setCssTab2("tab-active");
+        break;
+    }
+  }
   useEffect(() => {
     if (showModal === true) {
       console.log("useEffect");
@@ -110,12 +135,13 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+            <div className="relative w-[600px] my-6 mx-auto max-w-3xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">                
+
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Editar Alumno</h3>
+                  <h3 className="text-2xl font-semibold">Editar datos del Alumno</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -125,6 +151,13 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                     </span>
                   </button>
                 </div>
+
+                <div className="tabs">
+                  <a href="/admin-dashboard/sesat-users/alumnos/masters-degree" className={`tab tab-lifted ${cssTab0}`} onClick={() => { setActiveTab(1) }}>Datos generales</a>
+                  <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/register" className={`tab tab-lifted ${cssTab1}`} onClick={() => { setActiveTab(2) }}>Comité</a>
+                  <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/remove" className={`tab tab-lifted ${cssTab2}`} onClick={() => { setActiveTab(3) }}></a>
+                </div>
+
                 <form onSubmit={handleSubmit}>
                   {/*body*/}
                   <div className="relative p-6 flex-auto">
