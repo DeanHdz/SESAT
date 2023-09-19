@@ -1,3 +1,4 @@
+
 import { Funcion } from "src/funcion/entities/funcion.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import { Usuario } from "src/usuario/entities/usuario.entity";
@@ -16,10 +17,10 @@ export class Comite {
   id_comite: number;
 
   @Column()
-  clave_asesor: number;
+  id_usuario: number;
 
   @OneToOne(() => Usuario, { eager: true })
-  @JoinColumn({ name: "clave_asesor" })
+  @JoinColumn({ name: "id_usuario" })
   asesor: Usuario;
 
   @Column()

@@ -21,11 +21,11 @@ export class UpdateAsignacionDto extends PartialType(CreateAsignacionDto) {
 
   @IsNotEmpty()
   @IsDateString()
-  apertura: Date;
+  fecha_apertura: Date;
 
   @IsNotEmpty()
   @IsDateString()
-  cierre: Date;
+  fecha_cierre: Date;
 
   @IsOptional()
   @IsNumber()

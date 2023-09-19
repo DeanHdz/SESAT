@@ -16,12 +16,12 @@ export class TesisController {
   findAll() {
     return this.tesisService.findAll();
   }
-
+  //no se usa
   @Get('/active')
   findActive() {
     return this.tesisService.findActive();
   }
-
+  //no se usa
   @Get('/inactive')
   findInactive() {
     return this.tesisService.findInactive();
@@ -55,6 +55,24 @@ export class TesisController {
   @Get('/per-student/:id')
   findTesisPerStudent(@Param('id') id: string) {
     return this.tesisService.findTesisPerStudent(+id);
+  }
+  //por que no funciona con 3 guiones?  tesis-status/masters/mid-time
+  /**Encuentra cuantos alumnos de doctorado activos hay agrupados por numero de avance */
+  @Get('/tesis-status/phd')
+  findTesisStatusPhd() {
+    return this.tesisService.findTesisStatusPhd();    
+  }
+
+  /**Encuentra cuantos alumnos de maestria medio tiempo activos hay agrupados por numero de avance */
+  @Get('/tesis-status/masters/mid-time')
+  findTesisStatusMastersMidTime() {
+    return this.tesisService.findTesisStatusMastersMidTime();    
+  }
+
+  /**Encuentra cuantos alumnos de maestria tiempo completo activos hay agrupados por numero de avance */
+  @Get('/tesis-status/masters/full-time')
+  findTesisStatusMastersFullTime() {
+    return this.tesisService.findTesisStatusMastersFullTime();    
   }
 
   @Put()

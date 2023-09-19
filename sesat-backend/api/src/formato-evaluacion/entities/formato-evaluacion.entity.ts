@@ -1,4 +1,5 @@
-import { FormatosVacios } from "src/formatos-vacios/entities/formatos-vacios.entity";
+import { FormatoVacio } from "src/formato-vacio/entities/formato-vacio.entity";
+
 import {
   Column,
   Entity,
@@ -18,7 +19,7 @@ export class FormatoEvaluacion {
   @Column()
   id_formato_vacio: number;
 
-  @OneToOne(() => FormatosVacios, { eager: true })
+  @OneToOne(() => FormatoVacio, { eager: true })
   @JoinColumn({ name: "id_formato_vacio" })
-  formatos_vacios: FormatosVacios;
+  formatos_vacios: FormatoVacio;
 }

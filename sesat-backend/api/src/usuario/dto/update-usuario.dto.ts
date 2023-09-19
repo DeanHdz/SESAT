@@ -1,12 +1,13 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateUsuarioDto } from './create-usuario.dto';
-import { DatosAsesorexterno } from 'src/datos-asesorexterno/entities/datos-asesorexterno.entity';
+import { DatosAsesorExterno } from 'src/datos-asesor-externo/entities/datos-asesor-externo.entity';
+
 
 export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
     @IsNotEmpty()
     @IsNumber()
-    clave: number;
+    id_usuario: number;
 
     @IsNotEmpty()
     @IsString()
@@ -38,5 +39,5 @@ export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
 
     @IsOptional()
     @IsNumber()
-    id_datos_asesorexterno: DatosAsesorexterno;
+    id_datos_asesor_externo: number;
 }

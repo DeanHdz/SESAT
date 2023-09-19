@@ -6,6 +6,6 @@ export class Funcion {
     id_funcion: number;
 
     @Column()
-    nombre: string;
+    nombre_funcion: string;
 
 }

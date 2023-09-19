@@ -9,7 +9,7 @@ export class UpdateTesisDto extends PartialType(CreateTesisDto) {
 
   @IsNotEmpty()
   @IsNumber()
-  clave_alumno: number;
+  id_usuario: number;
 
   @IsOptional()
   @IsString()
@@ -17,11 +17,11 @@ export class UpdateTesisDto extends PartialType(CreateTesisDto) {
 
   @IsOptional()
   @IsDateString()
-  fecharegistro: Date;
+  fecha_registro: Date;
   
   @IsOptional()
-  @IsString()
-  generacion: string;
+  @IsNumber()
+  generacion: number;
 
   @IsNotEmpty()
   @IsBoolean()
@@ -34,4 +34,8 @@ export class UpdateTesisDto extends PartialType(CreateTesisDto) {
   @IsNotEmpty()
   @IsBoolean()
   estado_activo: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  estado_finalizacion: boolean;
 }

@@ -16,11 +16,11 @@ export class CreateAsignacionDto {
 
   @IsNotEmpty()
   @IsDateString()
-  apertura: Date;
+  fecha_apertura: Date;
 
   @IsNotEmpty()
   @IsDateString()
-  cierre: Date;
+  fecha_cierre: Date;
 
   @IsOptional()
   @IsNumber()

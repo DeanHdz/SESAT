@@ -24,14 +24,14 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       resolve({
         message: 'Authenticated',
-        clave: user.clave,
+        clave: user.id_usuario,
         name: user.nombre,
         last_name: user.apellido_paterno,
         family_name: user.apellido_materno,
         token: this.jwtService.sign(
           {
             usuario: {
-              clave: user.clave,
+              clave: user.id_usuario,
               name: user.nombre,
               last_name: user.apellido_paterno,
               family_name: user.apellido_materno

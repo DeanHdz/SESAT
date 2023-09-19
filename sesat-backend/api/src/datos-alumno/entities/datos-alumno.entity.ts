@@ -1,3 +1,5 @@
+
+import { GradoEstudio } from "src/grado-estudio/entities/grado-estudio.entity";
 import { Programa } from "src/programa/entities/programa.entity";
 import {
   Column,
@@ -13,10 +15,10 @@ export class DatosAlumno {
   id_datos_alumno: number;
 
   @Column()
-  grado_estudio: string;
+  id_grado_estudio: number;
 
   @Column()
-  modalidad: string;
+  id_modalidad: number;
 
   @Column()
   estado_activo: boolean;
@@ -25,9 +27,14 @@ export class DatosAlumno {
   id_programa: number;
 
   @Column()
-  generacion: string;
+  generacion: number;
 
   @OneToOne(() => Programa, { eager: true })
   @JoinColumn({ name: "id_programa" })
   programa: Programa;
+
+  @OneToOne(() => GradoEstudio, { eager: true })
+  @JoinColumn({ name: "id_grado_estudio" })
+  grado_estudio: GradoEstudio;
+
 }

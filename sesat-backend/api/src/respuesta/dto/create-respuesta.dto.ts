@@ -11,5 +11,5 @@ export class CreateRespuestaDto {
 
     @IsNotEmpty()
     @IsNumber()
-    clave_usuario: number;
+    id_usuario: number;
 }

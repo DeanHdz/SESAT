@@ -3,7 +3,7 @@ import { IsBoolean, IsOptional, IsDateString, IsNotEmpty, IsNumber, IsString } f
 export class CreateTesisDto {
   @IsNotEmpty()
   @IsNumber()
-  clave_alumno: number;
+  id_usuario: number;
 
   @IsOptional()
   @IsString()
@@ -11,11 +11,11 @@ export class CreateTesisDto {
 
   @IsOptional()
   @IsDateString()
-  fecharegistro: Date;
+  fecha_registro: Date;
   
   @IsOptional()
-  @IsString()
-  generacion: string;
+  @IsNumber()
+  generacion: number;
 
   @IsNotEmpty()
   @IsBoolean()
@@ -28,4 +28,8 @@ export class CreateTesisDto {
   @IsNotEmpty()
   @IsBoolean()
   estado_activo: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  estado_finalizacion: boolean;
 }

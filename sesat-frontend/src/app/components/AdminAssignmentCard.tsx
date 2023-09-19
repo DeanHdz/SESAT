@@ -1,5 +1,5 @@
+"use client";
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react';
 
 {/**
 Estados de una asignacion:
@@ -23,6 +23,8 @@ Estados de una asignacion:
 
  */}
 
+ 
+
 
 const AdminAssignmentCard = ({
   title,
@@ -32,59 +34,82 @@ const AdminAssignmentCard = ({
   title: string;
   avance: number;
   status: number;
-}) => {
+}) => {    
 
-  const pos = status - 1;
+  
+
   const statusArray = ['Pendiente', 'Activa', 'Sin Alumnos'];
   const buttonActions = ['Crear', 'Ver', 'No disp...'];
   const urlsArray = [
-    '/admin-dashboard/create-assignment',
-    '/admin-dashboard/assignment-details',
+    '/admin-dashboard/assignments/phd/create-assignment/'+avance,
+    '/admin-dashboard/assignments/phd/details/'+avance,
     '#'
   ];
-  const [cssDisabledBtn, setCssDisabledBtn] = useState("");
 
+  const cssButtonArray = [
+    "",
+    "",
+    "opacity-50 pointer-events-none cursor-not-allowed"
+  ]
 
+  const subtitleArray = [
+    "Pendiente de asignar",
+    "Asignación de avace de tesis activa",
+    "No hay alumnos para esta categoría"
+  ]
 
-  const [btnValue, setBtnValue] = useState("");
-  const [btnUrl, setBtnUrl] = useState("");
 
   const router = useRouter()
 
+  
+/*
+  //Chechar si hay alumnos
+  const numAlumnos = fetchNumAlumnosDoctorado("").then((res)=>{
+    let alumnos = parseInt(res)
+    if(alumnos && alumnos > 0){
+
+      fetchAsignacionesPendientesDoctorado(avance.toString(), "").then((res) => {
+        let tesisIdList: Array<string> = res
+        if(tesisIdList.length === 0){
+          setStatus(1)
+        }else if(tesisIdList.length > 0){
+          setStatus(0)
+        }  
+        setBtnValue(buttonActions[status]);
+        setBtnUrl(urlsArray[status]);      
+      })      
+    }else if(alumnos === 0){
+      setStatus(2)
+      setCssDisabledBtn('opacity-50 pointer-events-none cursor-not-allowed');
+      setBtnValue(buttonActions[status]);
+      setBtnUrl(urlsArray[status]);
+    }
+  })*/
+
+  /*
   useEffect(() => {
     function setAssignmentProps() {
-      setBtnValue(buttonActions[pos]);
-      setBtnUrl(urlsArray[pos]);
+      
 
-      if (pos === 2) {
-        setCssDisabledBtn('opacity-50 pointer-events-none cursor-not-allowed');
+      if (status === 2) {
+        
       }
     }
-
-
-
     return () => {
       setAssignmentProps();
     }
-  }, [])
+  }, [])*/
 
 
   function handleClick() {
-    router.push(btnUrl);
-
-    {/**
-        navigate("/admin-board/create_assignment", {
-            state: {
-            title: title,
-            avance: avance,
-            },
-        });
-     */}
-
+    router.push(urlsArray[status]);
   }
+
+
   return (
     <div className="flex flex-row mt-3 p-2 bg-light-blue-10 rounded border border-light-gray-22 border-solid">
       
+      {/**ICON */}
       <div className="flex w-[30px] lg:w-[50px] text-dark-blue-10 justify-center items-center">
           <svg
             style={{ color: "blue" }}
@@ -144,24 +169,22 @@ const AdminAssignmentCard = ({
             ></line>
           </svg>
       </div>
-
+      
       <div className="w-1/2 flex">
-
-        
-
+      
         <div className="ml-6 w-auto">
           <p style={{ fontWeight: "bold" }}>{title}</p>
-          <p className="mt-1 text-sm">Vence el dd/mm/yyyy</p>
+          <p className="mt-1 text-[12px] text-dark-blue-20/50">{subtitleArray[status]}</p>
         </div>
       </div>
 
       <div className="mx-auto flex items-center text-sm justify-center">
-        <p>{statusArray[pos]}</p>
+        <p>{statusArray[status]}</p>
       </div>
 
       <div className="ml-auto flex justify-end items-center">
-        <button className={`${cssDisabledBtn} btn text-[12px] w-[80px] shadow rounded`} onClick={handleClick}>
-          {btnValue}
+        <button className={`${cssButtonArray[status]} text-[12px] shadow rounded-full w-[70px] py-[6px] bg-dark-blue-10 text-white`} onClick={handleClick}>
+          {buttonActions[status]}
         </button>
       </div>
     </div>

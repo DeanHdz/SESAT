@@ -11,9 +11,9 @@ import NotFound from "../../../not-found";
 
 
 type AsesorProps = {
-  usuario_nombre: string,
-  usuario_apellido_paterno: string,
-  usuario_apellido_materno: string,
+  nombre: string,
+  apellido_paterno: string,
+  apellido_materno: string,
 };
 
 type pdfProps = {
@@ -101,7 +101,7 @@ border-solid">
                 Asesor de tesis
               </label>
               <label className="mb-5 block text-lg font-bold">
-                {`${asesor?.usuario_nombre} ${asesor?.usuario_apellido_paterno} ${asesor?.usuario_apellido_materno}`}
+                {`${asesor?.nombre} ${asesor?.apellido_paterno} ${asesor?.apellido_materno}`}
               </label>
             </div>
 
@@ -118,7 +118,7 @@ border-solid">
                     <label className="mb-0 block text-base font-light">
                       Fecha del registro de tesis
                     </label>
-                    <label className="mb-5 block text-lg font-bold">{datosTesis?.fecharegistro.substring(0, 10)}</label>
+                    <label className="mb-5 block text-lg font-bold">{datosTesis?.fecha_registro.substring(0, 10)}</label>
                   </div>
 
 
@@ -126,7 +126,7 @@ border-solid">
                     <label className="mb-0 block text-base font-light">
                       Programa de posgrado
                     </label>
-                    <label className="mb-5 block text-lg font-bold">{datosTesis?.programa_nombreprograma}</label></div>
+                    <label className="mb-5 block text-lg font-bold">{datosTesis?.programa_nombre_programa}</label></div>
                 </div>
 
               </div>

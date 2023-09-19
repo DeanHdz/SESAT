@@ -9,5 +9,5 @@ export class UpdateFuncionDto extends PartialType(CreateFuncionDto) {
 
     @IsNotEmpty()
     @IsString()
-    nombre: string;
+    nombre_funcion: string;
 }

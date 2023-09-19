@@ -1,4 +1,4 @@
-import { UpdateFormatosVacios } from "../types/ISESAT";
+import { UpdateFormatoVacio } from "../types/ISESAT";
 
 
 
@@ -34,10 +34,10 @@ export namespace FormatosVaciosEndpoint {
 
 
   export async function postDataTest(
-    UpdateFormatosVaciosDto:UpdateFormatosVacios,
+    UpdateFormatoVacioDto:UpdateFormatoVacio,
     token: string
     ) {      
-      const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/formatos-vacios`;
+      const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/formato-vacio`;
 
       const options = {
         method: 'POST',
@@ -45,7 +45,7 @@ export namespace FormatosVaciosEndpoint {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,          
         },
-        body: JSON.stringify(UpdateFormatosVaciosDto),
+        body: JSON.stringify(UpdateFormatoVacioDto),
       };
 
     try {

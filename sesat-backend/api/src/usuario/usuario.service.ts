@@ -29,13 +29,13 @@ export class UsuarioService {
   }
 
   findOne(id: number) {
-    return this.usuarioRepository.findOne({ where: { clave: id } });
+    return this.usuarioRepository.findOne({ where: { id_usuario: id } });
   }
 
   identify(clave: number /*Tentativo*/, password: string) {
     console.log("Entre al usuario service");
     return this.usuarioRepository.find({
-      where: { clave: clave, password: password },
+      where: { id_usuario: clave, password: password },
     });
   }
 

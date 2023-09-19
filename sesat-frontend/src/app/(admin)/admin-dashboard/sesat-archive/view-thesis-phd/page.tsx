@@ -3,12 +3,14 @@ import TesisRow from "@/app/components/TesisRow";
 import { InactiveTesisProps } from "../../../../../../types/ISESAT";
 import { fetchTesisCompletadasPhd } from "../../../../../../utils/tesis.endpoint";
 
+
 /**const StudentsCardList = ({ title }: { title: string }) => {   */
 
 export default async function Home () {
   const tesisList: InactiveTesisProps[] | undefined = await fetchTesisCompletadasPhd("");
 
   const isDataEmpty = !Array.isArray(tesisList) || tesisList.length < 1 || !tesisList;
+  
   return (
     <main>
       
@@ -27,7 +29,7 @@ export default async function Home () {
           <div className="flex flex-col w-full">
             {
               tesisList?.map((tesis) => (
-                <TesisRow titulo={tesis.titulo} autor={`${tesis.nombre} ${tesis.apellido_paterno} ${tesis.apellido_materno} `} fechaEntrega={tesis.fecharegistro} weblink={`view-thesis-phd/${tesis.id_tesis}`}/>
+                <TesisRow titulo={tesis.titulo} autor={`${tesis.nombre} ${tesis.apellido_paterno} ${tesis.apellido_materno} `} fechaEntrega={tesis.fecha_registro} weblink={`view-thesis-phd/${tesis.id_tesis}`}/>
               ))
             }
           </div>

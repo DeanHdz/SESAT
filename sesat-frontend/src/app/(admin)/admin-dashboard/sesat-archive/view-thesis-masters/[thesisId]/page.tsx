@@ -115,7 +115,7 @@ border-solid">
                     <label className="mb-0 block text-base font-light">
                       Fecha del registro de tesis
                     </label>
-                    <label className="mb-5 block text-lg font-bold">{datosTesis?.fecharegistro.substring(0, 10)}</label>
+                    <label className="mb-5 block text-lg font-bold">{datosTesis?.fecha_registro.substring(0, 10)}</label>
                   </div>
 
 
@@ -123,7 +123,7 @@ border-solid">
                     <label className="mb-0 block text-base font-light">
                       Programa de posgrado
                     </label>
-                    <label className="mb-5 block text-lg font-bold">{datosTesis?.programa_nombreprograma}</label></div>
+                    <label className="mb-5 block text-lg font-bold">{datosTesis?.programa_nombre_programa}</label></div>
                 </div>
 
               </div>

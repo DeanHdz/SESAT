@@ -46,12 +46,12 @@ export default async function Home() {
           <div className="flex flex-col w-full">
             {!isDataEmptyA && (
               tesisPartTime?.map((tesis) => (
-                <TesisRow titulo={tesis.titulo} autor={`${tesis.nombre} ${tesis.apellido_paterno} ${tesis.apellido_materno} `} fechaEntrega={tesis.fecharegistro} weblink={`view-thesis-masters/${tesis.id_tesis}`} />
+                <TesisRow titulo={tesis.titulo} autor={`${tesis.nombre} ${tesis.apellido_paterno} ${tesis.apellido_materno} `} fechaEntrega={tesis.fecha_registro} weblink={`view-thesis-masters/${tesis.id_tesis}`} />
               ))
             )}
             {!isDataEmptyB && (
               tesisFullTime?.map((tesis) => (
-                <TesisRow titulo={tesis.titulo} autor={`${tesis.nombre} ${tesis.apellido_paterno} ${tesis.apellido_materno} `} fechaEntrega={tesis.fecharegistro} weblink={`view-thesis-masters/${tesis.id_tesis}`} />
+                <TesisRow titulo={tesis.titulo} autor={`${tesis.nombre} ${tesis.apellido_paterno} ${tesis.apellido_materno} `} fechaEntrega={tesis.fecha_registro} weblink={`view-thesis-masters/${tesis.id_tesis}`} />
               ))
             )}
 

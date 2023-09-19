@@ -3,5 +3,5 @@ import { IsNotEmpty, IsString } from "class-validator";
 export class CreateFuncionDto {
     @IsNotEmpty()
     @IsString()
-    nombre: string;
+    nombre_funcion: string;
 }

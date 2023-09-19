@@ -1,12 +1,17 @@
 import AssignmentDetails from "@/app/components/AssignmentDetails";
 
 
-export default function Home() {
-  let title = "Title"
-  let avance = "1"
+export default function Home({
+  params,
+}: {
+  params: { numAvance: string }
+}) {
+
+  const { numAvance } = params
+  let avance = parseInt(numAvance)  
   return (
-    <main>      
-      <AssignmentDetails title={title} avance={avance} />   
+    <main>
+      <AssignmentDetails avance={avance} />
     </main>
   )
 }

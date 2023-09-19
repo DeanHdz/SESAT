@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import TimePicker from "react-time-picker";
 import autosize from "autosize";
 import { useRouter } from "next/navigation";
 import { TitleBar } from "./TitleBar";
@@ -167,17 +165,7 @@ const NewAssignment = ({
                 <label className="mb-3 block text-lg font-bold">Hora</label>
               </div>
               <div className="flex flex-row w-full justify-around pl-12">
-                <DatePicker
-                  selected={startDate}
-                  onChange={onChangeStartDate}
-                  className="rounded"
-                />
-  
-                <TimePicker
-                  onChange={onChangeStartTime}
-                  value={startTime}
-                  className="border-none"
-                />
+                
               </div>
               <div className="flex justify-around w-full mt-10">
                 <label className="mb-3 block text-lg font-bold">
@@ -187,16 +175,7 @@ const NewAssignment = ({
               </div>
   
               <div className="flex flex-row w-full justify-around pl-12">
-                <DatePicker
-                  selected={endDate}
-                  onChange={onChangeEndDate}
-                  className="rounded"
-                />
-                <TimePicker
-                  onChange={onChangeEndTime}
-                  value={endTime}
-                  className="border-none"
-                />
+  
               </div>
             </div>
             <div className="flex justify-end w-full mb-10 mt-10">

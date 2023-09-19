@@ -18,10 +18,10 @@ export class Comentario {
   id_comentario: number;
 
   @Column()
-  clave_usuario: number;
+  id_usuario: number;
 
   @ManyToOne(() => Usuario, (usuario) => usuario.comentarios)
-  @JoinColumn({ name: "clave_usuario" })
+  @JoinColumn({ name: "id_usuario" })
   usuario: Usuario;
 
   @Column()

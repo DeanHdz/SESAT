@@ -12,10 +12,10 @@ import {
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import path from "path";
-import { AsignacionTesis } from "src/asignacion-tesis/entities/asignacion-tesis.entity";
 import { Comentario } from "src/comentario/entities/comentario.entity";
 import { ActaEvaluacion } from "src/acta-evaluacion/entities/acta-evaluacion.entity";
 import { FormatoEvaluacion } from "src/formato-evaluacion/entities/formato-evaluacion.entity";
+import { Modalidad } from "src/modalidad/entities/modalidad.entity";
 
 @Entity()
 export class Asignacion {
@@ -26,16 +26,22 @@ export class Asignacion {
   num_avance: number;
 
   @Column()
+  id_tesis: number;
+
+  @Column()
+  id_modalidad: number;
+
+  @Column()
   titulo: string;
 
   @Column()
   descripcion: string;
 
   @Column()
-  apertura: Date;
+  fecha_apertura: Date;
 
   @Column()
-  cierre: Date;
+  fecha_cierre: Date;
 
   @Column()
   calificacion: number;
@@ -61,15 +67,16 @@ export class Asignacion {
 
   @OneToOne(() => ActaEvaluacion, { eager: true })
   @JoinColumn({ name: "id_acta_evaluacion" })
-  actaEvaluacion: ActaEvaluacion;
+  actaEvaluacion: ActaEvaluacion;  
 
-  @OneToMany(
-    () => AsignacionTesis,
-    (asignacion_tesis) => asignacion_tesis.asignacion,
-    { eager: true }
-  )
-  asignaciones_tesis: AsignacionTesis[];
+  @ManyToOne(() => Tesis, (tesis) => tesis.asignaciones)
+  @JoinColumn({ name: "id_tesis" })
+  tesis: Tesis;
 
   @OneToMany(() => Comentario, (comentario) => comentario.asignacion)
   comentarios: Comentario[];
+
+  @OneToOne(() => Modalidad, { eager: true })
+  @JoinColumn({ name: "id_modalidad" })
+  modalidad: Modalidad;
 }

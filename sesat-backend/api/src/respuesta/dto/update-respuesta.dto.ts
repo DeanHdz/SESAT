@@ -17,5 +17,5 @@ export class UpdateRespuestaDto extends PartialType(CreateRespuestaDto) {
 
     @IsNotEmpty()
     @IsNumber()
-    clave_usuario: number;
+    id_usuario: number;
 }

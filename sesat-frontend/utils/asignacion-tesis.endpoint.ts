@@ -127,7 +127,7 @@ export async function fetchDocumentByID(
   id: string,
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion-tesis/final-document/${id}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/final-document/${id}`;
 
   const options = {
     method: 'GET',
@@ -149,7 +149,5 @@ export async function fetchDocumentByID(
 
 
   return result;
-
-
 
 }
