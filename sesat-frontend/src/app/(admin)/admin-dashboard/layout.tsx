@@ -4,8 +4,9 @@ import type { Metadata } from 'next'
 import AdminNavbar from '@/app/components/AdminNavbar'
 
 export const metadata: Metadata = {
-  title: 'SESAT | Dashboard',
+  title: 'Sistema de Evaluación y Seguimiento de Tesis',
   description: 'Panel de administrador',
+  icons: '/images/uaslp-logo.png',
 }
 
 export default function RootLayout({

@@ -188,13 +188,13 @@
 
   export interface InactiveTesisProps {
     titulo: string,
-    fecharegistro: string,
+    fecha_registro: string,
     id_tesis: number,
     clave: number,
     nombre: string,
     apellido_paterno: string,
     apellido_materno: string,    
-    programa_nombreprograma: string, 
+    programa_nombre_programa: string, 
   }
 
   export interface Tesis {
@@ -313,8 +313,8 @@
     formato_evaluacion: string | null;
   }
 
-  export interface UpdateFormatosVacios {
-    id_formatos_vacios: number;
+  export interface UpdateFormatoVacio {
+    id_formato_vacio: number;
     acta_evaluacion: string | null;
     formato_evaluacion: string | null;
   }

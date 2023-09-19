@@ -1,13 +1,6 @@
 import { PartialType } from "@nestjs/mapped-types";
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { CreateUsuarioDto } from "./create-usuario.dto";
-import { DatosAsesorexterno } from "src/datos-asesorexterno/entities/datos-asesorexterno.entity";
 
 export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
   @IsNotEmpty()

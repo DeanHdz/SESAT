@@ -8,7 +8,7 @@ import SelectProgramas from "./SelectProgramas";
 import { encode } from "base64-arraybuffer";
 import { TbFileSpreadsheet } from "react-icons/tb";
 import { useRouter } from "next/navigation";
-import { LoggedUser, Programa, Tesis, Usuario } from "@/types/ISESAT";
+
 /*
 export const TesisRegistryForm = () => {
   const [user, setUser] = useState<LoggedUser>(

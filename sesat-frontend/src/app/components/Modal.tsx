@@ -1,7 +1,8 @@
 
 import { useState } from "react";
 import { SecondaryButton } from "./SecondaryButton";
-import { IModalData } from "@/types/IModalData";
+import { IModalData } from "../../../types/IModalData";
+
 
 export const Modal = ({ info }: { info: IModalData }) => {
     {/*const navigate = useNavigate();*/}

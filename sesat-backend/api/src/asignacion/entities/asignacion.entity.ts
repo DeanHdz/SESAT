@@ -9,6 +9,12 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
 } from "typeorm";
+import { Usuario } from "src/usuario/entities/usuario.entity";
+import { Tesis } from "src/tesis/entities/tesis.entity";
+import { Comentario } from "src/comentario/entities/comentario.entity";
+import { ActaEvaluacion } from "src/acta-evaluacion/entities/acta-evaluacion.entity";
+import { FormatoEvaluacion } from "src/formato-evaluacion/entities/formato-evaluacion.entity";
+import { Modalidad } from "src/modalidad/entities/modalidad.entity";
 
 @Entity()
 export class Asignacion {
@@ -60,15 +66,16 @@ export class Asignacion {
 
   @OneToOne(() => ActaEvaluacion, { eager: true })
   @JoinColumn({ name: "id_acta_evaluacion" })
-  actaEvaluacion: ActaEvaluacion;
+  actaEvaluacion: ActaEvaluacion;  
 
-  @OneToMany(
-    () => AsignacionTesis,
-    (asignacion_tesis) => asignacion_tesis.asignacion,
-    { eager: true }
-  )
-  asignaciones_tesis: AsignacionTesis[];
+  @ManyToOne(() => Tesis, (tesis) => tesis.asignaciones)
+  @JoinColumn({ name: "id_tesis" })
+  tesis: Tesis;
 
   @OneToMany(() => Comentario, (comentario) => comentario.asignacion)
-  comentarios: Comentario[];*/
+  comentarios: Comentario[];
+*/
+  @OneToOne(() => Modalidad, { eager: true })
+  @JoinColumn({ name: "id_modalidad" })
+  modalidad: Modalidad;
 }

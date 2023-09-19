@@ -42,22 +42,21 @@
 }
 
 
-import { ViewMode, Worker } from "@react-pdf-viewer/core";
-import { Viewer, SpecialZoomLevel } from "@react-pdf-viewer/core";
-import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+
 
 
 export default function SimplePDFViewer() {
 
   return (
     <>
+    {/*
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.10.111/build/pdf.worker.min.js">
         <Viewer
           fileUrl="/pdf/sample.pdf"
           viewMode={ViewMode.SinglePage}
           defaultScale={SpecialZoomLevel.PageFit}></Viewer>
       </Worker>
-
+    */}
     </>
 
   );

@@ -20,11 +20,14 @@ import { UsuariosPruebaModule } from "./usuarios_prueba/usuarios_prueba.module";
 import { ComiteModule } from "./comite/comite.module";
 import { DatosAlumnoModule } from "./datos-alumno/datos-alumno.module";
 import { RolModule } from "./rol/rol.module";
-import { FuncionModule } from "./funcion/funcion.module";
 import { FormatoEvaluacionModule } from "./formato-evaluacion/formato-evaluacion.module";
-import { DatosAsesorexternoModule } from "./datos-asesorexterno/datos-asesorexterno.module";
+import { DatosAsesorexternoModule } from "./datos-asesor-externo/datos-asesor-externo.module";
 import { VariablesSistemaModule } from "./variables-sistema/variables-sistema.module";
 import { FormatoVacioModule } from "./formato-vacio/formato-vacio.module";
+import { GradoEstudioModule } from './grado-estudio/grado-estudio.module';
+import { ModalidadModule } from './modalidad/modalidad.module';
+import { FuncionModule } from './funcion/funcion.module';
+
 
 @Module({
   imports: [
@@ -68,11 +71,11 @@ import { FormatoVacioModule } from "./formato-vacio/formato-vacio.module";
     UsuariosPruebaModule,
     ComiteModule,
     DatosAlumnoModule,
-    RolModule,
-    FuncionModule,
+    RolModule,    
     FormatoEvaluacionModule,
     DatosAsesorexternoModule,
-    VariablesSistemaModule,
+    VariablesSistemaModule,    
+    GradoEstudioModule, ModalidadModule, FuncionModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

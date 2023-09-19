@@ -4,7 +4,7 @@
 import { decode } from "base64-arraybuffer";
 import { useEffect, useState } from "react";
 
-import FullPDFViewer from "./FullPDFViewer";
+
 import ProcessingAnim from "./ProcessingAnim";
 
 /*import { useLocation } from "react-router-dom";*/
@@ -130,7 +130,7 @@ const DocumentView = () => {
       <div className="block lg:flex lg:flex-row w-screen justify-center">
         <div className="block w-11/12 m-auto lg:px-6 py-10">
           <div className="pt-3 pb-3 px-3 m-auto w-11/12 h-fit lg:px-4 lg:py-4 bg-light-blue-10 rounded">
-            <FullPDFViewer file={pdfFile} />
+            {/** <FullPDFViewer file={pdfFile} />*/}
           </div>
         </div>
       </div>

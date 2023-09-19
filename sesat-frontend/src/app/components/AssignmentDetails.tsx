@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TitleBar } from "./TitleBar";
 
-const AssignmentDetails = ({
-  title,
+const AssignmentDetails = ({  
   avance,
-}: {
-  title: string;
-  avance: string;
+}: {  
+  avance: number;
 }) => {
 
 
@@ -23,10 +21,19 @@ const AssignmentDetails = ({
   const [description, setDescription] = useState("");
   const navigate = useRouter();
 
+  const names = [
+    'Seminario de Avance de Tesis 1',
+    'Seminario de Avance de Tesis 2',
+    'Seminario de Avance de Tesis 3',
+    'Seminario de Avance de Tesis 4',
+    'Seminario de Avance de Tesis 5',
+    'Seminario de Avance de Tesis 6',
+  ]
+
 
 
   const handleSubmit = (e: any) => {
-    navigate.push('/admin-dashboard/create-assignment');
+    navigate.push('/admin-dashboard/assignments/phd/create-assignment/'+avance);
   };
 
 
@@ -39,7 +46,7 @@ const AssignmentDetails = ({
         <div className="px-6 w-11/12 lg:w-3/6 lg:flex lg:flex-col py-6 lg:mr-6 ">
           <label className="mb-3 block text-lg font-bold">Título</label>
           <label className="mb-10 block text-lg font-normal">
-            {title}
+            {names[avance]}
           </label>
           <label className="mb-3 block text-lg font-bold">
             Instrucciones
@@ -74,7 +81,7 @@ const AssignmentDetails = ({
       <div className="w-full mt-6 flex justify-end">
         <button
           onClick={handleSubmit}          
-          className=" bg-dark-blue-10 text-white active:bg-blue-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+          className="primary__btn"
         >
           Editar propiedades
         </button>

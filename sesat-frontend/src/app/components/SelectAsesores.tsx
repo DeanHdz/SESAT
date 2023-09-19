@@ -1,4 +1,5 @@
-import { Usuario } from "@/types/ISESAT"
+import { Usuario } from "../../../types/ISESAT"
+
 
 
 const SelectAsesores = ({asesores} : {asesores: Usuario[]}) =>

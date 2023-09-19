@@ -1,7 +1,7 @@
 import { Comentario } from "src/comentario/entities/comentario.entity";
 import { Comite } from "src/comite/entities/comite.entity";
 import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
-import { DatosAsesorexterno } from "src/datos-asesorexterno/entities/datos-asesorexterno.entity";
+import { DatosAsesorExterno } from "src/datos-asesor-externo/entities/datos-asesor-externo.entity";
 import { Notificacion } from "src/notification/entities/notification.entity";
 import { Rol } from "src/rol/entities/rol.entity";
 import {
@@ -50,9 +50,9 @@ export class Usuario {
   @Column()
   correo: string;
 
-  /*@OneToOne(() => DatosAsesorexterno, { eager: true })
-  @JoinColumn({ name: "id_datos_asesorexterno" })
-  datos_asesorexterno: DatosAsesorexterno;
+  @OneToOne(() => DatosAsesorExterno, { eager: true })
+  @JoinColumn({ name: "id_datos_asesor_externo" })
+  datos_asesor_externo: DatosAsesorExterno;
 
   @OneToMany(() => Notificacion, (notificacion) => notificacion.usuario, {
     eager: true,
@@ -62,5 +62,5 @@ export class Usuario {
   @OneToMany(() => Comentario, (comentario) => comentario.usuario, {
     eager: true,
   })
-  comentarios: Comentario[];*/
+  comentarios: Comentario[];
 }

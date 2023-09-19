@@ -1,4 +1,5 @@
-import { Itable } from "@/types/ITable";
+import { Itable } from "../../../types/ITable";
+
 
 
 const Table = ({table, style} : {table:Itable, style:string}) =>

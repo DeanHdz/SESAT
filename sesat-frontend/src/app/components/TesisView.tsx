@@ -4,8 +4,9 @@ import { PrimaryButton } from "./PrimaryButton";
 import { useState } from "react";
 import { Modal } from "./Modal";
 import SimplePDFViewer from "./SimplePDFViewer";
-import { IModalData } from "@/types/IModalData";
+
 import { useRouter } from "next/navigation";
+import { IModalData } from "../../../types/IModalData";
 
 const modalData: IModalData = {
     title: "Modificar Nombre de la Tesis",

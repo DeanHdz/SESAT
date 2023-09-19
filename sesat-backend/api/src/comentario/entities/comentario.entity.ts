@@ -20,9 +20,9 @@ export class Comentario {
   @Column()
   id_usuario: number;
 
-  /*@ManyToOne(() => Usuario, (usuario) => usuario.comentarios)
-  @JoinColumn({ name: "clave_usuario" })
-  usuario: Usuario;*/
+  @ManyToOne(() => Usuario, (usuario) => usuario.comentarios)
+  @JoinColumn({ name: "id_usuario" })
+  usuario: Usuario;
 
   @Column()
   id_asignacion: number;

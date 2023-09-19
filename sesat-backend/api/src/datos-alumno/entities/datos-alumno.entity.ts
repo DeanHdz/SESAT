@@ -1,3 +1,4 @@
+import { GradoEstudio } from "src/grado-estudio/entities/grado-estudio.entity";
 import { Programa } from "src/programa/entities/programa.entity";
 import {
   Column,
@@ -29,5 +30,9 @@ export class DatosAlumno {
 
   /*@OneToOne(() => Programa, { eager: true })
   @JoinColumn({ name: "id_programa" })
-  programa: Programa;*/
+  programa: Programa;
+  */
+  @OneToOne(() => GradoEstudio, { eager: true })
+  @JoinColumn({ name: "id_grado_estudio" })
+  grado_estudio: GradoEstudio;
 }

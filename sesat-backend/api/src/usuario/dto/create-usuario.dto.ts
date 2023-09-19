@@ -5,7 +5,6 @@ import {
   IsOptional,
   IsString,
 } from "class-validator";
-import { DatosAsesorexterno } from "src/datos-asesorexterno/entities/datos-asesorexterno.entity";
 
 export class CreateUsuarioDto {
   @IsNotEmpty()

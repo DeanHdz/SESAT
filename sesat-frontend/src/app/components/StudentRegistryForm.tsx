@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 
 
 import SelectProgramas from "./SelectProgramas";
-import { Programa, UsuarioPrueba } from "@/types/ISESAT";
+import { Programa, UsuarioPrueba } from "../../../types/ISESAT";
+
 
 export const StudentRegistryForm = () => {
   const [claveUnica, setClaveUnica] = useState("");

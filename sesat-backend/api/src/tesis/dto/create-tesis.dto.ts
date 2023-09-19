@@ -21,16 +21,12 @@ export class CreateTesisDto {
   fecha_registro: Date;
 
   @IsOptional()
-  @IsString()
-  generacion: string;
+  @IsNumber()
+  generacion: number;
 
   @IsOptional()
   @IsNumber()
   ultimo_avance: number;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  estado_activo: boolean;
 
   @IsNotEmpty()
   @IsBoolean()

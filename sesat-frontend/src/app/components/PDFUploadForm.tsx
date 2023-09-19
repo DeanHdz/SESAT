@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { FormatosVaciosEndpoint } from "../../utils/formatos-vacios.endpoint";
+import { useState } from "react";
 import { encode } from "base64-arraybuffer";
+import { FormatosVaciosEndpoint } from "../../../utils/formatos-vacios.endpoint";
 
 export const PDFUploadForm = () => {
   const [fileSelected, setFileSelected] = useState<Blob | undefined>();
@@ -26,7 +26,7 @@ export const PDFUploadForm = () => {
           const base64String = encode(uint8View);          
           await FormatosVaciosEndpoint.postDataTest(
             {
-              id_formatos_vacios: id,
+              id_formato_vacio: id,
               acta_evaluacion: base64String,
               formato_evaluacion: null,
             },

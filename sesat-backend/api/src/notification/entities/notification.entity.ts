@@ -9,9 +9,9 @@ export class Notificacion {
     @Column()
     id_usuario: number;
 
-    /*@ManyToOne(() => Usuario, (usuario) => usuario.notificaciones)
-    @JoinColumn({name: 'clave_usuario'})
-    usuario: Usuario*/
+    @ManyToOne(() => Usuario, (usuario) => usuario.notificaciones)
+    @JoinColumn({name: 'id_usuario'})
+    usuario: Usuario
 
     @Column()
     titulo: string;

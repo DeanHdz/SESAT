@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Asignacion, LoggedUser, Tesis } from "@/types/ISESAT";
+import { Asignacion, LoggedUser, Tesis } from "../../../types/ISESAT";
+
 
 
 

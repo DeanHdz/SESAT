@@ -34,7 +34,8 @@ const StudentAssignmentsList = ({
 
   //si retorna 0, no hay alumnos
   //si una de las asignaciones este activa, el estado es activa
-  //
+  
+  //borrar?
  
   return (
     <div className="w-full flex flex-col mb-10">

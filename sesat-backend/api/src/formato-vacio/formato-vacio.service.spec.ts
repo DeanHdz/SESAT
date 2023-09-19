@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FormatosVaciosService } from './formato-vacio.service';
+import { FormatoVacioService } from './formato-vacio.service';
 
 describe('FormatosVaciosService', () => {
-  let service: FormatosVaciosService;
+  let service: FormatoVacioService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FormatosVaciosService],
+      providers: [FormatoVacioService],
     }).compile();
 
-    service = module.get<FormatosVaciosService>(FormatosVaciosService);
+    service = module.get<FormatoVacioService>(FormatoVacioService);
   });
 
   it('should be defined', () => {

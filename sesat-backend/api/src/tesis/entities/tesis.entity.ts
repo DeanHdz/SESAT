@@ -13,7 +13,6 @@ import {
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Programa } from "src/programa/entities/programa.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
-//import { AsignacionTesis } from "src/asignacion-tesis/entities/asignacion-tesis.entity";
 import { Comite } from "src/comite/entities/comite.entity";
 
 @Entity()
@@ -24,9 +23,9 @@ export class Tesis {
   @Column()
   id_usuario: number;
 
-  /*@OneToOne(() => Usuario, { eager: true })
-  @JoinColumn({ name: "clave_alumno" })
-  alumno: Usuario;*/
+  @OneToOne(() => Usuario, { eager: true })
+  @JoinColumn({ name: "id_usuario" })
+  alumno: Usuario;
 
   @Column()
   titulo: string;
@@ -35,23 +34,20 @@ export class Tesis {
   fecha_registro: Date;
 
   @Column()
-  generacion: string;
+  generacion: number;  
 
   @Column()
   ultimo_avance: number;
 
   @Column()
-  estado_activo: boolean;
-
-  @Column()
   estado_finalizacion: boolean;
-
-  /*@OneToMany(
-    () => AsignacionTesis,
-    (asignacionTesis) => asignacionTesis.tesis,
+  
+  @OneToMany(
+    () => Asignacion,
+    (asignacion) => asignacion.tesis,
     {
       eager: true,
     }
   )
-  asignaciones_tesis: AsignacionTesis[];*/
+  asignaciones: Asignacion[];
 }

@@ -1,20 +1,21 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { FormatosVaciosController } from './formato-vacio.controller';
-import { FormatosVaciosService } from './formato-vacio.service';
+import { Test, TestingModule } from "@nestjs/testing";
 
-describe('FormatosVaciosController', () => {
-  let controller: FormatosVaciosController;
+import { FormatoVacioService } from "./formato-vacio.service";
+import { FormatoVacioController } from "./formato-vacio.controller";
+
+describe("FormatosVaciosController", () => {
+  let controller: FormatoVacioController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [FormatosVaciosController],
-      providers: [FormatosVaciosService],
+      controllers: [FormatoVacioController],
+      providers: [FormatoVacioService],
     }).compile();
 
-    controller = module.get<FormatosVaciosController>(FormatosVaciosController);
+    controller = module.get<FormatoVacioController>(FormatoVacioController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });

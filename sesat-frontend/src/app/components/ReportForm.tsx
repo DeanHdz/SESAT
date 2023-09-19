@@ -1,4 +1,4 @@
-{/*}
+{/*
 import { Suspense, useEffect, useState } from "react";
 import autosize from 'autosize';
 import { ActaEvaluacionEndpoint } from "../../utils/acta-evaluacion.endpoint";
