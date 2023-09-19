@@ -60,21 +60,21 @@ export class Asignacion {
   @Column()
   retroalimentacion: string;
 
-  /*@OneToOne(() => FormatoEvaluacion, { eager: true })
+  @OneToOne(() => FormatoEvaluacion, { eager: true })
   @JoinColumn({ name: "id_formato_evaluacion" })
   formatoEvaluacion: FormatoEvaluacion;
 
   @OneToOne(() => ActaEvaluacion, { eager: true })
   @JoinColumn({ name: "id_acta_evaluacion" })
-  actaEvaluacion: ActaEvaluacion;  
+  actaEvaluacion: ActaEvaluacion;
 
   @ManyToOne(() => Tesis, (tesis) => tesis.asignaciones)
   @JoinColumn({ name: "id_tesis" })
   tesis: Tesis;
 
-  @OneToMany(() => Comentario, (comentario) => comentario.asignacion)
-  comentarios: Comentario[];
-*/
+  //@OneToMany(() => Comentario, (comentario) => comentario.asignacion)
+  //comentarios: Comentario[];
+
   @OneToOne(() => Modalidad, { eager: true })
   @JoinColumn({ name: "id_modalidad" })
   modalidad: Modalidad;
