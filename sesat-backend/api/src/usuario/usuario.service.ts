@@ -28,14 +28,16 @@ export class UsuarioService {
     return this.usuarioRepository.find({ where: { id_rol: 3 } });
   }
 
-  findOne(id: number) {
-    return this.usuarioRepository.findOne({ where: { clave: id } });
+  findOne(id_usuario: number) {
+    return this.usuarioRepository.findOne({
+      where: { id_usuario: id_usuario },
+    });
   }
 
-  identify(clave: number /*Tentativo*/, password: string) {
+  identify(id_usuario: number /*Tentativo*/, password: string) {
     console.log("Entre al usuario service");
     return this.usuarioRepository.find({
-      where: { clave: clave, password: password },
+      where: { id_usuario: id_usuario, password: password },
     });
   }
 

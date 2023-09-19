@@ -16,23 +16,23 @@ export class Comite {
   id_comite: number;
 
   @Column()
-  clave_asesor: number;
+  id_usuario: number;
 
-  @OneToOne(() => Usuario, { eager: true })
+  /*@OneToOne(() => Usuario, { eager: true })
   @JoinColumn({ name: "clave_asesor" })
-  asesor: Usuario;
+  asesor: Usuario;*/
 
   @Column()
   id_tesis: number;
 
-  @OneToOne(() => Tesis, {eager: true})
+  /*@OneToOne(() => Tesis, {eager: true})
   @JoinColumn({ name: "id_tesis" })
-  tesis: Tesis;
+  tesis: Tesis;*/
 
   @Column()
   id_funcion: number;
 
-  @OneToOne(() => Funcion, { eager: true })
+  /*@OneToOne(() => Funcion, { eager: true })
   @JoinColumn({ name: "id_funcion" })
-  funcion: Funcion;
+  funcion: Funcion;*/
 }

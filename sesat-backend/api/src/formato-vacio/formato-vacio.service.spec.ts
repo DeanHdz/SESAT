@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FormatosVaciosService } from './formatos-vacios.service';
+import { FormatosVaciosService } from './formato-vacio.service';
 
 describe('FormatosVaciosService', () => {
   let service: FormatosVaciosService;

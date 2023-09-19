@@ -9,10 +9,10 @@ export class UpdateFormatoEvaluacionDto extends PartialType(
   @IsNumber()
   id_formato_evaluacion: number;
 
-  @IsOptional()
-  documento_rellenado: string;
-
   @IsNotEmpty()
   @IsNumber()
   id_formato_vacio: number;
+
+  @IsOptional()
+  documento_rellenado: string;
 }

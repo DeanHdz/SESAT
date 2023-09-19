@@ -4,7 +4,7 @@ export class CreateComiteDto
 {
   @IsNotEmpty()
   @IsNumber()
-  clave_asesor: number;
+  id_usuario: number;
   
   @IsNotEmpty()
   @IsNumber()

@@ -1,6 +1,13 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateTesisDto } from './create-tesis.dto';
-import { IsBoolean, IsOptional, IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { PartialType } from "@nestjs/mapped-types";
+import { CreateTesisDto } from "./create-tesis.dto";
+import {
+  IsBoolean,
+  IsOptional,
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from "class-validator";
 
 export class UpdateTesisDto extends PartialType(CreateTesisDto) {
   @IsNotEmpty()
@@ -9,7 +16,7 @@ export class UpdateTesisDto extends PartialType(CreateTesisDto) {
 
   @IsNotEmpty()
   @IsNumber()
-  clave_alumno: number;
+  id_usuario: number;
 
   @IsOptional()
   @IsString()
@@ -17,15 +24,11 @@ export class UpdateTesisDto extends PartialType(CreateTesisDto) {
 
   @IsOptional()
   @IsDateString()
-  fecharegistro: Date;
-  
+  fecha_registro: Date;
+
   @IsOptional()
   @IsString()
   generacion: string;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  registrada: boolean;
 
   @IsOptional()
   @IsNumber()
@@ -34,4 +37,8 @@ export class UpdateTesisDto extends PartialType(CreateTesisDto) {
   @IsNotEmpty()
   @IsBoolean()
   estado_activo: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  estado_finalizacion: boolean;
 }

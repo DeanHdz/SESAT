@@ -1,11 +1,19 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
-import { UsuarioService } from './usuario.service';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { Put } from '@nestjs/common/decorators';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+} from "@nestjs/common";
+import { UsuarioService } from "./usuario.service";
+import { CreateUsuarioDto } from "./dto/create-usuario.dto";
+import { UpdateUsuarioDto } from "./dto/update-usuario.dto";
+import { Put } from "@nestjs/common/decorators";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
-@Controller('usuario')
+@Controller("usuario")
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
@@ -20,19 +28,19 @@ export class UsuarioController {
     return this.usuarioService.findAll();
   }
 
-  @Get('/asesores')
+  @Get("/asesores")
   findAsesores() {
     return this.usuarioService.findAsesores();
   }
 
-  @Get('/alumnos')
+  @Get("/alumnos")
   findAlumnos() {
     return this.usuarioService.findAlumnos();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usuarioService.findOne(+id);
+  @Get(":id")
+  findOne(@Param("id") id_usuario: string) {
+    return this.usuarioService.findOne(+id_usuario);
   }
 
   @Put()
@@ -40,8 +48,8 @@ export class UsuarioController {
     return this.usuarioService.update(updateUsuarioDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usuarioService.remove(+id);
+  @Delete(":id")
+  remove(@Param("id") id_usuario: string) {
+    return this.usuarioService.remove(+id_usuario);
   }
 }

@@ -1,40 +1,46 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 import { DatosAsesorexterno } from "src/datos-asesorexterno/entities/datos-asesorexterno.entity";
 
 export class CreateUsuarioDto {
-    @IsNotEmpty()
-    @IsNumber()
-    clave: number;
+  @IsNotEmpty()
+  @IsNumber()
+  id_usuario: number;
 
-    @IsNotEmpty()
-    @IsString()
-    nombre: string;
+  @IsNotEmpty()
+  @IsNumber()
+  id_rol: number;
 
-    @IsNotEmpty()
-    @IsString()
-    apellido_paterno: string;
+  @IsOptional()
+  @IsNumber()
+  id_datos_alumno: number;
 
-    @IsNotEmpty()
-    @IsString()
-    apellido_materno: string;
+  @IsOptional()
+  @IsNumber()
+  id_datos_asesor_externo: number;
 
-    @IsNotEmpty()
-    @IsString()
-    password: string;
+  @IsNotEmpty()
+  @IsString()
+  nombre: string;
 
-    @IsNotEmpty()
-    @IsNumber()
-    id_rol: number;
+  @IsNotEmpty()
+  @IsString()
+  apellido_paterno: string;
 
-    @IsOptional()
-    @IsNumber()
-    id_datos_alumno: number;
+  @IsNotEmpty()
+  @IsString()
+  apellido_materno: string;
 
-    @IsNotEmpty()
-    @IsString()
-    correo: string;
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 
-    @IsOptional()
-    @IsNumber()
-    id_datos_asesorexterno: DatosAsesorexterno;
+  @IsNotEmpty()
+  @IsString()
+  correo: string;
 }

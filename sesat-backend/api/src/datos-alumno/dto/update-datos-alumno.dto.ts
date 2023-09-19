@@ -9,21 +9,21 @@ export class UpdateDatosAlumnoDto extends PartialType(CreateDatosAlumnoDto) {
 
   @IsNotEmpty()
   @IsString()
-  grado_estudio: string;
-
-  @IsNotEmpty()
-  @IsString()
-  modalidad: string;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  estado_activo: boolean;
+  id_modalidad: number;
 
   @IsNotEmpty()
   @IsNumber()
   id_programa: number;
 
   @IsNotEmpty()
+  @IsNumber()
+  id_grado_estudio: number;
+
+  @IsNotEmpty()
   @IsString()
   generacion: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  estado_activo: boolean;
 }

@@ -1,6 +1,28 @@
-import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsDate,
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class CreateAsignacionDto {
+  @IsOptional()
+  @IsNumber()
+  id_formato_evaluacion: number;
+
+  @IsOptional()
+  @IsNumber()
+  id_acta_evaluacion: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_tesis: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_modalidad: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -16,11 +38,11 @@ export class CreateAsignacionDto {
 
   @IsNotEmpty()
   @IsDateString()
-  apertura: Date;
+  fecha_apertura: Date;
 
   @IsNotEmpty()
   @IsDateString()
-  cierre: Date;
+  fecha_cierre: Date;
 
   @IsOptional()
   @IsNumber()
@@ -37,12 +59,4 @@ export class CreateAsignacionDto {
   @IsOptional()
   @IsString()
   retroalimentacion: string;
-
-  @IsOptional()
-  @IsNumber()
-  id_formato_de_evaluacion: number;
-
-  @IsOptional()
-  @IsNumber()
-  id_acta_de_evaluacion: number;
 }

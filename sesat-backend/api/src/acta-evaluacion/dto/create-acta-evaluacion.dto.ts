@@ -3,12 +3,12 @@ import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 //Esta clase representa lo que el usuario envia desde el lado del cliente
 
 export class CreateActaEvaluacionDto {
-  @IsOptional()
-  documento_rellenado: string;
-
   @IsNotEmpty()
   @IsNumber()
   id_acta_vacia: number;
+
+  @IsOptional()
+  documento_rellenado: string;
 
   /* Comentado en lo que se para que sirve*/
 

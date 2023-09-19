@@ -20,9 +20,9 @@ export class DatosAsesorexternoService {
     return this.datosAsesorExternoRepository.find();
   }
 
-  findOne(id: number) {
+  findOne(id_datos_asesor_externo: number) {
     return this.datosAsesorExternoRepository.findOne({
-      where: { id_datos_asesorexterno: id },
+      where: { id_datos_asesor_externo: id_datos_asesor_externo },
     });
   }
 

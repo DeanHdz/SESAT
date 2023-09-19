@@ -15,13 +15,13 @@ export class Respuesta {
   @Column()
   id_comentario: number;
 
-  @ManyToOne(() => Comentario, (comentario) => comentario.respuestas)
+  /*@ManyToOne(() => Comentario, (comentario) => comentario.respuestas)
   @JoinColumn({ name: "id_comentario" })
-  comentario: Comentario;
+  comentario: Comentario;*/
+
+  @Column()
+  id_usuario: number;
 
   @Column()
   texto: string;
-
-  @Column()
-  clave_usuario: number;
 }

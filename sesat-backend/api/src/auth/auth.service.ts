@@ -1,20 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { resolve } from 'path';
-import { Usuario } from 'src/usuario/entities/usuario.entity';
-import { UsuarioService } from 'src/usuario/usuario.service';
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { resolve } from "path";
+import { Usuario } from "src/usuario/entities/usuario.entity";
+import { UsuarioService } from "src/usuario/usuario.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private usuarioService: UsuarioService,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
   async validateUser(clave: number, pass: string): Promise<any> {
     const user = await this.usuarioService.findOne(clave);
-    if(user && user.password === pass) {
-      const {password, ...result} = user;
+    if (user && user.password === pass) {
+      const { password, ...result } = user;
       return result;
     }
     return null;
@@ -23,22 +23,22 @@ export class AuthService {
   async login(user: Usuario) {
     return new Promise((resolve, reject) => {
       resolve({
-        message: 'Authenticated',
-        clave: user.clave,
+        message: "Authenticated",
+        id_usuario: user.id_usuario,
         name: user.nombre,
         last_name: user.apellido_paterno,
         family_name: user.apellido_materno,
         token: this.jwtService.sign(
           {
             usuario: {
-              clave: user.clave,
+              id_usuario: user.id_usuario,
               name: user.nombre,
               last_name: user.apellido_paterno,
-              family_name: user.apellido_materno
-            }
+              family_name: user.apellido_materno,
+            },
           },
           {
-            secret: process.env.SECRET_JWT, 
+            secret: process.env.SECRET_JWT,
           }
         ),
       });

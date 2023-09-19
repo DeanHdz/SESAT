@@ -6,10 +6,10 @@ export class CreateRespuestaDto {
     id_comentario: number;
 
     @IsNotEmpty()
-    @IsString()
-    texto: string;
+    @IsNumber()
+    id_usuario: number;
 
     @IsNotEmpty()
-    @IsNumber()
-    clave_usuario: number;
+    @IsString()
+    texto: string;
 }

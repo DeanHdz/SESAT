@@ -9,18 +9,23 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
 } from "typeorm";
-import { Usuario } from "src/usuario/entities/usuario.entity";
-import { Tesis } from "src/tesis/entities/tesis.entity";
-import path from "path";
-import { AsignacionTesis } from "src/asignacion-tesis/entities/asignacion-tesis.entity";
-import { Comentario } from "src/comentario/entities/comentario.entity";
-import { ActaEvaluacion } from "src/acta-evaluacion/entities/acta-evaluacion.entity";
-import { FormatoEvaluacion } from "src/formato-evaluacion/entities/formato-evaluacion.entity";
 
 @Entity()
 export class Asignacion {
   @PrimaryGeneratedColumn()
   id_asignacion: number;
+
+  @Column()
+  id_formato_evaluacion: number;
+
+  @Column()
+  id_acta_evaluacion: number;
+
+  @Column()
+  id_tesis: number;
+
+  @Column()
+  id_modalidad: number;
 
   @Column()
   num_avance: number;
@@ -32,16 +37,16 @@ export class Asignacion {
   descripcion: string;
 
   @Column()
-  apertura: Date;
+  fecha_apertura: Date;
 
   @Column()
-  cierre: Date;
+  fecha_cierre: Date;
 
   @Column()
   calificacion: number;
 
-  @Column()
-  documento: string;
+  @Column({ type: "bytea" })
+  documento: any;
 
   @Column()
   estado_entrega: number;
@@ -49,15 +54,9 @@ export class Asignacion {
   @Column()
   retroalimentacion: string;
 
-  @Column()
-  id_formato_evaluacion: number;
-
-  @OneToOne(() => FormatoEvaluacion, { eager: true })
+  /*@OneToOne(() => FormatoEvaluacion, { eager: true })
   @JoinColumn({ name: "id_formato_evaluacion" })
   formatoEvaluacion: FormatoEvaluacion;
-
-  @Column()
-  id_acta_evaluacion: number;
 
   @OneToOne(() => ActaEvaluacion, { eager: true })
   @JoinColumn({ name: "id_acta_evaluacion" })
@@ -71,5 +70,5 @@ export class Asignacion {
   asignaciones_tesis: AsignacionTesis[];
 
   @OneToMany(() => Comentario, (comentario) => comentario.asignacion)
-  comentarios: Comentario[];
+  comentarios: Comentario[];*/
 }

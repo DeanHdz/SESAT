@@ -8,7 +8,7 @@ export class UpdateNotificacionDto extends PartialType(CreateNotificacionDto) {
 
   @IsNotEmpty()
   @IsNumber()
-  clave_usuario: number;
+  id_usuario: number;
 
   @IsNotEmpty()
   @IsString()

@@ -16,7 +16,16 @@ import {
 @Entity()
 export class Usuario {
   @PrimaryColumn()
-  clave: number;
+  id_usuario: number;
+
+  @Column()
+  id_rol: number;
+
+  @Column()
+  id_datos_alumno: number;
+
+  @Column()
+  id_datos_asesor_externo: number;
 
   @Column()
   nombre: string;
@@ -30,27 +39,18 @@ export class Usuario {
   @Column()
   password: string;
 
-  @Column()
-  id_rol: number;
-
-  @OneToOne(() => Rol, { eager: true })
+  /*@OneToOne(() => Rol, { eager: true })
   @JoinColumn({ name: "id_rol" })
   rol: Rol;
 
-  @Column()
-  id_datos_alumno: number;
-
   @OneToOne(() => DatosAlumno, { eager: true })
   @JoinColumn({ name: "id_datos_alumno" })
-  datos_alumno: DatosAlumno;
+  datos_alumno: DatosAlumno;*/
 
   @Column()
   correo: string;
 
-  @Column()
-  id_datos_asesorexterno: DatosAsesorexterno;
-
-  @OneToOne(() => DatosAsesorexterno, { eager: true })
+  /*@OneToOne(() => DatosAsesorexterno, { eager: true })
   @JoinColumn({ name: "id_datos_asesorexterno" })
   datos_asesorexterno: DatosAsesorexterno;
 
@@ -62,5 +62,5 @@ export class Usuario {
   @OneToMany(() => Comentario, (comentario) => comentario.usuario, {
     eager: true,
   })
-  comentarios: Comentario[];
+  comentarios: Comentario[];*/
 }

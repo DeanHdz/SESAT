@@ -9,7 +9,7 @@ export class UpdateComentarioDto extends PartialType(CreateComentarioDto) {
 
     @IsNotEmpty()
     @IsNumber()
-    clave_usuario: number;
+    id_usuario: number;
 
     @IsNotEmpty()
     @IsNumber()

@@ -1,9 +1,16 @@
-import { IsBoolean, IsOptional, IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsOptional,
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from "class-validator";
 
 export class CreateTesisDto {
   @IsNotEmpty()
   @IsNumber()
-  clave_alumno: number;
+  id_usuario: number;
 
   @IsOptional()
   @IsString()
@@ -11,15 +18,11 @@ export class CreateTesisDto {
 
   @IsOptional()
   @IsDateString()
-  fecharegistro: Date;
-  
+  fecha_registro: Date;
+
   @IsOptional()
   @IsString()
   generacion: string;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  registrada: boolean;
 
   @IsOptional()
   @IsNumber()
@@ -28,4 +31,8 @@ export class CreateTesisDto {
   @IsNotEmpty()
   @IsBoolean()
   estado_activo: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  estado_finalizacion: boolean;
 }

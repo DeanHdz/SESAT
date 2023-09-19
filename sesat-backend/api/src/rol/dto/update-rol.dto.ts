@@ -9,5 +9,5 @@ export class UpdateRolDto extends PartialType(CreateRolDto) {
 
     @IsNotEmpty()
     @IsString()
-    nombre: string;
+    nombre_rol: string;
 }

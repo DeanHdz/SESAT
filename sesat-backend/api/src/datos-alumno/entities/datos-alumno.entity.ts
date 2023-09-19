@@ -13,21 +13,21 @@ export class DatosAlumno {
   id_datos_alumno: number;
 
   @Column()
-  grado_estudio: string;
-
-  @Column()
-  modalidad: string;
-
-  @Column()
-  estado_activo: boolean;
+  id_modalidad: number;
 
   @Column()
   id_programa: number;
 
   @Column()
+  id_grado_estudio: number;
+
+  @Column()
   generacion: string;
 
-  @OneToOne(() => Programa, { eager: true })
+  @Column()
+  estado_activo: boolean;
+
+  /*@OneToOne(() => Programa, { eager: true })
   @JoinColumn({ name: "id_programa" })
-  programa: Programa;
+  programa: Programa;*/
 }

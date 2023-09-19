@@ -1,11 +1,34 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { CreateAsignacionDto } from "./create-asignacion.dto";
-import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsDate,
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class UpdateAsignacionDto extends PartialType(CreateAsignacionDto) {
   @IsNotEmpty()
   @IsNumber()
   id_asignacion: number;
+
+  @IsOptional()
+  @IsNumber()
+  id_formato_evaluacion: number;
+
+  @IsOptional()
+  @IsNumber()
+  id_acta_evaluacion: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_tesis: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_modalidad: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -21,11 +44,11 @@ export class UpdateAsignacionDto extends PartialType(CreateAsignacionDto) {
 
   @IsNotEmpty()
   @IsDateString()
-  apertura: Date;
+  fecha_apertura: Date;
 
   @IsNotEmpty()
   @IsDateString()
-  cierre: Date;
+  fecha_cierre: Date;
 
   @IsOptional()
   @IsNumber()
@@ -42,12 +65,4 @@ export class UpdateAsignacionDto extends PartialType(CreateAsignacionDto) {
   @IsOptional()
   @IsString()
   retroalimentacion: string;
-
-  @IsOptional()
-  @IsNumber()
-  id_formato_de_evaluacion: number;
-
-  @IsOptional()
-  @IsNumber()
-  id_acta_de_evaluacion: number;
 }

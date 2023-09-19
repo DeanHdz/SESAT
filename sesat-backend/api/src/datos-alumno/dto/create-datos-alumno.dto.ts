@@ -1,24 +1,23 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateDatosAlumnoDto 
-{
+export class CreateDatosAlumnoDto {
   @IsNotEmpty()
-  @IsString()
-  grado_estudio: string;
-
-  @IsNotEmpty()
-  @IsString()
-  modalidad: string;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  estado_activo: boolean;
+  @IsNumber()
+  id_modalidad: number;
 
   @IsNotEmpty()
   @IsNumber()
   id_programa: number;
 
   @IsNotEmpty()
+  @IsNumber()
+  id_grado_estudio: number;
+
+  @IsNotEmpty()
   @IsString()
   generacion: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  estado_activo: boolean;
 }

@@ -7,12 +7,12 @@ export class UpdateActaEvaluacionDto extends PartialType(
 ) {
   @IsNotEmpty()
   @IsNumber()
-  id_acta: number;
-
-  @IsOptional()
-  documento_rellenado: string;
+  id_acta_evaluacion: number;
 
   @IsNotEmpty()
   @IsNumber()
   id_acta_vacia: number;
+
+  @IsOptional()
+  documento_rellenado: string;
 }

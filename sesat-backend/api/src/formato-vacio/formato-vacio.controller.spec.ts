@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FormatosVaciosController } from './formatos-vacios.controller';
-import { FormatosVaciosService } from './formatos-vacios.service';
+import { FormatosVaciosController } from './formato-vacio.controller';
+import { FormatosVaciosService } from './formato-vacio.service';
 
 describe('FormatosVaciosController', () => {
   let controller: FormatosVaciosController;

@@ -1,24 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTesisDto } from './dto/create-tesis.dto';
-import { UpdateTesisDto } from './dto/update-tesis.dto';
-import { Tesis } from './entities/tesis.entity';
-import { DataSource, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DatosAlumno } from 'src/datos-alumno/entities/datos-alumno.entity';
-import { Usuario } from 'src/usuario/entities/usuario.entity';
-import { Programa } from 'src/programa/entities/programa.entity';
-import { Comite } from 'src/comite/entities/comite.entity';
-import { Asignacion } from 'src/asignacion/entities/asignacion.entity';
-import { AsignacionTesis } from 'src/asignacion-tesis/entities/asignacion-tesis.entity';
-
+import { Injectable } from "@nestjs/common";
+import { CreateTesisDto } from "./dto/create-tesis.dto";
+import { UpdateTesisDto } from "./dto/update-tesis.dto";
+import { Tesis } from "./entities/tesis.entity";
+import { DataSource, Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
+import { Usuario } from "src/usuario/entities/usuario.entity";
+import { Programa } from "src/programa/entities/programa.entity";
+import { Comite } from "src/comite/entities/comite.entity";
+import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 
 @Injectable()
 export class TesisService {
   constructor(
     @InjectRepository(Tesis)
-    private tesisRepository: Repository<Tesis>,
+    private tesisRepository: Repository<Tesis>
   ) {}
-  
+
   create(createTesisDto: CreateTesisDto) {
     return this.tesisRepository.save(createTesisDto);
   }
@@ -27,12 +25,12 @@ export class TesisService {
     return this.tesisRepository.find();
   }
 
-  findActive(){
-    return this.tesisRepository.find({where: {estado_activo: true}})
+  findActive() {
+    return this.tesisRepository.find({ where: { estado_activo: true } });
   }
 
-  findInactive(){
-    return this.tesisRepository.find({where: {estado_activo: false}})
+  findInactive() {
+    return this.tesisRepository.find({ where: { estado_activo: false } });
   }
 
   /**
@@ -67,75 +65,87 @@ export class TesisService {
 
 
    */
-    async findCompletedMDegreeHalfTime(){
-    
-      const resp = await this.tesisRepository
-      .createQueryBuilder("tesis") 
-      .select("tesis.titulo") 
-      .addSelect("tesis.fecharegistro") 
+  async findCompletedMDegreeHalfTime() {
+    const resp = await this.tesisRepository
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecharegistro")
       .addSelect("tesis.id_tesis")
-      .addSelect("usuario.clave")  // This includes all columns from the "usuario" table in the result.      
+      .addSelect("usuario.clave") // This includes all columns from the "usuario" table in the result.
       .addSelect("usuario.nombre")
       .addSelect("usuario.apellido_paterno")
-      .addSelect("usuario.apellido_materno")    
-      .from(Usuario, 'usuario') 
-      .from(DatosAlumno, 'datos_alumno') 
-      .where('tesis.clave_alumno = usuario.clave')   
-      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
-      .andWhere('tesis.estado_activo = :estado_activo', { estado_activo: false })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 6 })
-      .andWhere('datos_alumno.grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })    
-      .andWhere('datos_alumno.modalidad = :modalidad', { modalidad: 'Medio Tiempo' })
-      .getRawMany()     // fetch raw results, which will give us data from all the tables.
-                        //otherwise it won't return anything
-      return resp;
-    }
-    async findCompletedMDegreeFullTime(){
-    
-      const resp = await this.tesisRepository
-      .createQueryBuilder("tesis") 
-      .select("tesis.titulo") 
-      .addSelect("tesis.fecharegistro") 
+      .addSelect("usuario.apellido_materno")
+      .from(Usuario, "usuario")
+      .from(DatosAlumno, "datos_alumno")
+      .where("tesis.clave_alumno = usuario.clave")
+      .andWhere("usuario.id_datos_alumno = datos_alumno.id_datos_alumno")
+      .andWhere("tesis.estado_activo = :estado_activo", {
+        estado_activo: false,
+      })
+      .andWhere("tesis.ultimo_avance = :ultimo_avance", { ultimo_avance: 6 })
+      .andWhere("datos_alumno.grado_estudio = :gradoEstudio", {
+        gradoEstudio: "Maestría",
+      })
+      .andWhere("datos_alumno.modalidad = :modalidad", {
+        modalidad: "Medio Tiempo",
+      })
+      .getRawMany(); // fetch raw results, which will give us data from all the tables.
+    //otherwise it won't return anything
+    return resp;
+  }
+  async findCompletedMDegreeFullTime() {
+    const resp = await this.tesisRepository
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecharegistro")
       .addSelect("tesis.id_tesis")
-      .addSelect("usuario.clave")  // This includes all columns from the "usuario" table in the result.      
+      .addSelect("usuario.clave") // This includes all columns from the "usuario" table in the result.
       .addSelect("usuario.nombre")
       .addSelect("usuario.apellido_paterno")
-      .addSelect("usuario.apellido_materno")    
-      .from(Usuario, 'usuario') 
-      .from(DatosAlumno, 'datos_alumno') 
-      .where('tesis.clave_alumno = usuario.clave')   
-      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
-      .andWhere('tesis.estado_activo = :estado_activo', { estado_activo: false })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 3 })
-      .andWhere('datos_alumno.grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })    
-      .andWhere('datos_alumno.modalidad = :modalidad', { modalidad: 'Tiempo Completo' })
-      .getRawMany()     // fetch raw results, which will give us data from all the tables.
-                        //otherwise it won't return anything
-      return resp;
-    }
-
+      .addSelect("usuario.apellido_materno")
+      .from(Usuario, "usuario")
+      .from(DatosAlumno, "datos_alumno")
+      .where("tesis.clave_alumno = usuario.clave")
+      .andWhere("usuario.id_datos_alumno = datos_alumno.id_datos_alumno")
+      .andWhere("tesis.estado_activo = :estado_activo", {
+        estado_activo: false,
+      })
+      .andWhere("tesis.ultimo_avance = :ultimo_avance", { ultimo_avance: 3 })
+      .andWhere("datos_alumno.grado_estudio = :gradoEstudio", {
+        gradoEstudio: "Maestría",
+      })
+      .andWhere("datos_alumno.modalidad = :modalidad", {
+        modalidad: "Tiempo Completo",
+      })
+      .getRawMany(); // fetch raw results, which will give us data from all the tables.
+    //otherwise it won't return anything
+    return resp;
+  }
 
   /**Tesis de doctorado terminadas(se muestran e el archivo de tesis) */
-  async findCompletedPhd(){
-    
+  async findCompletedPhd() {
     const resp = await this.tesisRepository
-    .createQueryBuilder("tesis") 
-    .select("tesis.titulo") 
-    .addSelect("tesis.fecharegistro") 
-    .addSelect("tesis.id_tesis")
-    .addSelect("usuario.clave")  // This includes all columns from the "usuario" table in the result.
-    .addSelect("usuario.nombre")
-    .addSelect("usuario.apellido_paterno")
-    .addSelect("usuario.apellido_materno")    
-    .from(Usuario, 'usuario') 
-    .from(DatosAlumno, 'datos_alumno') 
-    .where('tesis.clave_alumno = usuario.clave')   
-    .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
-    .andWhere('tesis.estado_activo = :estado_activo', { estado_activo: false })
-    .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 6 })
-    .andWhere('datos_alumno.grado_estudio = :gradoEstudio', { gradoEstudio: 'Doctorado' })    
-    .getRawMany()     // fetch raw results, which will give us data from all the tables.
-                      //otherwise it won't return anything
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecharegistro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.clave") // This includes all columns from the "usuario" table in the result.
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
+      .from(Usuario, "usuario")
+      .from(DatosAlumno, "datos_alumno")
+      .where("tesis.clave_alumno = usuario.clave")
+      .andWhere("usuario.id_datos_alumno = datos_alumno.id_datos_alumno")
+      .andWhere("tesis.estado_activo = :estado_activo", {
+        estado_activo: false,
+      })
+      .andWhere("tesis.ultimo_avance = :ultimo_avance", { ultimo_avance: 6 })
+      .andWhere("datos_alumno.grado_estudio = :gradoEstudio", {
+        gradoEstudio: "Doctorado",
+      })
+      .getRawMany(); // fetch raw results, which will give us data from all the tables.
+    //otherwise it won't return anything
     return resp;
   }
 
@@ -151,41 +161,41 @@ export class TesisService {
     programa: string,
    *  
    */
-  
+
   async findOneBasicInfo(id: number) {
     const resp = await this.tesisRepository
-    .createQueryBuilder("tesis") 
-    .select("tesis.titulo") 
-    .addSelect("tesis.fecharegistro") 
-    .addSelect("tesis.id_tesis")
-    .addSelect("usuario.clave")
-    .addSelect("usuario.nombre")
-    .addSelect("usuario.apellido_paterno")
-    .addSelect("usuario.apellido_materno")        
-    .addSelect("programa.nombreprograma")
-        
-    .from(Usuario, 'usuario') 
-    .from(DatosAlumno, 'datos_alumno') 
-    .from(Programa, 'programa')    
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecharegistro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.clave")
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
+      .addSelect("programa.nombreprograma")
 
-    .where('tesis.clave_alumno = usuario.clave')   
-    .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
-    .andWhere('datos_alumno.id_programa = programa.id_programa')
+      .from(Usuario, "usuario")
+      .from(DatosAlumno, "datos_alumno")
+      .from(Programa, "programa")
 
-    .andWhere('tesis.id_tesis = :id_tesis', { id_tesis: id })   
-    .getRawOne()     // fetch raw results, which will give us one data ROW comibined from all the tables.
-                      //otherwise it won't return anything
+      .where("tesis.clave_alumno = usuario.clave")
+      .andWhere("usuario.id_datos_alumno = datos_alumno.id_datos_alumno")
+      .andWhere("datos_alumno.id_programa = programa.id_programa")
+
+      .andWhere("tesis.id_tesis = :id_tesis", { id_tesis: id })
+      .getRawOne(); // fetch raw results, which will give us one data ROW comibined from all the tables.
+    //otherwise it won't return anything
     return resp;
   }
 
   findOne(id: number) {
     return this.tesisRepository.findOne({ where: { id_tesis: id } });
   }
-  
-  findTesisPerStudent(id: number){
-    return this.tesisRepository.findOne({ where: { clave_alumno: id } });
+
+  findTesisPerStudent(id_usuario: number) {
+    return this.tesisRepository.findOne({ where: { id_usuario: id_usuario } });
   }
- 
+
   update(updateTesisDto: UpdateTesisDto) {
     return this.tesisRepository.save(updateTesisDto);
   }

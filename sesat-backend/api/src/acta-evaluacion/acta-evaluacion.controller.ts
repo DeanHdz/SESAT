@@ -6,7 +6,7 @@ import { PDFDocument, StandardFonts, degrees, rgb } from "pdf-lib";
 import { CreateFormulario } from './dto/create-formulario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FormatosVacios } from 'src/formatos-vacios/entities/formatos-vacios.entity';
+//import { FormatosVacio } from 'src/formatos-vacios/entities/formato-vacio.entity';
 import { Logger } from '@nestjs/common';
 import { decode, encode } from "base64-arraybuffer";
 

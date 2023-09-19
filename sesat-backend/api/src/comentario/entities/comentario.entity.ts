@@ -18,24 +18,24 @@ export class Comentario {
   id_comentario: number;
 
   @Column()
-  clave_usuario: number;
+  id_usuario: number;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.comentarios)
+  /*@ManyToOne(() => Usuario, (usuario) => usuario.comentarios)
   @JoinColumn({ name: "clave_usuario" })
-  usuario: Usuario;
+  usuario: Usuario;*/
 
   @Column()
   id_asignacion: number;
 
-  @ManyToOne(() => Asignacion, (asignacion) => asignacion.comentarios)
+  /*@ManyToOne(() => Asignacion, (asignacion) => asignacion.comentarios)
   @JoinColumn({ name: "id_asignacion" })
-  asignacion: Asignacion;
+  asignacion: Asignacion;*/
 
   @Column()
   texto: string;
 
-  @OneToMany(() => Respuesta, (respuesta) => respuesta.comentario, {
+  /*@OneToMany(() => Respuesta, (respuesta) => respuesta.comentario, {
     eager: true,
   })
-  respuestas: Respuesta[];
+  respuestas: Respuesta[];*/
 }

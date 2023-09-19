@@ -8,7 +8,6 @@ import { TesisModule } from "./tesis/tesis.module";
 import { ProgramaModule } from "./programa/programa.module";
 import { AsignacionModule } from "./asignacion/asignacion.module";
 import { ActaEvaluacionModule } from "./acta-evaluacion/acta-evaluacion.module";
-import { FormatosVaciosModule } from "./formatos-vacios/formatos-vacios.module";
 import { join } from "path";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { RespuestaModule } from "./respuesta/respuesta.module";
@@ -18,7 +17,6 @@ import { APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { NotificationModule } from "./notification/notification.module";
 import { UsuariosPruebaModule } from "./usuarios_prueba/usuarios_prueba.module";
-import { AsignacionTesisModule } from "./asignacion-tesis/asignacion-tesis.module";
 import { ComiteModule } from "./comite/comite.module";
 import { DatosAlumnoModule } from "./datos-alumno/datos-alumno.module";
 import { RolModule } from "./rol/rol.module";
@@ -26,6 +24,7 @@ import { FuncionModule } from "./funcion/funcion.module";
 import { FormatoEvaluacionModule } from "./formato-evaluacion/formato-evaluacion.module";
 import { DatosAsesorexternoModule } from "./datos-asesorexterno/datos-asesorexterno.module";
 import { VariablesSistemaModule } from "./variables-sistema/variables-sistema.module";
+import { FormatoVacioModule } from "./formato-vacio/formato-vacio.module";
 
 @Module({
   imports: [
@@ -61,13 +60,12 @@ import { VariablesSistemaModule } from "./variables-sistema/variables-sistema.mo
     ProgramaModule,
     AsignacionModule,
     ActaEvaluacionModule,
-    FormatosVaciosModule,
+    FormatoVacioModule,
     RespuestaModule,
     ComentarioModule,
     AuthModule,
     NotificationModule,
     UsuariosPruebaModule,
-    AsignacionTesisModule,
     ComiteModule,
     DatosAlumnoModule,
     RolModule,

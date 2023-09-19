@@ -25,7 +25,7 @@ export class ComiteService {
   }
 
   findPerAsesor(id: number) {
-    return this.comiteRepository.find({ where: { clave_asesor: id }});
+    return this.comiteRepository.find({ where: { id_usuario: id } });
   }
 
   findPerTesis(id: number) {
