@@ -23,7 +23,7 @@ export class DatosAlumno {
   id_grado_estudio: number;
 
   @Column()
-  generacion: string;
+  generacion: number;
 
   @Column()
   estado_activo: boolean;
