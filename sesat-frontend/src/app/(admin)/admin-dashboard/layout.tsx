@@ -1,7 +1,7 @@
-import Drawer from '@/app/components/Drawer'
+import Drawer from './components/Drawer'
 import '../../globals.css'
 import type { Metadata } from 'next'
-import AdminNavbar from '@/app/components/AdminNavbar'
+import AdminNavbar from './components/AdminNavbar'
 
 export const metadata: Metadata = {
   title: 'Sistema de Evaluación y Seguimiento de Tesis',
@@ -16,10 +16,10 @@ export default function RootLayout({
 }) {
 
   return (
-    <html lang="en">
+    <html lang="es">
       <body className="w-screen overflow-x-hidden mb-10">
-
         <div className="flex lg:flex-row justify-center w-11/12 lg:w-5/6 m-auto mt-6">
+
           <div className="hidden lg:flex lg:w-3/12">
             <Drawer />
           </div>
@@ -28,8 +28,11 @@ export default function RootLayout({
             <div className='lg:flex'>
               <AdminNavbar />
             </div>
+
             {children}
+
           </div>
+
         </div>
       </body>
     </html>

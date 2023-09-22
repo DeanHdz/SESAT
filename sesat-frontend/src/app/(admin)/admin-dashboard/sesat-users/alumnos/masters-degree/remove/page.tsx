@@ -3,13 +3,9 @@
 import React from 'react'
 import { useEffect, useState, ChangeEvent } from "react";
 import { Usuario } from '../../../../../../../../types/ISESAT';
-
+import Tabs from '../components/Tabs';
 
 const RemoveAsesorForm = () => {
-
-  const [cssTab0, setCssTab0] = useState("");
-  const [cssTab1, setCssTab1] = useState("");
-  const [cssTab2, setCssTab2] = useState("tab-active");
 
   const [hasShownUserInfo, setHasShownUserInfo] = useState(false);
   const [search, setSearch] = useState("");
@@ -48,42 +44,9 @@ const RemoveAsesorForm = () => {
     setSearch(e.target.value);
   };
 
-  function setActiveTab(tab: number) {
-    switch (tab) {
-      case 1:
-        setCssTab0("tab-active");
-        setCssTab1("");
-        setCssTab2("");
-        break;
-      case 2:
-        setCssTab0("");
-        setCssTab1("tab-active");
-        setCssTab2("");
-        break;
-
-      default:
-        setCssTab0("");
-        setCssTab1("");
-        setCssTab2("tab-active");
-        break;
-    }
-  }
   return (
     <form className="w-full flex flex-col">
-
-
-      <label className="mb-6 block text-4xl font-bold">Alumnos de maestría</label>
-
-      <div className="tabs">
-        <a href="/admin-dashboard/sesat-users/alumnos/masters-degree" className={`tab tab-lifted ${cssTab0}`} onClick={() => { setActiveTab(1) }}>Alumnos de maestría registrados en SESAT</a>
-        <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/register" className={`tab tab-lifted ${cssTab1}`} onClick={() => { setActiveTab(2) }}>Registrar alumno</a>
-        <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/remove" className={`tab tab-lifted ${cssTab2}`} onClick={() => { setActiveTab(3) }}>Baja de alumno</a>
-      </div>
-
-
       <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
-
-
         <input
           type="search"
           placeholder="Buscar alumnos"
@@ -140,9 +103,7 @@ const RemoveAsesorForm = () => {
           </tbody>
         </table>
       </div>
-
-
-
+      
       <div className="w-full mt-6 flex justify-end">
         <button type="submit" className="primary__btn">
           Dar de baja del sistema SESAT

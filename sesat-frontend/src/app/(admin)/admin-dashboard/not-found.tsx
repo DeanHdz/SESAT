@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function NotFound() {
     return (
         <div className="flex flex-col justify-center items-center w-full gray__border h-[500px] bg-light-blue-10 no-select">

@@ -1,15 +1,9 @@
 "use client";
 import { useState } from "react";
 import { UsuarioPrueba } from "../../../../../../../../types/ISESAT";
+import Tabs from "../components/Tabs";
 
-
-export const AsesorRegistryForm = () => {
-  {/**Navegacion de pestañas */ }
-  const [cssTab0, setCssTab0] = useState("");
-  const [cssTab1, setCssTab1] = useState("tab-active");
-  const [cssTab2, setCssTab2] = useState("");
-  const [userType, setUserType] = useState("");
-
+export default function MasterStudentRegistryForm() {
 
   {/**Tabla de datos de asesores para seleccionar el que se va a registrar*/ }
   const [selectedUser, setSelectedUser] = useState<UsuarioPrueba | null>(null);
@@ -20,34 +14,6 @@ export const AsesorRegistryForm = () => {
   const [usuariosPrueba, setUsuariosPrueba] = useState<
     UsuarioPrueba[] | undefined
   >();
-
-
-  function setActiveTab(tab: number) {
-    switch (tab) {
-      case 1:
-        setCssTab0("tab-active");
-        setCssTab1("");
-        setCssTab2("");
-        break;
-      case 2:
-        setCssTab0("");
-        setCssTab1("tab-active");
-        setCssTab2("");
-        break;
-
-      default:
-        setCssTab0("");
-        setCssTab1("");
-        setCssTab2("tab-active");
-        break;
-    }
-  };
-
-  const handleUserTypeChange = (event: any) => {
-    setUserType(event.target.value);    
-  };
-  
-
 
   {/** Commented for testing ui
 
@@ -100,25 +66,12 @@ export const AsesorRegistryForm = () => {
   return (
     <>
       <form className="w-full flex flex-col">
-
-
-        <label className="mb-6 block text-4xl font-bold">Alumnos de maestría</label>
-
-        <div className="tabs">
-          <a href="/admin-dashboard/sesat-users/alumnos/masters-degree" className={`tab tab-lifted ${cssTab0}`} onClick={() => { setActiveTab(1) }}>Alumnos de maestría registrados en SESAT</a>
-          <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/register" className={`tab tab-lifted ${cssTab1}`} onClick={() => { setActiveTab(2) }}>Registrar alumno</a>
-          <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/remove" className={`tab tab-lifted ${cssTab2}`} onClick={() => { setActiveTab(3) }}>Baja de alumno</a>
-        </div>
-
         <div className="h-fit w-full gray__border mt-10 p-6">
           <span className="font-bold ">Complete los siguientes datos para realizar el registro.</span>          
-          
             <div className={`h-fit w-full my-10`}>
               <div className="flex flex-col mt-10">
                 <span className="mt-3">Ingrese la clave única o el nombre del alumno para buscar, seleccione una opción.</span>
                 <div className="mt-6">
-
-
                   <input
                     type="text"
                     placeholder="Nombre o clave única"
@@ -131,10 +84,8 @@ export const AsesorRegistryForm = () => {
                   />
                 </div>
               </div>
-
               <div className="mt-6 bg-white gray__border p-3">
                 <div className="overflow-x-auto">
-
                   <table className="table table-zebra">
                     {/*Table head */}
                     <thead>
@@ -160,33 +111,16 @@ export const AsesorRegistryForm = () => {
                       ))}
                     </tbody>
                   </table>
-                  
                 </div>
               </div>
             </div>
-          
-
-
-
-
-
-
-
           <div className="w-full mt-6 flex justify-end">
             <button type="submit" className="primary__btn">
               Registrar alumno en SESAT
             </button>
           </div>
-
         </div>
-
-
-
-
-
       </form>
     </>
   );
 };
-
-export default AsesorRegistryForm;

@@ -1,4 +1,4 @@
-import HomeCard from "./HomeCard";
+import HomeCard from "../(admin)/admin-dashboard/components/HomeCard";
 
 
 
