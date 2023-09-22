@@ -34,6 +34,9 @@ export class Asignacion {
   id_modalidad: number;
 
   @Column()
+  id_periodo: number;
+
+  @Column()
   num_avance: number;
 
   @Column()
@@ -43,10 +46,7 @@ export class Asignacion {
   descripcion: string;
 
   @Column()
-  fecha_apertura: Date;
-
-  @Column()
-  fecha_cierre: Date;
+  fecha_entrega: Date;
 
   @Column()
   calificacion: number;

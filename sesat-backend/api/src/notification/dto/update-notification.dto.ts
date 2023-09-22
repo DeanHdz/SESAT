@@ -1,6 +1,12 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { CreateNotificacionDto } from "./create-notification.dto";
-import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import {
+  IsDate,
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from "class-validator";
 export class UpdateNotificacionDto extends PartialType(CreateNotificacionDto) {
   @IsNotEmpty()
   @IsNumber()
@@ -19,6 +25,6 @@ export class UpdateNotificacionDto extends PartialType(CreateNotificacionDto) {
   decripcion: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   fecha_expedicion: Date;
 }

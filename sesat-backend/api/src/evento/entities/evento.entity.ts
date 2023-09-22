@@ -1,27 +1,22 @@
-import {
-    Column,
-    Entity,
-    PrimaryGeneratedColumn,
-  } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Evento {
+  @PrimaryGeneratedColumn()
+  id_evento: number;
 
-@PrimaryGeneratedColumn()
-id_evento: number;
+  @Column()
+  id_usuario: number;
 
-@Column()
-id_usuario: number;
+  @Column()
+  titulo: string;
 
-@Column()
-titulo: string;
+  @Column()
+  descripcion: string;
 
-@Column()
-descripcion: string;
+  @Column()
+  fecha_inicio: Date;
 
-@Column()
-fecha_inicio: Date;
-
-@Column()
-fecha_termino: Date;
+  @Column()
+  fecha_termino: Date;
 }

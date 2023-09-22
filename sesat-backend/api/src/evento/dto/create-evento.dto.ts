@@ -1,21 +1,31 @@
-import { IsNotEmpty, IsNumber, IsString, IsDate } from "class-validator";
+import { Type } from "class-transformer";
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsDate,
+  IsOptional,
+  IsDateString,
+} from "class-validator";
 
 export class CreateEventoDto {
-@IsNotEmpty()
-@IsNumber()
-id_usuario: number;
+  @IsNotEmpty()
+  @IsNumber()
+  id_usuario: number;
 
-@IsNotEmpty()
-@IsString()
-titulo: string;
+  @IsNotEmpty()
+  @IsString()
+  titulo: string;
 
-@IsString()
-descripcion: string;
+  @IsOptional()
+  @IsString()
+  descripcion: string;
 
-@IsNotEmpty()
-@IsDate()
-fecha_inicio: Date;
+  @IsNotEmpty()
+  @IsDateString()
+  fecha_inicio: Date;
 
-@IsDate()
-fecha_termino: Date;
+  @IsOptional()
+  @IsDateString()
+  fecha_termino: Date;
 }

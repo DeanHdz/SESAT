@@ -26,6 +26,10 @@ export class CreateAsignacionDto {
 
   @IsNotEmpty()
   @IsNumber()
+  id_periodo: number;
+
+  @IsNotEmpty()
+  @IsNumber()
   num_avance: number;
 
   @IsNotEmpty()
@@ -38,11 +42,7 @@ export class CreateAsignacionDto {
 
   @IsNotEmpty()
   @IsDateString()
-  fecha_apertura: Date;
-
-  @IsNotEmpty()
-  @IsDateString()
-  fecha_cierre: Date;
+  fecha_entrega: Date;
 
   @IsOptional()
   @IsNumber()
