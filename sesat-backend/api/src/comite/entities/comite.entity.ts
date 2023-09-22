@@ -19,9 +19,9 @@ export class Comite {
   @Column()
   id_usuario: number;
 
-  @OneToOne(() => Usuario, { eager: true })
+  /*@OneToOne(() => Usuario, { eager: true })
   @JoinColumn({ name: "id_usuario" })
-  asesor: Usuario;
+  asesor: Usuario;*/
 
   @Column()
   id_tesis: number;

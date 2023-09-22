@@ -11,8 +11,8 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async validateUser(clave: number, pass: string): Promise<any> {
-    const user = await this.usuarioService.findOne(clave);
+  async validateUser(id: number, pass: string): Promise<any> {
+    const user = await this.usuarioService.findOne(id);
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
@@ -37,6 +37,7 @@ export class AuthService {
               family_name: user.apellido_materno,
             },
           },
+          //Va encriptado
           {
             secret: process.env.SECRET_JWT,
           }

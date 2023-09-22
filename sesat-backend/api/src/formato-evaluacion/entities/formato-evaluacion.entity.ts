@@ -16,7 +16,7 @@ export class FormatoEvaluacion {
   @Column()
   id_formato_vacio: number;
 
-  @OneToOne(() => FormatoVacio, { eager: true })
+  /*@OneToOne(() => FormatoVacio, { eager: true })
   @JoinColumn({ name: "id_formato_vacio" })
-  formatos_vacios: FormatoVacio;
+  formatos_vacios: FormatoVacio;*/
 }

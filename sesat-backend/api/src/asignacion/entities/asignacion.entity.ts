@@ -60,7 +60,7 @@ export class Asignacion {
   @Column()
   retroalimentacion: string;
 
-  @OneToOne(() => FormatoEvaluacion, { eager: true })
+  /*@OneToOne(() => FormatoEvaluacion, { eager: true })
   @JoinColumn({ name: "id_formato_evaluacion" })
   formatoEvaluacion: FormatoEvaluacion;
 
@@ -77,5 +77,5 @@ export class Asignacion {
 
   @OneToOne(() => Modalidad, { eager: true })
   @JoinColumn({ name: "id_modalidad" })
-  modalidad: Modalidad;
+  modalidad: Modalidad;*/
 }

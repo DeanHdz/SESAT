@@ -32,7 +32,7 @@ export class DatosAlumno {
   @JoinColumn({ name: "id_programa" })
   programa: Programa;
   */
-  @OneToOne(() => GradoEstudio, { eager: true })
+  /*@OneToOne(() => GradoEstudio, { eager: true })
   @JoinColumn({ name: "id_grado_estudio" })
-  grado_estudio: GradoEstudio;
+  grado_estudio: GradoEstudio;*/
 }

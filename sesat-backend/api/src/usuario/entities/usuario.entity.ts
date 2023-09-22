@@ -50,7 +50,7 @@ export class Usuario {
   @Column()
   correo: string;
 
-  @OneToOne(() => DatosAsesorExterno, { eager: true })
+  /*@OneToOne(() => DatosAsesorExterno, { eager: true })
   @JoinColumn({ name: "id_datos_asesor_externo" })
   datos_asesor_externo: DatosAsesorExterno;
 
@@ -62,5 +62,5 @@ export class Usuario {
   @OneToMany(() => Comentario, (comentario) => comentario.usuario, {
     eager: true,
   })
-  comentarios: Comentario[];
+  comentarios: Comentario[];*/
 }
