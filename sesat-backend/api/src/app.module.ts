@@ -28,6 +28,7 @@ import { GradoEstudioModule } from './grado-estudio/grado-estudio.module';
 import { ModalidadModule } from './modalidad/modalidad.module';
 import { FuncionModule } from './funcion/funcion.module';
 import { EventoModule } from './evento/evento.module';
+import { PeriodoModule } from './periodo/periodo.module';
 
 
 @Module({
@@ -76,7 +77,7 @@ import { EventoModule } from './evento/evento.module';
     FormatoEvaluacionModule,
     DatosAsesorexternoModule,
     VariablesSistemaModule,    
-    GradoEstudioModule, ModalidadModule, FuncionModule, EventoModule,
+    GradoEstudioModule, ModalidadModule, FuncionModule, EventoModule, PeriodoModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

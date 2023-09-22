@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
@@ -18,7 +17,6 @@ export class EventoController {
 
   @Post()
   create(@Body() createEventoDto: CreateEventoDto) {
-    console.log("XD");
     return this.eventoService.create(createEventoDto);
   }
 
