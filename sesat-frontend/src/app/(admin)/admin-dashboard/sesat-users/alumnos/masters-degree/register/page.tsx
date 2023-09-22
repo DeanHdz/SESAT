@@ -3,9 +3,6 @@ import { useState } from "react";
 import { UsuarioPrueba } from "../../../../../../../../types/ISESAT";
 
 
-
-
-
 export const AsesorRegistryForm = () => {
   {/**Navegacion de pestañas */ }
   const [cssTab0, setCssTab0] = useState("");
@@ -23,10 +20,6 @@ export const AsesorRegistryForm = () => {
   const [usuariosPrueba, setUsuariosPrueba] = useState<
     UsuarioPrueba[] | undefined
   >();
-
-
-  
-
 
 
   function setActiveTab(tab: number) {

@@ -3,9 +3,6 @@ import { useEffect, useState, ChangeEvent } from "react";
 import { Usuario } from "../../../../../../../types/ISESAT";
 import StudentProfileModal from "@/app/components/StudentProfileModal";
 
-
-
-
 export default function Home() {
 
   const [users, setUsers] = useState<Usuario[]>();
@@ -61,10 +58,7 @@ export default function Home() {
           <a href="/admin-dashboard/sesat-users/alumnos/masters-degree/remove" className={`tab tab-lifted ${cssTab2}`} onClick={() => { setActiveTab(3) }}>Baja de alumno</a>
         </div>
 
-
-
         <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
-
 
           <input
             type="search"
