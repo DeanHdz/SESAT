@@ -27,6 +27,7 @@ import { FormatoVacioModule } from "./formato-vacio/formato-vacio.module";
 import { GradoEstudioModule } from './grado-estudio/grado-estudio.module';
 import { ModalidadModule } from './modalidad/modalidad.module';
 import { FuncionModule } from './funcion/funcion.module';
+import { EventoModule } from './evento/evento.module';
 
 
 @Module({
@@ -75,7 +76,7 @@ import { FuncionModule } from './funcion/funcion.module';
     FormatoEvaluacionModule,
     DatosAsesorexternoModule,
     VariablesSistemaModule,    
-    GradoEstudioModule, ModalidadModule, FuncionModule,
+    GradoEstudioModule, ModalidadModule, FuncionModule, EventoModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

@@ -21,7 +21,7 @@ export class UpdateDatosAlumnoDto extends PartialType(CreateDatosAlumnoDto) {
 
   @IsNotEmpty()
   @IsString()
-  generacion: string;
+  generacion: number;
 
   @IsNotEmpty()
   @IsBoolean()

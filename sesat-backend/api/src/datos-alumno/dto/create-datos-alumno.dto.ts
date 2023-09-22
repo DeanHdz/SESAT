@@ -15,7 +15,7 @@ export class CreateDatosAlumnoDto {
 
   @IsNotEmpty()
   @IsString()
-  generacion: string;
+  generacion: number;
 
   @IsNotEmpty()
   @IsBoolean()
