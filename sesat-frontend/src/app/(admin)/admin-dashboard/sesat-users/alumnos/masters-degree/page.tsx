@@ -53,7 +53,7 @@ export default function RemoveMastersStudent() {
           <tbody>
             {users?.map((user, i) => (
               <>
-                {parseInt(search) == user.clave ||
+                {parseInt(search) == user.id_usuario ||
                   (
                     user.nombre +
                     " " +
@@ -65,11 +65,11 @@ export default function RemoveMastersStudent() {
                     .includes(search.toLowerCase()) ? (
                   /*<StudentProfile user={user} />*/
                   <tr
-                    key={user.clave}
+                    key={user.id_usuario}
                     onClick={() => setSelectedUser(user)}
                     
                   >
-                    <td>{user.clave}</td>
+                    <td>{user.id_usuario}</td>
                     <td>{`${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`}</td>
                     <td>{user.correo}</td>
                     <td><div><StudentProfileModal user={user}/></div></td>

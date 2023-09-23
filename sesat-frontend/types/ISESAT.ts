@@ -2,40 +2,41 @@
   /*------------------ USUARIO INTERFACE ------------------*/
 
   export interface Usuario {
-    clave: number;
+    id_usuario: number;
+    id_rol: number;
+    id_datos_alumno: number | null;
+    id_datos_asesorexterno: number | null;
     nombre: string;
     apellido_paterno: string;
     apellido_materno: string;
     password: string;
-    id_rol: number;
-    id_datos_alumno: number | null;
     correo: string;
-    id_datos_asesorexterno: number | null;
     datos_alumno?: DatosAlumno;
   }
 
   export interface CreateUsuario {
-    clave: number;
+    id_rol: number;
+    id_datos_alumno: number | null;
+    id_datos_asesorexterno: number | null;
     nombre: string;
     apellido_paterno: string;
     apellido_materno: string;
     password: string;
-    id_rol: number;
-    id_datos_alumno: number | null;
     correo: string;
-    id_datos_asesorexterno: number | null;
+    datos_alumno?: DatosAlumno;
   }
 
   export interface UpdateUsuario {
-    clave: number;
+    id_usuario: number;
+    id_rol: number;
+    id_datos_alumno: number | null;
+    id_datos_asesorexterno: number | null;
     nombre: string;
     apellido_paterno: string;
     apellido_materno: string;
     password: string;
-    id_rol: number;
-    id_datos_alumno: number | null;
     correo: string;
-    id_datos_asesorexterno: number | null;
+    datos_alumno?: DatosAlumno;
   }
 
   /*------------------ FUNCION INTERFACE ------------------*/
@@ -60,28 +61,28 @@
 
   export interface DatosAlumno {
     id_datos_alumno: number;
-    grado_estudio: string;
-    modalidad: string;
-    estado_activo: boolean;
+    id_modalidad: number;
     id_programa: number;
-    generacion: string;
+    id_grado_estudio: number;
+    generacion: number;
+    estado_activo: boolean;
   }
 
   export interface CreateDatosAlumno {
-    grado_estudio: string;
-    modalidad: string;
-    estado_activo: boolean;
+    id_modalidad: number;
     id_programa: number;
-    generacion: string;
+    id_grado_estudio: number;
+    generacion: number;
+    estado_activo: boolean;
   }
 
   export interface UpdateDatosAlumno {
     id_datos_alumno: number;
-    grado_estudio: string;
-    modalidad: string;
-    estado_activo: boolean;
+    id_modalidad: number;
     id_programa: number;
-    generacion: string;
+    id_grado_estudio: number;
+    generacion: number;
+    estado_activo: boolean;
   }
 
   /*------------------ DATOS ASESOR EXTERNO INTERFACE ------------------*/
@@ -508,3 +509,34 @@
     indice_clave_asesorexterno: number;
   }
 
+  /*------------------ MODALIDAD INTERFACE ------------------*/
+
+  export interface Modalidad {
+    id_modalidad: number;
+    nombre_modalidad: string;
+  }
+
+  export interface CreateModalidad {
+    nombre_modalidad: string;
+  }
+
+  export interface UpdateModalidad {
+    id_modalidad: number;
+    nombre_modalidad: string;
+  }
+
+  /*------------------ PROGRAMA INTERFACE ------------------*/
+
+  export interface Programa {
+    id_programa: number;
+    nombre_programa: string;
+  }
+
+  export interface CreatePrograma {
+    nombre_programa: string;
+  }
+
+  export interface UpdatePrograma {
+    id_programa: number;
+    nombre_programa: string;
+  }
