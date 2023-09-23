@@ -39,13 +39,13 @@ export class Usuario {
   @Column()
   password: string;
 
-  /*@OneToOne(() => Rol, { eager: true })
+  @OneToOne(() => Rol, { eager: false })
   @JoinColumn({ name: "id_rol" })
   rol: Rol;
 
-  @OneToOne(() => DatosAlumno, { eager: true })
+  @OneToOne(() => DatosAlumno, { eager: false })
   @JoinColumn({ name: "id_datos_alumno" })
-  datos_alumno: DatosAlumno;*/
+  datos_alumno: DatosAlumno;
 
   @Column()
   correo: string;
