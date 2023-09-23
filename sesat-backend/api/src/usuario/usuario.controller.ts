@@ -41,6 +41,11 @@ export class UsuarioController {
     return this.usuarioService.findAlumnos();
   }
 
+  @Get("/alumnos-maestria")
+  async findAlumno() {
+    return await this.usuarioService.findAlumnosMaestria();
+  }
+
   //@UseGuards(JwtAuthGuard)
   @Get(":id")
   findOne(@Param("id") id_usuario: string) {

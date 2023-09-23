@@ -28,6 +28,17 @@ export class UsuarioService {
     return this.usuarioRepository.find({ where: { id_rol: 3 } });
   }
 
+  async findAlumnosMaestria() {
+    const alumnosMaestria: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosMaestria.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 1
+    );
+  }
+
   findOne(id_usuario: number) {
     return this.usuarioRepository.findOne({
       where: { id_usuario: id_usuario },
