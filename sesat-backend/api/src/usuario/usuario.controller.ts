@@ -6,6 +6,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
+  ParseIntPipe,
+  DefaultValuePipe
 } from "@nestjs/common";
 import { UsuarioService } from "./usuario.service";
 import { CreateUsuarioDto } from "./dto/create-usuario.dto";
@@ -13,9 +16,25 @@ import { UpdateUsuarioDto } from "./dto/update-usuario.dto";
 import { Put } from "@nestjs/common/decorators";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
+import { Usuario } from "./entities/usuario.entity";
+import { Pagination } from 'nestjs-typeorm-paginate';
+
 @Controller("usuario")
-export class UsuarioController {
+export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
+
+  @Get('/paginated/alumnosMasters')
+  async index(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ): Promise<Pagination<Usuario>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.usuarioService.paginateMasterStudents({
+      page,
+      limit,
+      route: '/paginated/alumnosMasters',
+    });
+  }
 
   //@UseGuards(JwtAuthGuard)
   @Post()

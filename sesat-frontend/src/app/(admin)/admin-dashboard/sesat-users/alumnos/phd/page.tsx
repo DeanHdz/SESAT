@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, ChangeEvent } from "react";
 import { Usuario } from "../../../../../../../types/ISESAT";
-import StudentProfileModal from "@/app/components/StudentProfileModal";
+import StudentProfileModal from "@/app/(admin)/admin-dashboard/sesat-users/alumnos/masters-degree/components/StudentProfileModal";
 
 export default function Home() {
   // old shit

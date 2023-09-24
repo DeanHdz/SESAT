@@ -149,4 +149,27 @@ export namespace UsuarioEndpoint {
     return result;
   }
 
+  export async function getAlumnosMaestriaPaginated( token: string, page: number, limit: number)
+  {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/paginated/alumnosMasters?page=${page}&limit=${limit}`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },  
+      /* idk xd
+      next:{
+        tags: ['mastersStudents']
+      },  
+      */
+    };
+    const response = await fetch(url, options);
+    if(!response.ok){
+      throw(new Error('Error fetching the data'))
+    }
+    const result = await response.json();
+    return result;
+  }
+
 }

@@ -1,9 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { And, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { CreateUsuarioDto } from "./dto/create-usuario.dto";
 import { UpdateUsuarioDto } from "./dto/update-usuario.dto";
 import { Usuario } from "./entities/usuario.entity";
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UsuarioService {
@@ -11,6 +16,45 @@ export class UsuarioService {
     @InjectRepository(Usuario)
     private usuarioRepository: Repository<Usuario>
   ) {}
+
+  //AAAAAAAAAAAAA it fucking works ffs ::)
+  async paginateMasterStudents(options: IPaginationOptions): Promise<Pagination<Usuario>> {
+
+    //Just in case, Imma keep this old shit here for reference (?)
+    /*async findAlumnosMaestriaPaginated(page: number, pageSize: number) {
+    const skip = (page -1) * pageSize;
+    const data = await this.usuarioRepository.findAndCount({
+      skip,
+      take: pageSize,
+    });
+
+    return data;
+  }*/
+    /*async findAlumnosMaestriaPaginated(paginationDto: PaginationDto): Promise<Usuario[]> {
+    //const { page, pageSize } = paginationDto;
+    const page = 1;
+    const pageSize = 2;
+    const skip = (page - 1) * pageSize;
+
+    const alumnosMaestriaQuery = this.usuarioRepository
+      .createQueryBuilder('usuario')
+      .innerJoinAndSelect('usuario.datos_alumno', 'datos_alumno')
+      .where('usuario.id_rol = :id_rol', { id_rol: 3 })
+      .andWhere('datos_alumno.id_grado_estudio = :id_grado_estudio', { id_grado_estudio: 1 })
+      .skip(skip)
+      .take(pageSize);
+
+    return await alumnosMaestriaQuery.getMany();
+  }*/
+
+    const alumnosMaestriaQuery = this.usuarioRepository
+      .createQueryBuilder('usuario')
+      .innerJoinAndSelect('usuario.datos_alumno', 'datos_alumno')
+      .where('usuario.id_rol = :id_rol', { id_rol: 3 })
+      .andWhere('datos_alumno.id_grado_estudio = :id_grado_estudio', { id_grado_estudio: 1 });
+
+    return paginate<Usuario>(alumnosMaestriaQuery, options);
+  }
 
   create(createUsuarioDto: CreateUsuarioDto) {
     return this.usuarioRepository.save(createUsuarioDto);
