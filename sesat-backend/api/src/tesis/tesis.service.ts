@@ -227,7 +227,7 @@ export class TesisService {
       .innerJoin(Modalidad, "mod", "da.id_modalidad = mod.id_modalidad")
       .select("t.ultimo_avance")
       .addSelect("COUNT(t.id_tesis)", "count")
-      .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 6 })
+      .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 3 })
       .where("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
       .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
       .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Maestría' })
