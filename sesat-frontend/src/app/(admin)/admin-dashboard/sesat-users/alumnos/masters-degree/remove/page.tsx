@@ -3,9 +3,8 @@
 import React from 'react'
 import { useEffect, useState, ChangeEvent } from "react";
 import { Usuario } from '../../../../../../../../types/ISESAT';
-import Tabs from '../components/Tabs';
 
-const RemoveAsesorForm = () => {
+export default function MasterStudentRegistryForm(){
 
   const [hasShownUserInfo, setHasShownUserInfo] = useState(false);
   const [search, setSearch] = useState("");
@@ -112,5 +111,3 @@ const RemoveAsesorForm = () => {
     </form>
   )
 }
-
-export default RemoveAsesorForm

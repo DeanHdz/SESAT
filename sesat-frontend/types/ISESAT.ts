@@ -1,6 +1,5 @@
 
   /*------------------ USUARIO INTERFACE ------------------*/
-
   export interface Usuario {
     id_usuario: number;
     id_rol: number;
@@ -183,19 +182,19 @@
   export interface UpdatePrograma {
     id_programa: number;
     nombreprograma: string;
-  }  
+  }
 
   /*------------------ TESIS INTERFACE ------------------*/
 
   export interface InactiveTesisProps {
-    titulo: string,
-    fecha_registro: string,
-    id_tesis: number,
-    clave: number,
-    nombre: string,
-    apellido_paterno: string,
-    apellido_materno: string,    
-    programa_nombre_programa: string, 
+    titulo: string;
+    fecha_registro: string;
+    id_tesis: number;
+    clave: number;
+    nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
+    programa_nombre_programa: string;
   }
 
   export interface Tesis {
@@ -242,7 +241,6 @@
     asesor: Usuario;
     tesis: Tesis;
     funcion: Funcion;
-
   }
 
   export interface CreateComite {
@@ -540,3 +538,4 @@
     id_programa: number;
     nombre_programa: string;
   }
+
