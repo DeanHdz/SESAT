@@ -61,8 +61,18 @@ export class UsuarioController{
   }
 
   @Get("/alumnos-maestria")
-  async findAlumno() {
+  async findAlumnosMaestria() {
     return await this.usuarioService.findAlumnosMaestria();
+  }
+
+  @Get("/alumnos-maestria/id/:id")
+  async findAlumnosMaestriaById(@Param("id") id_usuario: string) {
+    return await this.usuarioService.findAlumnosMaestriaById(+id_usuario);
+  }
+
+  @Get("/alumnos-maestria/name/:name")
+  async findAlumnosMaestriaByName(@Param("name") nombre: string) {
+    return await this.usuarioService.findAlumnosMaestriaByName(nombre);
   }
 
   //@UseGuards(JwtAuthGuard)

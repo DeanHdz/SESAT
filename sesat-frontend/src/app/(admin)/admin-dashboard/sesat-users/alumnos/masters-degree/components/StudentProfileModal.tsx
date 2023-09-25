@@ -139,19 +139,17 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
                   >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
+                    X
                   </button>
                 </div>
 
-                <div className="tabs w-full px-6">
+                <div className="tabs w-full px-6 flex justify-center">
                   <a className={`tab tab-lifted ${activeTab0}`} onClick={() => { setActiveTab(1) }}>Datos generales</a>
                   <a className={`tab tab-lifted ${activeTab1}`} onClick={() => { setActiveTab(2) }}>Comité de evaluación</a>
                 </div>
 
                 {activeTab0 === 'tab-active' && (
-                  <form onSubmit={handleSubmit}>
+                  <form className="" onSubmit={handleSubmit}>
                     {/*body*/}
                     <div className="relative p-6 flex-auto">
                       <div className="form-control w-full max-w-xs">

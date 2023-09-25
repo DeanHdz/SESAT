@@ -9,6 +9,7 @@ import {
   Pagination,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
+import { runInThisContext } from "vm";
 
 @Injectable()
 export class UsuarioService {
@@ -47,6 +48,8 @@ export class UsuarioService {
     return await alumnosMaestriaQuery.getMany();
   }*/
 
+
+
     const alumnosMaestriaQuery = this.usuarioRepository
       .createQueryBuilder('usuario')
       .innerJoinAndSelect('usuario.datos_alumno', 'datos_alumno')
@@ -80,6 +83,32 @@ export class UsuarioService {
 
     return alumnosMaestria.filter(
       (alumno) => alumno.datos_alumno.id_grado_estudio === 1
+    );
+  }
+
+  async findAlumnosMaestriaById(id_usuario: number){
+    const alumnosMaestria: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosMaestria.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 1 && alumno.id_usuario === id_usuario
+    );
+  }
+
+  async findAlumnosMaestriaByName(nombre: string){
+    const alumnosMaestria: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosMaestria.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 1 && (
+        `${alumno.nombre} ${alumno.apellido_paterno} ${alumno.apellido_materno}`
+      )
+        .toLowerCase()
+        .includes(nombre.toLowerCase())
     );
   }
 
