@@ -7,4 +7,5 @@ export class VariablesSistema {
 
     @Column()
     indice_clave_asesorexterno: number;
+
 }

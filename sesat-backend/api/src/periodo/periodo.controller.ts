@@ -22,6 +22,11 @@ export class PeriodoController {
     return this.periodoService.findOne(+id);
   }
 
+  @Get('last/period')
+  findLatestPeriod() {
+    return this.periodoService.getRowWithMaxNumber();
+  }
+
   @Put()
   update(@Body() updatePeriodoDto: UpdatePeriodoDto) {
     return this.periodoService.update(updatePeriodoDto);

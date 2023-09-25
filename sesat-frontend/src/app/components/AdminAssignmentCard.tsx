@@ -61,45 +61,6 @@ const AdminAssignmentCard = ({
 
   const router = useRouter()
 
-  
-/*
-  //Chechar si hay alumnos
-  const numAlumnos = fetchNumAlumnosDoctorado("").then((res)=>{
-    let alumnos = parseInt(res)
-    if(alumnos && alumnos > 0){
-
-      fetchAsignacionesPendientesDoctorado(avance.toString(), "").then((res) => {
-        let tesisIdList: Array<string> = res
-        if(tesisIdList.length === 0){
-          setStatus(1)
-        }else if(tesisIdList.length > 0){
-          setStatus(0)
-        }  
-        setBtnValue(buttonActions[status]);
-        setBtnUrl(urlsArray[status]);      
-      })      
-    }else if(alumnos === 0){
-      setStatus(2)
-      setCssDisabledBtn('opacity-50 pointer-events-none cursor-not-allowed');
-      setBtnValue(buttonActions[status]);
-      setBtnUrl(urlsArray[status]);
-    }
-  })*/
-
-  /*
-  useEffect(() => {
-    function setAssignmentProps() {
-      
-
-      if (status === 2) {
-        
-      }
-    }
-    return () => {
-      setAssignmentProps();
-    }
-  }, [])*/
-
 
   function handleClick() {
     router.push(urlsArray[status]);

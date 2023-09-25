@@ -2,11 +2,17 @@ import AdminAssignmentCard from "@/app/components/AdminAssignmentCard";
 import { fetchNumAsignacionesPendientesMaestriaMedioTiempo, fetchNumAsignacionesPendientesMaestriaTiempoComp } from "../../../../../../utils/asignacion.endpoint";
 import { fetchNumAlumnosMaestriaMedTiempo, fetchNumAlumnosMaestriaTiempoComp } from "../../../../../../utils/tesis.endpoint";
 import Alert from "../../components/Alert";
+import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
 
 
 type AvanceProps = {
   t_ultimo_avance: number;
   count: string;
+}
+
+type PeriodoProps = {
+  id_periodo: number;
+  fecha_cierre: string;
 }
 
 
@@ -118,6 +124,29 @@ async function fetchStatusMidTime(alumnos: Array<AvanceProps>): Promise<number[]
   return statusArray;
 }
 
+async function fetchStatusPeriodo(): Promise<boolean> {
+  let result;
+  await fetchLatestPeriod("").then((res) => {
+
+    const periodo: PeriodoProps = res;
+
+    if (periodo) {
+      let fechaCierrePeriodo = new Date(periodo.fecha_cierre);
+      let fechaActual = new Date();
+
+      result = false;
+      if (fechaActual > fechaCierrePeriodo) {
+
+        result = true;
+      }
+    }else{
+      result = true;
+    }
+
+  })
+  return result!;
+}
+
 
 
 
@@ -138,12 +167,18 @@ export default async function Home() {
     "Seminario de Tesis III (90% de avance)"
   ]
 
+  //fetch de la tabla periodo, revisar que exista al menos un periodo y si es el caso
+  //obtener el ultimo creado, comparar la fecha de ciere con la actual para revisar que no este concluido
   const statusFullTime = await fetchStatusFullTime(await fetchAsignacionesDataFullTime());
   const statusMidTime = await fetchStatusMidTime(await fetchAsignacionesDataMidTime());
+  const statusPeriodo = await fetchStatusPeriodo();
 
   return (
     <main>
-      <Alert />
+      {statusPeriodo && (        
+        <Alert />
+      )
+      }
       <div className="w-full flex flex-col mb-10">
         <label className="mb-3 block text-4xl font-bold">
           Alumnos de Maestría
@@ -155,9 +190,9 @@ export default async function Home() {
           </label>
         </div>
 
-        {
+        {//Si statusPeriodo=true, significa que el periodo ha concluido, se asignan todos los estados a no Disp.
           statusFullTime?.map((num, i) => (
-            <AdminAssignmentCard title={fullTimetitleArray[i]} avance={i} status={num} />
+            <AdminAssignmentCard title={fullTimetitleArray[i]} avance={i} status={statusPeriodo ? 2 : num} />
           ))
         }
 
@@ -168,9 +203,9 @@ export default async function Home() {
           </label>
         </div>
 
-        {
-          statusMidTime?.map((num, i) => (
-            <AdminAssignmentCard title={midTimetitleArray[i]} avance={i} status={num} />
+        {//Si statusPeriodo=true, significa que el periodo ha concluido, se asignan todos los estados a no Disp.
+          statusMidTime?.map((num, i) => (            
+            <AdminAssignmentCard title={midTimetitleArray[i]} avance={i} status={statusPeriodo ? 2 : num} />
           ))
         }
 
