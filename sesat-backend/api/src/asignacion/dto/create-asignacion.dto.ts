@@ -16,31 +16,31 @@ export class CreateAsignacionDto {
   @IsNumber()
   id_acta_evaluacion: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   id_tesis: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   id_modalidad: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   id_periodo: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   num_avance: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   titulo: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   descripcion: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
   fecha_entrega: Date;
 

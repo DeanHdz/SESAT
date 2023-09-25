@@ -122,7 +122,7 @@ export default async function Home() {
 
         {
           statusArray?.map((num, i) => (
-            <AdminAssignmentCard title={`Seminario de Avance de Tesis ${i+1}`} avance={i} status={statusPeriodo ? 2 : num} />
+            <AdminAssignmentCard title={`Seminario de Avance de Tesis ${i+1}`} avance={i+1} status={statusPeriodo ? 2 : num} />
           ))
         }      
 

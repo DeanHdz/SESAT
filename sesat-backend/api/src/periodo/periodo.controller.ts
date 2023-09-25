@@ -24,7 +24,7 @@ export class PeriodoController {
 
   @Get('last/period')
   findLatestPeriod() {
-    return this.periodoService.getRowWithMaxNumber();
+    return this.periodoService.findLatestPeriod();
   }
 
   @Put()

@@ -25,7 +25,7 @@ export class PeriodoService {
   }
 
   //Obtener el ultimo periodo creado
-  async getRowWithMaxNumber() {    
+  async findLatestPeriod() {    
     const result = await this.periodoRepository
       .createQueryBuilder('p')  
       .select(['p.id_periodo', 'p.fecha_apertura', 'p.fecha_cierre'])  
