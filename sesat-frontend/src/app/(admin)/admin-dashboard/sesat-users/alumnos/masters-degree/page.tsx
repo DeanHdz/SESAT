@@ -1,7 +1,7 @@
 import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import { Usuario } from "../../../../../../../types/ISESAT";
 import { PaginatedUser } from "../../../../../../../types/IPaginate";
-import StudentProfileModal from "./components/StudentProfileModal";
+import StudentProfileModal from "../components/StudentProfileModal";
 import Link from "next/link";
 
 import clsx from "clsx";
@@ -12,14 +12,6 @@ export default async function SearchMastersStudents({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  /*
-  //modified page ver 2
-  const usuariosData: Promise<Usuario[]> =
-    UsuarioEndpoint.getAlumnosMaestria("[token]");
-  const usuarios = await usuariosData;
-
-  return <Search usuarios={usuarios} />;
-  */
 
   const page =
     typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
@@ -39,7 +31,6 @@ export default async function SearchMastersStudents({
           <Search url={"/admin-dashboard/sesat-users/alumnos/masters-degree"}/>
           <div className="mt-6 bg-white gray__border p-3">
             <table className="table table-zebra">
-              {/*Table head */}
               <thead>
                 <tr className="text-dark-blue-20">
                   <th>Clave Única</th>
@@ -81,7 +72,6 @@ export default async function SearchMastersStudents({
           <Search url={"/admin-dashboard/sesat-users/alumnos/masters-degree"}/>
           <div className="mt-6 bg-white gray__border p-3">
             <table className="table table-zebra">
-              {/*Table head */}
               <thead>
                 <tr className="text-dark-blue-20">
                   <th>Clave Única</th>
@@ -125,7 +115,6 @@ export default async function SearchMastersStudents({
         <Search url={"/admin-dashboard/sesat-users/alumnos/masters-degree"}/>
         <div className="mt-6 bg-white gray__border p-3">
           <table className="table table-zebra">
-            {/*Table head */}
             <thead>
               <tr className="text-dark-blue-20">
                 <th>Clave Única</th>
@@ -138,32 +127,6 @@ export default async function SearchMastersStudents({
             <tbody>
               {users.items?.map((user: Usuario, i: number) => (
                 <>
-                  {/*
-                parseInt(search) == user.id_usuario ||
-                  (
-                    `${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`
-                  )
-                    .toLowerCase()
-                    .includes(search.toLowerCase()) ? (
-                  /*<StudentProfile user={user} />*/
-                  /*
-                  <tr
-                    key={user.id_usuario}
-                  >
-                    <td>{user.id_usuario}</td>
-                    <td>{`${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`}</td>
-                    <td>Activo</td>
-                    <td>{user.correo}</td>
-                    <td>
-                      <div>
-                        <StudentProfileModal user={user} />
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
-                  <></>
-                )
-                */}
                   <tr key={user.id_usuario}>
                     <td>{user.id_usuario}</td>
                     <td>{`${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`}</td>
@@ -190,7 +153,6 @@ export default async function SearchMastersStudents({
             href={{
               pathname: "/admin-dashboard/sesat-users/alumnos/masters-degree",
               query: {
-                //...(search ? { search } : {}),
                 page: page > 1 ? page - 1 : 1,
                 limit: limit,
               },
@@ -211,7 +173,6 @@ export default async function SearchMastersStudents({
             href={{
               pathname: "/admin-dashboard/sesat-users/alumnos/masters-degree",
               query: {
-                //...(search ? { search } : {}),
                 page: page + 1,
                 limit: limit,
               },
