@@ -45,8 +45,9 @@ export class AsignacionService {
 
       //console.log('id_tesis: '+ elem.id_tesis)  
       await Promise.all(promises);
+
       console.log('Length: '+idTesisArray.length)
-      return JSON.stringify({ message: 'Todos los registros se han guardado correctamente.' });
+      return JSON.parse('{ message: "Todos los registros se han guardado correctamente." }')
     }) 
     try {            
       
