@@ -10,4 +10,5 @@ export class UpdateVariablesSistemaDto extends PartialType(CreateVariablesSistem
     @IsNotEmpty()
     @IsNumber()
     indice_clave_asesorexterno: number;
+
 }
