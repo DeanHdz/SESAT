@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { TitleBar } from "@/app/components/TitleBar";
 import "flatpickr/dist/themes/light.css";
 
-import Flatpickr from "react-flatpickr";
-import { fetchLatestPeriod } from "../../../../../../../../utils/periodo.endpoint";
 import { postAsignacionesPhdByNumAv } from "../../../../../../../../utils/asignacion.endpoint";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
+import { fetchLatestPeriod } from "../../../../../../../../utils/periodo.endpoint";
+import { shortFormatDate } from "../../../../../../../../utils/utils";
 
 {/**
 Docs:
@@ -51,15 +51,6 @@ export default function CreateAssignment({
     fecha_cierre: string;
   }
 
-  function formatDate(dateString: string): string {
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const date = new Date(dateString);
-    const day = date.getUTCDate();
-    const month = months[date.getUTCMonth()];
-    const year = date.getUTCFullYear();
-
-    return `${day.toString().padStart(2, '0')}/${month}/${year}`;
-}
 
   const handleSubmit = (e: any) => {
     try {
@@ -149,7 +140,7 @@ export default function CreateAssignment({
               </label>
 
               {periodo && (
-                <p>{formatDate(periodo.fecha_apertura)}</p>
+                <p>{shortFormatDate(periodo.fecha_apertura)}</p>
               )}
 
             </div>
@@ -161,7 +152,7 @@ export default function CreateAssignment({
               </label>
 
               {periodo && (
-                <p>{formatDate(periodo.fecha_cierre)}</p>
+                <p>{shortFormatDate(periodo.fecha_cierre)}</p>
               )}
             </div>
 

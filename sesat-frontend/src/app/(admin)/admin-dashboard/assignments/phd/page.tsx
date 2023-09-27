@@ -5,6 +5,7 @@ import EmptyPage from "@/app/components/EmptyPage";
 import Alert from "../../components/Alert";
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
 
+
 type AvanceProps = {
   t_ultimo_avance: number;
   count: string;

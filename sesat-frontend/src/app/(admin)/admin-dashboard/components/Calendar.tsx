@@ -9,8 +9,7 @@ import { useState } from "react";
 import esLocale from "@fullcalendar/core/locales/es";
 import ViewEventModal from "./ViewEventModal";
 import AddEventModal from "./AddEventModal";
-import AddPeriodoModal from "./AddPeriodoModal";
-import { AlertPeriod } from "./AlertPeriod";
+
 
 /**
  * Docs
@@ -102,7 +101,7 @@ export default function Calendar(
 
   return (
     <>
-      <AlertPeriod />
+      
 
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}

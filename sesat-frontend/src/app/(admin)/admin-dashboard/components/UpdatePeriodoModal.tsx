@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import "flatpickr/dist/themes/dark.css";
 import Flatpickr from "react-flatpickr";
 import ProcessingAnim from '@/app/components/ProcessingAnim';
-import { postNewPeriod } from '../../../../../utils/periodo.endpoint';
+import { putPeriod } from '../../../../../utils/periodo.endpoint';
 import { useRouter } from 'next/navigation';
-import { esPeriodoValido, formatAsISODate } from '../../../../../utils/utils';
+import { formatAsISODate } from '../../../../../utils/utils';
 
 
 
-const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndDate: Date, startDate: Date, endDate: Date }) => {
+const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPeriodo: number, startDate: Date, endDate: Date, extender: boolean }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [start, setStartDate] = useState<Date>(startDate)
@@ -21,7 +21,7 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
     const [cssOk, setCssOk] = useState("hidden")
     const [msg, setmsg] = useState("")
     const router = useRouter()
-    let info = '¿Cómo funciona? El inicio y fin del periodo marcan la apertura y cierre de los avances de tesis'
+    let info = '¿Cómo funciona? El inicio y fin del periodo marcan la apertura y cierre de los avances de tesis, puede ampliarlo o reducirlo '
 
 
     function setDefaultState() {
@@ -33,32 +33,30 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
         router.refresh();//on test
 
     }
-        
+
 
     async function handleSubmit(event: any) {
         event.preventDefault();
         if (start && end && start > end) {
             setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
             setCssError("")
-        } else if(!esPeriodoValido(previousEndDate, start)){
-            setmsg("No se puede crear más de un periodo por semestre, los avances de tesis son semestrales")
-            setCssError("")
-        }else{
+        } else {
             try {
                 setCssError("hidden")
                 setIsSubmitting(true)
-                setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")                
-                await postNewPeriod(
+                setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
+                await putPeriod(
                     {
+                        id_periodo: idPeriodo,
                         fecha_apertura: formatAsISODate(start),
                         fecha_cierre: formatAsISODate(end),
                     },
                     ""
                 ).then((res) => {
-                    if (res) {                        
+                    if (res) {
                         setcssHide("hidden")//oculta boton crear
                         setCSSDisabled("")
-                        setmsg("El periodo se ha creado correctamente")
+                        setmsg("El periodo se ha actualizado correctamente")
                         setCssOk("")
                         setIsSubmitting(false)
                     }
@@ -85,7 +83,13 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
     }
     return (
         <>
-            <button className="btn btn-sm" type='button' onClick={() => setShowModal(true)}>Establecer Periodo</button>
+            <button className="btn btn-sm px-10 mx-auto" type='button' onClick={() => setShowModal(true)}>
+                {extender ? (
+                    <>Extender Periodo</>
+                ) : (
+                    <>Modificar</>
+                )}
+            </button>
             {showModal ? (
                 <>
 
@@ -93,7 +97,13 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
                         <div className="fixed w-[600px] mx-auto p-6 border-0 rounded-lg shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50">
                             {/*header*/}
                             <div className="w-full flex flex-row h-fit items-center">
-                                <h3 className="font-bold text-lg">Establecer Periodo de entregas de avance</h3>
+                                <h3 className="font-bold text-lg">
+                                    {extender ? (
+                                        <>Extender Periodo</>
+                                    ) : (
+                                        <>Modificar Periodo</>
+                                    )}
+                                </h3>
                                 <div className='tooltip tooltip-left w-[24px] h-[24px] ml-auto rounded-full flex items-center justify-center hover:bg-light-gray-22'
                                     data-tip={info}>
                                     <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16" height="20px"
@@ -134,8 +144,8 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
                                         options={{
                                             enableTime: true,
                                             noCalendar: false,
-                                            minDate: "today",
-                                            static: true,                                             
+                                            minDate: startDate,
+                                            static: true,
                                         }}
                                         //data-enable-time
                                         placeholder="Inicio"
@@ -162,8 +172,8 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
                                         options={{
                                             enableTime: true,
                                             noCalendar: false,
-                                            minDate: "today",
-                                            static: true,  
+
+                                            static: true,
                                         }}
                                         placeholder="Fin"
                                         value={end}
@@ -181,7 +191,11 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
                                             </div>
                                         ) : (
                                             <>
-                                                Crear periodo
+                                                {extender ? (
+                                                    <>Extender Periodo</>
+                                                ) : (
+                                                    <>Modificar Periodo</>
+                                                )}
                                             </>
                                         )}
                                     </button>
@@ -200,4 +214,4 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
     )
 }
 
-export default AddPeriodoModal;
+export default UpdatePeriodoModal;

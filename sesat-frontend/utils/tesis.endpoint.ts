@@ -1,65 +1,4 @@
 
-
-
-
-
-/*
-export const getTesis = async (
-  id: number,
-  token: string
-): Promise<SESAT.Tesis | undefined> => {
-  return await axios
-    .get<SESAT.Tesis>(`${import.meta.env.VITE_API_HOSTNAME}/tesis/` + id, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
-      },
-    })
-    .then(({ data }) => {
-      if (data) {
-        return data;
-      }
-    });
-};
-*/
-/*
- export const getTesisPerStudent = async (
-   id: number,
-   token: string
- ): Promise<SESAT.Tesis | undefined> => {
-   return await axios
-     .get<SESAT.Tesis>(`${import.meta.env.VITE_API_HOSTNAME}/tesis/per-student/` + id, {
-       headers: {
-         "Content-Type": "application/json",
-         Authorization: `bearer ${token}`,
-       },
-     })
-     .then(({ data }) => {
-       if (data) {
-         return data;
-       }
-     });
- };
-
-*/
-/*
-  export const getTesisActivas = async (
-    token: string
-  ): Promise<SESAT.Tesis[] | undefined> => {
-    return await axios
-      .get<SESAT.Tesis[]>(`${import.meta.env.VITE_API_HOSTNAME}/tesis/active`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-*/
 export async function fetchOneTesis(
   id: string,
   token: string,
@@ -72,9 +11,7 @@ export async function fetchOneTesis(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
-    },
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
@@ -97,9 +34,7 @@ export async function fetchTesisCompletadasPhd(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },  
-    next:{
-      revalidate: 20
-    },  
+    cache: 'no-store' as RequestCache,  
   };
   const response = await fetch(url, options );
 
@@ -123,7 +58,7 @@ export async function fetchTesisCompletadasMaestriaMedTiempo(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    caches: 'no-store',
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
@@ -146,7 +81,7 @@ export async function fetchTesisCompletadasMaestriaTiempoComp(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    caches: 'no-store',
+    cache: 'no-store' as RequestCache,
     
   };
   const response = await fetch(url, options);
@@ -171,9 +106,7 @@ export async function fetchNumAlumnosDoctorado(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
-    },
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
@@ -200,9 +133,7 @@ export async function fetchNumAlumnosMaestriaTiempoComp(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
-    },
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
@@ -230,9 +161,7 @@ export async function fetchNumAlumnosMaestriaMedTiempo(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
-    },
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
@@ -252,99 +181,3 @@ export async function fetchNumAlumnosMaestriaMedTiempo(
 
 
 
-
-/*
-
-  export const getTesisInactivas = async (
-    token: string
-  ): Promise<SESAT.Tesis[] | undefined> => {
-    return await axios
-      .get<SESAT.Tesis[]>(`${import.meta.env.VITE_API_HOSTNAME}/tesis/inactive`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-*/
-/*
-  //plural de tesis en inglés, porque en español no hay
-  export const getTheses = async (
-    token: string
-  ): Promise<SESAT.Tesis[] | undefined> => {
-    return await axios
-      .get<SESAT.Tesis[]>(`${import.meta.env.VITE_API_HOSTNAME}/tesis`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-*/
-/*
-  export const postTesis = async (
-    createTesisDto: SESAT.CreateTesis,
-    token: string
-  ): Promise<SESAT.Tesis | undefined> => {
-    return await axios
-      .post(`${import.meta.env.VITE_API_HOSTNAME}/tesis`, createTesisDto, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-*/
-/*
-  export const putTesis = async (
-    updateTesisDto: SESAT.UpdateTesis,
-    token: string
-  ): Promise<SESAT.Tesis | undefined> => {
-    return await axios
-      .put(`${import.meta.env.VITE_API_HOSTNAME}/tesis`, updateTesisDto, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-*/
-/*
-  export const deleteTesis = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Tesis | undefined> => {
-    return await axios
-      .delete(`${import.meta.env.VITE_API_HOSTNAME}/tesis/` + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-  */

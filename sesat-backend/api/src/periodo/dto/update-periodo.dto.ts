@@ -10,7 +10,7 @@ import {
 export class UpdatePeriodoDto extends PartialType(CreatePeriodoDto) {
   @IsNotEmpty()
   @IsNumber()
-  id_evento: number;
+  id_periodo: number;
 
   @IsOptional()
   @IsDateString()

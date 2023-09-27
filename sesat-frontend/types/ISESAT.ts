@@ -550,3 +550,16 @@ export interface Evento {
   fecha_inicio: Date;
   fecha_termino: Date | null;
 }
+
+
+/*------------------ Periodo INTERFACE ------------------*/
+export interface CreatePeriodo {
+  fecha_apertura: string;
+  fecha_cierre: string;
+}
+
+export interface UpdatePeriodo {
+  id_periodo: number;
+  fecha_apertura: string;
+  fecha_cierre: string;
+}

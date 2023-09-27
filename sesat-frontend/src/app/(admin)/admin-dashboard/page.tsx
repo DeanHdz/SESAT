@@ -2,6 +2,8 @@ import Calendar from "./components/Calendar";
 import HomeCard from "./components/HomeCard";
 import { Evento } from "../../../../types/ISESAT";
 import { EventoEndpoint } from "../../../../utils/evento.endpoint";
+import AlertPeriod from "./components/AlertPeriod";
+
 
 export default async function Home() {
   const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("");
@@ -28,6 +30,7 @@ export default async function Home() {
         </div>
 
         <div className="mt-10 w-full hover:cursor-default">
+          <AlertPeriod />
           <Calendar eventos={eventos} />
         </div>
       </div>
