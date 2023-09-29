@@ -1,6 +1,6 @@
 import Calendar from "./components/Calendar";
 import HomeCard from "./components/HomeCard";
-
+//xd jesus hizo un commit en mi branch
 export default function Home() {
   return (
     <main>
