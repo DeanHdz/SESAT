@@ -12,6 +12,11 @@ export class AsignacionController {
     return this.asignacionService.create(createAsignacionDto);
   }
 
+  @Post('pendientes/phd/:numAv')
+  createGroup(@Param('numAv') numAv: string, @Body() createAsignacionDto: CreateAsignacionDto) {
+    return this.asignacionService.createGroupByNumaAvance(+numAv, createAsignacionDto);
+  }
+
   @Get()
   findAll() {
     return this.asignacionService.findAll();
@@ -39,6 +44,11 @@ export class AsignacionController {
     return this.asignacionService.findNumAsignacionesPendientesPhd(+numAvance);
   } 
 
+  @Get('array-pendientes/phd/:numAvance')
+  findArrayAsignacionesPendientesPhd(@Param('numAvance') numAvance: string) {
+    return this.asignacionService.findArrayAsignacionesPendientesPhd(+numAvance);
+  }
+
 
 
 
@@ -48,7 +58,7 @@ export class AsignacionController {
   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de medio tiempo*/
   @Get('num-pendientes/masters/mid-time/:numAvance')
   findNumAsignacionesPendientesMdMidTime(@Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesPhd(+numAvance);
+    return this.asignacionService.findNumAsignacionesPendientesMdMidTime(+numAvance);
   } 
 
   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de tiempo completo*/

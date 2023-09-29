@@ -11,9 +11,9 @@ import NotFound from "../../../not-found";
 
 
 type AsesorProps = {
-  usuario_nombre: string,
-  usuario_apellido_paterno: string,
-  usuario_apellido_materno: string,
+  nombre: string,
+  apellido_paterno: string,
+  apellido_materno: string,
 };
 
 type pdfProps = {
@@ -98,7 +98,7 @@ border-solid">
                 Asesor de tesis
               </label>
               <label className="mb-5 block text-lg font-bold">
-                {`${asesor?.usuario_nombre} ${asesor?.usuario_apellido_paterno} ${asesor?.usuario_apellido_materno}`}
+                {`${asesor?.nombre} ${asesor?.apellido_paterno} ${asesor?.apellido_materno}`}
               </label>
             </div>
 

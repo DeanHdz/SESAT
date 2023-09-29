@@ -119,19 +119,31 @@
     id_formato_evaluacion: number;
     id_acta_evaluacion: number;
   }
-
+ /**"id_asignacion": 2,
+  "id_formato_evaluacion": null,
+  "id_acta_evaluacion": null,
+  "id_tesis": 1,
+  "id_modalidad": 1,
+  "id_periodo": 1,
+  "num_avance": 6,
+  "titulo": "Seminario de Avance de Tesis 6",
+  "descripcion": "Texto de descripción",
+  "fecha_entrega": "2022-01-01T06:00:00.000Z",
+  "calificacion": 95, */
   export interface CreateAsignacion {
+    id_formato_evaluacion: number | null;
+    id_acta_evaluacion: number | null;
+    id_tesis: number| null;    
+    id_modalidad: number | null;
+    id_periodo: number;
     num_avance: number;
     titulo: string;
     descripcion: string;
-    apertura: Date;
-    cierre: Date;
+    fecha_entrega: Date | null;
     calificacion: number | null;
     documento: string | null;
     estado_entrega: number;
     retroalimentacion: string | null;
-    id_formato_evaluacion: number | null;
-    id_acta_evaluacion: number | null;
   }
 
   export interface UpdateAsignacion {

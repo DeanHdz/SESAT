@@ -169,31 +169,7 @@ export class TesisService {
     //otherwise it won't return anything
     return resp;
   }
-  /** 
-   * Nota: No se implementó en Asignacion porque no se usa esa tabla para la consulta
-   * Esta consulta regresa todos los alumnos de doctorado activos y con numero de avance N
-   * ----> Este numero incluye a los que tienen asignacion creada
-  */
- /**Encuentra si hay alumnos de doctorado activos con ultimo_avance = N */
- //no se usa
- /*
-  async findAssignmentStatusPhd() {
-    const resp = await this.tesisRepository
-      .createQueryBuilder('t')
-      .select('COUNT(t.id_tesis)', 'count')
-      .from(Usuario, 'u')
-      .from(DatosAlumno, 'da')
-      .from(GradoEstudio, 'ge')
-      .where('t.id_usuario = u.id_usuario')
-      .andWhere('u.id_datos_alumno = da.id_datos_alumno')
-      .andWhere('da.id_grado_estudio = ge.id_grado_estudio')
-      .andWhere('t.ultimo_avance = :ultimoAvance', { ultimoAvance: numAvance })
-      .andWhere('t.estado_finalizacion = :estadoFinalizacion', { estadoFinalizacion: false })
-      .andWhere('da.estado_activo = :estadoActivo', { estadoActivo: true })
-      .andWhere('ge.nombre_grado_estudio = :nombreGradoEstudio', { nombreGradoEstudio: 'Doctorado' })
-      .getRawOne()
-    return resp.count;
-  }*/
+  
 
 
   /**Devuelve el numero de alumnos de doctorado activos para cada numero de avance
@@ -227,7 +203,7 @@ export class TesisService {
       .innerJoin(Modalidad, "mod", "da.id_modalidad = mod.id_modalidad")
       .select("t.ultimo_avance")
       .addSelect("COUNT(t.id_tesis)", "count")
-      .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 6 })
+      .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 3 })
       .where("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
       .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
       .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Maestría' })

@@ -24,6 +24,20 @@ export class PeriodoService {
     return this.periodoRepository.findOne({ where: { id_periodo: id } });
   }
 
+  //Obtener el ultimo periodo creado
+  async findLatestPeriod() {    
+    const result = await this.periodoRepository
+      .createQueryBuilder('p')  
+      .select(['p.id_periodo', 'p.fecha_apertura', 'p.fecha_cierre'])  
+      .orderBy('p.id_periodo', 'DESC')
+      .limit(1)
+      .getOne();
+  
+    return result;
+  }
+
+  
+
   update(updatePeriodoDto: UpdatePeriodoDto) {
     return this.periodoRepository.save(updatePeriodoDto);
   }
