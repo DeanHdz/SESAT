@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, ValidationPipe } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AppController } from "./app.controller";
@@ -13,7 +13,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { RespuestaModule } from "./respuesta/respuesta.module";
 import { ComentarioModule } from "./comentario/comentario.module";
 import { AuthModule } from "./auth/auth.module";
-import { APP_GUARD } from "@nestjs/core";
+import { APP_GUARD, APP_PIPE } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { NotificationModule } from "./notification/notification.module";
 import { UsuariosPruebaModule } from "./usuarios_prueba/usuarios_prueba.module";
@@ -24,12 +24,11 @@ import { FormatoEvaluacionModule } from "./formato-evaluacion/formato-evaluacion
 import { DatosAsesorexternoModule } from "./datos-asesor-externo/datos-asesor-externo.module";
 import { VariablesSistemaModule } from "./variables-sistema/variables-sistema.module";
 import { FormatoVacioModule } from "./formato-vacio/formato-vacio.module";
-import { GradoEstudioModule } from './grado-estudio/grado-estudio.module';
-import { ModalidadModule } from './modalidad/modalidad.module';
-import { FuncionModule } from './funcion/funcion.module';
-import { EventoModule } from './evento/evento.module';
-import { PeriodoModule } from './periodo/periodo.module';
-
+import { GradoEstudioModule } from "./grado-estudio/grado-estudio.module";
+import { ModalidadModule } from "./modalidad/modalidad.module";
+import { FuncionModule } from "./funcion/funcion.module";
+import { EventoModule } from "./evento/evento.module";
+import { PeriodoModule } from "./periodo/periodo.module";
 
 @Module({
   imports: [
@@ -73,13 +72,20 @@ import { PeriodoModule } from './periodo/periodo.module';
     UsuariosPruebaModule,
     ComiteModule,
     DatosAlumnoModule,
-    RolModule,    
+    RolModule,
     FormatoEvaluacionModule,
     DatosAsesorexternoModule,
-    VariablesSistemaModule,    
-    GradoEstudioModule, ModalidadModule, FuncionModule, EventoModule, PeriodoModule,
+    VariablesSistemaModule,
+    GradoEstudioModule,
+    ModalidadModule,
+    FuncionModule,
+    EventoModule,
+    PeriodoModule,
   ],
   controllers: [AppController],
-  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
+  providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_PIPE, useClass: ValidationPipe },
+  ],
 })
 export class AppModule {}
