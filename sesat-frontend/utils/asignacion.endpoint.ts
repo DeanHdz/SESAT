@@ -3,9 +3,38 @@ import { CreateAsignacion } from "../types/ISESAT";
 
 export async function fetchNumAsignacionesPendientesDoctorado( 
   numAvance: string, 
+  tipo: string,
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-pendientes/phd/${numAvance}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-pendientes/phd/${numAvance}/${tipo}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache,
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+export async function fetchNumAsignacionesEntregadasDoctorado( 
+  numAvance: string, 
+  tipo: string,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-entregadas/phd/${numAvance}/${tipo}`;
 
   const options = {
     method: 'GET',

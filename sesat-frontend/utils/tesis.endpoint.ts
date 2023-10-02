@@ -93,7 +93,34 @@ export async function fetchTesisCompletadasMaestriaTiempoComp(
   const result = await response.json();
   return result;
 }
+//Obtener el numero de estudiantes inscritos en X seminario
+//el parametro numAvance, representa el seminario
+export async function fetchCountAlumnosDoctoradoOfNumAv(  
+  numAvance: string,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/students-count/phd/${numAvance}`;
 
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache,
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
 //Numero de Alumnos activos de doctorado con numero de Avance ':numAvance'
 export async function fetchNumAlumnosDoctorado(  
   token: string,

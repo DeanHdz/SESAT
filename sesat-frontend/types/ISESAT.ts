@@ -133,6 +133,7 @@ export interface CreateAsignacion {
   documento: string | null;
   estado_entrega: number;
   retroalimentacion: string | null;
+  tipo: number;
 }
 
 export interface UpdateAsignacion {

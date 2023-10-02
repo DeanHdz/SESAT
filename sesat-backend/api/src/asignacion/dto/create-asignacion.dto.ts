@@ -59,4 +59,8 @@ export class CreateAsignacionDto {
   @IsOptional()
   @IsString()
   retroalimentacion: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  tipo: number;
 }

@@ -193,7 +193,7 @@ export default async function Home() {
 
         {//Si statusPeriodo=true, significa que el periodo ha concluido, se asignan todos los estados a no Disp.
           statusFullTime?.map((num, i) => (
-            <AdminAssignmentCard title={fullTimetitleArray[i]} avance={i} status={statusPeriodo ? 2 : num} />
+            <AdminAssignmentCard title={fullTimetitleArray[i]} avance={i} status={statusPeriodo ? 2 : num} tipo={2}/>
           ))
         }
 
@@ -206,7 +206,7 @@ export default async function Home() {
 
         {//Si statusPeriodo=true, significa que el periodo ha concluido, se asignan todos los estados a no Disp.
           statusMidTime?.map((num, i) => (            
-            <AdminAssignmentCard title={midTimetitleArray[i]} avance={i} status={statusPeriodo ? 2 : num} />
+            <AdminAssignmentCard title={midTimetitleArray[i]} avance={i} status={statusPeriodo ? 2 : num} tipo={3}/>
           ))
         }
 

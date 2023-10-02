@@ -37,7 +37,7 @@ async function fetchAsignacionesData(): Promise<AvanceProps[]> {
           alumnos.push({ t_ultimo_avance: i, count: '0' });
         }
       }
-      alumnos.sort((a, b) => a.t_ultimo_avance - b.t_ultimo_avance)      
+      alumnos.sort((a, b) => a.t_ultimo_avance - b.t_ultimo_avance)
 
     }
 
@@ -49,14 +49,15 @@ async function fetchAsignacionesData(): Promise<AvanceProps[]> {
 
 //Para cada numero de avance en el tablero, deducir estado actual
 async function fetchStatus(alumnos: Array<AvanceProps>): Promise<number[] | undefined> {
-  let statusArray = Array(6).fill(2);
+  let statusArray = Array(8).fill(2);
 
   const promises = alumnos?.map(async (elem, i) => {
     //Si no hay alumnos para 'N' avance
     if (elem.count != '0') {      //no disponible
 
       //Devuelve cuantas asignaciones pendientes hay para 'N' avance, CERO si todas estan asignadas para esa categoria
-      await fetchNumAsignacionesPendientesDoctorado(elem.t_ultimo_avance.toString(), "").then((result) => {
+      //falta implementar caso 4 doctorado
+      await fetchNumAsignacionesPendientesDoctorado(elem.t_ultimo_avance.toString(), "1", "").then((result) => {
 
         let total = parseInt(result)
 
@@ -70,6 +71,23 @@ async function fetchStatus(alumnos: Array<AvanceProps>): Promise<number[] | unde
 
         }
       })
+      //Es necesario revisar para 2 tipos de asignaciones en caso 4
+      if (elem.t_ultimo_avance === 4 && statusArray[i] !== 0) {
+        await fetchNumAsignacionesPendientesDoctorado(elem.t_ultimo_avance.toString(), "2", "").then((result) => {
+
+          let total = parseInt(result)
+
+          if (total === 0) {
+
+            statusArray[i] = 1    //activa
+
+          } else if (total > 0) {
+
+            statusArray[i] = 0    //pendiente
+
+          }
+        })
+      }
     }
   });
 
@@ -93,7 +111,7 @@ async function fetchStatusPeriodo(): Promise<boolean> {
 
         result = true;
       }
-    }else{
+    } else {
       result = true;
     }
 
@@ -105,29 +123,29 @@ async function fetchStatusPeriodo(): Promise<boolean> {
 
 export default async function Home() {
 
-  const statusArray = await fetchStatus(await fetchAsignacionesData());  
+  const statusArray = await fetchStatus(await fetchAsignacionesData());
   const statusPeriodo = await fetchStatusPeriodo();
 
   return (
     <main>
-      {statusPeriodo && (        
+      {statusPeriodo && (
         <Alert />
       )
       }
       <div className="w-full flex flex-col mb-10">
-        <label className="mb-3 block text-4xl font-bold">Alumnos de Doctorado</label>
+        <label className="mb-3 block text-4xl font-bold">Grupos de Alumnos de Doctorado</label>
         <label className=" block text-xl font-bold">Avances de tesis para este semestre</label>
 
         <div className="mt-1 p-2 border-t border-light-gray-22 border-solid w-full flex justify-start">
-        </div> 
+        </div>
 
         {
           statusArray?.map((num, i) => (
-            <AdminAssignmentCard title={`Seminario de Avance de Tesis ${i+1}`} avance={i+1} status={statusPeriodo ? 2 : num} />
+            <AdminAssignmentCard title={`Seminario de Avance de Tesis ${i + 1}`} avance={i + 1} status={statusPeriodo ? 2 : num} tipo={1} />
           ))
-        }      
+        }
 
-    </div>
+      </div>
     </main >
   )
 }
