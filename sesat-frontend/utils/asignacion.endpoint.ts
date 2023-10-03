@@ -1,5 +1,5 @@
 
-import { CreateAsignacion } from "../types/ISESAT";
+import { CreateAsignacion, UpdateAsignacion } from "../types/ISESAT";
 
 export async function fetchNumAsignacionesPendientesDoctorado( 
   numAvance: string, 
@@ -35,6 +35,37 @@ export async function fetchNumAsignacionesEntregadasDoctorado(
   token: string,
 ) {
   const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-entregadas/phd/${numAvance}/${tipo}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache,
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+//Obtiene una asignacion de un grupo de doctorado en especifico
+//Nota Todas las asignaciones de un grupo son 'iguales' --> (titulo, desc, fechas)
+export async function fetchOneInGroupAsignacionDoctorado( 
+  numAvance: string, 
+  tipo: string,
+  id_periodo: string,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/phd/one-in-group/${numAvance}/${tipo}/${id_periodo}`;
 
   const options = {
     method: 'GET',
@@ -121,6 +152,34 @@ export async function postAsignacionesPhdByNumAv(
 
   const options = {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(asignacionDto),
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    alert(response.statusText)
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+export async function updateAsignacionesPhdByNumAv(   
+  asignacionDto: UpdateAsignacion,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/phd/update_group/`;
+
+  const options = {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,

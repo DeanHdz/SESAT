@@ -27,6 +27,13 @@ export class AsignacionController {
     return this.asignacionService.findOne(+id);
   }
 
+  //Obtener una asignacion X (no importa) de un grupo en especifico
+  //para ver/actualizar campos
+  @Get('phd/one-in-group/:numAv/:tipo/:id')
+  findOneByNumAvANDTipo(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id') id: string) {
+    return this.asignacionService.findOneByNumAvANDTipo(+numAv, +tipo, +id);
+  }
+
   //Devuelve el PDF de la tesis terminada
   @Get('/final-document/:id')
   findDocumentByID(@Param('id') id: string) {
@@ -73,9 +80,20 @@ export class AsignacionController {
     return this.asignacionService.findNumAsignacionesPendientesMdFullTime(+numAvance);
   } 
 
+  
+  //Actualizar grupo de asignaciones
+  @Put('phd/update_group/')
+  updateAssignmentGroup(@Body() updateAsignacionDto: UpdateAsignacionDto) {
+    return this.asignacionService.updatePhdGroup(updateAsignacionDto);
+  }
 
 
 
+  /*DELETE this please
+  @Get('phd/update-group/:numAv/:tipo/:id_periodo')
+  updateAssignmentGroup(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id_periodo') idPeriodo: string, ) {
+    return this.asignacionService.findArrayAsignacionesActivasPhd(+numAv,+tipo,+idPeriodo);
+  }*/
 
 
   @Put()

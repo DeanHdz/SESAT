@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 const AssingmentCardInfo = ({ title, subtitle, tipo, pendientes, entregadas, avance, activa }: { title: string, subtitle: string, tipo: number, pendientes: number, entregadas: number, avance: string, activa: boolean }) => {
     const navigate = useRouter()
     const handleClick = () => {
-        navigate.push(`/admin-dashboard/assignments/phd/${avance}/create-assignment/${tipo}`)
+        if(activa){
+            navigate.push(`/admin-dashboard/assignments/phd/${avance}/details/${tipo}`)
+        }else{
+            navigate.push(`/admin-dashboard/assignments/phd/${avance}/create-assignment/${tipo}`)
+        }        
     }
 
     return (

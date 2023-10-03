@@ -138,17 +138,20 @@ export interface CreateAsignacion {
 
 export interface UpdateAsignacion {
   id_asignacion: number;
+  id_formato_evaluacion: number | null;
+  id_acta_evaluacion: number | null;
+  id_tesis: number| null;    
+  id_modalidad: number | null;
+  id_periodo: number;
   num_avance: number;
   titulo: string;
   descripcion: string;
-  apertura: Date;
-  cierre: Date;
-  calificacion: number;
-  documento: string;
+  fecha_entrega: Date | null;
+  calificacion: number | null;
+  documento: string | null;
   estado_entrega: number;
-  retroalimentacion: string;
-  id_formato_evaluacion: number;
-  id_acta_evaluacion: number;
+  retroalimentacion: string | null;
+  tipo: number;
 }
 
 /*------------------ ASIGNACION-TESIS INTERFACE ------------------*/
