@@ -1,4 +1,5 @@
 import React from 'react'
+import { getFormattedHours } from '../../../../../utils/utils';
 
 
 
@@ -7,17 +8,7 @@ const ViewEventModal = ({eventTitle, startDate}:{eventTitle: string; startDate: 
 
     let days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
-    function getFormattedHours(date: any): string {
-        let hours = date?.getHours();
-        let minutes = date?.getMinutes();
-        let ampm = hours >= 12 ? 'PM' : 'AM';
-
-        hours = hours % 12;
-        hours = hours ? hours : 12; // La hora '0' debe ser '12'
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-
-        return hours + ':' + minutes + ' ' + ampm;
-    }
+    
 
     return (
         <dialog id="view_event_modal" className="modal">

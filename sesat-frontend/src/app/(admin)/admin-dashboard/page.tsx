@@ -1,15 +1,31 @@
 import Calendar from "./components/Calendar";
 import HomeCard from "./components/HomeCard";
+<<<<<<< HEAD
 //xd jesus hizo un commit en mi branch
 export default function Home() {
+=======
+import { Evento } from "../../../../types/ISESAT";
+import { EventoEndpoint } from "../../../../utils/evento.endpoint";
+import AlertPeriod from "./components/AlertPeriod";
+
+
+export default async function Home() {
+  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("");
+  const eventos = await eventosData;
+>>>>>>> zarazua2
   return (
     <main>
       <div className="flex flex-col w-full">
-
         <div className="flex flex-row w-full">
-          <HomeCard title="Avances de tesis (Maestría)" webLink="/admin-dashboard/assignments/masters" />
+          <HomeCard
+            title="Avances de tesis (Maestría)"
+            webLink="/admin-dashboard/assignments/masters"
+          />
           <div className="w-[30px] lg:w-[60px]"></div>
-          <HomeCard title="Avances de tesis (Doctorado)" webLink="/admin-dashboard/assignments/phd" />
+          <HomeCard
+            title="Avances de tesis (Doctorado)"
+            webLink="/admin-dashboard/assignments/phd"
+          />
         </div>
 
         <div className="mt-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-start">
@@ -18,11 +34,11 @@ export default function Home() {
           </label>
         </div>
 
-        <div className="mt-10 w-full">
-          <Calendar />
+        <div className="mt-10 w-full hover:cursor-default">
+          <AlertPeriod />
+          <Calendar eventos={eventos} />
         </div>
       </div>
     </main>
-
   );
 }

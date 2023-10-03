@@ -59,8 +59,7 @@
     padding-left: 24px;
     padding-right: 24px;
     padding-top: 8px;
-    padding-bottom: 8px;
-    max-height: 35px;
+    padding-bottom: 8px;    
 
   }
 
@@ -103,11 +102,13 @@
 
   .gray__border {
     border-width: 1px;
-    border-color: #d5d3dd;
+    border-color: #dde3ec;
     border-style: solid;
     border-radius: 6px;
   }  
-  
+  .spin-slow {
+    animation: spin 2s linear infinite;
+  }
 }
 
 /*Custom CSS Classes########################*/
