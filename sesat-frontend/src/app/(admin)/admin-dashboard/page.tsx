@@ -1,9 +1,5 @@
 import Calendar from "./components/Calendar";
 import HomeCard from "./components/HomeCard";
-<<<<<<< HEAD
-//xd jesus hizo un commit en mi branch
-export default function Home() {
-=======
 import { Evento } from "../../../../types/ISESAT";
 import { EventoEndpoint } from "../../../../utils/evento.endpoint";
 import AlertPeriod from "./components/AlertPeriod";
@@ -12,7 +8,6 @@ import AlertPeriod from "./components/AlertPeriod";
 export default async function Home() {
   const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("");
   const eventos = await eventosData;
->>>>>>> zarazua2
   return (
     <main>
       <div className="flex flex-col w-full">
