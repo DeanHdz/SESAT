@@ -1,7 +1,7 @@
-import Calendar from "../components/Calendar";
-import CommentCard from "../components/CommentCard";
-import Drawer from '../components/Drawer'
-import AsignacionCompleta from '../components/AsignacionCompleta'
+import Calendar from "./components/Calendar";
+import CommentCard from "./components/CommentCard";
+import Drawer from './components/Drawer'
+import AsignacionCompleta from './components/AsignacionCompleta'
 
 export default function Home() {
   return (
@@ -35,9 +35,9 @@ export default function Home() {
         </div>
       </div>
       <div className="w-full flex justify-center pt-5 pr-100">
-        <p className="text-2xl font-bold">Asignaciones completas</p>
+        <AsignacionCompleta />
       </div>
-      <AsignacionCompleta />
+      
     </main>
 
   );
