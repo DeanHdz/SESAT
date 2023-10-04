@@ -7,11 +7,6 @@ export default function Home() {
   return (
     <main>
       <div className="flex">
-
-        <div className="lg:w-1/3">
-          <Drawer />
-        </div>
-
         <div className="lg:w-2/3">
           <div className="w-full flex justify-center pt-5 pr-100">
             <p className="text-3xl font-bold">Tablero</p>
