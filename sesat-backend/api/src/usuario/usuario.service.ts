@@ -9,6 +9,7 @@ import {
   Pagination,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
+import { runInThisContext } from "vm";
 
 @Injectable()
 export class UsuarioService {
@@ -17,36 +18,7 @@ export class UsuarioService {
     private usuarioRepository: Repository<Usuario>
   ) {}
 
-  //AAAAAAAAAAAAA it fucking works ffs ::)
   async paginateMasterStudents(options: IPaginationOptions): Promise<Pagination<Usuario>> {
-
-    //Just in case, Imma keep this old shit here for reference (?)
-    /*async findAlumnosMaestriaPaginated(page: number, pageSize: number) {
-    const skip = (page -1) * pageSize;
-    const data = await this.usuarioRepository.findAndCount({
-      skip,
-      take: pageSize,
-    });
-
-    return data;
-  }*/
-    /*async findAlumnosMaestriaPaginated(paginationDto: PaginationDto): Promise<Usuario[]> {
-    //const { page, pageSize } = paginationDto;
-    const page = 1;
-    const pageSize = 2;
-    const skip = (page - 1) * pageSize;
-
-    const alumnosMaestriaQuery = this.usuarioRepository
-      .createQueryBuilder('usuario')
-      .innerJoinAndSelect('usuario.datos_alumno', 'datos_alumno')
-      .where('usuario.id_rol = :id_rol', { id_rol: 3 })
-      .andWhere('datos_alumno.id_grado_estudio = :id_grado_estudio', { id_grado_estudio: 1 })
-      .skip(skip)
-      .take(pageSize);
-
-    return await alumnosMaestriaQuery.getMany();
-  }*/
-
     const alumnosMaestriaQuery = this.usuarioRepository
       .createQueryBuilder('usuario')
       .innerJoinAndSelect('usuario.datos_alumno', 'datos_alumno')
@@ -54,6 +26,90 @@ export class UsuarioService {
       .andWhere('datos_alumno.id_grado_estudio = :id_grado_estudio', { id_grado_estudio: 1 });
 
     return paginate<Usuario>(alumnosMaestriaQuery, options);
+  }
+
+  async findAlumnosMaestria() {
+    const alumnosMaestria: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosMaestria.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 1
+    );
+  }
+
+  async findAlumnosMaestriaById(id_usuario: number){
+    const alumnosMaestria: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosMaestria.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 1 && alumno.id_usuario === id_usuario
+    );
+  }
+
+  async findAlumnosMaestriaByName(nombre: string){
+    const alumnosMaestria: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosMaestria.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 1 && (
+        `${alumno.nombre} ${alumno.apellido_paterno} ${alumno.apellido_materno}`
+      )
+        .toLowerCase()
+        .includes(nombre.toLowerCase())
+    );
+  }
+
+  async paginatePhdStudents(options: IPaginationOptions): Promise<Pagination<Usuario>> {
+    const alumnosPhdQuery = this.usuarioRepository
+      .createQueryBuilder('usuario')
+      .innerJoinAndSelect('usuario.datos_alumno', 'datos_alumno')
+      .where('usuario.id_rol = :id_rol', { id_rol: 3 })
+      .andWhere('datos_alumno.id_grado_estudio = :id_grado_estudio', { id_grado_estudio: 2 });
+
+    return paginate<Usuario>(alumnosPhdQuery, options);
+  }
+
+  async findAlumnosPhd() {
+    const alumnosPhd: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosPhd.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 2
+    );
+  }
+
+  async findAlumnosPhdById(id_usuario: number){
+    const alumnosPhd: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosPhd.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 2 && alumno.id_usuario === id_usuario
+    );
+  }
+
+  async findAlumnosPhdByName(nombre: string){
+    const alumnosPhd: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 3 },
+      relations: ["datos_alumno"],
+    });
+
+    return alumnosPhd.filter(
+      (alumno) => alumno.datos_alumno.id_grado_estudio === 2 && (
+        `${alumno.nombre} ${alumno.apellido_paterno} ${alumno.apellido_materno}`
+      )
+        .toLowerCase()
+        .includes(nombre.toLowerCase())
+    );
   }
 
   create(createUsuarioDto: CreateUsuarioDto) {
@@ -70,17 +126,6 @@ export class UsuarioService {
 
   findAlumnos() {
     return this.usuarioRepository.find({ where: { id_rol: 3 } });
-  }
-
-  async findAlumnosMaestria() {
-    const alumnosMaestria: Usuario[] = await this.usuarioRepository.find({
-      where: { id_rol: 3 },
-      relations: ["datos_alumno"],
-    });
-
-    return alumnosMaestria.filter(
-      (alumno) => alumno.datos_alumno.id_grado_estudio === 1
-    );
   }
 
   findOne(id_usuario: number) {

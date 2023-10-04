@@ -1,4 +1,4 @@
-import AssignmentDetails from "@/app/components/AssignmentDetails";
+//import AssignmentDetails from "@/app/components/AssignmentDetails";
 
 
 export default function Home({
@@ -11,7 +11,7 @@ export default function Home({
   let avance = parseInt(numAvance)  
   return (
     <main>
-      <AssignmentDetails avance={avance} />
+      
     </main>
   )
 }

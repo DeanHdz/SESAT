@@ -10,4 +10,10 @@ export class Periodo {
 
   @Column()
   fecha_cierre: Date;
+
+  @Column()
+  fecha_apertura_opc: Date;
+
+  @Column()
+  fecha_cierre_opc: Date;
 }

@@ -60,6 +60,9 @@ export class Asignacion {
   @Column()
   retroalimentacion: string;
 
+  @Column()
+  tipo: number;
+
   /*@OneToOne(() => FormatoEvaluacion, { eager: true })
   @JoinColumn({ name: "id_formato_evaluacion" })
   formatoEvaluacion: FormatoEvaluacion;

@@ -36,6 +36,49 @@ export class UsuarioController{
     });
   }
 
+  @Get("/alumnos-maestria")
+  async findAlumnosMaestria() {
+    return await this.usuarioService.findAlumnosMaestria();
+  }
+
+  @Get("/alumnos-maestria/id/:id")
+  async findAlumnosMaestriaById(@Param("id") id_usuario: string) {
+    return await this.usuarioService.findAlumnosMaestriaById(+id_usuario);
+  }
+
+  @Get("/alumnos-maestria/name/:name")
+  async findAlumnosMaestriaByName(@Param("name") nombre: string) {
+    return await this.usuarioService.findAlumnosMaestriaByName(nombre);
+  }
+
+  @Get('/paginated/alumnosPhd')
+  async indexPhd(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ): Promise<Pagination<Usuario>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.usuarioService.paginatePhdStudents({
+      page,
+      limit,
+      route: '/paginated/alumnosPhd',
+    });
+  }
+
+  @Get("/alumnos-phd")
+  async findAlumnosPhd() {
+    return await this.usuarioService.findAlumnosPhd();
+  }
+
+  @Get("/alumnos-phd/id/:id")
+  async findAlumnosPhdById(@Param("id") id_usuario: string) {
+    return await this.usuarioService.findAlumnosPhdById(+id_usuario);
+  }
+
+  @Get("/alumnos-phd/name/:name")
+  async findAlumnosPhdByName(@Param("name") nombre: string) {
+    return await this.usuarioService.findAlumnosPhdByName(nombre);
+  }
+
   //@UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
@@ -58,11 +101,6 @@ export class UsuarioController{
   @Get("/alumnos")
   findAlumnos() {
     return this.usuarioService.findAlumnos();
-  }
-
-  @Get("/alumnos-maestria")
-  async findAlumno() {
-    return await this.usuarioService.findAlumnosMaestria();
   }
 
   //@UseGuards(JwtAuthGuard)

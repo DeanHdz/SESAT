@@ -65,4 +65,8 @@ export class UpdateAsignacionDto extends PartialType(CreateAsignacionDto) {
   @IsOptional()
   @IsString()
   retroalimentacion: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  tipo: number;
 }

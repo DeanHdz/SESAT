@@ -23,26 +23,41 @@ Estados de una asignacion:
 
  */}
 
- 
+
 
 
 const AdminAssignmentCard = ({
   title,
   avance,
   status,
+  tipo,
 }: {
   title: string;
   avance: number;
   status: number;
-}) => {    
+  tipo: number;
+}) => {
 
-  
+
 
   const statusArray = ['Pendiente', 'Activa', 'Sin Alumnos'];
   const buttonActions = ['Crear', 'Ver', 'No disp...'];
+  //Doctorado
   const urlsArray = [
-    '/admin-dashboard/assignments/phd/create-assignment/'+avance,
-    '/admin-dashboard/assignments/phd/details/'+avance,
+    '/admin-dashboard/assignments/phd/' + avance,
+    '/admin-dashboard/assignments/phd/' + avance,
+    '#'
+  ];
+  //Maestria tiempo completo
+  const urlsArray1 = [
+    '/admin-dashboard/assignments/masters/full-time/create-assignment/' + avance,
+    '/admin-dashboard/assignments/masters/full-time/details/' + avance,
+    '#'
+  ];
+  //Maestria medio tiempo
+  const urlsArray2 = [
+    '/admin-dashboard/assignments/masters/part-time/create-assignment/' + avance,
+    '/admin-dashboard/assignments/masters/part-time/details/' + avance,
     '#'
   ];
 
@@ -55,123 +70,39 @@ const AdminAssignmentCard = ({
   const subtitleArray = [
     "Pendiente de asignar",
     "Asignación de avace de tesis activa",
-    "No hay alumnos para esta categoría"
+    "No hay alumnos inscritos"
   ]
 
 
   const router = useRouter()
 
-  
-/*
-  //Chechar si hay alumnos
-  const numAlumnos = fetchNumAlumnosDoctorado("").then((res)=>{
-    let alumnos = parseInt(res)
-    if(alumnos && alumnos > 0){
-
-      fetchAsignacionesPendientesDoctorado(avance.toString(), "").then((res) => {
-        let tesisIdList: Array<string> = res
-        if(tesisIdList.length === 0){
-          setStatus(1)
-        }else if(tesisIdList.length > 0){
-          setStatus(0)
-        }  
-        setBtnValue(buttonActions[status]);
-        setBtnUrl(urlsArray[status]);      
-      })      
-    }else if(alumnos === 0){
-      setStatus(2)
-      setCssDisabledBtn('opacity-50 pointer-events-none cursor-not-allowed');
-      setBtnValue(buttonActions[status]);
-      setBtnUrl(urlsArray[status]);
-    }
-  })*/
-
-  /*
-  useEffect(() => {
-    function setAssignmentProps() {
-      
-
-      if (status === 2) {
-        
-      }
-    }
-    return () => {
-      setAssignmentProps();
-    }
-  }, [])*/
-
 
   function handleClick() {
-    router.push(urlsArray[status]);
+    switch (tipo) {
+      case 1://Doctorado
+        router.push(urlsArray[status]);
+        break;
+      case 2://maestria tiempo comp
+        router.push(urlsArray1[status]);
+        break;
+
+      default://maestria medio tiempo 
+        router.push(urlsArray2[status]);
+        break;
+    }
   }
 
 
   return (
     <div className="flex flex-row mt-3 p-2 bg-light-blue-10 rounded border border-light-gray-22 border-solid">
-      
+
       {/**ICON */}
       <div className="flex w-[30px] lg:w-[50px] text-dark-blue-10 justify-center items-center">
-          <svg
-            style={{ color: "blue" }}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 256 256"
-          >
-            <rect width="256" height="256" fill="none"></rect>
-            <path
-              d="M80,216H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8H80Z"
-              opacity="0.2"
-              fill="blue"
-            ></path>
-            <line
-              x1="112"
-              y1="112"
-              x2="176"
-              y2="112"
-              fill="none"
-              stroke="#000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="16"
-            ></line>
-            <line
-              x1="112"
-              y1="144"
-              x2="176"
-              y2="144"
-              fill="none"
-              stroke="#000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="16"
-            ></line>
-            <rect
-              x="40"
-              y="40"
-              width="176"
-              height="176"
-              rx="8"
-              fill="none"
-              stroke="#000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="16"
-            ></rect>
-            <line
-              x1="80"
-              y1="40"
-              x2="80"
-              y2="216"
-              fill="none"
-              stroke="#000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="16"
-            ></line>
-          </svg>
+        <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
       </div>
-      
+
       <div className="w-1/2 flex">
-      
+
         <div className="ml-6 w-auto">
           <p style={{ fontWeight: "bold" }}>{title}</p>
           <p className="mt-1 text-[12px] text-dark-blue-20/50">{subtitleArray[status]}</p>
