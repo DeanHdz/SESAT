@@ -1,8 +1,5 @@
-import Tabs from "./components/Tabs"
-
-
 export default function Layout({
-  children, // will be a page or nested layout
+  children,
 }: {
   children: React.ReactNode
 }) {
@@ -12,8 +9,6 @@ export default function Layout({
         <label className="mb-6 block text-4xl font-bold">
           Alumnos de Doctorado
         </label>
-
-        <Tabs />
 
         {children}
       </div>

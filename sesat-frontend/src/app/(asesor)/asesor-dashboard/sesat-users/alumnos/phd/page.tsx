@@ -1,33 +1,14 @@
-"use client";
-import { useEffect, useState, ChangeEvent } from "react";
-import { Usuario } from "../../../../../../../types/ISESAT";
-import StudentProfileModal from "@/app/(admin)/admin-dashboard/sesat-users/alumnos/masters-degree/components/StudentProfileModal";
+import HistoryPath from "./components/HistoryPath";
 
 export default function Home() {
-  // old shit
-  const [users, setUsers] = useState<Usuario[]>();
-  const [search, setSearch] = useState("");
-  const [selectedUser, setSelectedUser] = useState<Usuario | null>(null);
-  const [usuariosPrueba, setUsuariosPrueba] = useState<Usuario[] | undefined>();
-  let nombre = "";
-
-  const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
-
-  useEffect(() => {}, []);
-  //old shit
-
   return (
-    <>
+    <main className="w-full">
+      <>
       <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
         <input
           type="search"
-          placeholder="Buscar alumnos"
+          placeholder="Buscar alumno"
           className="rounded-full border-b border-light-gray-22 border-solid px-6"
-          onChange={(e) => {
-            onChangeSearch(e);
-          }}
         />
         <div className="flex items-center ml-2">
           <svg
@@ -45,51 +26,49 @@ export default function Home() {
       </div>
       <div className="mt-6 bg-white gray__border p-3">
         <table className="table table-zebra">
-          {/*Table head */}
           <thead>
             <tr className="text-dark-blue-20">
               <th>Clave Única</th>
               <th>Nombre</th>
               <th>Correo</th>
-              <th>Propiedades</th>
+              <th></th>
             </tr>
           </thead>
-
           <tbody>
-            {users?.map((user, i) => (
-              <>
-                {parseInt(search) == user.clave ||
-                (
-                  user.nombre +
-                  " " +
-                  user.apellido_paterno +
-                  " " +
-                  user.apellido_materno
-                )
-                  .toLowerCase()
-                  .includes(search.toLowerCase()) ? (
-                  <tr
-                    key={user.clave}
-                    onClick={() => setSelectedUser(user)}
-                    /**Pendiente revisar que funcione el evento onClick */
-                  >
-                    <td>{user.clave}</td>
-                    <td>{`${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`}</td>
-                    <td>{user.correo}</td>
-                    <td>
-                      <div>
-                        <StudentProfileModal user={user} />
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
-                  <></>
-                )}
-              </>
-            ))}
+            <tr>
+              <td>314118</td>
+              <td>Hernandez Dean Joshua</td>
+              <td>a314118@alumnos.uaslp.mx</td>
+              <td>
+                <div>
+                  <HistoryPath />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>259815</td>
+              <td>Aguilar Montalvo Edwin Yankov</td>
+              <td>a259815@alumnos.uaslp.mx</td>
+              <td>
+                <div>
+                  <HistoryPath />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>312972</td>
+              <td>Alba Govea Benjamin</td>
+              <td>a312972@alumnos.uaslp.mx</td>
+              <td>
+                <div>
+                  <HistoryPath />
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </>
+    </main>
   );
 }

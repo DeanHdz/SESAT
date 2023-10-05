@@ -1,4 +1,4 @@
-import HistoryPath from "./components/HistoryPath";
+import AssignmentPath from "../components/AssignmentPath";
 
 export default function Home() {
   return (
@@ -7,7 +7,7 @@ export default function Home() {
       <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
         <input
           type="search"
-          placeholder="Buscar alumno"
+          placeholder="Buscar tesis"
           className="rounded-full border-b border-light-gray-22 border-solid px-6"
         />
         <div className="flex items-center ml-2">
@@ -28,40 +28,37 @@ export default function Home() {
         <table className="table table-zebra">
           <thead>
             <tr className="text-dark-blue-20">
-              <th>Clave Única</th>
-              <th>Nombre</th>
-              <th>Correo</th>
+              <th>Titulo</th>
+              <th>Autor</th>
               <th></th>
             </tr>
           </thead>
+
           <tbody>
             <tr>
-              <td>314118</td>
-              <td>Hernandez Dean Joshua</td>
-              <td>a314118@alumnos.uaslp.mx</td>
+              <td>Bubblesort es god, explicado en 5 mins.</td>
+              <td>Dean Joshua Hernandez</td>
               <td>
                 <div>
-                  <HistoryPath />
+                  <AssignmentPath />
                 </div>
               </td>
             </tr>
             <tr>
-              <td>259815</td>
-              <td>Aguilar Montalvo Edwin Yankov</td>
-              <td>a259815@alumnos.uaslp.mx</td>
+              <td>un titulo de tesis bien largorte pero asi pero bien grande ...</td>
+              <td>Dean Joshua Hernandez</td>
               <td>
                 <div>
-                  <HistoryPath />
+                  <AssignmentPath />
                 </div>
               </td>
             </tr>
             <tr>
-              <td>312972</td>
-              <td>Alba Govea Benjamin</td>
-              <td>a312972@alumnos.uaslp.mx</td>
+              <td>Desarollo de sistemas utilizando PSP</td>
+              <td>Edwin yankov Aguilar Montalvo</td>
               <td>
                 <div>
-                  <HistoryPath />
+                  <AssignmentPath />
                 </div>
               </td>
             </tr>
