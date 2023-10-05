@@ -1,13 +1,63 @@
 const ProcessingAnim = ({ title }: { title: string }) => {
   return (
-    <div className="bg-transparent opacity-70 mt-10 h-full w-full flex flex-row items-center justify-center text-[#3D4451] font-SESAT no-select">
+    <div className="bg-transparent h-full w-full flex flex-row items-center justify-center font-SESAT no-select">
       <div className="w-fit">
-        <svg className="animate-spin h-7 w-7" viewBox="0 0 24 24"><path d="M6.8042,15A.99956.99956,0,0,0,5.438,14.63379l-1.73242,1a1.00016,1.00016,0,0,0,1,1.73242l1.73242-1A1.00073,1.00073,0,0,0,6.8042,15ZM3.70557,8.36621l1.73242,1a1.00016,1.00016,0,1,0,1-1.73242l-1.73242-1a1.00016,1.00016,0,0,0-1,1.73242ZM6,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H5A1,1,0,0,0,6,12ZM17.1958,9a1.0006,1.0006,0,0,0,1.36621.36621l1.73242-1a1.00016,1.00016,0,1,0-1-1.73242l-1.73242,1A1.00073,1.00073,0,0,0,17.1958,9ZM15,6.8042A1.0006,1.0006,0,0,0,16.36621,6.438l1-1.73242a1.00016,1.00016,0,1,0-1.73242-1l-1,1.73242A1.00073,1.00073,0,0,0,15,6.8042Zm5.29443,8.82959-1.73242-1a1.00016,1.00016,0,1,0-1,1.73242l1.73242,1a1.00016,1.00016,0,0,0,1-1.73242ZM16.36621,17.562a1.00016,1.00016,0,1,0-1.73242,1l1,1.73242a1.00016,1.00016,0,1,0,1.73242-1ZM21,11H19a1,1,0,0,0,0,2h2a1,1,0,0,0,0-2Zm-9,7a1,1,0,0,0-1,1v2a1,1,0,0,0,2,0V19A1,1,0,0,0,12,18Zm-3-.8042a.99954.99954,0,0,0-1.36621.36621l-1,1.73242a1.00016,1.00016,0,0,0,1.73242,1l1-1.73242A1.00073,1.00073,0,0,0,9,17.1958ZM12,2a1,1,0,0,0-1,1V5a1,1,0,0,0,2,0V3A1,1,0,0,0,12,2Z" fill="#3D4451"></path></svg>        
+        <svg xmlns="http://www.w3.org/2000/svg" className="m-auto bg-none block" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+          <g transform="rotate(0 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.9166666666666666s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(30 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.8333333333333334s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(60 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.75s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(90 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.6666666666666666s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(120 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.5833333333333334s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(150 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.5s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(180 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.4166666666666667s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(210 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.3333333333333333s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(240 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.25s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(270 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.16666666666666666s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(300 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.08333333333333333s" repeatCount="indefinite"></animate>
+            </rect>
+          </g><g transform="rotate(330 50 50)">
+            <rect x="45.5" y="7" rx="4.5" ry="6.4" width="9" height="20" fill="currentColor">
+              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+        </svg>
       </div>
       <span className="ml-1">{title}</span>
-      
+
     </div>
   );
 }
-
+//3D4451
 export default ProcessingAnim;

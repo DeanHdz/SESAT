@@ -53,13 +53,7 @@ export default function CreateAssignment({
   */}
 
 
-  useEffect(() => {
-    console.log("useEffect");
-    {/**
-      getListaProgramas();
-     */}
 
-  }, []);
 
   function onChangeStartDate(value: Date) {
     setStartDate(value);

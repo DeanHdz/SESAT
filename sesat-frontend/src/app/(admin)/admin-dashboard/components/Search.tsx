@@ -1,10 +1,20 @@
 "use client"
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation';
+import { useDebounce } from 'use-debounce';
 
-export default function Search2() {
+export default function Search({url}:{url: string}) {
 
   const [text, setText] = useState("");
+  const [query] = useDebounce(text, 750);
+  const router = useRouter();
 
+  useEffect(() => {
+    if(!query)
+      router.push(`${url}`);
+    else
+      router.push(`${url}?search=${query}`);
+  }, [query, router]);
   
 
   return (

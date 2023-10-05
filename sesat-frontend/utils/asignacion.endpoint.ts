@@ -1,107 +1,12 @@
-/*
-import axios from "axios";
-import { SESAT } from "../Interfaces/ISESAT";
 
-export namespace AsignacionEndpoint {
-  export const getAsignacion = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Asignacion | undefined> => {
-    return await axios
-      .get<SESAT.Asignacion>(
-        `${import.meta.env.VITE_API_HOSTNAME}/asignacion/` + id,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-  export const getAsignaciones = async (
-    token: string
-  ): Promise<SESAT.Asignacion[] | undefined> => {
-    return await axios
-      .get<SESAT.Asignacion[]>(`${import.meta.env.VITE_API_HOSTNAME}/asignacion`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+import { CreateAsignacion, UpdateAsignacion } from "../types/ISESAT";
 
-  export const postAsignacion = async (
-    createAsignacion: SESAT.CreateAsignacion,
-    token: string
-  ): Promise<SESAT.Asignacion | undefined> => {
-    return await axios
-      .post(`${import.meta.env.VITE_API_HOSTNAME}/asignacion`, createAsignacion, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-
-  export const putAsignacion = async (
-    updateAsignacion: SESAT.UpdateAsignacion,
-    token: string
-  ): Promise<SESAT.Asignacion | undefined> => {
-    return await axios
-      .put(`${import.meta.env.VITE_API_HOSTNAME}/asignacion`, updateAsignacion, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-
-  export const deleteAsignacion = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Asignacion | undefined> => {
-    return await axios
-      .delete(`${import.meta.env.VITE_API_HOSTNAME}/asignacion/` + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-}
-*/
-/*
-//devuelve el arreglo de asignaciones[id_tesis] ya no se usa
-export async function fetchAsignacionesPendientesDoctorado(
-  numAvance: string,
+export async function fetchNumAsignacionesPendientesDoctorado( 
+  numAvance: string, 
+  tipo: string,
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/pendientes/phd/${numAvance}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-pendientes/phd/${numAvance}/${tipo}`;
 
   const options = {
     method: 'GET',
@@ -109,9 +14,7 @@ export async function fetchAsignacionesPendientesDoctorado(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
-    },
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
@@ -124,13 +27,14 @@ export async function fetchAsignacionesPendientesDoctorado(
 
   return result;
 
-}*/
+}
 
-export async function fetchNumAsignacionesPendientesDoctorado( 
+export async function fetchNumAsignacionesEntregadasDoctorado( 
   numAvance: string, 
+  tipo: string,
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-pendientes/phd/${numAvance}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-entregadas/phd/${numAvance}/${tipo}`;
 
   const options = {
     method: 'GET',
@@ -138,9 +42,38 @@ export async function fetchNumAsignacionesPendientesDoctorado(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
+    cache: 'no-store' as RequestCache,
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+//Obtiene una asignacion de un grupo de doctorado en especifico
+//Nota Todas las asignaciones de un grupo son 'iguales' --> (titulo, desc, fechas)
+export async function fetchOneInGroupAsignacionDoctorado( 
+  numAvance: string, 
+  tipo: string,
+  id_periodo: string,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/phd/one-in-group/${numAvance}/${tipo}/${id_periodo}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
@@ -167,9 +100,7 @@ export async function fetchNumAsignacionesPendientesMaestriaMedioTiempo(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
-    },
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
@@ -196,13 +127,69 @@ export async function fetchNumAsignacionesPendientesMaestriaTiempoComp(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
-    },
+    cache: 'no-store' as RequestCache,
   };
   const response = await fetch(url, options);
 
   if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+
+export async function postAsignacionesPhdByNumAv( 
+  numAvance: string, 
+  asignacionDto: CreateAsignacion,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/pendientes/phd/${numAvance}`;
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(asignacionDto),
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    alert(response.statusText)
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+export async function updateAsignacionesPhdByNumAv(   
+  asignacionDto: UpdateAsignacion,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/phd/update_group/`;
+
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(asignacionDto),
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    alert(response.statusText)
     throw(new Error('Error fetching data'))
   }
 

@@ -1,6 +1,6 @@
 
 import { useState, useEffect, ChangeEvent } from "react";
-import StudentProfileModal from "../(admin)/admin-dashboard/sesat-users/alumnos/masters-degree/components/StudentProfileModal";
+import StudentProfileModal from "../(admin)/admin-dashboard/sesat-users/alumnos/components/StudentProfileModal";
 import { Programa, Usuario } from "../../../types/ISESAT";
 
 

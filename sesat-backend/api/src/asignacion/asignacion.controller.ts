@@ -12,6 +12,11 @@ export class AsignacionController {
     return this.asignacionService.create(createAsignacionDto);
   }
 
+  @Post('pendientes/phd/:numAv')
+  createGroup(@Param('numAv') numAv: string, @Body() createAsignacionDto: CreateAsignacionDto) {
+    return this.asignacionService.createGroupByNumaAvance(+numAv, createAsignacionDto);
+  }
+
   @Get()
   findAll() {
     return this.asignacionService.findAll();
@@ -20,6 +25,13 @@ export class AsignacionController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.asignacionService.findOne(+id);
+  }
+
+  //Obtener una asignacion X (no importa) de un grupo en especifico
+  //para ver/actualizar campos
+  @Get('phd/one-in-group/:numAv/:tipo/:id')
+  findOneByNumAvANDTipo(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id') id: string) {
+    return this.asignacionService.findOneByNumAvANDTipo(+numAv, +tipo, +id);
   }
 
   //Devuelve el PDF de la tesis terminada
@@ -33,11 +45,22 @@ export class AsignacionController {
   findAsignacionesPendientesPhd(@Param('numAvance') numAvance: string) {
     return this.asignacionService.findAsignacionesPendientesPhd(+numAvance);
   }  */
+
   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de doctorado*/
-  @Get('num-pendientes/phd/:numAvance')
-  findNumAsignacionesPendientesPhd(@Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesPhd(+numAvance);
+  @Get('num-pendientes/phd/:numAvance/:tipo')
+  findNumAsignacionesPendientesPhd(@Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
+    return this.asignacionService.findNumAsignacionesPendientesPhd(+numAvance, +tipo);
   } 
+  /**ARREGLO de id_tesis de asignaciones pendientes */
+  @Get('array-pendientes/phd/:numAvance')
+  findArrayAsignacionesPendientesPhd(@Param('numAvance') numAvance: string) {
+    return this.asignacionService.findArrayAsignacionesPendientesPhd(+numAvance);
+  }
+   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de doctorado*/
+   @Get('num-entregadas/phd/:numAvance/:tipo')
+   findNumAsignacionesEntregadasPhd(@Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
+     return this.asignacionService.findNumAsignacionesEntregadasPhd(+numAvance, +tipo);
+   } 
 
 
 
@@ -48,7 +71,7 @@ export class AsignacionController {
   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de medio tiempo*/
   @Get('num-pendientes/masters/mid-time/:numAvance')
   findNumAsignacionesPendientesMdMidTime(@Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesPhd(+numAvance);
+    return this.asignacionService.findNumAsignacionesPendientesMdMidTime(+numAvance);
   } 
 
   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de tiempo completo*/
@@ -57,9 +80,20 @@ export class AsignacionController {
     return this.asignacionService.findNumAsignacionesPendientesMdFullTime(+numAvance);
   } 
 
+  
+  //Actualizar grupo de asignaciones
+  @Put('phd/update_group/')
+  updateAssignmentGroup(@Body() updateAsignacionDto: UpdateAsignacionDto) {
+    return this.asignacionService.updatePhdGroup(updateAsignacionDto);
+  }
 
 
 
+  /*DELETE this please
+  @Get('phd/update-group/:numAv/:tipo/:id_periodo')
+  updateAssignmentGroup(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id_periodo') idPeriodo: string, ) {
+    return this.asignacionService.findArrayAsignacionesActivasPhd(+numAv,+tipo,+idPeriodo);
+  }*/
 
 
   @Put()
