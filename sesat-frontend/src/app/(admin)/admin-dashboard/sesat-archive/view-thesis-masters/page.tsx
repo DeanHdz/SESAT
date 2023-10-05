@@ -4,7 +4,7 @@ import EmptyPage from "@/app/components/EmptyPage";
 import TesisRow from "@/app/components/TesisRow";
 import { InactiveTesisProps } from "../../../../../../types/ISESAT";
 import { fetchTesisCompletadasMaestriaMedTiempo, fetchTesisCompletadasMaestriaTiempoComp } from "../../../../../../utils/tesis.endpoint";
-import NotFound from "../../not-found";
+import NotFound from "../../../../not-found";
 
 
 export default async function Home() {

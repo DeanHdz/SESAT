@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DatosAlumno } from 'src/datos-alumno/entities/datos-alumno.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { Programa } from 'src/programa/entities/programa.entity';
-import { Comite } from 'src/comite/entities/comite.entity';
 import { Asignacion } from 'src/asignacion/entities/asignacion.entity';
 import { GradoEstudio } from 'src/grado-estudio/entities/grado-estudio.entity';
 import { Modalidad } from 'src/modalidad/entities/modalidad.entity';

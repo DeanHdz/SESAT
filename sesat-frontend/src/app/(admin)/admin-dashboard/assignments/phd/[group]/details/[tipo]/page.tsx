@@ -5,12 +5,14 @@ import autosize from "autosize";
 import { TitleBar } from "@/app/components/TitleBar";
 import "flatpickr/dist/themes/light.css";
 
-import { fetchNumAsignacionesPendientesDoctorado, fetchOneInGroupAsignacionDoctorado, postAsignacionesPhdByNumAv, updateAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
-import NotFound from "@/app/(admin)/admin-dashboard/not-found";
+import { fetchNumAsignacionesPendientesDoctorado, fetchOneInGroupAsignacionDoctorado, updateAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
+
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
 import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
+import { ifError } from "assert";
+import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 
 
 export default function CreateAssignment({
@@ -40,12 +42,12 @@ export default function CreateAssignment({
   const [periodo, setPeriodo] = useState<undefined | PeriodoProps>(undefined)
   const [numPendientes, setnumPendientes] = useState<undefined | number>(undefined)
   const [description, setDescription] = useState("");
-  const [error, setError] = useState(null);
   const [cssDisabled, setCSSDisabled] = useState("opacity-50 pointer-events-none cursor-not-allowed")
   const [cssHide, setcssHide] = useState("hidden")
   const [cssHideBtnEdit, setcssHideBtnEdit] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [cssError, setCssError] = useState("hidden")
+  const [error, setError] = useState<undefined | boolean>(undefined)
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
 
@@ -63,58 +65,82 @@ export default function CreateAssignment({
    * Se hace submit con en caso de editar
    */
 
+  function evaluateParams(tipoAsignacion: string, grupo: string): boolean {
+    const tiposPermitidos = ['1', '2'];
+    const gruposPermitidos = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  
+    if (!tiposPermitidos.includes(tipoAsignacion) || !gruposPermitidos.includes(grupo)) {
+      return false;
+    }
+  
+    if (tipo === '2' && group !== '4') {
+      return false;
+    }
+  
+    return true;
+  }
+
 
   useEffect(() => {
     async function fetchDATA() {
-      try {
-        await fetchLatestPeriod("").then((res) => {
-          let fechaCierrePeriodo = new Date(res.fecha_cierre);
-          let fechaActual = new Date();
-        
-          res.concluido = false;//revisar
-        
-          if (fechaActual > fechaCierrePeriodo) {
-            res.concluido = true;
-          }
-        
-          //fetch de datos de la asignacion
-          fetchOneInGroupAsignacionDoctorado(group, tipo, res.id_periodo.toString(), "").then((result) => {
-            setDescription(result.descripcion)
-            setTitle(result.titulo) 
-          })
-        
-          setPeriodo(res)
 
-        })
-        //URL constraints, solo en avance 4 se permite tipo 1 y tipo 2
-        if (["1", "2"].includes(tipo) || tipo === '1' && group !== '4' || tipo === '2' && group === '4') {
-          await fetchNumAsignacionesPendientesDoctorado(group, tipo, "").then((result) => {
+      await fetchNumAsignacionesPendientesDoctorado(group, tipo, "").then((result) => {
 
-            let total = parseInt(result)
+        let total = parseInt(result)
 
-            setnumPendientes(total) //0 -> activa  | >0 -> pendiente
+        setnumPendientes(total) //0 -> activa  | >0 -> pendiente
 
-          })
+      }).catch((error) => {
+        setError(true)
+        setnumPendientes(-1)
+      })
 
+      await fetchLatestPeriod("").then((res) => {
+        let fechaCierrePeriodo = new Date(res.fecha_cierre);
+        let fechaActual = new Date();
 
-        } else {//Si tiene cualquier otro parametro en la URL --> NotFound
-          throw new Error('Bad Request');
+        res.concluido = false;//revisar
+
+        if (fechaActual > fechaCierrePeriodo) {
+          res.concluido = true;
         }
 
-      } catch (error: any) {
-        setError(error)
-      }
+        //fetch de datos de la asignacion
+        fetchOneInGroupAsignacionDoctorado(group, tipo, res.id_periodo.toString(), "").then((result) => {
+          setDescription(result.descripcion)
+          setTitle(result.titulo)
+        }).catch((error) => {
+          setError(true)
+          setnumPendientes(-1)
+        })
+
+        setPeriodo(res)
+
+      }).catch((error) => {
+        setError(true)
+        setnumPendientes(-1)
+      })
+
+      //URL constraints, solo en avance 4 se permite tipo 1 y tipo 2
+      if (!evaluateParams(tipo, group)) {
+        setnumPendientes(-1)
+        setError(true)        
+      } 
+
+
     }
+
+
 
 
     fetchDATA();
   }, []);
 
+
   if (error) {
-    return (
-      <NotFound />
-    )
+    return <NotFound />
   }
+
 
   if (!periodo || typeof numPendientes === 'undefined') {
     return (
@@ -123,6 +149,7 @@ export default function CreateAssignment({
       </div>
     )
   }
+
 
   function setEditableState() {
     setCSSDisabled("")

@@ -1,7 +1,7 @@
 import { fetchLatestPeriod } from '../../../../../utils/periodo.endpoint';
 
 
-import NotFound from '../not-found';
+import NotFound from '../../../not-found';
 import AddPeriodoModal from './AddPeriodoModal';
 import { comparaFecha, getFormattedHours, shortFormatDate } from '../../../../../utils/utils';
 import UpdatePeriodoModal from './UpdatePeriodoModal';

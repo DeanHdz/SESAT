@@ -7,7 +7,7 @@ import { fetchAsesorByIDTesis } from "../../../../../../../utils/comite.endpoint
 import { Suspense, useEffect, useState } from "react";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import PDFViewer from "@/app/components/PDFViewer";
-import NotFound from "../../../not-found";
+import NotFound from "../../../../../not-found";
 
 
 type AsesorProps = {
