@@ -4,6 +4,7 @@ import { Evento } from "../../../../types/ISESAT";
 import { EventoEndpoint } from "../../../../utils/evento.endpoint";
 import AlertPeriod from "./components/AlertPeriod";
 
+import { revalidateTag } from "next/cache";
 
 export default async function Home() {
   const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("");

@@ -10,7 +10,6 @@ import esLocale from "@fullcalendar/core/locales/es";
 import ViewEventModal from "./ViewEventModal";
 import AddEventModal from "./AddEventModal";
 
-
 /**
  * Docs
  * https://github.com/fullcalendar/fullcalendar-react
@@ -89,7 +88,13 @@ export default function Calendar(
   function showNewEventModal(info: any) {
     setClick(false);
     setstartDate(info.start);
-    setendDate(info.end);
+    setendDate(
+      new Date(
+        info.end.getFullYear(),
+        info.end.getMonth(),
+        info.end.getDate() - 1
+      )
+    );
     (
       document.getElementById("add_event_modal") as HTMLDialogElement
     ).showModal();
@@ -115,12 +120,14 @@ export default function Calendar(
         eventContent={renderEventContent}
         eventClick={showEventDetails}
         select={showNewEventModal} //Al hacer click o select
+        //allDayContent
+        nextDayThreshold={"23:00"}
         headerToolbar={{
           start: "today",
           center: "title",
           end: "prev,next",
         }}
-        //timeZone="America/Mexico_City"
+        //timeZone="UTC"
       />
 
       {/*Añadir eventos */}

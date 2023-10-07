@@ -13,7 +13,13 @@ export class EventoService {
   ) {}
 
   create(createEventoDto: CreateEventoDto) {
-    return this.eventoRepository.save(createEventoDto);
+    let startDate = new Date(createEventoDto.fecha_inicio);
+    let endDate = new Date(createEventoDto.fecha_termino);
+    return this.eventoRepository.save({
+      ...createEventoDto,
+      fecha_inicio: startDate,
+      fecha_termino: endDate,
+    });
   }
 
   findAll() {

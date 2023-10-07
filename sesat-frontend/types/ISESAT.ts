@@ -122,7 +122,7 @@ export interface Asignacion {
 export interface CreateAsignacion {
   id_formato_evaluacion: number | null;
   id_acta_evaluacion: number | null;
-  id_tesis: number| null;    
+  id_tesis: number | null;
   id_modalidad: number | null;
   id_periodo: number;
   num_avance: number;
@@ -568,4 +568,11 @@ export interface UpdatePeriodo {
   id_periodo: number;
   fecha_apertura: string;
   fecha_cierre: string;
+}
+export interface CreateEvento {
+  id_usuario: number;
+  titulo: string;
+  descripcion: string | null;
+  fecha_inicio: Date;
+  fecha_termino: Date | null;
 }
