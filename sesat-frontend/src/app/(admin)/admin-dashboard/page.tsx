@@ -2,10 +2,12 @@ import Calendar from "./components/Calendar";
 import HomeCard from "./components/HomeCard";
 import { Evento } from "../../../../types/ISESAT";
 import { EventoEndpoint } from "../../../../utils/evento.endpoint";
+import { revalidateTag } from "next/cache";
 
 export default async function Home() {
   const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("");
   const eventos = await eventosData;
+  revalidateTag("eventos");
   return (
     <main>
       <div className="flex flex-col w-full">
