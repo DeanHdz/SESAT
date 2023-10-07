@@ -4,7 +4,7 @@ import EmptyPage from "@/app/components/EmptyPage";
 import TesisRow from "@/app/components/TesisRow";
 import { InactiveTesisProps } from "../../../../../../types/ISESAT";
 import { fetchTesisCompletadasMaestriaMedTiempo, fetchTesisCompletadasMaestriaTiempoComp } from "../../../../../../utils/tesis.endpoint";
-import NotFound from "../../../../not-found";
+
 
 
 export default async function Home() {
@@ -16,8 +16,8 @@ export default async function Home() {
 
   try {
 
-    tesisPartTime = await fetchTesisCompletadasMaestriaMedTiempo("");
-    tesisFullTime = await fetchTesisCompletadasMaestriaTiempoComp("");
+    tesisPartTime = await fetchTesisCompletadasMaestriaMedTiempo("").catch(() => {return null});
+    tesisFullTime = await fetchTesisCompletadasMaestriaTiempoComp("").catch(() => {return null});
     isDataEmptyA = !Array.isArray(tesisPartTime) || tesisPartTime.length < 1 || !tesisPartTime;
     isDataEmptyB = !Array.isArray(tesisFullTime) || tesisFullTime.length < 1 || !tesisFullTime;
     isDataEmpty = isDataEmptyA && isDataEmptyB;

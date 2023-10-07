@@ -69,4 +69,8 @@ export class UpdateAsignacionDto extends PartialType(CreateAsignacionDto) {
   @IsNotEmpty()
   @IsNumber()
   tipo: number;
+
+  @IsOptional()
+  @IsDateString()
+  fecha_presentacion: Date;
 }

@@ -312,13 +312,22 @@ export class AsignacionService {
 
   //actualizar asignaciones de X grupo
   async updatePhdGroup(updateAsignacionDto: UpdateAsignacionDto) {
-    try {
+    //try {
       let {id_periodo, num_avance, tipo} = updateAsignacionDto;
       //revisar que se actualiza y que no
       await this.findArrayAsignacionesActivasPhd(num_avance, tipo, id_periodo).then(async (idTesisArray) => {
         const promises = idTesisArray.map(async (elem) => {
           //crear una nueva instancia para cada iteracion
-          const newAsignacionDto = { ...updateAsignacionDto, id_tesis: elem.id_tesis };
+          const newAsignacionDto = { 
+            ...updateAsignacionDto, 
+            id_tesis: elem.id_tesis,  
+            id_asignacion: elem.id_asignacion, 
+            id_modalidad: elem.id_modalidad, 
+            id_periodo: elem.id_periodo, 
+            num_avance: elem.num_avance, 
+            titulo: elem.titulo,
+            tipo: elem.tipo,
+          };
           await this.asignacionRepository.save(newAsignacionDto);
         })
 
@@ -329,9 +338,10 @@ export class AsignacionService {
         statusCode: HttpStatus.OK,
         message: 'Las asignaciones se han actualizado con éxito',
       };
-    } catch (error) {
-      throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    //} 
+    //catch (error) {
+      //throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
+    //}
   }
 
   remove(id: number) {

@@ -134,6 +134,7 @@ export interface CreateAsignacion {
   estado_entrega: number;
   retroalimentacion: string | null;
   tipo: number;
+  fecha_presentacion: Date | null;
 }
 
 export interface UpdateAsignacion {
@@ -152,6 +153,7 @@ export interface UpdateAsignacion {
   estado_entrega: number;
   retroalimentacion: string | null;
   tipo: number;
+  fecha_presentacion: Date | null;
 }
 
 /*------------------ ASIGNACION-TESIS INTERFACE ------------------*/

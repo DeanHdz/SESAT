@@ -9,7 +9,7 @@ export const TitleBar = ({ title }: { title: string }) => {
       <div className="flex flex-row items-center w-full">
         <a className='cursor-pointer flex flex-row' onClick={() => {
           navigate.back();
-          navigate.refresh();
+          //navigate.refresh();
         }}>
 
 

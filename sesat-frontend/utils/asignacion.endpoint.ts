@@ -188,8 +188,7 @@ export async function updateAsignacionesPhdByNumAv(
   };
   const response = await fetch(url, options);
 
-  if(!response.ok){
-    alert(response.statusText)
+  if(!response.ok){    
     throw(new Error('Error fetching data'))
   }
 

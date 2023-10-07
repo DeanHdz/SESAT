@@ -4,21 +4,20 @@ import { InactiveTesisProps } from "../../../../../../types/ISESAT";
 import { fetchTesisCompletadasPhd } from "../../../../../../utils/tesis.endpoint";
 
 
+
 /**const StudentsCardList = ({ title }: { title: string }) => {   */
 
 export default async function Home () {
-  const tesisList: InactiveTesisProps[] | undefined = await fetchTesisCompletadasPhd("");
+  const tesisList: InactiveTesisProps[] | undefined = await fetchTesisCompletadasPhd("").catch(() => {return null});
 
   const isDataEmpty = !Array.isArray(tesisList) || tesisList.length < 1 || !tesisList;
   
   return (
-    <main>
-      
+    <main>      
       <div className="w-full flex flex-col">
         <label className="mb-3 block text-4xl font-bold">Tesis de Doctorado</label>
         <label className=" block text-xl font-bold">Repositorio de tesis</label>
         <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
-
 
           <input type="search" placeholder="Buscar alumnos" className="rounded-full border-b border-light-gray-22 border-solid px-6" />
           <div className="flex items-center ml-2">

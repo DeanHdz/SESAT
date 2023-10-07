@@ -43,8 +43,11 @@ export default async function ViewGroup({
   let captionA = group === '4' ? ' - Inicio' : '';
   let captionB = group === '4' ? ' - Final' : '';
 
+  let hayActivas;
+  let hayPendientes;
+
   try {
-    periodo = await fetchLatestPeriod("")
+    periodo = await fetchLatestPeriod("");
     alumnos = await fetchCountAlumnosDoctoradoOfNumAv(group, "")
     totalPendientes = await fetchNumAsignacionesPendientesDoctorado(group, "1", "").then((result) => {
 
@@ -70,6 +73,9 @@ export default async function ViewGroup({
         return total
       })
     }
+    hayPendientes = typeof totalEntregadas !== 'undefined' && totalEntregadas > 0 || typeof totalEntregadas2 !== 'undefined' && totalEntregadas2 > 0;
+
+    hayActivas = typeof totalPendientes !== 'undefined' && totalPendientes > 0 || typeof totalPendientes2 !== 'undefined' && totalPendientes2 > 0;
   } catch (error) {
     return <NotFound />
   }
@@ -98,9 +104,13 @@ export default async function ViewGroup({
               )}
 
               {/**ACTIVAS ####################################################################### */}
-              <label className=" block text-2xl font-bold text-black/40 mt-10">
-                Asignaciones Pendientes
-              </label>
+
+              {hayActivas && (
+                <label className=" block text-2xl font-bold text-black/40 mt-10">
+                  Asignaciones Pendientes
+                </label>
+              )
+              }
 
               {typeof totalPendientes2 !== 'undefined' && totalPendientes2 > 0 && (
                 <AssingmentCardInfo title={names[index] + captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={false} />
@@ -113,9 +123,11 @@ export default async function ViewGroup({
 
 
               {/**ACTIVAS ####################################################################### */}
-              <label className=" block text-2xl font-bold text-black/40 mt-10">
-                Asignaciones Activas
-              </label>
+              {hayPendientes && (
+                <label className=" block text-2xl font-bold text-black/40 mt-10">
+                  Asignaciones Activas
+                </label>
+              )}
 
               {typeof totalPendientes2 !== 'undefined' && totalPendientes2 === 0 && (
                 <AssingmentCardInfo title={names[index]} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={true} />

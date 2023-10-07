@@ -63,4 +63,8 @@ export class CreateAsignacionDto {
   @IsNotEmpty()
   @IsNumber()
   tipo: number;
+
+  @IsOptional()
+  @IsDateString()
+  fecha_presentacion: Date;
 }

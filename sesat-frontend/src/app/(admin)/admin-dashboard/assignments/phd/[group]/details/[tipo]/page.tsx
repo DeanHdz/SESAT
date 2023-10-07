@@ -178,6 +178,7 @@ export default function CreateAssignment({
         estado_entrega: 0,
         retroalimentacion: null,
         tipo: parseInt(tipo),
+        fecha_presentacion: null,
       }, "").then((res) => {
 
         if (res) {

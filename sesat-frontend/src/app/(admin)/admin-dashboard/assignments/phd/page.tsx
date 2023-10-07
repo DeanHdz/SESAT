@@ -1,9 +1,9 @@
 import AdminAssignmentCard from "@/app/components/AdminAssignmentCard";
 import { fetchNumAlumnosDoctorado } from "../../../../../../utils/tesis.endpoint";
 import { fetchNumAsignacionesPendientesDoctorado } from "../../../../../../utils/asignacion.endpoint";
-import EmptyPage from "@/app/components/EmptyPage";
 import Alert from "../../components/Alert";
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
+import NotFound from "../../not-found";
 
 
 type AvanceProps = {
@@ -41,7 +41,7 @@ async function fetchAsignacionesData(): Promise<AvanceProps[]> {
 
     }
 
-  })
+  }).catch(() => {return null})
 
   return alumnos!;
 
@@ -70,7 +70,7 @@ async function fetchStatus(alumnos: Array<AvanceProps>): Promise<number[] | unde
           statusArray[i] = 0    //pendiente
 
         }
-      })
+      }).catch(() => {return undefined})
       //Es necesario revisar para 2 tipos de asignaciones en caso 4
       if (elem.t_ultimo_avance === 4 && statusArray[i] !== 0) {
         await fetchNumAsignacionesPendientesDoctorado(elem.t_ultimo_avance.toString(), "2", "").then((result) => {
@@ -91,7 +91,7 @@ async function fetchStatus(alumnos: Array<AvanceProps>): Promise<number[] | unde
     }
   });
 
-  await Promise.all(promises);
+  await Promise.all(promises)
 
   return statusArray;
 }
@@ -123,29 +123,37 @@ async function fetchStatusPeriodo(): Promise<boolean> {
 
 export default async function Home() {
 
-  const statusArray = await fetchStatus(await fetchAsignacionesData());
-  const statusPeriodo = await fetchStatusPeriodo();
+  const statusArray = await fetchStatus(await fetchAsignacionesData()).catch(() => {return null});
+  const periodoConcluido = await fetchStatusPeriodo().catch(() => {return null});  
+
 
   return (
     <main>
-      {statusPeriodo && (
-        <Alert />
-      )
-      }
-      <div className="w-full flex flex-col mb-10">
-        <label className="mb-3 block text-4xl font-bold">Grupos de Alumnos de Doctorado</label>
-        <label className=" block text-xl font-bold">Avances de tesis para este semestre</label>
+      
+        
+          {periodoConcluido && (
+            <Alert />
+          )}
+          
+          <div className="w-full flex flex-col mb-10">
+            <label className="mb-3 block text-4xl font-bold">Grupos de Alumnos de Doctorado</label>
+            <label className=" block text-xl font-bold">Avances de tesis para este semestre</label>
 
-        <div className="mt-1 p-2 border-t border-light-gray-22 border-solid w-full flex justify-start">
-        </div>
+            <div className="mt-1 p-2 border-t border-light-gray-22 border-solid w-full flex justify-start">
+            </div>
 
-        {
-          statusArray?.map((num, i) => (
-            <AdminAssignmentCard title={`Seminario de Avance de Tesis ${i + 1}`} avance={i + 1} status={statusPeriodo ? 2 : num} tipo={1} />
-          ))
-        }
+            {statusArray ? (
+              statusArray?.map((num, i) => (
+                <AdminAssignmentCard title={`Seminario de Avance de Tesis ${i + 1}`} avance={i + 1} status={periodoConcluido ? 2 : num} tipo={1} />
+              ))
+            ):(
+              <NotFound />
+            )}
 
-      </div>
+          </div>
+        
+      
+
     </main >
   )
 }

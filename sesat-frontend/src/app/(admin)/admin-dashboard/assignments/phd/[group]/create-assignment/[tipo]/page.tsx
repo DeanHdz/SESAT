@@ -7,11 +7,11 @@ import { TitleBar } from "@/app/components/TitleBar";
 import "flatpickr/dist/themes/light.css";
 
 import { fetchNumAsignacionesPendientesDoctorado, postAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
-import NotFound from "@/app/not-found";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
 import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
+import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 
 {/**
 Docs:
@@ -142,6 +142,7 @@ export default function CreateAssignment({
         estado_entrega: 0,
         retroalimentacion: null,
         tipo: parseInt(tipo),
+        fecha_presentacion: null,
       }, "").then((res) => {
 
         if (res){          
