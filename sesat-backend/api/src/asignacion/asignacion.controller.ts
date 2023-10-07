@@ -56,7 +56,7 @@ export class AsignacionController {
   findArrayAsignacionesPendientesPhd(@Param('numAvance') numAvance: string) {
     return this.asignacionService.findArrayAsignacionesPendientesPhd(+numAvance);
   }
-   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de doctorado*/
+   /**Devuelve El NUMERO de asignaciones entregadas para determinado num_avance de alumnos de doctorado*/
    @Get('num-entregadas/phd/:numAvance/:tipo')
    findNumAsignacionesEntregadasPhd(@Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
      return this.asignacionService.findNumAsignacionesEntregadasPhd(+numAvance, +tipo);
@@ -90,8 +90,9 @@ export class AsignacionController {
 
 
   /*DELETE this please
+  
   @Get('phd/update-group/:numAv/:tipo/:id_periodo')
-  updateAssignmentGroup(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id_periodo') idPeriodo: string, ) {
+  updateGroup(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id_periodo') idPeriodo: string, ) {
     return this.asignacionService.findArrayAsignacionesActivasPhd(+numAv,+tipo,+idPeriodo);
   }*/
 

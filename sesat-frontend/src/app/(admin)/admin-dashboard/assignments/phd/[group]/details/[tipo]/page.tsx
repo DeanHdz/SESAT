@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import autosize from "autosize";
 import { TitleBar } from "@/app/components/TitleBar";
 import "flatpickr/dist/themes/light.css";
@@ -11,7 +11,6 @@ import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
 import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
-import { ifError } from "assert";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 
 
@@ -41,7 +40,7 @@ export default function CreateAssignment({
   const [title, setTitle] = useState<string | undefined>(names.at(index))
   const [periodo, setPeriodo] = useState<undefined | PeriodoProps>(undefined)
   const [numPendientes, setnumPendientes] = useState<undefined | number>(undefined)
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("");  
   const [cssDisabled, setCSSDisabled] = useState("opacity-50 pointer-events-none cursor-not-allowed")
   const [cssHide, setcssHide] = useState("hidden")
   const [cssHideBtnEdit, setcssHideBtnEdit] = useState("")
@@ -50,6 +49,7 @@ export default function CreateAssignment({
   const [error, setError] = useState<undefined | boolean>(undefined)
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
+  const [editMode, setEditMode] = useState(false)
 
   type PeriodoProps = {
     id_periodo: number;
@@ -106,9 +106,9 @@ export default function CreateAssignment({
         }
 
         //fetch de datos de la asignacion
-        fetchOneInGroupAsignacionDoctorado(group, tipo, res.id_periodo.toString(), "").then((result) => {
+        fetchOneInGroupAsignacionDoctorado(group, tipo, res.id_periodo.toString(), "").then((result) => {          
           setDescription(result.descripcion)
-          setTitle(result.titulo)
+          setTitle(result.titulo)                   
         }).catch((error) => {
           setError(true)
           setnumPendientes(-1)
@@ -152,15 +152,17 @@ export default function CreateAssignment({
 
 
   function setEditableState() {
-    setCSSDisabled("")
+    setEditMode(true)
+    setCSSDisabled("")    
     setcssHideBtnEdit("hidden")
-    setcssHide("")
+    setcssHide("")    
   }
   async function handleSubmit(e: any) {
     try {
       e.preventDefault();
 
       setIsSubmitting(true);
+      setCSSDisabled("opacity-80 pointer-events-none cursor-not-allowed")
 
       await updateAsignacionesPhdByNumAv({
         id_asignacion: 0, //no importa aqui, se asigna en backend
@@ -183,9 +185,10 @@ export default function CreateAssignment({
 
         if (res) {
           setIsSubmitting(false);
-          setmsg("Asignaciones de tesis creadas con éxito")
+          setmsg("Los datos se actualizaron correctamente")
           setCssOk("")
           setcssHide("hidden")
+          setEditMode(false)
         }
 
 
@@ -214,26 +217,50 @@ export default function CreateAssignment({
               <div className={`font-SESAT rounded-md w-full p-3 my-3 bg-blue-100 ${cssOk}`}>
                 {msg}
               </div>
-              <div className="w-full flex lg:flex-row h-fit py-6 mt-10">
+
+              {/**Buttons */}
+              <div className="flex justify-end w-full mt-6">
+
+                <button type='button' className={`primary__btn ml-3 ${cssHideBtnEdit}`} onClick={setEditableState}>
+                  Editar
+                </button>
+
+                <button type='submit' className={`primary__btn ml-3 ${cssDisabled} ${cssHide}`} onClick={handleSubmit}>
+                  {isSubmitting ? (
+                    <div className='h-[20px]'>
+                      <ProcessingAnim title='' />
+                    </div>
+                  ) : (
+                    <>Guardar cambios</>
+                  )}
+                </button>
+              </div>
+              <div className="w-full flex lg:flex-row h-fit py-6 mt-3">
                 <div className="w-3/6">
                   <label className="mb-3 block text-xl font-semibold">Título</label>
-                  <label className="mb-10 block text-lg font-normal opacity-90 w-full">
+                  <label className="mb-10 block text-xl font-normal opacity-90 w-full">
                     {title}
                   </label>
                   <label className="mb-3 block text-xl font-semibold">
                     Instrucciones
                   </label>
-                  <textarea
+                  {editMode ? (
+                    <textarea                    
                     required={true}
-                    maxLength={400}
+                    maxLength={1000}
                     value={description}
-                    className={`h-32 w-full px-3 gray__border text-base ${cssDisabled}`}
+                    className={`h-64 w-full overflow-hidden px-3 gray__border text-base ${cssDisabled}`}
                     placeholder="Ingrese las instrucciones y/o descripción"
                     onChange={(e) => {
                       autosize(e.currentTarget);
                       setDescription(e.target.value);
                     }}
                   ></textarea>
+                  ) : (
+                    <span className="w-full whitespace-break-spaces text-black/60">
+                      {description}
+                    </span>
+                  )}
                 </div>
 
 
@@ -312,23 +339,7 @@ export default function CreateAssignment({
 
               </div>
 
-              {/**Buttons */}
-              <div className="flex justify-end w-full mt-6">
-
-                <button type='button' className={`primary__btn ml-3 ${cssHideBtnEdit}`} onClick={setEditableState}>
-                  Editar
-                </button>
-
-                <button type='submit' className={`primary__btn ml-3 ${cssDisabled} ${cssHide}`} onClick={handleSubmit}>
-                  {isSubmitting ? (
-                    <div className='h-[20px]'>
-                      <ProcessingAnim title='' />
-                    </div>
-                  ) : (
-                    <>Guardar cambios</>
-                  )}
-                </button>
-              </div>
+              
             </form>
           </>
 

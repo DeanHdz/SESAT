@@ -10,7 +10,7 @@ const GenInfoPhd = ({ endDate, count, numAvance }: { endDate: string, count: str
     return (
         <div className="w-full h-fit mt-6 bg-light-blue-10 gray__border">
             <div className="px-6 py-3 mb-3 flex flex-row items-center text-xl font-semibold border-b">
-                <span>Información General</span>
+                <span>Información General del Grupo</span>
 
             </div>
             <div className="w-full flex flex-row h-fit px-6 pb-3">

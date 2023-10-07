@@ -230,7 +230,25 @@ export class AsignacionService {
   async findArrayAsignacionesActivasPhd(numAvance: number, tipoAssignacion: number, id_periodo: number) {
 
     const resp = this.asignacionRepository.createQueryBuilder('a')
-      .select('t.id_tesis', 'id_tesis')
+      .select([
+        "a.id_asignacion AS id_asignacion",
+        "a.id_formato_evaluacion AS id_formato_evaluacion",
+        "a.id_acta_evaluacion AS id_acta_evaluacion",
+        "a.id_tesis AS id_tesis",
+        "a.id_modalidad AS id_modalidad",
+        "a.id_periodo AS id_periodo",
+        "a.num_avance AS num_avance",
+        "a.titulo AS titulo",
+        "a.descripcion AS descripcion",
+        "a.fecha_entrega AS fecha_entrega",
+        "a.calificacion AS calificacion",
+        "a.documento AS documento",
+        "a.estado_entrega AS estado_entrega",
+        "a.retroalimentacion AS retroalimentacion",
+        "a.tipo AS tipo",
+        "a.fecha_presentacion AS fecha_presentacion"
+
+      ])
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
@@ -238,12 +256,12 @@ export class AsignacionService {
       .innerJoin(Periodo, "p", "p.id_periodo = a.id_periodo")
 
       .where("t.ultimo_avance = :numAv", { numAv: numAvance })
-      .andWhere("a.tipo = :tipo", {tipo: tipoAssignacion})
-      .andWhere("a.id_periodo = :periodo", {periodo: id_periodo})
+      .andWhere("a.tipo = :tipo", { tipo: tipoAssignacion })
+      .andWhere("a.id_periodo = :periodo", { periodo: id_periodo })
       .andWhere("t.ultimo_avance = a.num_avance")
-      .andWhere("t.estado_finalizacion = false")      
+      .andWhere("t.estado_finalizacion = false")
       .andWhere("da.estado_activo = true")
-      .andWhere("ge.nombre_grado_estudio = :grado", { grado: 'Doctorado' })      
+      .andWhere("ge.nombre_grado_estudio = :grado", { grado: 'Doctorado' })
       .getRawMany()
 
     return resp;
@@ -312,19 +330,19 @@ export class AsignacionService {
 
   //actualizar asignaciones de X grupo
   async updatePhdGroup(updateAsignacionDto: UpdateAsignacionDto) {
-    //try {
-      let {id_periodo, num_avance, tipo} = updateAsignacionDto;
+    try {
+      let { id_periodo, num_avance, tipo } = updateAsignacionDto;
       //revisar que se actualiza y que no
       await this.findArrayAsignacionesActivasPhd(num_avance, tipo, id_periodo).then(async (idTesisArray) => {
         const promises = idTesisArray.map(async (elem) => {
-          //crear una nueva instancia para cada iteracion
-          const newAsignacionDto = { 
-            ...updateAsignacionDto, 
-            id_tesis: elem.id_tesis,  
-            id_asignacion: elem.id_asignacion, 
-            id_modalidad: elem.id_modalidad, 
-            id_periodo: elem.id_periodo, 
-            num_avance: elem.num_avance, 
+          //crear una nueva instancia para cada iteracion        
+          const newAsignacionDto = {
+            ...updateAsignacionDto,
+            id_tesis: elem.id_tesis,
+            id_asignacion: elem.id_asignacion,
+            id_modalidad: elem.id_modalidad,
+            id_periodo: elem.id_periodo,
+            num_avance: elem.num_avance,
             titulo: elem.titulo,
             tipo: elem.tipo,
           };
@@ -338,10 +356,10 @@ export class AsignacionService {
         statusCode: HttpStatus.OK,
         message: 'Las asignaciones se han actualizado con éxito',
       };
-    //} 
-    //catch (error) {
-      //throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
-    //}
+    }
+    catch (error) {
+      throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   remove(id: number) {
