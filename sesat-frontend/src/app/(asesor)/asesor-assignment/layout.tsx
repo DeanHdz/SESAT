@@ -1,11 +1,11 @@
-import Drawer from './components/Drawer'
 import '../../globals.css'
 import type { Metadata } from 'next'
 import AsesorNavbar from './components/AsesorNavbar'
+import Drawer from './components/Drawer'
 
 export const metadata: Metadata = {
   title: 'Sistema de Evaluación y Seguimiento de Tesis',
-  description: 'Panel de asesor',
+  description: 'Ver asignación (asesor)',
   icons: '/images/uaslp-logo.png',
 }
 
