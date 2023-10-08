@@ -42,6 +42,7 @@ const AdminAssignmentCard = ({
 
   const statusArray = ['Pendiente', 'Activa', 'Sin Alumnos'];
   const buttonActions = ['Crear', 'Ver', 'No disp...'];
+  
   //Doctorado
   const urlsArray = [
     '/admin-dashboard/assignments/phd/' + avance,
@@ -98,7 +99,7 @@ const AdminAssignmentCard = ({
 
       {/**ICON */}
       <div className="flex w-[30px] lg:w-[50px] text-dark-blue-10 justify-center items-center">
-        <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
       </div>
 
       <div className="w-1/2 flex">
@@ -109,7 +110,7 @@ const AdminAssignmentCard = ({
         </div>
       </div>
 
-      <div className="mx-auto flex items-center text-sm justify-center">
+      <div className="mx-auto flex items-center text-[12px] lg:text-sm px-2 justify-center text-center">
         <p>{statusArray[status]}</p>
       </div>
 

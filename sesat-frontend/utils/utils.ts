@@ -42,6 +42,11 @@ export function comparaFecha(fecha: Date): boolean {
     return diferenciaEnDias <= 7;
 }
 
+//Devuelve true si la fecha (start, end) esta dentro del periodo global (startPeriod, endPeriod)
+export function isDateWithinGlobalPeriod(startPeriod: Date, endPeriod: Date, start: Date, end: Date): boolean {    
+    return startPeriod <= start && endPeriod > end;
+}
+
 /**EVITA QUE EL ADMINISTRADOR CREE MAS DE 1 PERIODO POR SEMESTRE
 Se reciben como parametros 2 fechas de tipo Date, la del ultimo periodo concluido 'anterior' y la del nuevo periodo 'nuevo', se debe revisar que la
 fecha 'nuevo' cumpla con las condiciones siguientes:

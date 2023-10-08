@@ -70,7 +70,7 @@ async function fetchStatus(alumnos: Array<AvanceProps>): Promise<number[] | unde
           statusArray[i] = 0    //pendiente
 
         }
-      }).catch(() => {return undefined})
+      })//.catch(() => {return undefined})
       //Es necesario revisar para 2 tipos de asignaciones en caso 4
       if (elem.t_ultimo_avance === 4 && statusArray[i] !== 0) {
         await fetchNumAsignacionesPendientesDoctorado(elem.t_ultimo_avance.toString(), "2", "").then((result) => {
@@ -123,8 +123,8 @@ async function fetchStatusPeriodo(): Promise<boolean> {
 
 export default async function Home() {
 
-  const statusArray = await fetchStatus(await fetchAsignacionesData()).catch(() => {return null});
-  const periodoConcluido = await fetchStatusPeriodo().catch(() => {return null});  
+  const statusArray = await fetchStatus(await fetchAsignacionesData())//.catch(() => {return null});
+  const periodoConcluido = await fetchStatusPeriodo()//.catch(() => {return null});  
 
 
   return (

@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     <main>
       <div className="flex flex-col w-full">
-        <div className="flex flex-row w-full">
+        <div className="flex flex-col lg:flex-row w-full">
           <HomeCard
             title="Avances de tesis (Maestría)"
             webLink="/admin-dashboard/assignments/masters"

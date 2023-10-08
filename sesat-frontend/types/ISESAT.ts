@@ -562,10 +562,14 @@ export interface Evento {
 export interface CreatePeriodo {
   fecha_apertura: string;
   fecha_cierre: string;
+  fecha_apertura_opc: string | null;
+  fecha_cierre_opc: string | null;
 }
 
 export interface UpdatePeriodo {
   id_periodo: number;
   fecha_apertura: string;
   fecha_cierre: string;
+  fecha_apertura_opc: string | null;
+  fecha_cierre_opc: string | null;
 }

@@ -30,9 +30,9 @@ export class AsignacionService {
   //Crear asignaciones pendientes para un determinado numero de avance, este debe estar en el campo
   //createAsignacionDto.num_avance
   async createGroupByNumaAvance(numAvance: number, createAsignacionDto: CreateAsignacionDto) {
-
     try {
-      await this.findArrayAsignacionesPendientesPhd(numAvance).then(async (idTesisArray) => {
+      let { tipo } = createAsignacionDto
+      await this.findArrayAsignacionesPendientesPhd(numAvance, tipo).then(async (idTesisArray) => {
         const promises = idTesisArray.map(async (elem) => {
           //crear una nueva instancia para cada iteracion
           const newAsignacionDto = { ...createAsignacionDto, id_tesis: elem.id_tesis };
@@ -202,12 +202,13 @@ export class AsignacionService {
   }
 
   /**ARRAY DE ASIGNACIONES PENDIENTES DOCTORADO*/
-  async findArrayAsignacionesPendientesPhd(numAvance: number) {
+  async findArrayAsignacionesPendientesPhd(numAvance: number, tipo: number) {
 
     const subquery = this.asignacionRepository.createQueryBuilder('a')
       .select('1')
       .where("a.id_tesis = t.id_tesis")
       .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
+      .andWhere("a.tipo = :tipoAsig", { tipoAsig: tipo })
       .andWhere("t.ultimo_avance = a.num_avance");
 
     const resp = await this.tesisRepository.createQueryBuilder("t")

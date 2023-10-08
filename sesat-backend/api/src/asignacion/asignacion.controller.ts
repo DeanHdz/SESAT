@@ -51,10 +51,14 @@ export class AsignacionController {
   findNumAsignacionesPendientesPhd(@Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
     return this.asignacionService.findNumAsignacionesPendientesPhd(+numAvance, +tipo);
   } 
-  /**ARREGLO de id_tesis de asignaciones pendientes */
-  @Get('array-pendientes/phd/:numAvance')
-  findArrayAsignacionesPendientesPhd(@Param('numAvance') numAvance: string) {
-    return this.asignacionService.findArrayAsignacionesPendientesPhd(+numAvance);
+  
+  /**
+   * DELETE THIS? NOT USED
+   * ARREGLO de id_tesis de asignaciones pendientes 
+   * */
+  @Get('array-pendientes/phd/:numAvance/:tipo')
+  findArrayAsignacionesPendientesPhd(@Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
+    return this.asignacionService.findArrayAsignacionesPendientesPhd(+numAvance, +tipo);
   }
    /**Devuelve El NUMERO de asignaciones entregadas para determinado num_avance de alumnos de doctorado*/
    @Get('num-entregadas/phd/:numAvance/:tipo')

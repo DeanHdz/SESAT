@@ -4,22 +4,17 @@ import { useEffect, useState } from "react";
 import autosize from "autosize";
 import { useRouter } from "next/navigation";
 import { TitleBar } from "@/app/components/TitleBar";
-import "flatpickr/dist/themes/light.css";
+import "flatpickr/dist/themes/dark.css";
+import Flatpickr from "react-flatpickr";
 
 import { fetchNumAsignacionesPendientesDoctorado, postAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
-import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
-import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { fetchLatestPeriod, putPeriod } from "../../../../../../../../../utils/periodo.endpoint";
+import { formatAsISODate, getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 
-{/**
-Docs:
-Date-time picker
-https://flatpickr.js.org/examples/
 
-https://github.com/haoxins/react-flatpickr#readme
- */}
 
 export default function CreateAssignment({
   params,
@@ -43,12 +38,18 @@ export default function CreateAssignment({
 
 
   let index = parseInt(group) - 1;
-
-  const title = names.at(index)
+  let captionA = group === '4' && tipo === '2' ? ' - Evaluación de Inicio de Semestre' : '';
+  let captionB = group === '4' && tipo === '1' ? ' - Evaluación de Fin de Semestre' : '';
+  let oneWeekAhead = new Date();
+  oneWeekAhead.setDate(oneWeekAhead.getDate() + 7);
+  const title = names.at(index) + captionA + captionB;
   const [periodo, setPeriodo] = useState<undefined | PeriodoProps>(undefined)
   const [numPendientes, setnumPendientes] = useState<undefined | number>(undefined)
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState<null | string>(null);
+  const [start, setStartDate] = useState<Date>(new Date())                //Para avance 4 doc
+  const [end, setEndDate] = useState<Date>(oneWeekAhead)                  //Para avance 4 doc
   const [error, setError] = useState(null);
+  const [updateError, setUpdateError] = useState(false);
   const [cssDisabled, setCSSDisabled] = useState("")
   const [cssHide, setcssHide] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -61,11 +62,14 @@ export default function CreateAssignment({
     id_periodo: number;
     fecha_apertura: string;
     fecha_cierre: string;
-    concluido: boolean;
+    fecha_apertura_opc: string;//Fecha para evaluacion de medio termino de doctorado(Inicio de semestre)
+    fecha_cierre_opc: string;//Fecha para evaluacion de medio termino de doctorado(Inicio de semestre)
+    concluido: boolean;//  ---> No proviene del fetch, se deduce localmente
   }
 
-
-
+//REVISAR: Porque cuando se crea la asignacion 4 Inicio de sem y despues haces click
+//en    (<--) de la barra de titulo si actualiza la pagina anterior, mientras que en
+//otro caso no, (por ejemplo al crear asignacion 1)
 
   useEffect(() => {
     async function fetchDATA() {
@@ -97,7 +101,7 @@ export default function CreateAssignment({
           })
         }
 
-      } catch (error: any) {        
+      } catch (error: any) {
         setError(error)
       }
     }
@@ -106,12 +110,14 @@ export default function CreateAssignment({
     fetchDATA();
   }, []);
 
+  {/**En caso de URL incorrecta || perdida de conexion */}
   if (error) {
     return (
       <NotFound />
     )
   }
 
+  {/**Animacion de espera mientras llegan los datos*/}
   if (!periodo || typeof numPendientes === 'undefined') {
     return (
       <div className="flex w-full justify-center items-center">
@@ -120,47 +126,95 @@ export default function CreateAssignment({
     )
   }
 
+  {/**Establecer Periodo de evaluacion de inicio de semestre */ }
+  async function updatePeriodForPHD() {
+    if (periodo) {      
+        setCssError("hidden")
+        setIsSubmitting(true)
+        setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
+        await putPeriod(
+          {
+            id_periodo: periodo.id_periodo,
+            fecha_apertura: formatAsISODate(new Date(periodo.fecha_apertura)),
+            fecha_cierre: formatAsISODate(new Date(periodo.fecha_cierre)),
+            fecha_apertura_opc: formatAsISODate(start),
+            fecha_cierre_opc: formatAsISODate(end),
+          },
+          ""
+        ).catch ((error) => {
+          setUpdateError(true)
+          setCSSDisabled("")
+          setcssHide("hidden")//oculta boton crear
+          setIsSubmitting(false)
+          setmsg("Algo salió mal")
+          setCssError("")
+        })
+      
+    }
+  }
 
-  async function handleSubmit(e: any) {
-    try {
-      e.preventDefault();
+  {/**Crear grupo de asignaciones */}
+  async function postAsignment() {
+    setIsSubmitting(true);
 
-      setIsSubmitting(true);
+    await postAsignacionesPhdByNumAv(group, {
+      id_formato_evaluacion: null,
+      id_acta_evaluacion: null,
+      id_tesis: null,
+      id_modalidad: 1,
+      id_periodo: periodo?.id_periodo as number,
+      num_avance: index + 1,
+      titulo: title as string,
+      descripcion: description ? description : '',
+      fecha_entrega: null,
+      calificacion: null,
+      documento: null,
+      estado_entrega: 0,
+      retroalimentacion: null,
+      tipo: parseInt(tipo),
+      fecha_presentacion: null,
+    }, "").then((res) => {
 
-      await postAsignacionesPhdByNumAv(group, {
-        id_formato_evaluacion: null,
-        id_acta_evaluacion: null,
-        id_tesis: null,
-        id_modalidad: 1,
-        id_periodo: periodo?.id_periodo as number,
-        num_avance: index + 1,
-        titulo: title as string,
-        descripcion: description,
-        fecha_entrega: null,
-        calificacion: null,
-        documento: null,
-        estado_entrega: 0,
-        retroalimentacion: null,
-        tipo: parseInt(tipo),
-        fecha_presentacion: null,
-      }, "").then((res) => {
-
-        if (res){          
-          setIsSubmitting(false);
-          setmsg("Asignaciones de tesis creadas con éxito")
-          setCssOk("")
-          setcssHide("hidden")
-        }
-
-
-      })
-    } catch (error) {
+      if (res && res.statusCode === 200) {
+        setIsSubmitting(false);
+        setmsg("Asignaciones de tesis creadas con éxito")
+        setCssOk("")
+        setcssHide("hidden")
+        setCssError("hidden")
+      }
+    }).catch((error) => {
       setmsg("Algo salió mal")
       setCssError("")
       setcssHide("hidden")
-      setIsSubmitting(false);            
-    }
+      setIsSubmitting(false);
+    })
+  }
 
+  async function handleSubmit(e: any) {
+    e.preventDefault();
+
+    {/**Si la cadena no esta vacia o contiene solo espacios ' ' */}
+    if (description != null && description.trim().length > 0) {
+
+      {/**Caso doctorado evaluacion de medio termino */}
+      if (group === '4' && tipo === '2') {
+        if (start && end && start > end) {
+          setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
+          setCssError("")
+        } else {
+          updatePeriodForPHD();
+        }
+      }
+
+      {/**Si no ocurrio ningun error al guardar el periodo de entrega*/}
+      if (!updateError) {
+        postAsignment();
+      }
+
+    } else {
+      setmsg("Complete todos los campos por favor")
+      setCssError("")
+    }
   };
 
   return (
@@ -170,7 +224,7 @@ export default function CreateAssignment({
         {periodo && numPendientes && numPendientes > 0 && !periodo.concluido ? (
           <>
             <TitleBar title={names[index]} />
-            <form action="submit">
+            <form action='submit'>
 
               <div className={`font-SESAT rounded-md w-full p-3 my-3 bg-red-100 ${cssError}`}>
                 {msg}
@@ -178,7 +232,8 @@ export default function CreateAssignment({
               <div className={`font-SESAT rounded-md w-full p-3 my-3 bg-blue-100 ${cssOk}`}>
                 {msg}
               </div>
-              <div className="w-full flex lg:flex-row h-fit py-6 mt-10">
+              <div className="w-full flex lg:flex-row h-fit py-6 mt-6">
+                {/**Title/Instructions */}
                 <div className="w-3/6">
                   <label className="mb-3 block text-xl font-semibold">Título</label>
                   <label className="mb-10 block text-lg font-normal opacity-90 w-full">
@@ -201,10 +256,15 @@ export default function CreateAssignment({
 
 
                 <div className="w-3/6 h-fit ml-3 bg-light-blue-10 gray__border">
+                  {/**Dates Header */}
                   <div className="px-6 py-3 mb-3 flex flex-row items-center text-xl font-semibold border-b">
                     <span>Fecha</span>
                     <div className='tooltip tooltip-left w-[24px] h-[24px] ml-auto rounded-full flex items-center justify-center hover:bg-light-gray-22'
-                      data-tip={'Esta fecha se establece/modifica en la página de inicio'}>
+                      data-tip={
+                        group === '4' && tipo === '2' ?
+                          'Esta fecha solo aplica para alumnos de cuarto semestre de doctorado'
+                          : 'Esta fecha se establece/modifica en la página de inicio'
+                      }>
                       <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16" height="20px"
                         width="20px" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
@@ -216,57 +276,115 @@ export default function CreateAssignment({
                       </svg>
                     </div>
                   </div>
+
                   <div className="w-full h-fit p-6">
 
-                    {/**Date start */}
-                    <div className="flex flex-col w-full ">
-                      <label className="mb-3 block text-md font-semibold">
-                        Publicación de la asignación
-                      </label>
+                    {/**Fecha de entrega para medio termino */}
+                    {group === '4' && tipo === '2' ? (
+                      <>
+                        <div className="flex flex-col w-full ">
+                          {/**Publicacion */}
+                          <div className="mb-6 w-full flex flex-col">
+                            <label className="mb-3 block text-md font-semibold">
+                              Publicación (Evaluación de Medio Término)
+                            </label>
 
-
-
-                      <div className="flex flex-row">
-                        <div className="flex flex-row justify-center items-center">
-                          <div className="mr-2">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>
+                            {!periodo.fecha_apertura_opc && (
+                              <>
+                                <Flatpickr
+                                  className={`gray__border w-full ${cssDisabled}`}
+                                  options={{
+                                    enableTime: true,
+                                    noCalendar: false,
+                                    minDate: new Date(periodo.fecha_apertura),
+                                    static: true,
+                                  }}
+                                  //data-enable-time
+                                  placeholder="Inicio"
+                                  value={start}
+                                  onChange={([date]) => {
+                                    setStartDate(date)
+                                  }}
+                                />
+                              </>
+                            )}
                           </div>
-                          <p>{shortFormatDate(periodo.fecha_apertura)}</p>
-                        </div>
-                        <div className="flex flex-row justify-center items-center ml-6">
-                          <div className="mr-2">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z"></path></svg>
+                          {/**Cierre */}
+                          <div className="w-full flex flex-col">
+                            <label className="mb-3 block text-md font-semibold">
+                              Límite de entrega (Evaluación de Medio Término)
+                            </label>
+
+                            {!periodo.fecha_cierre_opc && (
+                              <>
+                                <Flatpickr
+                                  className={`gray__border w-full ${cssDisabled}`}
+                                  options={{
+                                    enableTime: true,
+                                    noCalendar: false,
+                                    minDate: new Date(periodo.fecha_apertura),
+                                    static: true,
+                                  }}
+                                  //data-enable-time
+                                  placeholder="Inicio"
+                                  value={end}
+                                  onChange={([date]) => {
+                                    setEndDate(date)
+                                  }}
+                                />
+                              </>
+                            )}
                           </div>
-                          <p>{getFormattedHours(new Date(periodo.fecha_apertura))}</p>
                         </div>
-                      </div>
-
-
-
-                    </div>
-
-                    {/**Date end */}
-                    <div className="flex flex-col w-full mt-10 ">
-                      <label className="mb-3 block text-md font-semibold">
-                        Límite de entrega
-                      </label>
-
-                      <div className="flex flex-row">
-                        <div className="flex flex-row justify-center items-center">
-                          <div className="mr-2">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>
+                      </>
+                    ) :
+                      <>
+                        <div className="flex flex-col w-full ">
+                          <label className="mb-3 block text-md font-semibold">
+                            Publicación de la asignación
+                          </label>
+                          {/**Apertura */}
+                          <div className="flex flex-row">
+                            <div className="flex flex-row justify-center items-center">
+                              <div className="mr-2">
+                                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>
+                              </div>
+                              <p>{shortFormatDate(periodo.fecha_apertura)}</p>
+                            </div>
+                            <div className="flex flex-row justify-center items-center ml-6">
+                              <div className="mr-2">
+                                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z"></path></svg>
+                              </div>
+                              <p>{getFormattedHours(new Date(periodo.fecha_apertura))}</p>
+                            </div>
                           </div>
-                          <p>{shortFormatDate(periodo.fecha_cierre)}</p>
-                        </div>
-                        <div className="flex flex-row justify-center items-center ml-6">
-                          <div className="mr-2">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z"></path></svg>
-                          </div>
-                          <p>{getFormattedHours(new Date(periodo.fecha_cierre))}</p>
-                        </div>
-                      </div>
+                          {/**Cierre */}
+                          <div className="flex flex-col w-full mt-10 ">
+                            <label className="mb-3 block text-md font-semibold">
+                              Límite de entrega
+                            </label>
 
-                    </div>
+                            <div className="flex flex-row">
+                              <div className="flex flex-row justify-center items-center">
+                                <div className="mr-2">
+                                  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>
+                                </div>
+                                <p>{shortFormatDate(periodo.fecha_cierre)}</p>
+                              </div>
+                              <div className="flex flex-row justify-center items-center ml-6">
+                                <div className="mr-2">
+                                  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z"></path></svg>
+                                </div>
+                                <p>{getFormattedHours(new Date(periodo.fecha_cierre))}</p>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </>
+                    }
+
 
 
 
@@ -284,7 +402,7 @@ export default function CreateAssignment({
                       <ProcessingAnim title='' />
                     </div>
                   ) : (
-                    <>Crear Asignación de Entrega</>
+                    <>Crear Asignaciones de Entrega</>
                   )}
                 </button>
               </div>

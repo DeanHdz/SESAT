@@ -1,4 +1,5 @@
 
+
 import { CreateAsignacion, UpdateAsignacion } from "../types/ISESAT";
 
 export async function fetchNumAsignacionesPendientesDoctorado( 
@@ -19,6 +20,8 @@ export async function fetchNumAsignacionesPendientesDoctorado(
   const response = await fetch(url, options);
 
   if(!response.ok){
+    console.log(response)
+    console.log('Tipo Asignacion:' + tipo)
     throw(new Error('Error fetching data'))
   }
 
@@ -167,7 +170,7 @@ export async function postAsignacionesPhdByNumAv(
 
   const result = await response.json();
 
-
+  console.log(result)
   return result;
 
 }

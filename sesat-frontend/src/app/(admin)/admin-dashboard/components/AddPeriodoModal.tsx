@@ -52,6 +52,8 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
                     {
                         fecha_apertura: formatAsISODate(start),
                         fecha_cierre: formatAsISODate(end),
+                        fecha_apertura_opc: null,
+                        fecha_cierre_opc: null,
                     },
                     ""
                 ).then((res) => {
