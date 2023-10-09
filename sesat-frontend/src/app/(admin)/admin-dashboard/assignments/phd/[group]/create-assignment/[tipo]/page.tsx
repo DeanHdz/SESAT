@@ -67,27 +67,26 @@ export default function CreateAssignment({
     concluido: boolean;//  ---> No proviene del fetch, se deduce localmente
   }
 
-//REVISAR: Porque cuando se crea la asignacion 4 Inicio de sem y despues haces click
-//en    (<--) de la barra de titulo si actualiza la pagina anterior, mientras que en
-//otro caso no, (por ejemplo al crear asignacion 1)
+  //REVISAR: Porque cuando se crea la asignacion 4 Inicio de sem y despues haces click
+  //en    (<--) de la barra de titulo si actualiza la pagina anterior, mientras que en
+  //otro caso no, (por ejemplo al crear asignacion 1)
 
   useEffect(() => {
     async function fetchDATA() {
-      try {
-        await fetchLatestPeriod("").then((res) => {
-          setPeriodo(res)
-          if (periodo) {
-            let fechaCierrePeriodo = new Date(periodo.fecha_cierre);
-            let fechaActual = new Date();
+      //try {
+        const res = await fetchLatestPeriod("");
+        setPeriodo(res)
+        if (periodo) {
+          let fechaCierrePeriodo = new Date(periodo.fecha_cierre);
+          let fechaActual = new Date();
 
-            periodo.concluido = false;
+          periodo.concluido = false;
 
-            if (fechaActual > fechaCierrePeriodo) {
+          if (fechaActual > fechaCierrePeriodo) {
 
-              periodo.concluido = true;
-            }
+            periodo.concluido = true;
           }
-        })
+        }
 
         if (!["1", "2"].includes(tipo) || tipo === '2' && group !== '4') {
           setnumPendientes(0);  //tipo 2 restringido a avance 4
@@ -101,23 +100,23 @@ export default function CreateAssignment({
           })
         }
 
-      } catch (error: any) {
+      /*} catch (error: any) {
         setError(error)
-      }
+      }*/
     }
 
 
     fetchDATA();
   }, []);
 
-  {/**En caso de URL incorrecta || perdida de conexion */}
+  {/**En caso de URL incorrecta || perdida de conexion */ }
   if (error) {
     return (
       <NotFound />
     )
   }
 
-  {/**Animacion de espera mientras llegan los datos*/}
+  {/**Animacion de espera mientras llegan los datos*/ }
   if (!periodo || typeof numPendientes === 'undefined') {
     return (
       <div className="flex w-full justify-center items-center">
@@ -128,32 +127,32 @@ export default function CreateAssignment({
 
   {/**Establecer Periodo de evaluacion de inicio de semestre */ }
   async function updatePeriodForPHD() {
-    if (periodo) {      
-        setCssError("hidden")
-        setIsSubmitting(true)
-        setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
-        await putPeriod(
-          {
-            id_periodo: periodo.id_periodo,
-            fecha_apertura: formatAsISODate(new Date(periodo.fecha_apertura)),
-            fecha_cierre: formatAsISODate(new Date(periodo.fecha_cierre)),
-            fecha_apertura_opc: formatAsISODate(start),
-            fecha_cierre_opc: formatAsISODate(end),
-          },
-          ""
-        ).catch ((error) => {
-          setUpdateError(true)
-          setCSSDisabled("")
-          setcssHide("hidden")//oculta boton crear
-          setIsSubmitting(false)
-          setmsg("Algo salió mal")
-          setCssError("")
-        })
-      
+    if (periodo) {
+      setCssError("hidden")
+      setIsSubmitting(true)
+      setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
+      await putPeriod(
+        {
+          id_periodo: periodo.id_periodo,
+          fecha_apertura: formatAsISODate(new Date(periodo.fecha_apertura)),
+          fecha_cierre: formatAsISODate(new Date(periodo.fecha_cierre)),
+          fecha_apertura_opc: formatAsISODate(start),
+          fecha_cierre_opc: formatAsISODate(end),
+        },
+        ""
+      ).catch((error) => {
+        setUpdateError(true)
+        setCSSDisabled("")
+        setcssHide("hidden")//oculta boton crear
+        setIsSubmitting(false)
+        setmsg("Algo salió mal")
+        setCssError("")
+      })
+
     }
   }
 
-  {/**Crear grupo de asignaciones */}
+  {/**Crear grupo de asignaciones */ }
   async function postAsignment() {
     setIsSubmitting(true);
 
@@ -193,10 +192,10 @@ export default function CreateAssignment({
   async function handleSubmit(e: any) {
     e.preventDefault();
 
-    {/**Si la cadena no esta vacia o contiene solo espacios ' ' */}
+    {/**Si la cadena no esta vacia o contiene solo espacios ' ' */ }
     if (description != null && description.trim().length > 0) {
 
-      {/**Caso doctorado evaluacion de medio termino */}
+      {/**Caso doctorado evaluacion de medio termino */ }
       if (group === '4' && tipo === '2') {
         if (start && end && start > end) {
           setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
@@ -206,7 +205,7 @@ export default function CreateAssignment({
         }
       }
 
-      {/**Si no ocurrio ningun error al guardar el periodo de entrega*/}
+      {/**Si no ocurrio ningun error al guardar el periodo de entrega*/ }
       if (!updateError) {
         postAsignment();
       }
@@ -232,9 +231,9 @@ export default function CreateAssignment({
               <div className={`font-SESAT rounded-md w-full p-3 my-3 bg-blue-100 ${cssOk}`}>
                 {msg}
               </div>
-              <div className="w-full flex lg:flex-row h-fit py-6 mt-6">
+              <div className="w-full flex flex-col lg:flex-row h-fit py-6 mt-6">
                 {/**Title/Instructions */}
-                <div className="w-3/6">
+                <div className="w-full lg:w-3/6">
                   <label className="mb-3 block text-xl font-semibold">Título</label>
                   <label className="mb-10 block text-lg font-normal opacity-90 w-full">
                     {title}
@@ -255,7 +254,7 @@ export default function CreateAssignment({
                 </div>
 
 
-                <div className="w-3/6 h-fit ml-3 bg-light-blue-10 gray__border">
+                <div className="w-full lg:w-3/6 h-fit lg:ml-3 mt-10 lg:mt-0 bg-light-blue-10 gray__border">
                   {/**Dates Header */}
                   <div className="px-6 py-3 mb-3 flex flex-row items-center text-xl font-semibold border-b">
                     <span>Fecha</span>

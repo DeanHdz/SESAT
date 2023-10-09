@@ -121,32 +121,7 @@ export async function fetchCountAlumnosDoctoradoOfNumAv(
   return result;
 
 }
-//Numero de Alumnos activos de doctorado con numero de Avance ':numAvance'
-export async function fetchNumAlumnosDoctorado(  
-  token: string,
-) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/tesis-status/phd`;
 
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'no-store' as RequestCache,
-  };
-  const response = await fetch(url, options);
-
-  if(!response.ok){
-    throw(new Error('Error fetching data'))
-  }
-
-  const result = await response.json();
-
-
-  return result;
-
-}
 
 //Numero de Alumnos activos de maestria con numero de Avance ':numAvance' y de tiempo completo
 export async function fetchNumAlumnosMaestriaTiempoComp(  

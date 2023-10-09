@@ -134,7 +134,7 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 6 })
+      .andWhere('tesis.ultimo_avance BETWEEN :min AND :max', { min: 6, max: 8 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Doctorado' })
       .getRawMany()     // fetch raw results, which will give us data from all the tables.
     //otherwise it won't return anything
@@ -187,27 +187,6 @@ export class TesisService {
     return resp;
   }
 
-  /**Devuelve el numero de alumnos de doctorado activos para cada numero de avance
-   * El formato es una tabla de dos columnas, una con el numero de avance y la otra la cantidad de alumnos
-   * Si no hay alumnos NO agrega el renglon
-   */
-  async findTesisStatusPhd() {
-    const resp = await this.tesisRepository
-      .createQueryBuilder("t")
-      .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
-      .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
-      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
-      .select("t.ultimo_avance")
-      .addSelect("COUNT(t.id_tesis)", "count")
-      .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 8 })
-      .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
-      .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
-      .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Doctorado' })
-      .groupBy("t.ultimo_avance")
-      .getRawMany()
-
-    return resp;
-  }
 
   async findTesisStatusMastersFullTime() {
     const resp = await this.tesisRepository

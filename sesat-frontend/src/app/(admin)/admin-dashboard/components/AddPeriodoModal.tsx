@@ -21,7 +21,7 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
     const [cssOk, setCssOk] = useState("hidden")
     const [msg, setmsg] = useState("")
     const router = useRouter()
-    let info = '¿Cómo funciona? El inicio y fin del periodo marcan la apertura y cierre de los avances de tesis'
+    let info = 'El inicio y fin del periodo marcan la apertura y cierre de los avances de tesis, este periodo es global, es decir, aplica para maestría y doctorado'
 
 
     function setDefaultState() {
@@ -33,46 +33,46 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
         router.refresh();//on test
 
     }
-        
+
 
     async function handleSubmit(event: any) {
         event.preventDefault();
         if (start && end && start > end) {
             setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
             setCssError("")
-        } else if(!esPeriodoValido(previousEndDate, start)){
+        } else if (!esPeriodoValido(previousEndDate, start)) {
             setmsg("No se puede crear más de un periodo por semestre, los avances de tesis son semestrales")
             setCssError("")
-        }else{
-            try {
-                setCssError("hidden")
-                setIsSubmitting(true)
-                setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")                
-                await postNewPeriod(
-                    {
-                        fecha_apertura: formatAsISODate(start),
-                        fecha_cierre: formatAsISODate(end),
-                        fecha_apertura_opc: null,
-                        fecha_cierre_opc: null,
-                    },
-                    ""
-                ).then((res) => {
-                    if (res) {                        
-                        setcssHide("hidden")//oculta boton crear
-                        setCSSDisabled("")
-                        setmsg("El periodo se ha creado correctamente")
-                        setCssOk("")
-                        setIsSubmitting(false)
-                    }
+        } else {
+            setCssError("hidden")
+            setIsSubmitting(true)
+            setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
 
-                })
-            } catch (error) {
+            //Aqui hacer request a Tesis para actualizar numeros de avance
+            await postNewPeriod(
+                {
+                    fecha_apertura: formatAsISODate(start),
+                    fecha_cierre: formatAsISODate(end),
+                    fecha_apertura_opc: null,
+                    fecha_cierre_opc: null,
+                },
+                ""
+            ).then((res) => {
+                if (res) {
+                    setcssHide("hidden")//oculta boton crear
+                    setCSSDisabled("")
+                    setmsg("El periodo se ha creado correctamente")
+                    setCssOk("")
+                    setIsSubmitting(false)
+                }
+
+            }).catch(() => {
                 setCSSDisabled("")
                 setcssHide("hidden")//oculta boton crear
                 setIsSubmitting(false)
                 setmsg("Algo salió mal")
                 setCssError("")
-            }
+            })
         }
 
 
@@ -137,7 +137,7 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
                                             enableTime: true,
                                             noCalendar: false,
                                             minDate: "today",
-                                            static: true,                                             
+                                            static: true,
                                         }}
                                         //data-enable-time
                                         placeholder="Inicio"
@@ -165,7 +165,7 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
                                             enableTime: true,
                                             noCalendar: false,
                                             minDate: "today",
-                                            static: true,  
+                                            static: true,
                                         }}
                                         placeholder="Fin"
                                         value={end}

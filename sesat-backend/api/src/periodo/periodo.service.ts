@@ -12,7 +12,7 @@ export class PeriodoService {
     private periodoRepository: Repository<Periodo>
   ) {}
 
-  create(createPeriodoDto: CreatePeriodoDto) {
+  create(createPeriodoDto: CreatePeriodoDto) {    
     return this.periodoRepository.save(createPeriodoDto);
   }
 

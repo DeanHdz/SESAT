@@ -59,12 +59,6 @@ export class TesisController {
   findStudentsGroupCount(@Param("numAv") numAv: string) {
     return this.tesisService.findStudentsCountByNumAv(+numAv);
   }
-  //por que no funciona con 3 guiones?  tesis-status/masters/mid-time
-  /**Encuentra cuantos alumnos de doctorado activos hay agrupados por numero de avance */
-  @Get("/tesis-status/phd")
-  findTesisStatusPhd() {
-    return this.tesisService.findTesisStatusPhd();
-  }
 
   /**Encuentra cuantos alumnos de maestria medio tiempo activos hay agrupados por numero de avance */
   @Get("/tesis-status/masters/mid-time")

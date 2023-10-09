@@ -27,6 +27,11 @@ export class AsignacionController {
     return this.asignacionService.findOne(+id);
   }
 
+  @Get('groups-status/phd')
+  findStudentStatus(@Param('id') id: string) {
+    return this.asignacionService.findStatusPHD();
+  }
+
   //Obtener una asignacion X (no importa) de un grupo en especifico
   //para ver/actualizar campos
   @Get('phd/one-in-group/:numAv/:tipo/:id')

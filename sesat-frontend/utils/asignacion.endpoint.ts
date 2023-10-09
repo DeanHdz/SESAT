@@ -2,6 +2,33 @@
 
 import { CreateAsignacion, UpdateAsignacion } from "../types/ISESAT";
 
+
+export async function fetchGroupStatusPHD( 
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/groups-status/phd`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache,
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
 export async function fetchNumAsignacionesPendientesDoctorado( 
   numAvance: string, 
   tipo: string,
@@ -19,9 +46,7 @@ export async function fetchNumAsignacionesPendientesDoctorado(
   };
   const response = await fetch(url, options);
 
-  if(!response.ok){
-    console.log(response)
-    console.log('Tipo Asignacion:' + tipo)
+  if(!response.ok){    
     throw(new Error('Error fetching data'))
   }
 

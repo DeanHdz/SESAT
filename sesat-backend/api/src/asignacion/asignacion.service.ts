@@ -152,6 +152,61 @@ export class AsignacionService {
       .getRawMany();
   }*/
 
+  async findAlumnosInscritosPHD() {    
+    const alumnos = await this.tesisRepository
+      .createQueryBuilder("t")
+      .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
+      .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
+      .select("t.ultimo_avance AS num_avance")
+      .addSelect("COUNT(t.id_tesis) AS alumnos_inscritos")
+      .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 8 })
+      .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
+      .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
+      .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Doctorado' })
+      .groupBy("t.ultimo_avance")
+      .getRawMany();
+
+    return alumnos;
+  }
+
+/*DEVUELVE UN OBJETO PARA CADA GRUPO QUE TENGA ALUMNOS INSCRITOS
+     {
+        num_avance: number;
+        alumnos_inscritos: number;
+        num_pendientes: number;        
+      }
+    */
+  async findStatusPHD() {
+    let result;
+    await this.findAlumnosInscritosPHD().then(async (alumnosArray) => {  
+      result = new Array(alumnosArray.length)    
+      const promises = alumnosArray.map(async (elem, i) => {
+        let aux = await this.findNumAsignacionesPendientesPhd(elem.num_avance, 1);
+        result[i] = {
+          num_avance: elem.num_avance,
+          alumnos_inscritos: parseInt(elem.alumnos_inscritos),
+          num_pendientes: parseInt(aux),
+        };
+
+        if (elem.num_avance === 4) {          
+          let aux2 = await this.findNumAsignacionesPendientesPhd(elem.num_avance, 2);
+          result[i] = {
+            num_avance: elem.num_avance,
+            alumnos_inscritos: parseInt(elem.alumnos_inscritos),
+            num_pendientes: parseInt(aux) + parseInt(aux2),
+          };
+        }
+
+      })
+
+      await Promise.all(promises);
+
+    })
+
+    return result;
+  }
+
   /**NUMERO DE ASIGNACIONES PENDIENTES DOCTORADO*/
   async findNumAsignacionesPendientesPhd(numAvance: number, tipo: number) {
 
