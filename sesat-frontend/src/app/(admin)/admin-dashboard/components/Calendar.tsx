@@ -73,10 +73,6 @@ export default function Calendar(
     );
   }
 
-  const handleDay = (arg: { dateStr: any }): void => {
-    alert(arg.dateStr);
-  };
-
   function showEventDetails(eventClickInfo: any) {
     seteventTitle(eventClickInfo.event.title);
     setstartDate(eventClickInfo.event.start);
@@ -106,8 +102,6 @@ export default function Calendar(
 
   return (
     <>
-      
-
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -121,7 +115,7 @@ export default function Calendar(
         eventClick={showEventDetails}
         select={showNewEventModal} //Al hacer click o select
         //allDayContent
-        nextDayThreshold={"23:00"}
+        //nextDayThreshold={"23:00"}
         headerToolbar={{
           start: "today",
           center: "title",
