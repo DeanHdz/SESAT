@@ -6,7 +6,6 @@ import TesisView from "@/app/components/TesisView"
 import AddComment from "@/app/components/AddComment"
 import Reply from "@/app/components/Reply"
 import Contact from "@/app/components/Contact"
-import { Usuario } from "/../../../types/ISESAT";
 
 export default function Home() {
   return (
@@ -17,8 +16,6 @@ export default function Home() {
 
       <Reply userName="Yo" date="Hoy" body="Hola" />
       <AddComment id_asignacion={3}/>
-
-      <Contact asesor={Usuario}/>
     </main>
   )
 }
