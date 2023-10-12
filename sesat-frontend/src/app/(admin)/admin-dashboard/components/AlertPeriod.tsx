@@ -64,7 +64,7 @@ export default async function AlertPeriod() {
                                 <h3 className="font-bold">¡No hay un periodo definido!</h3>
                                 <div className="text-xs">El periodo anterior ha concluido, debe establecer uno nuevo para este semestre</div>
                             </div>
-                            <AddPeriodoModal previousEndDate={new Date(periodo.fecha_cierre)} startDate={new Date()} endDate={new Date()} />
+                            <AddPeriodoModal idPeriodo={periodo.id_periodo} previousEndDate={new Date(periodo.fecha_cierre)} startDate={new Date()} endDate={new Date()} />
                         </div>
                     )}
 

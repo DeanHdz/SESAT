@@ -29,6 +29,32 @@ export async function fetchGroupStatusPHD(
 
 }
 
+export async function fetchGroupStatusMastersDegree( 
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/groups-status/md`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache,
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
 export async function fetchNumAsignacionesPendientesDoctorado( 
   numAvance: string, 
   tipo: string,
@@ -223,6 +249,36 @@ export async function updateAsignacionesPhdByNumAv(
   const result = await response.json();
 
 
+  return result;
+
+}
+
+
+export async function postAsignacionesMastersDgByNumAv( 
+  numAvance: string, 
+  asignacionDto: CreateAsignacion,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/pendientes/md/${numAvance}`;
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(asignacionDto),
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    alert(response.statusText)
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+  console.log(result)
   return result;
 
 }

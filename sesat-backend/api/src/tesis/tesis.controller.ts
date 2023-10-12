@@ -77,6 +77,17 @@ export class TesisController {
     return this.tesisService.update(updateTesisDto);
   }
 
+  /**Todos los alumnos que cuya asignacion cumpla con:
+   * Estatus entregada = 1
+   * num_avance === ultimo_avance
+   * estado_finalizacion = false
+   * Se actualiza numero de avance(semestre) al crear un periodo
+   */
+  @Put("update-num_avance/all/:id_periodo")
+  updateNumAvance(@Param("id_periodo") id_periodo: string) {
+    return this.tesisService.updateNumAvanceForEvaluatedStudents(+id_periodo);
+  }
+
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.tesisService.remove(+id);

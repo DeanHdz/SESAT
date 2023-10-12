@@ -43,7 +43,7 @@ export function comparaFecha(fecha: Date): boolean {
 }
 
 //Devuelve true si la fecha (start, end) esta dentro del periodo global (startPeriod, endPeriod)
-export function isDateWithinGlobalPeriod(startPeriod: Date, endPeriod: Date, start: Date, end: Date): boolean {    
+export function isDateWithinGlobalPeriod(startPeriod: Date, endPeriod: Date, start: Date, end: Date): boolean {
     return startPeriod <= start && endPeriod > end;
 }
 
@@ -54,20 +54,30 @@ fecha 'nuevo' cumpla con las condiciones siguientes:
 Primero, extraer el año de la variable 'anterior'
 Si la fecha 'anterior' esta esta entre Enero-Julio del año extraido, la fecha 'nuevo' debe estar entre Agosto-Diciembre del año extraido
 
-Si la fecha 'anterior' está entre Agosto-Diciembre del año extraido, la fecha  'nuevo' debe estar entre Enero-Julio del año extraido + 1
+Si la fecha de cierre 'anterior' está entre Agosto-Diciembre del año extraido, la fecha  'nuevo' debe estar entre Enero-Julio del año extraido + 1
  */
-
+//prevEndDate       newStartDate
 export function esPeriodoValido(anterior: Date, nuevo: Date): boolean {
     const añoAnterior = anterior.getFullYear();
-    const mesAnterior = anterior.getMonth();
+    const mesAnterior = anterior.getMonth(); 
     const añoNuevo = nuevo.getFullYear();
     const mesNuevo = nuevo.getMonth();
+    //PENDING REVIEW
 
     if (mesAnterior >= 0 && mesAnterior <= 6) { // Enero-Julio
-        return añoNuevo === añoAnterior && mesNuevo >= 7 && mesNuevo <= 11; // Agosto-Diciembre
+        if (añoNuevo - añoAnterior >= 1) {//si ha pasado mas de un año
+            return true;
+        } else {
+            return añoNuevo === añoAnterior && mesNuevo >= 7 && mesNuevo <= 11; // Agosto-Diciembre
+        }
+
     } else if (mesAnterior >= 7 && mesAnterior <= 11) { // Agosto-Diciembre
-        return añoNuevo === añoAnterior + 1 && mesNuevo >= 0 && mesNuevo <= 6; // Enero-Julio
+        if (añoNuevo - añoAnterior > 1) {//si ha pasado mas de un año
+            return true;
+        } else {
+            return añoNuevo === añoAnterior + 1 && mesNuevo >= 0 && mesNuevo <= 6; // Enero-Julio
+        }
     }
 
-    return false;
+    return true;
 }

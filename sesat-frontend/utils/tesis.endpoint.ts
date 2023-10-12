@@ -122,6 +122,32 @@ export async function fetchCountAlumnosDoctoradoOfNumAv(
 
 }
 
+export async function updateNumAvanceForEvaluatedStudents(  
+  id_periodo: number,
+  token: string, 
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/update-num_avance/all/${id_periodo}`;
+ 
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },    
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
 
 //Numero de Alumnos activos de maestria con numero de Avance ':numAvance' y de tiempo completo
 export async function fetchNumAlumnosMaestriaTiempoComp(  

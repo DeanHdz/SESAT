@@ -73,7 +73,7 @@ export default function CreateAssignment({
 
   useEffect(() => {
     async function fetchDATA() {
-      //try {
+      try {
         const res = await fetchLatestPeriod("");
         setPeriodo(res)
         if (periodo) {
@@ -100,9 +100,9 @@ export default function CreateAssignment({
           })
         }
 
-      /*} catch (error: any) {
+      } catch (error: any) {
         setError(error)
-      }*/
+      }
     }
 
 

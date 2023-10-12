@@ -6,10 +6,11 @@ import ProcessingAnim from '@/app/components/ProcessingAnim';
 import { postNewPeriod } from '../../../../../utils/periodo.endpoint';
 import { useRouter } from 'next/navigation';
 import { esPeriodoValido, formatAsISODate } from '../../../../../utils/utils';
+import { updateNumAvanceForEvaluatedStudents } from '../../../../../utils/tesis.endpoint';
 
 
 
-const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndDate: Date, startDate: Date, endDate: Date }) => {
+const AddPeriodoModal = ({ idPeriodo, previousEndDate, startDate, endDate }: { idPeriodo: number, previousEndDate: Date, startDate: Date, endDate: Date }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [start, setStartDate] = useState<Date>(startDate)
@@ -17,6 +18,7 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [cssDisabled, setCSSDisabled] = useState("")
     const [cssHide, setcssHide] = useState("")
+    const [error, setError] = useState(false)
     const [cssError, setCssError] = useState("hidden")
     const [cssOk, setCssOk] = useState("hidden")
     const [msg, setmsg] = useState("")
@@ -34,21 +36,17 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
 
     }
 
-
-    async function handleSubmit(event: any) {
-        event.preventDefault();
-        if (start && end && start > end) {
-            setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
+    async function updateData() {
+        await updateNumAvanceForEvaluatedStudents(idPeriodo, "").catch(() => {
+            setError(true)
+            setCSSDisabled("")
+            setcssHide("hidden")
+            setIsSubmitting(false)
+            setmsg("Algo salió mal")
             setCssError("")
-        } else if (!esPeriodoValido(previousEndDate, start)) {
-            setmsg("No se puede crear más de un periodo por semestre, los avances de tesis son semestrales")
-            setCssError("")
-        } else {
-            setCssError("hidden")
-            setIsSubmitting(true)
-            setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
+        })
 
-            //Aqui hacer request a Tesis para actualizar numeros de avance
+        if (!error) {
             await postNewPeriod(
                 {
                     fecha_apertura: formatAsISODate(start),
@@ -73,6 +71,28 @@ const AddPeriodoModal = ({ previousEndDate, startDate, endDate }: { previousEndD
                 setmsg("Algo salió mal")
                 setCssError("")
             })
+        }
+    }
+
+
+    async function handleSubmit(event: any) {
+        event.preventDefault();
+        if (start && end && start > end) {
+            setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
+            setCssError("")
+        } else if (!esPeriodoValido(previousEndDate, start)) {
+            setmsg("No se puede crear más de un periodo por semestre, los avances de tesis son semestrales")
+            setCssError("")
+        } else {
+            setCssError("hidden")
+            setIsSubmitting(true)
+            setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
+
+            //Aqui hacer request a Tesis para actualizar numeros de avance
+            updateData()
+
+
+
         }
 
 
