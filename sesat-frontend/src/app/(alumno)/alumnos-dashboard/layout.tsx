@@ -1,11 +1,12 @@
+import Drawer from '../components/Drawer'
 import '../../globals.css'
-import Navbar from "@/app/components/Navbar"
-import { Metadata } from "next"
-
+import type { Metadata } from 'next'
+import AlumnoNavbar from '../components/AlumnoNavbar'
 
 export const metadata: Metadata = {
-  title: 'Alumnos | Dashboard',
-  description: 'SESAT Dashboard',
+  title: 'Sistema de Evaluación y Seguimiento de Tesis',
+  description: 'Panel de asesor',
+  icons: '/images/uaslp-logo.png',
 }
 
 export default function RootLayout({
@@ -13,11 +14,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
-    <html lang="en">
-      <body>
-        <Navbar />
-        {children}
+    <html lang="es">
+      <body className="w-screen overflow-x-hidden mb-10">
+        <div className="flex lg:flex-row justify-center w-11/12 m-auto mt-6">
+          <div className="hidden lg:flex lg:w-3/12">
+            <Drawer />
+          </div>
+          <div className="w-full lg:w-9/12">
+            <div className='lg:flex'>
+              <AlumnoNavbar />
+            </div>
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   )
