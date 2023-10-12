@@ -190,6 +190,27 @@ export class TesisService {
   }
 
 
+  //Devuelve cuantos alumnos de doctorado hay para x numAvance(X seminario)
+  async findMDStudentsCountByNumAv(numAvance: number, modalidad: number) {
+    let modName = modalidad === 1 ? 'Tiempo Completo' : 'Medio Tiempo';
+    const resp = await this.tesisRepository
+      .createQueryBuilder("t")
+      .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
+      .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
+      .innerJoin(Modalidad, "mod", "da.id_modalidad = mod.id_modalidad")
+      .select("COUNT(t.id_tesis)", "count")
+      .where("t.ultimo_avance = :numAv", { numAv: numAvance })
+      .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
+      .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
+      .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Maestría' })
+      .andWhere("mod.nombre_modalidad = :nombreMod", { nombreMod: modName })
+      .getRawOne()
+
+    return resp;
+  }
+
+
   async findTesisStatusMastersFullTime() {
     const resp = await this.tesisRepository
       .createQueryBuilder("t")
@@ -265,10 +286,10 @@ export class TesisService {
       .where("t.ultimo_avance = a.num_avance")
       .andWhere("a.estado_entrega = :edoEntrega", { edoEntrega: 1 })
       .andWhere("a.calificacion IS NOT NULL")
-      .andWhere("a.tipo = :tipoAsig", {tipoAsig: 1})
+      .andWhere("a.tipo = :tipoAsig", { tipoAsig: 1 })
       .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
       .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
-      .andWhere("p.id_periodo = :idPeriodo", { idPeriodo: id_periodo })   
+      .andWhere("p.id_periodo = :idPeriodo", { idPeriodo: id_periodo })
       .groupBy("t.id_tesis")
       .getRawMany()
 
@@ -279,10 +300,10 @@ export class TesisService {
   async updateNumAvanceForEvaluatedStudents(id_periodo: number) {
     try {
       let idTesisArray = await this.getEvaluatedStudents(id_periodo)
-      
+
       const promises = idTesisArray.map(async (elem) => {
         //obtener la tesis
-        const tesis = await this.findOne(elem.id_tesis);              
+        const tesis = await this.findOne(elem.id_tesis);
 
         let updated_avance = tesis.ultimo_avance + 1;
         //Crear copia del DTO, asignar ultimo_avance
@@ -292,11 +313,11 @@ export class TesisService {
         };
         //Guardar copia actualizada
         await this.update(updatedTesis)
-              
+
       })
 
       await Promise.all(promises);
-      
+
       return {
         statusCode: HttpStatus.OK,
         message: 'Las asignaciones se han actualizado con éxito',

@@ -67,22 +67,11 @@ export class AsignacionController {
   }
 
 
-
-
-  /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de medio tiempo
-  @Get('num-pendientes/masters/mid-time/:numAvance')
-  findNumAsignacionesPendientesMdMidTime(@Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesMdMidTime(+numAvance);
-  } */
-
-  /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de tiempo completo
-  @Get('num-pendientes/masters/full-time/:numAvance')
-  findNumAsignacionesPendientesMdFullTime(@Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesMdFullTime(+numAvance);
-  } */
-
-
-
+  /**Devuelve El NUMERO de asignaciones entregadas para determinado num_avance de alumnos de maestria*/
+  @Get('num-entregadas/md/:numAvance/:mod')
+  findNumAsignacionesEntregadasMD(@Param('numAvance') numAvance: string, @Param('mod') mod: string) {
+    return this.asignacionService.findNumAsignacionesEntregadasMD(+numAvance, +mod);
+  }
 
 
   @Post()
@@ -97,7 +86,7 @@ export class AsignacionController {
 
   @Post('pendientes/md/:numAv')
   createMastersGroup(@Param('numAv') numAv: string, @Body() createAsignacionDto: CreateAsignacionDto) {
-    return this.asignacionService.createGroupByNumaAvance(+numAv, createAsignacionDto);
+    return this.asignacionService.createMastersGroupByNumaAvance(+numAv, createAsignacionDto);
   }
 
   //Actualizar grupo de asignaciones

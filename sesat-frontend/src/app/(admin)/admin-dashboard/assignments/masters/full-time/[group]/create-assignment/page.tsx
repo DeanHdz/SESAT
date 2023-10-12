@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from "react";
 import autosize from "autosize";
-import { useRouter } from "next/navigation";
 import { TitleBar } from "@/app/components/TitleBar";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
-import { fetchLatestPeriod } from "../../../../../../../../../../utils/periodo.endpoint";
+import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
-import { getFormattedHours, shortFormatDate } from "../../../../../../../../../../utils/utils";
-import { fetchNumAsignacionesPendientesMaestriaTiempoComp, postAsignacionesMastersDgByNumAv } from "../../../../../../../../../../utils/asignacion.endpoint";
+import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { fetchNumAsignacionesPendientesMaestriaTiempoComp, postAsignacionesMastersDgByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 
 {/**
 Docs:
@@ -25,15 +24,12 @@ export default function CreateAssignment({
   params: { group: string, tipo: string }
 }) {
 
-  const { group, tipo } = params
+  const { group } = params
 
   const names = [
-    "Seminario de Investigación",
-    "Avance 1",
-    "Seminario de Tesis I (20% de avance)",
-    "Avance 3",
-    "Seminario de Tesis II (50% de avance)",
-    "Avance 5",
+    "Seminario de Investigación",    
+    "Seminario de Tesis I (20% de avance)",    
+    "Seminario de Tesis II (50% de avance)",    
     "Seminario de Tesis III (90% de avance)"
   ]
 
@@ -77,17 +73,13 @@ export default function CreateAssignment({
           }
         }
 
-        if (tipo !== '1') {
-          setnumPendientes(0);
-        } else {
-          await fetchNumAsignacionesPendientesMaestriaTiempoComp(group, "").then((result) => {
+        await fetchNumAsignacionesPendientesMaestriaTiempoComp(group, "").then((result) => {
 
-            let total = parseInt(result)
+          let total = parseInt(result)
 
-            setnumPendientes(total) //0 -> activa  | >0 -> pendiente
+          setnumPendientes(total) //0 -> activa  | >0 -> pendiente
 
-          })
-        }
+        })
 
       } catch (error: any) {
         setError(error)
@@ -133,7 +125,7 @@ export default function CreateAssignment({
       documento: null,
       estado_entrega: 0,
       retroalimentacion: null,
-      tipo: parseInt(tipo),
+      tipo: 1,                    //El tipo siempre es 1 para maestria
       fecha_presentacion: null,
     }, "").then((res) => {
 

@@ -60,6 +60,12 @@ export class TesisController {
     return this.tesisService.findStudentsCountByNumAv(+numAv);
   }
 
+  /**Encuentra cuantos alumnos de doctorado activos hay para X numero de avance */
+  @Get("/students-count/md/:numAv/:modalidad")
+  findMDStudentsGroupCount(@Param("numAv") numAv: string, @Param("modalidad") modalidad: string) {
+    return this.tesisService.findMDStudentsCountByNumAv(+numAv, +modalidad);
+  }
+
   /**Encuentra cuantos alumnos de maestria medio tiempo activos hay agrupados por numero de avance */
   @Get("/tesis-status/masters/mid-time")
   findTesisStatusMastersMidTime() {

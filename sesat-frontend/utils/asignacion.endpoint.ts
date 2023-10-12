@@ -83,12 +83,43 @@ export async function fetchNumAsignacionesPendientesDoctorado(
 
 }
 
+
+
 export async function fetchNumAsignacionesEntregadasDoctorado( 
   numAvance: string, 
   tipo: string,
   token: string,
 ) {
   const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-entregadas/phd/${numAvance}/${tipo}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache,
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+
+export async function fetchNumAsignacionesEntregadasMaestria( 
+  numAvance: string, 
+  modalidad: string,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-entregadas/md/${numAvance}/${modalidad}`;
 
   const options = {
     method: 'GET',

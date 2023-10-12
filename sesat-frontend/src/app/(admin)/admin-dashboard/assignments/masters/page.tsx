@@ -18,33 +18,33 @@ type PeriodoProps = {
 }
 
 
-async function fetchAsignacionesDataMastersDegree(fulTimeArray: any[], partTimeArray: any[]) {
+async function fetchAsignacionesDataMastersDegree(fullTimeArray: any[], partTimeArray: any[]) {
 
   let alumnos: Array<AvanceProps>
 
   alumnos = await fetchGroupStatusMastersDegree("").catch(() => { return null })
   //la consulta devuelve solo los numeros de avance con alumnos>0, se debe completar con ceros los renglones faltantes
   if (alumnos && alumnos.length > 0) {
-
+    
     alumnos.forEach(obj => {
-      if (obj.modalidad = 'Tiempo Completo') {
-        fulTimeArray.push(obj)
+      if (obj.modalidad === 'Tiempo Completo') {
+        fullTimeArray.push(obj)
       } else {
         partTimeArray.push(obj)
       }
-    });
-
+    });    
     // Crear un conjunto para rastrear los valores existentes de t_ultimo_avance
-    let existentesA = new Set(fulTimeArray.map(item => item.num_avance));
+    let existentesA = new Set(fullTimeArray.map(item => item.num_avance));
     let existentesB = new Set(partTimeArray.map(item => item.num_avance));
 
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 4; i++) {
       // Si el valor de i no está en el conjunto, agregar un nuevo elemento al arreglo
       if (!existentesA.has(i)) {
-        fulTimeArray.push({ num_avance: i, alumnos_inscritos: 0, num_pendientes: -1, modalidad: '' });
+        fullTimeArray.push({ num_avance: i, alumnos_inscritos: 0, num_pendientes: -1, modalidad: '' });
       }
     }
-    fulTimeArray.sort((a, b) => a.num_avance - b.num_avance)
+    fullTimeArray.sort((a, b) => a.num_avance - b.num_avance)    
+    
 
     for (let i = 1; i <= 7; i++) {
       // Si el valor de i no está en el conjunto, agregar un nuevo elemento al arreglo
@@ -52,7 +52,7 @@ async function fetchAsignacionesDataMastersDegree(fulTimeArray: any[], partTimeA
         partTimeArray.push({ num_avance: i, alumnos_inscritos: 0, num_pendientes: -1, modalidad: '' });
       }
     }
-    partTimeArray.sort((a, b) => a.num_avance - b.num_avance)
+    partTimeArray.sort((a, b) => a.num_avance - b.num_avance)    
 
   }
 
