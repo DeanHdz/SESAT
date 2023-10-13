@@ -81,3 +81,17 @@ export function esPeriodoValido(anterior: Date, nuevo: Date): boolean {
 
     return true;
 }
+
+
+export function isPeriodActive(endDate: string): boolean {  
+
+    let fechaCierrePeriodo = new Date(endDate);
+    let fechaActual = new Date();
+  
+    let result = false;
+    if (fechaActual > fechaCierrePeriodo) {
+  
+      result = true;
+    }
+    return result;
+  }

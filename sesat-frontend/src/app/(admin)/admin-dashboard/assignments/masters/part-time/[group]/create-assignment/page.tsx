@@ -8,7 +8,7 @@ import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
 import { getFormattedHours, isPeriodActive, shortFormatDate } from "../../../../../../../../../utils/utils";
-import { fetchNumAsignacionesPendientesMaestriaTiempoComp, postAsignacionesMastersDgByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
+import { fetchNumAsignacionesPendientesMaestriaMedioTiempo, fetchNumAsignacionesPendientesMaestriaTiempoComp, postAsignacionesMastersDgByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 
 {/**
 Docs:
@@ -47,7 +47,6 @@ export default function CreateAssignment({
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
   let periodoConcluido
-
   type PeriodoProps = {
     id_periodo: number;
     fecha_apertura: string;
@@ -65,7 +64,7 @@ export default function CreateAssignment({
 
         periodoConcluido = isPeriodActive(res.fecha_cierre)
 
-        await fetchNumAsignacionesPendientesMaestriaTiempoComp(res.id_periodo, group, "").then((result) => {
+        await fetchNumAsignacionesPendientesMaestriaMedioTiempo(res.id_periodo, group, "").then((result) => {
 
           let total = parseInt(result)
 
@@ -107,7 +106,7 @@ export default function CreateAssignment({
       id_formato_evaluacion: null,
       id_acta_evaluacion: null,
       id_tesis: null,
-      id_modalidad: 1, //Tiempo completo
+      id_modalidad: 2, //medio Tiempo
       id_periodo: periodo?.id_periodo as number,
       num_avance: index + 1,
       titulo: title as string,

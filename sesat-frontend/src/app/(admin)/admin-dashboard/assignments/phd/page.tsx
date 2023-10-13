@@ -3,6 +3,7 @@ import { fetchGroupStatusPHD } from "../../../../../../utils/asignacion.endpoint
 import Alert from "../../components/Alert";
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
 import NotFound from "../../not-found";
+import { isPeriodActive } from "../../../../../../utils/utils";
 
 
 type AvanceProps = {
@@ -17,11 +18,11 @@ type PeriodoProps = {
 }
 
 //Cuantos alumnos de doctorado hay para cada numero de avance y cuantas asignaciones estan pendientes
-async function fetchAsignacionesData(): Promise<AvanceProps[]> {
+async function fetchAsignacionesData(id_periodo: number): Promise<AvanceProps[]> {
 
   let alumnos: Array<AvanceProps>
 
-  alumnos = await fetchGroupStatusPHD("").catch(() => { return null })
+  alumnos = await fetchGroupStatusPHD(id_periodo, "").catch(() => { return null })
   //la consulta devuelve solo los numeros de avance con alumnos>0, se debe completar con ceros los renglones faltantes
   if (alumnos && alumnos.length > 0) {
 
@@ -50,7 +51,7 @@ function getStatus(elem: AvanceProps): number {
   return 1;                                     //activa
 
 }
-
+/*
 async function fetchStatusPeriodo(): Promise<boolean> {
   let result;
   await fetchLatestPeriod("").then((res) => {
@@ -72,13 +73,14 @@ async function fetchStatusPeriodo(): Promise<boolean> {
 
   })
   return result!;
-}
+}*/
 
 
 
 export default async function Home() {
-  const statusArray = await fetchAsignacionesData()  
-  const periodoConcluido = await fetchStatusPeriodo().catch(() => {return undefined});  
+  const periodo: PeriodoProps = await fetchLatestPeriod("").catch(() => { return null })
+  const statusArray = await fetchAsignacionesData(periodo.id_periodo).catch(() => { return null }) 
+  const periodoConcluido = isPeriodActive(periodo.fecha_cierre)
 
 
   return (

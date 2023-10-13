@@ -49,8 +49,7 @@ export default function CreateAssignment({
   const [cssHideBtnEdit, setcssHideBtnEdit] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [cssError, setCssError] = useState("hidden")
-  const [error, setError] = useState<undefined | boolean>(undefined)
-  const [updateError, setUpdateError] = useState(false);
+  const [error, setError] = useState<undefined | boolean>(undefined)  
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
   const [editMode, setEditMode] = useState(false)
@@ -88,20 +87,8 @@ export default function CreateAssignment({
 
 
   useEffect(() => {
-    async function fetchDATA() {
-
-      await fetchNumAsignacionesPendientesDoctorado(group, tipo, "").then((result) => {
-
-        let total = parseInt(result)
-
-        setnumPendientes(total) //0 -> activa  | >0 -> pendiente
-
-      })/*.catch((error) => {
-        setError(true)
-        setnumPendientes(-1)
-      })*/
-
-      await fetchLatestPeriod("").then((res) => {
+    async function fetchDATA() {      
+      await fetchLatestPeriod("").then(async (res) => {
         let fechaCierrePeriodo = new Date(res.fecha_cierre);
         let fechaActual = new Date();
 
@@ -110,12 +97,21 @@ export default function CreateAssignment({
         if (fechaActual > fechaCierrePeriodo) {
           res.concluido = true;
         }
+        await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, "").then((result) => {
 
+          let total = parseInt(result)
+  
+          setnumPendientes(total) //0 -> activa  | >0 -> pendiente
+  
+        }).catch((error) => {
+          setError(true)
+          setnumPendientes(-1)
+        }) 
         //fetch de datos de la asignacion
-        fetchOneInGroupAsignacionDoctorado(group, tipo, res.id_periodo.toString(), "").then((result) => {
+        await fetchOneInGroupAsignacionDoctorado(group, tipo, res.id_periodo.toString(), "").then((result) => {
           setDescription(result.descripcion)
           setTitle(result.titulo)
-        }).catch((error) => {
+        }).catch(() => {
           setError(true)
           setnumPendientes(-1)
         })
@@ -124,10 +120,10 @@ export default function CreateAssignment({
         setStartDate(new Date(res.fecha_apertura_opc))
         setEndDate(new Date(res.fecha_cierre_opc))
 
-      })/*.catch((error) => {
+      }).catch((error) => {
         setError(true)
         setnumPendientes(-1)
-      })*/
+      })    
 
       //URL constraints, solo en avance 4 se permite tipo 1 y tipo 2
       if (!evaluateParams(tipo, group)) {
@@ -166,7 +162,7 @@ export default function CreateAssignment({
     setcssHide("")
   }
 
-  async function updatePeriodForPHD() {
+  async function updatePeriodForPHD(): Promise<boolean> {
     if (periodo) {
       setCssError("hidden")
       setIsSubmitting(true)
@@ -180,16 +176,17 @@ export default function CreateAssignment({
           fecha_cierre_opc: formatAsISODate(end),
         },
         ""
-      ).catch((error) => {
-        setUpdateError(true)
+      ).catch(() => {        
         setCSSDisabled("")
         setcssHide("hidden")//oculta boton crear
         setIsSubmitting(false)
         setmsg("Algo salió mal")
         setCssError("")
+        return false
       })
-
+      return true
     }
+    return false;
   }
 
   async function updateAssignmentForPHD() {
@@ -233,7 +230,7 @@ export default function CreateAssignment({
   async function handleSubmit(e: any) {
 
     e.preventDefault();
-
+    let updateErr = false
     {/**Si la cadena no esta vacia o contiene solo espacios ' ' */ }
     if (description != null && description.trim().length > 0) {
 
@@ -243,8 +240,10 @@ export default function CreateAssignment({
           if (start && end && start > end) {
             setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
             setCssError("")
+            updateErr = true          
           } else {
-            updatePeriodForPHD();
+            updateErr = false
+            updateErr = await updatePeriodForPHD();
           }
         } else {
           setmsg("La fechas para esta asignación deben estar dentro del periodo global")
@@ -253,7 +252,7 @@ export default function CreateAssignment({
       }
 
       {/**Si no ocurrio ningun error al guardar el periodo de entrega*/ }
-      if (!updateError) {
+      if (updateErr === false) {
         updateAssignmentForPHD();
       }
 

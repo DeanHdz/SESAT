@@ -18,22 +18,29 @@ export class AsignacionController {
   }
 
   //Para tablero de asignaciones de doctorado
-  @Get('groups-status/phd')
-  findStudentStatusPHD() {
-    return this.asignacionService.findStatusPHD();
+  @Get('groups-status/phd/:idPeriodo')
+  findStudentStatusPHD(@Param('idPeriodo') idPeriodo: string) {
+    return this.asignacionService.findStatusPHD(+idPeriodo);
   }
 
   //Para tablero de asignaciones de maestria
-  @Get('groups-status/md')
-  findStudentStatusMD() {
-    return this.asignacionService.findStatusMastersDegree();
+  @Get('groups-status/md/:idPeriodo')
+  findStudentStatusMD(@Param('idPeriodo') idPeriodo: string) {
+    return this.asignacionService.findStatusMastersDegree(+idPeriodo);
   }
 
   //Obtener una asignacion X (no importa) de un grupo en especifico
   //para ver/actualizar campos
   @Get('phd/one-in-group/:numAv/:tipo/:id')
-  findOneByNumAvANDTipo(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id') id: string) {
+  findOneByNumAvANDTipoPHD(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id') id: string) {
     return this.asignacionService.findOneByNumAvANDTipo(+numAv, +tipo, +id);
+  }
+
+  //Obtener una asignacion X (no importa) de un grupo en especifico
+  //para ver/actualizar campos
+  @Get('md/one-in-group/:numAv/:mod/:id')
+  findOneByNumAvANDModalidadMD(@Param('numAv') numAv: string, @Param('mod') mod: string, @Param('id') id: string) {
+    return this.asignacionService.findOneByNumAvANDModalidad(+numAv, +mod, +id);
   }
 
   //Devuelve el PDF de la tesis terminada
@@ -43,34 +50,34 @@ export class AsignacionController {
   }
 
   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de doctorado*/
-  @Get('num-pendientes/phd/:numAvance/:tipo')
-  findNumAsignacionesPendientesPhd(@Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
-    return this.asignacionService.findNumAsignacionesPendientesPhd(+numAvance, +tipo);
+  @Get('num-pendientes/phd/:idPeriodo/:numAvance/:tipo')
+  findNumAsignacionesPendientesPhd(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
+    return this.asignacionService.findNumAsignacionesPendientesPhd(+idPeriodo, +numAvance, +tipo);
   }
 
   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de medio tiempo*/
-  @Get('num-pendientes/masters/mid-time/:numAvance')
-  findNumAsignacionesPendientesMdMidTime(@Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesMdMidTime(+numAvance);
+  @Get('num-pendientes/masters/mid-time/:idPeriodo/:numAvance')
+  findNumAsignacionesPendientesMdMidTime(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string) {
+    return this.asignacionService.findNumAsignacionesPendientesMdMidTime(+idPeriodo, +numAvance);
   }
 
   /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de tiempo completo*/
-  @Get('num-pendientes/masters/full-time/:numAvance')
-  findNumAsignacionesPendientesMdFullTime(@Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesMdFullTime(+numAvance);
+  @Get('num-pendientes/masters/full-time/:idPeriodo/:numAvance')
+  findNumAsignacionesPendientesMdFullTime(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string) {
+    return this.asignacionService.findNumAsignacionesPendientesMdFullTime(+idPeriodo, +numAvance);
   }
 
   /**Devuelve El NUMERO de asignaciones entregadas para determinado num_avance de alumnos de doctorado*/
-  @Get('num-entregadas/phd/:numAvance/:tipo')
-  findNumAsignacionesEntregadasPhd(@Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
-    return this.asignacionService.findNumAsignacionesEntregadasPhd(+numAvance, +tipo);
+  @Get('num-entregadas/phd/:idPeriodo/:numAvance/:tipo')
+  findNumAsignacionesEntregadasPhd(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string, @Param('tipo') tipo: string) {
+    return this.asignacionService.findNumAsignacionesEntregadasPhd(+idPeriodo, +numAvance, +tipo);
   }
 
 
   /**Devuelve El NUMERO de asignaciones entregadas para determinado num_avance de alumnos de maestria*/
-  @Get('num-entregadas/md/:numAvance/:mod')
-  findNumAsignacionesEntregadasMD(@Param('numAvance') numAvance: string, @Param('mod') mod: string) {
-    return this.asignacionService.findNumAsignacionesEntregadasMD(+numAvance, +mod);
+  @Get('num-entregadas/md/:idPeriodo/:numAvance/:mod')
+  findNumAsignacionesEntregadasMD(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string, @Param('mod') mod: string) {
+    return this.asignacionService.findNumAsignacionesEntregadasMD(+idPeriodo,+numAvance, +mod);
   }
 
 

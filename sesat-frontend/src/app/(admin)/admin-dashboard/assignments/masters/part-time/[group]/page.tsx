@@ -6,7 +6,7 @@ import EmptyPage from "@/app/components/EmptyPage";
 import { fetchLatestPeriod } from "../../../../../../../../utils/periodo.endpoint";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import { fetchCountAlumnosMaestriaOfNumAv } from "../../../../../../../../utils/tesis.endpoint";
-import { fetchNumAsignacionesEntregadasMaestria, fetchNumAsignacionesPendientesMaestriaTiempoComp } from "../../../../../../../../utils/asignacion.endpoint";
+import { fetchNumAsignacionesEntregadasMaestria, fetchNumAsignacionesPendientesMaestriaMedioTiempo } from "../../../../../../../../utils/asignacion.endpoint";
 import MDAssingmentCardInfo from "../../components/MDAssingmentCardInfo";
 import GenInfoMD from "../../components/GenInfoMD";
 
@@ -23,9 +23,12 @@ export default async function ViewGroup({
   const { group } = params
 
   const names = [
-    "Seminario de Investigación",    
+    "Seminario de Investigación",  
+    'Avance 1',
     "Seminario de Tesis I (20% de avance)",    
+    'Avance 3',
     "Seminario de Tesis II (50% de avance)",    
+    'Avance 5',
     "Seminario de Tesis III (90% de avance)"
   ]
 
@@ -34,9 +37,7 @@ export default async function ViewGroup({
   let alumnos;
 
   let totalPendientes;
-  let totalEntregadas;
-
-  let totalPendientes2;
+  let totalEntregadas;  
   
 
 
@@ -44,16 +45,16 @@ export default async function ViewGroup({
   let hayPendientes;
 
   try {
-    periodo = await fetchLatestPeriod("").catch(() =>{ return null });
-    alumnos = await fetchCountAlumnosMaestriaOfNumAv(group,"1", "").catch(() =>{ return null });
+    periodo = await fetchLatestPeriod("").catch(() => { return null });
+    alumnos = await fetchCountAlumnosMaestriaOfNumAv(group,"2", "").catch(() => { return null });
 
-    totalPendientes = await fetchNumAsignacionesPendientesMaestriaTiempoComp(periodo.id_periodo, group, "").then((result) => {
+    totalPendientes = await fetchNumAsignacionesPendientesMaestriaMedioTiempo(periodo.id_periodo, group, "").then((result) => {
       let total = parseInt(result)  //total=0 --> activa   || total>0 pendiente
       return total
     })
 
-    //'1'  --> Tiempo completo
-    totalEntregadas = await fetchNumAsignacionesEntregadasMaestria(periodo.id_periodo, group, "1", "").then((result) => {
+    //'1'  --> Tiempo completo  2 -->Medio Tiempo
+    totalEntregadas = await fetchNumAsignacionesEntregadasMaestria(periodo.id_periodo, group, "2", "").then((result) => {
       let total = parseInt(result)
       return total
     })
@@ -89,7 +90,7 @@ export default async function ViewGroup({
               )}              
 
               {typeof totalPendientes !== 'undefined' && totalPendientes === 0 && (
-                <MDAssingmentCardInfo title={names[index]} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} modalidad={"full-time"} activa={true} />
+                <MDAssingmentCardInfo title={names[index]} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} modalidad={"part-time"} activa={true} />
               )}
 
 
@@ -103,7 +104,7 @@ export default async function ViewGroup({
             
 
               {typeof totalPendientes !== 'undefined' && totalPendientes > 0 && (
-                <MDAssingmentCardInfo title={names[index]} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} modalidad={"full-time"} activa={false} />
+                <MDAssingmentCardInfo title={names[index]} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} modalidad={"part-time"} activa={false} />
               )}
 
 

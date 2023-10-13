@@ -109,6 +109,32 @@ export class AsignacionService {
     return resp;
   }
 
+
+    //Encontrar una asignacion que pertenezca al grupo 'numAvance' y sea de tipo 'tipo'
+  //Esta consulta puede regresar mas de 1 row, pero solo es necesario 1, ya que 
+  //es para uso del administrador y todas las asignaciones de esta categoria son iguales
+  async findOneByNumAvANDModalidad(numAvance: number, modalidad: number, id_periodo: number) {
+
+    let nombreModalidad = modalidad === 1 ? 'Tiempo Completo' : 'Medio Tiempo'
+    const resp = await this.asignacionRepository.createQueryBuilder('a')
+      .select('a.titulo, a.descripcion')
+
+      .innerJoin(Periodo, "p", "a.id_periodo = p.id_periodo")
+      .innerJoin(Modalidad, "mod", "a.id_modalidad = mod.id_modalidad")
+      .innerJoin(DatosAlumno, "da", "da.id_modalidad = mod.id_modalidad")
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")      
+
+      .where("p.id_periodo = :idPeriodo", { idPeriodo: id_periodo })
+      .andWhere("mod.nombre_modalidad = :modName", { modName: nombreModalidad })
+      .andWhere("a.num_avance = :numAv", { numAv: numAvance })
+      .andWhere("ge.nombre_grado_estudio = :grado", { grado: 'Maestría' })
+
+      .limit(1)
+      .getRawOne();
+
+    return resp;
+  }
+
   //Encontrar el documento de la tesis terminada(ultimo_avance)
   async findDocumentByID(id: number) {
     const resp = await this.asignacionRepository
@@ -172,12 +198,13 @@ export class AsignacionService {
           num_pendientes: number;        
         }
       */
-  async findStatusPHD() {
+  async findStatusPHD(idPeriodo: number) {
+    //considerar periodo
     let result;
     await this.findAlumnosInscritosPHD().then(async (alumnosArray) => {
       result = new Array(alumnosArray.length)
       const promises = alumnosArray.map(async (elem, i) => {
-        let aux = await this.findNumAsignacionesPendientesPhd(elem.num_avance, 1);
+        let aux = await this.findNumAsignacionesPendientesPhd(idPeriodo,elem.num_avance, 1);
         result[i] = {
           num_avance: elem.num_avance,
           alumnos_inscritos: parseInt(elem.alumnos_inscritos),
@@ -185,7 +212,7 @@ export class AsignacionService {
         };
 
         if (elem.num_avance === 4) {
-          let aux2 = await this.findNumAsignacionesPendientesPhd(elem.num_avance, 2);
+          let aux2 = await this.findNumAsignacionesPendientesPhd(idPeriodo, elem.num_avance, 2);
           result[i] = {
             num_avance: elem.num_avance,
             alumnos_inscritos: parseInt(elem.alumnos_inscritos),
@@ -202,12 +229,12 @@ export class AsignacionService {
     return result;
   }
 
-  async findStatusMastersDegree() {
+  async findStatusMastersDegree(idPeriodo: number) {
     let result;
     await this.findAlumnosInscritosMD().then(async (alumnosArray) => {
       result = new Array(alumnosArray.length)
       const promises = alumnosArray.map(async (elem, i) => {
-        let aux = await this.findNumAsignacionesPendientesMastersDegree(elem.num_avance, elem.modalidad);
+        let aux = await this.findNumAsignacionesPendientesMastersDegree(idPeriodo, elem.num_avance, elem.modalidad);
         result[i] = {
           num_avance: elem.num_avance,
           alumnos_inscritos: parseInt(elem.alumnos_inscritos),
@@ -225,11 +252,12 @@ export class AsignacionService {
   }
 
   /**NUMERO DE ASIGNACIONES PENDIENTES DOCTORADO*/
-  async findNumAsignacionesPendientesPhd(numAvance: number, tipo: number) {
+  async findNumAsignacionesPendientesPhd(id_periodo: number, numAvance: number, tipo: number) {
 
     const subquery = this.asignacionRepository.createQueryBuilder('a')
       .select('1')
       .where("a.id_tesis = t.id_tesis")
+      .andWhere("a.id_periodo = :idperiodo", { idperiodo: id_periodo })
       .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("t.ultimo_avance = a.num_avance")
       .andWhere("a.tipo = :tipoAv", { tipoAv: tipo });//tipo 1, normal, tipo 2 caso 4to av doctorado
@@ -251,12 +279,13 @@ export class AsignacionService {
   }
 
   /**NUMERO DE ASIGNACIONES PENDIENTES MAESTRIA MEDIO TIEMPO*/
-  async findNumAsignacionesPendientesMdMidTime(numAvance: number) {
+  async findNumAsignacionesPendientesMdMidTime(idPeriodo: number, numAvance: number) {
 
     const subquery = this.asignacionRepository.createQueryBuilder('a')
       .select('1')
       .where("a.id_tesis = t.id_tesis")
-      .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
+      .andWhere("a.id_periodo = :periodo", { periodo: idPeriodo })
+      .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })      
       .andWhere("t.ultimo_avance = a.num_avance");
 
     const resp = await this.tesisRepository.createQueryBuilder("t")
@@ -278,12 +307,13 @@ export class AsignacionService {
   }
 
   /**NUMERO DE ASIGNACIONES PENDIENTES MAESTRIA TIEMPO COMPLETO*/
-  async findNumAsignacionesPendientesMdFullTime(numAvance: number) {
+  async findNumAsignacionesPendientesMdFullTime(idPeriodo: number, numAvance: number) {
 
     const subquery = this.asignacionRepository.createQueryBuilder('a')
       .select('1')
       .where("a.id_tesis = t.id_tesis")
-      .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
+      .andWhere("a.id_periodo = :periodo", { periodo: idPeriodo })
+      .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })      
       .andWhere("t.ultimo_avance = a.num_avance");
 
     const resp = await this.tesisRepository.createQueryBuilder("t")
@@ -305,11 +335,12 @@ export class AsignacionService {
   }
 
   /**NUMERO DE ASIGNACIONES PENDIENTES MAESTRIA POR NUM_AVANCE, MODALIDAD*/
-  async findNumAsignacionesPendientesMastersDegree(numAvance: number, modalidad: string) {
+  async findNumAsignacionesPendientesMastersDegree(id_periodo: number, numAvance: number, modalidad: string) {
 
     const subquery = this.asignacionRepository.createQueryBuilder('a')
       .select('1')
       .where("a.id_tesis = t.id_tesis")
+      .andWhere("a.id_periodo = :idperiodo", { idperiodo: id_periodo })
       .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("t.ultimo_avance = a.num_avance");
 
@@ -332,7 +363,7 @@ export class AsignacionService {
   }
 
   /**TOTAL DE ASIGNACIONES ENTREGADAS DOCTORADO PARA N AVANCE */
-  async findNumAsignacionesEntregadasPhd(numAvance: number, tipo: number) {
+  async findNumAsignacionesEntregadasPhd(idPeriodo: number, numAvance: number, tipo: number) {
 
     const resp = await this.asignacionRepository.createQueryBuilder('a')
       .select('COUNT(a.id_tesis)', 'count')
@@ -345,6 +376,7 @@ export class AsignacionService {
       .andWhere("t.ultimo_avance = a.num_avance")
       .andWhere("a.tipo = :tipoAv", { tipoAv: tipo })//tipo 1, normal, tipo 2 caso 4to av doctorado  
       .andWhere("a.estado_entrega = :edoEntrega", { edoEntrega: 1 })
+      .andWhere("a.id_periodo = :periodo", { periodo: idPeriodo })
       .andWhere("t.estado_finalizacion = false")
       .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("da.estado_activo = true")
@@ -355,7 +387,7 @@ export class AsignacionService {
   }
 
   /**TOTAL DE ASIGNACIONES ENTREGADAS MAESTRIA PARA N AVANCE */
-  async findNumAsignacionesEntregadasMD(numAvance: number, mod: number) {
+  async findNumAsignacionesEntregadasMD(idPeriodo: number, numAvance: number, mod: number) {
 
     let modalidad = mod === 1 ? 'Tiempo Completo' : 'Medio Tiempo'
     const resp = await this.asignacionRepository.createQueryBuilder('a')
@@ -370,6 +402,7 @@ export class AsignacionService {
       .andWhere("t.ultimo_avance = a.num_avance")
       .andWhere("m.nombre_modalidad = :nombreMod", { nombreMod: modalidad })
       .andWhere("a.estado_entrega = :edoEntrega", { edoEntrega: 1 })
+      .andWhere("a.id_periodo = :periodo", { periodo: idPeriodo })
       .andWhere("t.estado_finalizacion = false")
       .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("da.estado_activo = true")

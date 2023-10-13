@@ -10,7 +10,7 @@ import Flatpickr from "react-flatpickr";
 import { fetchNumAsignacionesPendientesDoctorado, postAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod, putPeriod } from "../../../../../../../../../utils/periodo.endpoint";
-import { formatAsISODate, getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { formatAsISODate, getFormattedHours, isPeriodActive, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 
@@ -74,24 +74,17 @@ export default function CreateAssignment({
   useEffect(() => {
     async function fetchDATA() {
       try {
-        const res = await fetchLatestPeriod("");
+        let res = await fetchLatestPeriod("").catch(() => { return null });
         setPeriodo(res)
+        
         if (periodo) {
-          let fechaCierrePeriodo = new Date(periodo.fecha_cierre);
-          let fechaActual = new Date();
-
-          periodo.concluido = false;
-
-          if (fechaActual > fechaCierrePeriodo) {
-
-            periodo.concluido = true;
-          }
+          periodo.concluido = isPeriodActive(res.fecha_cierre)          
         }
 
         if (!["1", "2"].includes(tipo) || tipo === '2' && group !== '4') {
           setnumPendientes(0);  //tipo 2 restringido a avance 4
         } else {
-          await fetchNumAsignacionesPendientesDoctorado(group, tipo, "").then((result) => {
+          await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, "").then((result) => {
 
             let total = parseInt(result)
 

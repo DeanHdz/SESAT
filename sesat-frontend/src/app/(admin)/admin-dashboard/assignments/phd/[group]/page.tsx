@@ -47,27 +47,27 @@ export default async function ViewGroup({
   let hayPendientes;
 
   try {
-    periodo = await fetchLatestPeriod("");
+    periodo = await fetchLatestPeriod("").catch(() => { return null })
     alumnos = await fetchCountAlumnosDoctoradoOfNumAv(group, "")
 
-    totalPendientes = await fetchNumAsignacionesPendientesDoctorado(group, "1", "").then((result) => {
+    totalPendientes = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "1", "").then((result) => {
       let total = parseInt(result)  //total=0 --> activa   || total>0 pendiente
       return total
     })
 
-    totalEntregadas = await fetchNumAsignacionesEntregadasDoctorado(group, "1", "").then((result) => {
+    totalEntregadas = await fetchNumAsignacionesEntregadasDoctorado(periodo.id_periodo, group, "1", "").then((result) => {
       let total = parseInt(result)
       return total
     })
 
 
     if (group === '4') { //Caso 4to semestre, 2 avances
-      totalPendientes2 = await fetchNumAsignacionesPendientesDoctorado(group, "2", "").then((result) => {
+      totalPendientes2 = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "2", "").then((result) => {
         let total = parseInt(result)
         return total
       })
 
-      totalEntregadas2 = await fetchNumAsignacionesEntregadasDoctorado(group, "2", "").then((result) => {
+      totalEntregadas2 = await fetchNumAsignacionesEntregadasDoctorado(periodo.id_periodo, group, "2", "").then((result) => {
         let total = parseInt(result)
         return total
       })
