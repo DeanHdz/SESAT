@@ -67,7 +67,7 @@ export default function CreateAssignment({
 
   function evaluateParams( grupo: string): boolean {
     
-    const gruposPermitidos = ['1', '2', '3', '4', '5', '6', '7'];
+    const gruposPermitidos = ['1', '2', '3', '4'];
 
     if (!gruposPermitidos.includes(grupo)) {
       return false;
@@ -118,7 +118,7 @@ export default function CreateAssignment({
         setnumPendientes(-1)
       })            
 
-      //URL constraints, solo en avance 4 se permite tipo 1 y tipo 2
+      //URL constraints
       if (!evaluateParams(group)) {
         setnumPendientes(-1)
         setError(true)

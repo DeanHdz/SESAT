@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { AsignacionService } from './asignacion.service';
 import { CreateAsignacionDto } from './dto/create-asignacion.dto';
 import { UpdateAsignacionDto } from './dto/update-asignacion.dto';
@@ -102,15 +102,6 @@ export class AsignacionController {
    updateAssignmentGroupMD(@Body() updateAsignacionDto: UpdateAsignacionDto) {
      return this.asignacionService.updateMDGroup(updateAsignacionDto);
    }
-
-
-
-  /*DELETE this please
-  
-  @Get('phd/update-group/:numAv/:tipo/:id_periodo')
-  updateGroup(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id_periodo') idPeriodo: string, ) {
-    return this.asignacionService.findArrayAsignacionesActivasPhd(+numAv,+tipo,+idPeriodo);
-  }*/
 
 
   @Put()

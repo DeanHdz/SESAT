@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import autosize from "autosize";
 import { TitleBar } from "@/app/components/TitleBar";
 
-import { fetchNumAsignacionesPendientesMaestria, fetchOneInGroupAsignacionMaestria, updateAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
+import { fetchNumAsignacionesPendientesMaestria, fetchOneInGroupAsignacionMaestria, updateAsignacionesMDByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
@@ -34,10 +34,9 @@ export default function CreateAssignment({
 
 
   let index = parseInt(group) - 1;
-  let periodo: PeriodoProps;
 
   const [title, setTitle] = useState<string | undefined>(names.at(index))
-  //const [periodo, setPeriodo] = useState<undefined | PeriodoProps>(undefined)
+  const [periodo, setPeriodo] = useState<undefined | PeriodoProps>(undefined)
   const [numPendientes, setnumPendientes] = useState<undefined | number>(undefined)
   const [description, setDescription] = useState("");
   const [start, setStartDate] = useState<Date>(new Date())                //Para avance 4 doc
@@ -83,36 +82,46 @@ export default function CreateAssignment({
 
   useEffect(() => {
     async function fetchDATA() {
-      
-      periodo = await fetchLatestPeriod("").catch(() => { return null });
+      await fetchLatestPeriod("").then((res) => {
+        let fechaCierrePeriodo = new Date(res.fecha_cierre);
+        let fechaActual = new Date();
 
+        res.concluido = false;
 
-      await fetchNumAsignacionesPendientesMaestria(periodo.id_periodo, group, 2, "").then((result) => {
+        if (fechaActual > fechaCierrePeriodo) {
+          res.concluido = true;
+        }
 
-        let total = parseInt(result)
+        fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 2, "").then((result) => {
 
-        setnumPendientes(total) //0 -> activa  | >0 -> pendiente
+          let total = parseInt(result)
+  
+          setnumPendientes(total) //0 -> activa  | >0 -> pendiente
+  
+        }).catch((error) => {
+          setError(true)
+          setnumPendientes(-1)
+        })
 
-      }).catch(() => {
+        //fetch de datos de la asignacion    1 --> Tiempo completo
+        fetchOneInGroupAsignacionMaestria(res.id_periodo.toString(), group, "2", "").then((result) => {
+          setDescription(result.descripcion)
+          setTitle(result.titulo)
+        }).catch((error) => {
+          setError(true)
+          setnumPendientes(-1)
+        })
+
+        setPeriodo(res)
+        setStartDate(new Date(res.fecha_apertura_opc))
+        setEndDate(new Date(res.fecha_cierre_opc))
+
+      }).catch((error) => {
         setError(true)
         setnumPendientes(-1)
-      })
+      })            
 
-      //fetch de datos de la asignacion    1 --> Tiempo completo
-      await fetchOneInGroupAsignacionMaestria(periodo.id_periodo.toString(), group, "2", "").then((result) => {
-        setDescription(result.descripcion)
-        setTitle(result.titulo)
-      }).catch(() => {
-        setError(true)
-        setnumPendientes(-1)
-      })
-      
-      setStartDate(new Date(periodo.fecha_apertura_opc))
-      setEndDate(new Date(periodo.fecha_cierre_opc))
-
-
-
-      //URL constraints, solo en avance 4 se permite tipo 1 y tipo 2
+      //URL constraints
       if (!evaluateParams(group)) {
         setnumPendientes(-1)
         setError(true)
@@ -133,7 +142,7 @@ export default function CreateAssignment({
   }
 
 
-  if (!periodo! || typeof numPendientes === 'undefined') {
+  if (!periodo || typeof numPendientes === 'undefined') {
     return (
       <div className="flex w-full justify-center items-center">
         <ProcessingAnim title="" />
@@ -150,16 +159,16 @@ export default function CreateAssignment({
   }
 
 
-  async function updateAssignmentForPHD() {
+  async function updateAssignmentForMD() {
     setIsSubmitting(true);
     setCSSDisabled("opacity-80 pointer-events-none cursor-not-allowed")
 
-    await updateAsignacionesPhdByNumAv({
+    await updateAsignacionesMDByNumAv({
       id_asignacion: 0, //no importa aqui, se asigna en backend
       id_formato_evaluacion: null,
       id_acta_evaluacion: null,
       id_tesis: null,
-      id_modalidad: 1,
+      id_modalidad: 2,
       id_periodo: periodo?.id_periodo as number,
       num_avance: index + 1,
       titulo: title as string,
@@ -194,7 +203,7 @@ export default function CreateAssignment({
 
     {/**Si la cadena no esta vacia o contiene solo espacios ' ' */ }
     if (description != null && description.trim().length > 0) {
-      updateAssignmentForPHD();
+      updateAssignmentForMD();
 
     } else {
       setmsg("Complete todos los campos por favor")

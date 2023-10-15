@@ -109,7 +109,7 @@ export class AsignacionService {
  * @param id_periodo el periodo al que pertenece el grupo, normalmente el mas reciente
  * @param numAvance equivale al semestre, 3 representaria el grupo de Seminario de Avance de Tesis 3
  * @param tipo '1'--> cualquier asignacion que cierre al fin de sem., '2' --> evaluacion inicio de sem
- * @returns {titulo: string; descripcion: string} Un objeto JSON con el titulo y descripcion de las asignaciones del grupo
+ * @returns {titulo: string, descripcion: string} Un objeto JSON con el titulo y descripcion de las asignaciones del grupo
  */
   async findOneInGroupPHD(id_periodo: number, numAvance: number, tipo: number) {
 
@@ -522,8 +522,7 @@ export class AsignacionService {
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
-      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
-      .innerJoin(Periodo, "p", "p.id_periodo = a.id_periodo")
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")      
 
       .where("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("a.tipo = :tipo", { tipo: tipoAssignacion })
@@ -570,8 +569,7 @@ export class AsignacionService {
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
-      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
-      .innerJoin(Periodo, "p", "p.id_periodo = a.id_periodo")
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")      
 
       .where("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("a.id_modalidad  = :idMod", { idMod: id_modalidad })
