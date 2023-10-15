@@ -73,7 +73,7 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 6 })//revisar
+      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 7 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Medio Tiempo' })
       .getRawMany()     // fetch raw results, which will give us data from all the tables.
@@ -105,7 +105,7 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 3 })//revisar
+      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 4 })//revisar
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Tiempo Completo' })
       .getRawMany()     // fetch raw results, which will give us data from all the tables.

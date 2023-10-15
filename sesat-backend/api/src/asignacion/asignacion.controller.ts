@@ -31,16 +31,16 @@ export class AsignacionController {
 
   //Obtener una asignacion X (no importa) de un grupo en especifico
   //para ver/actualizar campos
-  @Get('phd/one-in-group/:numAv/:tipo/:id')
-  findOneByNumAvANDTipoPHD(@Param('numAv') numAv: string, @Param('tipo') tipo: string, @Param('id') id: string) {
-    return this.asignacionService.findOneByNumAvANDTipo(+numAv, +tipo, +id);
+  @Get('phd/one-in-group/:idPeriodo/:numAv/:tipo')
+  findOneByNumAvANDTipoPHD(@Param('idPeriodo') idPeriodo: string, @Param('numAv') numAv: string, @Param('tipo') tipo: string) {
+    return this.asignacionService.findOneInGroupPHD(+idPeriodo, +numAv, +tipo);
   }
 
   //Obtener una asignacion X (no importa) de un grupo en especifico
   //para ver/actualizar campos
-  @Get('md/one-in-group/:numAv/:mod/:id')
-  findOneByNumAvANDModalidadMD(@Param('numAv') numAv: string, @Param('mod') mod: string, @Param('id') id: string) {
-    return this.asignacionService.findOneByNumAvANDModalidad(+numAv, +mod, +id);
+  @Get('md/one-in-group/:idPeriodo/:numAv/:mod')
+  findOneByNumAvANDModalidadMD(@Param('idPeriodo') idPeriodo: string, @Param('numAv') numAv: string, @Param('mod') mod: string) {
+    return this.asignacionService.findOneInGroupMD(+idPeriodo, +numAv, +mod);
   }
 
   //Devuelve el PDF de la tesis terminada
@@ -55,17 +55,12 @@ export class AsignacionController {
     return this.asignacionService.findNumAsignacionesPendientesPhd(+idPeriodo, +numAvance, +tipo);
   }
 
-  /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de medio tiempo*/
-  @Get('num-pendientes/masters/mid-time/:idPeriodo/:numAvance')
-  findNumAsignacionesPendientesMdMidTime(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesMdMidTime(+idPeriodo, +numAvance);
+  /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria */
+  @Get('num-pendientes/masters/:idPeriodo/:numAvance/:idModalidad')
+  findNumAsignacionesPendientesMdMidTime(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string, @Param('idModalidad') idModalidad: string) {
+    return this.asignacionService.findNumAsignacionesPendientesMastersDegree(+idPeriodo, +numAvance, +idModalidad);
   }
 
-  /**Devuelve El NUMERO de asignaciones pendientes para determinado num_avance de alumnos de maestria de tiempo completo*/
-  @Get('num-pendientes/masters/full-time/:idPeriodo/:numAvance')
-  findNumAsignacionesPendientesMdFullTime(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string) {
-    return this.asignacionService.findNumAsignacionesPendientesMdFullTime(+idPeriodo, +numAvance);
-  }
 
   /**Devuelve El NUMERO de asignaciones entregadas para determinado num_avance de alumnos de doctorado*/
   @Get('num-entregadas/phd/:idPeriodo/:numAvance/:tipo')
@@ -98,9 +93,15 @@ export class AsignacionController {
 
   //Actualizar grupo de asignaciones
   @Put('phd/update_group/')
-  updateAssignmentGroup(@Body() updateAsignacionDto: UpdateAsignacionDto) {
+  updateAssignmentGroupPHD(@Body() updateAsignacionDto: UpdateAsignacionDto) {
     return this.asignacionService.updatePhdGroup(updateAsignacionDto);
   }
+
+   //Actualizar grupo de asignaciones
+   @Put('md/update_group/')
+   updateAssignmentGroupMD(@Body() updateAsignacionDto: UpdateAsignacionDto) {
+     return this.asignacionService.updateMDGroup(updateAsignacionDto);
+   }
 
 
 

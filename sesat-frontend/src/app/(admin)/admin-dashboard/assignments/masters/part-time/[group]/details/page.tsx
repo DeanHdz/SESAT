@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import autosize from "autosize";
 import { TitleBar } from "@/app/components/TitleBar";
 
-import { fetchNumAsignacionesPendientesMaestriaMedioTiempo, fetchNumAsignacionesPendientesMaestriaTiempoComp, fetchOneInGroupAsignacionDoctorado, fetchOneInGroupAsignacionMaestria, updateAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
+import { fetchNumAsignacionesPendientesMaestria, fetchOneInGroupAsignacionMaestria, updateAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 
 import ProcessingAnim from "@/app/components/ProcessingAnim";
-import { fetchLatestPeriod, putPeriod } from "../../../../../../../../../utils/periodo.endpoint";
-import { formatAsISODate, getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
+import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 
@@ -87,7 +87,7 @@ export default function CreateAssignment({
       periodo = await fetchLatestPeriod("").catch(() => { return null });
 
 
-      await fetchNumAsignacionesPendientesMaestriaMedioTiempo(periodo.id_periodo, group, "").then((result) => {
+      await fetchNumAsignacionesPendientesMaestria(periodo.id_periodo, group, 2, "").then((result) => {
 
         let total = parseInt(result)
 
@@ -99,7 +99,7 @@ export default function CreateAssignment({
       })
 
       //fetch de datos de la asignacion    1 --> Tiempo completo
-      await fetchOneInGroupAsignacionMaestria(group, "2", periodo.id_periodo.toString(), "").then((result) => {
+      await fetchOneInGroupAsignacionMaestria(periodo.id_periodo.toString(), group, "2", "").then((result) => {
         setDescription(result.descripcion)
         setTitle(result.titulo)
       }).catch(() => {

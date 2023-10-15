@@ -8,7 +8,7 @@ import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
 import { getFormattedHours, isPeriodActive, shortFormatDate } from "../../../../../../../../../utils/utils";
-import { fetchNumAsignacionesPendientesMaestriaTiempoComp, postAsignacionesMastersDgByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
+import { fetchNumAsignacionesPendientesMaestria, postAsignacionesMastersDgByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 
 {/**
 Docs:
@@ -27,9 +27,9 @@ export default function CreateAssignment({
   const { group } = params
 
   const names = [
-    "Seminario de Investigación",    
-    "Seminario de Tesis I (20% de avance)",    
-    "Seminario de Tesis II (50% de avance)",    
+    "Seminario de Investigación",
+    "Seminario de Tesis I (20% de avance)",
+    "Seminario de Tesis II (50% de avance)",
     "Seminario de Tesis III (90% de avance)"
   ]
 
@@ -42,7 +42,7 @@ export default function CreateAssignment({
   const [error, setError] = useState(null);
   const [cssDisabled, setCSSDisabled] = useState("")
   const [cssHide, setcssHide] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)  
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [cssError, setCssError] = useState("hidden")
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
@@ -65,7 +65,7 @@ export default function CreateAssignment({
 
         periodoConcluido = isPeriodActive(res.fecha_cierre)
 
-        await fetchNumAsignacionesPendientesMaestriaTiempoComp(res.id_periodo, group, "").then((result) => {
+        await fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 1, "").then((result) => {
 
           let total = parseInt(result)
 
@@ -103,37 +103,38 @@ export default function CreateAssignment({
   async function postAsignment() {
     setIsSubmitting(true);
 
-    await postAsignacionesMastersDgByNumAv(group, {
-      id_formato_evaluacion: null,
-      id_acta_evaluacion: null,
-      id_tesis: null,
-      id_modalidad: 1, //Tiempo completo
-      id_periodo: periodo?.id_periodo as number,
-      num_avance: index + 1,
-      titulo: title as string,
-      descripcion: description ? description : '',
-      fecha_entrega: null,
-      calificacion: null,
-      documento: null,
-      estado_entrega: 0,
-      retroalimentacion: null,
-      tipo: 1,                    //El tipo siempre es 1 para maestria
-      fecha_presentacion: null,
-    }, "").then((res) => {
+    if (periodo)
+      await postAsignacionesMastersDgByNumAv(group, {
+        id_formato_evaluacion: null,
+        id_acta_evaluacion: null,
+        id_tesis: null,
+        id_modalidad: 1, //Tiempo completo
+        id_periodo: periodo.id_periodo,
+        num_avance: index + 1,
+        titulo: title as string,
+        descripcion: description ? description : '',
+        fecha_entrega: null,
+        calificacion: null,
+        documento: null,
+        estado_entrega: 0,
+        retroalimentacion: null,
+        tipo: 1,                    //El tipo siempre es 1 para maestria
+        fecha_presentacion: null,
+      }, "").then((res) => {
 
-      if (res && res.statusCode === 200) {
-        setIsSubmitting(false);
-        setmsg("Asignaciones de tesis creadas con éxito")
-        setCssOk("")
+        if (res && res.statusCode === 200) {
+          setIsSubmitting(false);
+          setmsg("Asignaciones de tesis creadas con éxito")
+          setCssOk("")
+          setcssHide("hidden")
+          setCssError("hidden")
+        }
+      }).catch((error) => {
+        setmsg("Algo salió mal")
+        setCssError("")
         setcssHide("hidden")
-        setCssError("hidden")
-      }
-    }).catch((error) => {
-      setmsg("Algo salió mal")
-      setCssError("")
-      setcssHide("hidden")
-      setIsSubmitting(false);
-    })
+        setIsSubmitting(false);
+      })
   }
 
   async function handleSubmit(e: any) {

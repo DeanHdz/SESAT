@@ -108,7 +108,7 @@ export default function CreateAssignment({
           setnumPendientes(-1)
         }) 
         //fetch de datos de la asignacion
-        await fetchOneInGroupAsignacionDoctorado(group, tipo, res.id_periodo.toString(), "").then((result) => {
+        await fetchOneInGroupAsignacionDoctorado(res.id_periodo.toString(), group, tipo, "").then((result) => {
           setDescription(result.descripcion)
           setTitle(result.titulo)
         }).catch(() => {

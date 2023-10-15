@@ -76,9 +76,9 @@ export default function CreateAssignment({
       try {
         let res = await fetchLatestPeriod("").catch(() => { return null });
         setPeriodo(res)
-        
+
         if (periodo) {
-          periodo.concluido = isPeriodActive(res.fecha_cierre)          
+          periodo.concluido = isPeriodActive(res.fecha_cierre)
         }
 
         if (!["1", "2"].includes(tipo) || tipo === '2' && group !== '4') {
@@ -149,37 +149,38 @@ export default function CreateAssignment({
   async function postAsignment() {
     setIsSubmitting(true);
 
-    await postAsignacionesPhdByNumAv(group, {
-      id_formato_evaluacion: null,
-      id_acta_evaluacion: null,
-      id_tesis: null,
-      id_modalidad: 1,
-      id_periodo: periodo?.id_periodo as number,
-      num_avance: index + 1,
-      titulo: title as string,
-      descripcion: description ? description : '',
-      fecha_entrega: null,
-      calificacion: null,
-      documento: null,
-      estado_entrega: 0,
-      retroalimentacion: null,
-      tipo: parseInt(tipo),
-      fecha_presentacion: null,
-    }, "").then((res) => {
+    if (periodo)
+      await postAsignacionesPhdByNumAv(group, {
+        id_formato_evaluacion: null,
+        id_acta_evaluacion: null,
+        id_tesis: null,
+        id_modalidad: 1,
+        id_periodo: periodo.id_periodo,
+        num_avance: index + 1,
+        titulo: title as string,
+        descripcion: description ? description : '',
+        fecha_entrega: null,
+        calificacion: null,
+        documento: null,
+        estado_entrega: 0,
+        retroalimentacion: null,
+        tipo: parseInt(tipo),
+        fecha_presentacion: null,
+      }, "").then((res) => {
 
-      if (res && res.statusCode === 200) {
-        setIsSubmitting(false);
-        setmsg("Asignaciones de tesis creadas con éxito")
-        setCssOk("")
+        if (res && res.statusCode === 200) {
+          setIsSubmitting(false);
+          setmsg("Asignaciones de tesis creadas con éxito")
+          setCssOk("")
+          setcssHide("hidden")
+          setCssError("hidden")
+        }
+      }).catch((error) => {
+        setmsg("Algo salió mal")
+        setCssError("")
         setcssHide("hidden")
-        setCssError("hidden")
-      }
-    }).catch((error) => {
-      setmsg("Algo salió mal")
-      setCssError("")
-      setcssHide("hidden")
-      setIsSubmitting(false);
-    })
+        setIsSubmitting(false);
+      })
   }
 
   async function handleSubmit(e: any) {

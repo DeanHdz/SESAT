@@ -150,12 +150,12 @@ export async function fetchNumAsignacionesEntregadasMaestria(
 //Obtiene una asignacion de un grupo de doctorado en especifico
 //Nota Todas las asignaciones de un grupo son 'iguales' --> (titulo, desc, fechas)
 export async function fetchOneInGroupAsignacionDoctorado( 
-  numAvance: string, 
-  tipo: string,
   id_periodo: string,
+  numAvance: string, 
+  tipo: string,  
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/phd/one-in-group/${numAvance}/${tipo}/${id_periodo}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/phd/one-in-group/${id_periodo}/${numAvance}/${tipo}`;
 
   const options = {
     method: 'GET',
@@ -181,12 +181,12 @@ export async function fetchOneInGroupAsignacionDoctorado(
 //Obtiene una asignacion de un grupo de doctorado en especifico
 //Nota Todas las asignaciones de un grupo son 'iguales' --> (titulo, desc, fechas)
 export async function fetchOneInGroupAsignacionMaestria( 
-  numAvance: string, 
-  modalidad: string,
   id_periodo: string,
+  numAvance: string, 
+  modalidad: string,  
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/md/one-in-group/${numAvance}/${modalidad}/${id_periodo}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/md/one-in-group/${id_periodo}/${numAvance}/${modalidad}`;
 
   const options = {
     method: 'GET',
@@ -209,40 +209,13 @@ export async function fetchOneInGroupAsignacionMaestria(
 
 }
 
-export async function fetchNumAsignacionesPendientesMaestriaMedioTiempo( 
+export async function fetchNumAsignacionesPendientesMaestria( 
   idPeriodo: number,
   numAvance: string, 
+  idModalidad: number,
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-pendientes/masters/mid-time/${idPeriodo}/${numAvance}`;
-
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'no-store' as RequestCache,
-  };
-  const response = await fetch(url, options);
-
-  if(!response.ok){
-    throw(new Error('Error fetching data'))
-  }
-
-  const result = await response.json();
-
-
-  return result;
-
-}
-
-export async function fetchNumAsignacionesPendientesMaestriaTiempoComp( 
-  idPeriodo: string,
-  numAvance: string, 
-  token: string,
-) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-pendientes/masters/full-time/${idPeriodo}/${numAvance}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/num-pendientes/masters/${idPeriodo}/${numAvance}/${idModalidad}`;
 
   const options = {
     method: 'GET',
@@ -300,6 +273,33 @@ export async function updateAsignacionesPhdByNumAv(
   token: string,
 ) {
   const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/phd/update_group/`;
+
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(asignacionDto),
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+export async function updateAsignacionesMDByNumAv(   
+  asignacionDto: UpdateAsignacion,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion/md/update_group/`;
 
   const options = {
     method: 'PUT',

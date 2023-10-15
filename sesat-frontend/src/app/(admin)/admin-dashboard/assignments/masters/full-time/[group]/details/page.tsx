@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import autosize from "autosize";
 import { TitleBar } from "@/app/components/TitleBar";
 
-import { fetchNumAsignacionesPendientesMaestriaTiempoComp, fetchOneInGroupAsignacionDoctorado, fetchOneInGroupAsignacionMaestria, updateAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
+import { fetchNumAsignacionesPendientesMaestria, fetchOneInGroupAsignacionMaestria, updateAsignacionesMDByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 
 import ProcessingAnim from "@/app/components/ProcessingAnim";
-import { fetchLatestPeriod, putPeriod } from "../../../../../../../../../utils/periodo.endpoint";
-import { formatAsISODate, getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
+import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 
@@ -89,7 +89,7 @@ export default function CreateAssignment({
           res.concluido = true;
         }
 
-        fetchNumAsignacionesPendientesMaestriaTiempoComp(res.id_periodo, group, "").then((result) => {
+        fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 1, "").then((result) => {
 
           let total = parseInt(result)
   
@@ -101,7 +101,7 @@ export default function CreateAssignment({
         })
 
         //fetch de datos de la asignacion    1 --> Tiempo completo
-        fetchOneInGroupAsignacionMaestria(group, "1", res.id_periodo.toString(), "").then((result) => {
+        fetchOneInGroupAsignacionMaestria(res.id_periodo.toString(), group, "1", "").then((result) => {
           setDescription(result.descripcion)
           setTitle(result.titulo)
         }).catch((error) => {
@@ -159,7 +159,7 @@ export default function CreateAssignment({
     setIsSubmitting(true);
     setCSSDisabled("opacity-80 pointer-events-none cursor-not-allowed")
 
-    await updateAsignacionesPhdByNumAv({
+    await updateAsignacionesMDByNumAv({
       id_asignacion: 0, //no importa aqui, se asigna en backend
       id_formato_evaluacion: null,
       id_acta_evaluacion: null,

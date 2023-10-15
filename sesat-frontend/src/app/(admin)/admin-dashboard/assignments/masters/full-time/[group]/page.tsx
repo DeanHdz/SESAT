@@ -6,7 +6,7 @@ import EmptyPage from "@/app/components/EmptyPage";
 import { fetchLatestPeriod } from "../../../../../../../../utils/periodo.endpoint";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import { fetchCountAlumnosMaestriaOfNumAv } from "../../../../../../../../utils/tesis.endpoint";
-import { fetchNumAsignacionesEntregadasMaestria, fetchNumAsignacionesPendientesMaestriaTiempoComp } from "../../../../../../../../utils/asignacion.endpoint";
+import { fetchNumAsignacionesEntregadasMaestria, fetchNumAsignacionesPendientesMaestria } from "../../../../../../../../utils/asignacion.endpoint";
 import MDAssingmentCardInfo from "../../components/MDAssingmentCardInfo";
 import GenInfoMD from "../../components/GenInfoMD";
 
@@ -47,7 +47,7 @@ export default async function ViewGroup({
     periodo = await fetchLatestPeriod("").catch(() =>{ return null });
     alumnos = await fetchCountAlumnosMaestriaOfNumAv(group,"1", "").catch(() =>{ return null });
 
-    totalPendientes = await fetchNumAsignacionesPendientesMaestriaTiempoComp(periodo.id_periodo, group, "").then((result) => {
+    totalPendientes = await fetchNumAsignacionesPendientesMaestria(periodo.id_periodo, group, 1,  "").then((result) => {
       let total = parseInt(result)  //total=0 --> activa   || total>0 pendiente
       return total
     })
