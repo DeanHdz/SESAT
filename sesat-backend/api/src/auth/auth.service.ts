@@ -25,19 +25,21 @@ export class AuthService {
       resolve({
         message: "Authenticated",
         id_usuario: user.id_usuario,
-        name: user.nombre,
-        last_name: user.apellido_paterno,
-        family_name: user.apellido_materno,
+        nombre: user.nombre,
+        apellido_paterno: user.apellido_paterno,
+        apellido_materno: user.apellido_materno,
+        rol: user.rol.nombre_rol,
         token: this.jwtService.sign(
           {
             usuario: {
               id_usuario: user.id_usuario,
-              name: user.nombre,
-              last_name: user.apellido_paterno,
-              family_name: user.apellido_materno,
+              nombre: user.nombre,
+              apellido_paterno: user.apellido_paterno,
+              apellido_materno: user.apellido_materno,
+              rol: user.rol.nombre_rol
             },
           },
-          //Va encriptado
+          //Va encriptado (contraseña y rol)
           {
             secret: process.env.SECRET_JWT,
           }

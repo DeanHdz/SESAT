@@ -1,5 +1,5 @@
-import LandingBanner from "../components/LandingBanner";
-import LandingBase from "../components/LandingBase";
+import LandingBanner from "./components/LandingBanner";
+import LandingBase from "./components/LandingBase";
 
 
 export default function Home() {

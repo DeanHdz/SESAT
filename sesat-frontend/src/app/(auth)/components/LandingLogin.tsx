@@ -2,17 +2,22 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { LoginEndpoint } from "../../../../utils/login.endpoint";
 
 const LandingLogin = () => {
   {/** ReactSession.setStoreType("sessionStorage");*/}
   const [failed, setFailed] = useState(false);
   const [claveUnica, setClaveUnica] = useState("");
   const [contraseña, setContraseña] = useState("");
-  const navigate = useRouter();
+  const router = useRouter();
 
   async function handleSubmit(e: any) {
     e.preventDefault();
     try {
+      const token = await LoginEndpoint.loginUser({
+        username: claveUnica,
+        password: contraseña,
+      });
       /*
       const resp = await UsuarioEndpoint.getUsuario(parseInt(claveUnica), "");
       console.log(resp);
@@ -43,6 +48,10 @@ const LandingLogin = () => {
         setFailed(true);
       }
       */
+      //console.log(token.rol);
+
+      
+
     } catch (err) {
       setFailed(true);
       console.log(err);
@@ -111,7 +120,7 @@ const LandingLogin = () => {
       <div className="flex justify-center">
         {failed && (
           <div className="m-auto flex flex-row mt-10">
-            <p className="text-xl">Clave unica o contraseña incorrecta</p>
+            <p className="text-xl">Credenciales incorrectas</p>
           </div>
         )}
       </div>
