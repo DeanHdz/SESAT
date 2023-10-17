@@ -1,7 +1,7 @@
 import { fetchLatestPeriod } from '../../../../../utils/periodo.endpoint';
 
 
-import NotFound from '../../../not-found';
+
 import AddPeriodoModal from './AddPeriodoModal';
 import { comparaFecha, getFormattedHours, shortFormatDate } from '../../../../../utils/utils';
 import UpdatePeriodoModal from './UpdatePeriodoModal';
@@ -64,7 +64,7 @@ export default async function AlertPeriod() {
                                 <h3 className="font-bold">¡No hay un periodo definido!</h3>
                                 <div className="text-xs">El periodo anterior ha concluido, debe establecer uno nuevo para este semestre</div>
                             </div>
-                            <AddPeriodoModal previousEndDate={new Date(periodo.fecha_cierre)} startDate={new Date()} endDate={new Date()} />
+                            <AddPeriodoModal idPeriodo={periodo.id_periodo} previousEndDate={new Date(periodo.fecha_cierre)} startDate={new Date()} endDate={new Date()} />
                         </div>
                     )}
 
@@ -88,7 +88,7 @@ export default async function AlertPeriod() {
 
                                 <div className='flex flex-row'>
 
-                                    <div className="w-[150px] h-fit p-2 bg-light-blue-10 border-l-8 border-dark-blue-10 ml-5 flex flex-col justify-center items-center text-center rounded-lg">
+                                    <div className="w-[130px] lg:w-[150px] h-fit p-2 bg-light-blue-10 border-l-8 border-dark-blue-10 flex flex-col justify-center items-center text-center rounded-lg">
                                         <div className="mb-2">
                                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"></path></svg>
                                         </div>
@@ -102,7 +102,9 @@ export default async function AlertPeriod() {
                                         <p className="text-xs mt-1 " >Publicación de asignaciones</p>
 
                                     </div>
-                                    <div className="w-[150px] h-fit p-2 bg-light-blue-10 border-r-8 border-dark-blue-10 ml-5 flex flex-col justify-center items-center text-center rounded-lg">
+                                    <div className='w-[30px]'></div>
+
+                                    <div className="w-[130px] lg:w-[150px] h-fit p-2 bg-light-blue-10 border-r-8 border-dark-blue-10 flex flex-col justify-center items-center text-center rounded-lg">
 
                                         <div className="mb-2">
                                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"></path></svg>
@@ -119,8 +121,6 @@ export default async function AlertPeriod() {
 
 
                                     </div>
-
-
 
                                 </div>
 

@@ -40,42 +40,42 @@ export default async function ViewGroup({
   let totalPendientes2;
   let totalEntregadas2;
 
-  let captionA = group === '4' ? ' - Inicio' : '';
-  let captionB = group === '4' ? ' - Final' : '';
+  let captionA = group === '4' ? ' - Evaluación Inicial' : '';
+  let captionB = group === '4' ? ' - Evaluación Final' : '';
 
   let hayActivas;
   let hayPendientes;
 
   try {
-    periodo = await fetchLatestPeriod("");
+    periodo = await fetchLatestPeriod("").catch(() => { return null })
     alumnos = await fetchCountAlumnosDoctoradoOfNumAv(group, "")
-    totalPendientes = await fetchNumAsignacionesPendientesDoctorado(group, "1", "").then((result) => {
 
+    totalPendientes = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "1", "").then((result) => {
       let total = parseInt(result)  //total=0 --> activa   || total>0 pendiente
       return total
     })
 
-    totalEntregadas = await fetchNumAsignacionesEntregadasDoctorado(group, "1", "").then((result) => {
-
+    totalEntregadas = await fetchNumAsignacionesEntregadasDoctorado(periodo.id_periodo, group, "1", "").then((result) => {
       let total = parseInt(result)
       return total
     })
 
 
     if (group === '4') { //Caso 4to semestre, 2 avances
-      totalPendientes2 = await fetchNumAsignacionesPendientesDoctorado(group, "2", "").then((result) => {
+      totalPendientes2 = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "2", "").then((result) => {
         let total = parseInt(result)
         return total
       })
 
-      totalEntregadas2 = await fetchNumAsignacionesEntregadasDoctorado(group, "2", "").then((result) => {
+      totalEntregadas2 = await fetchNumAsignacionesEntregadasDoctorado(periodo.id_periodo, group, "2", "").then((result) => {
         let total = parseInt(result)
         return total
       })
     }
-    hayPendientes = typeof totalEntregadas !== 'undefined' && totalEntregadas > 0 || typeof totalEntregadas2 !== 'undefined' && totalEntregadas2 > 0;
+    hayActivas = typeof totalPendientes !== 'undefined' && totalPendientes === 0 || typeof totalPendientes2 !== 'undefined' && totalPendientes2 === 0;
 
-    hayActivas = typeof totalPendientes !== 'undefined' && totalPendientes > 0 || typeof totalPendientes2 !== 'undefined' && totalPendientes2 > 0;
+    hayPendientes = typeof totalPendientes !== 'undefined' && totalPendientes > 0 || typeof totalPendientes2 !== 'undefined' && totalPendientes2 > 0;
+
   } catch (error) {
     return <NotFound />
   }
@@ -89,7 +89,7 @@ export default async function ViewGroup({
             <TitleBar title={names[index]} />
             <div className="w-full">
               {group === '4' && (
-                <div className="mt-6 px-3 py-2 rounded-md bg-gradient-to-r from-[#03396c] from-45%  w-full flex flex-col justify-start">
+                <div className="mt-6 px-3 py-2 rounded-md bg-gradient-to-r from-[#03396c] from-100% lg:from-45%  w-full flex flex-col justify-start">
                   <label className="text-white block text-xl font-light">
                     Evaluación de Medio Término
                   </label>
@@ -100,17 +100,32 @@ export default async function ViewGroup({
               )}
 
               {periodo && alumnos && (
-                <GenInfoPhd endDate={periodo.fecha_cierre} count={alumnos.count} numAvance={group} />
+                <GenInfoPhd endDateGlobal={periodo.fecha_cierre} endDateOpc={periodo.fecha_cierre_opc} count={alumnos.count} numAvance={group} />
               )}
 
-              {/**ACTIVAS ####################################################################### */}
+              {/**Activas ####################################################################### */}
 
-              {hayActivas && (
+              {typeof hayActivas === 'boolean' && hayActivas && (
+                <label className=" block text-2xl font-bold text-black/40 mt-10">
+                  Asignaciones Activas
+                </label>
+              )}
+
+              {typeof totalPendientes2 !== 'undefined' && totalPendientes2 === 0 && (
+                <AssingmentCardInfo title={names[index] + captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={true} />
+              )}
+
+              {typeof totalPendientes !== 'undefined' && totalPendientes === 0 && (
+                <AssingmentCardInfo title={names[index] + captionB} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={1} activa={true} />
+              )}
+
+
+              {/**Pendientes ####################################################################### */}
+              {typeof hayPendientes === 'boolean' && hayPendientes && (
                 <label className=" block text-2xl font-bold text-black/40 mt-10">
                   Asignaciones Pendientes
                 </label>
-              )
-              }
+              )}
 
               {typeof totalPendientes2 !== 'undefined' && totalPendientes2 > 0 && (
                 <AssingmentCardInfo title={names[index] + captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={false} />
@@ -120,22 +135,6 @@ export default async function ViewGroup({
                 <AssingmentCardInfo title={names[index] + captionB} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={1} activa={false} />
               )}
 
-
-
-              {/**ACTIVAS ####################################################################### */}
-              {hayPendientes && (
-                <label className=" block text-2xl font-bold text-black/40 mt-10">
-                  Asignaciones Activas
-                </label>
-              )}
-
-              {typeof totalPendientes2 !== 'undefined' && totalPendientes2 === 0 && (
-                <AssingmentCardInfo title={names[index]} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={true} />
-              )}
-
-              {typeof totalPendientes !== 'undefined' && totalPendientes === 0 && (
-                <AssingmentCardInfo title={names[index]} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={1} activa={true} />
-              )}
 
 
             </div>
