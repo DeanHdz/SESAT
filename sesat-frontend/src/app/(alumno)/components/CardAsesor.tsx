@@ -1,7 +1,6 @@
-
 import Link from "next/link";
 
-const CardAsesor = ({ title, correo, webLink}: { title: string; correo: string; webLink: string;}) => {
+const CardAsesor = ({ nombre, correo, webLink}: { nombre: string; correo: string; webLink: string;}) => {
   return (
     <Link
       href={webLink}
@@ -9,7 +8,7 @@ const CardAsesor = ({ title, correo, webLink}: { title: string; correo: string; 
     >
 
       <label className="m-3 block text-1xl font-bold cursor-pointer mb-0 bt-0">
-        {title}
+        {nombre}
       </label>
 
       <label className="m-3 block text-l cursor-pointer mb-0 bt-0">

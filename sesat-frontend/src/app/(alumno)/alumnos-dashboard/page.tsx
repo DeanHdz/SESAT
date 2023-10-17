@@ -1,5 +1,4 @@
 import Calendar from "../components/Calendar";
-import CommentCard from "../components/CommentCard";
 import CompletedAssignments from '../components/CompletedAssignments'
 import NotificacionSection from "../components/NotificationSection";
 import ContactoAsesor from "../components/ContactoAsesor";
@@ -23,6 +22,7 @@ export default function Home() {
           </div>
           <div className="mt-2 w-full">
             <Calendar />
+            <ContactoAsesor />
           </div>
         </div>
         <div className="w-full p-2 lg:w-1/3">
@@ -37,15 +37,12 @@ export default function Home() {
           </div>
           <div className="mt-2 w-full">
             <Calendar />
+            <ContactoAsesor />
           </div>
         </div>
         <div className="w-full p-2 lg:w-1/3">
           <NotificacionSection />
         </div>
-      </div>
-
-      <div className="mt-1 w-full">
-        <ContactoAsesor />
       </div>
 
     </main>
