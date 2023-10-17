@@ -1,7 +1,7 @@
 import '../../globals.css'
 import type { Metadata } from 'next'
 import AlumnoNavbar from '../components/AlumnoNavbar'
-import Drawer from './components/Drawer'
+import Drawer from '../components/Drawer'
 
 export const metadata: Metadata = {
   title: 'Sistema de Evaluación y Seguimiento de Tesis',

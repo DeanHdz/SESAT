@@ -12,7 +12,7 @@ export default function Home() {
         <Drawer />
     </div>
 
-    <div className="w-9/12">
+    <div className="w-full lg:w-9/12">
       <div className="w-full flex justify-center mt-6 mb-6 pt-2 p-2 border-b border-light-gray-22 border-solid ">
         <p className="text-3xl font-bold">Tablero</p>
       </div>
