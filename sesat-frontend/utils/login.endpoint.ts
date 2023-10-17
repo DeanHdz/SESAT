@@ -1,3 +1,35 @@
+import { LoggedUser } from "../types/ISESAT";
+import Cookies from 'js-cookie';
+
+export namespace LoginEndpoint {
+  interface LoginInterface {
+    username: string;
+    password: string;
+  }
+
+  export async function loginUser(
+    loginCredentials: LoginInterface
+  ): Promise<any | undefined> {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/auth/login`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginCredentials),
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    const result = await response.json();
+    
+    const sessionTime: number = 1000*60*60*2; //2 hours?
+    Cookies.set("session", JSON.stringify(result), {expires: sessionTime});
+    return result;
+  }
+}
+
 /*
 
 import axios from "axios";

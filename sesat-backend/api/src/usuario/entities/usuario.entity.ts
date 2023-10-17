@@ -39,7 +39,7 @@ export class Usuario {
   @Column()
   password: string;
 
-  @OneToOne(() => Rol, { eager: false })
+  @OneToOne(() => Rol, { eager: true })
   @JoinColumn({ name: "id_rol" })
   rol: Rol;
 
