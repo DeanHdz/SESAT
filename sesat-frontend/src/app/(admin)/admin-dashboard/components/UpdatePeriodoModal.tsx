@@ -50,6 +50,8 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
                         id_periodo: idPeriodo,
                         fecha_apertura: formatAsISODate(start),
                         fecha_cierre: formatAsISODate(end),
+                        fecha_apertura_opc: null,
+                        fecha_cierre_opc: null,
                     },
                     ""
                 ).then((res) => {
@@ -94,7 +96,7 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
                 <>
 
                     <div className='w-screen h-screen bg-black/20 z-50 fixed top-0 right-0 flex justify-center pt-[100px] overflow-hidden'>
-                        <div className="fixed w-[600px] mx-auto p-6 border-0 rounded-lg shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50">
+                        <div className="fixed w-11/12 lg:w-[600px] lg:mx-auto p-6 border-0 rounded-lg shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50">
                             {/*header*/}
                             <div className="w-full flex flex-row h-fit items-center">
                                 <h3 className="font-bold text-lg">

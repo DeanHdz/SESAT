@@ -1,10 +1,9 @@
-import { fetchLatestPeriod } from "../../../../../../../../utils/periodo.endpoint";
-import { fetchCountAlumnosDoctoradoOfNumAv } from "../../../../../../../../utils/tesis.endpoint";
-import { getFormattedHours, shortFormatDate } from "../../../../../../../../utils/utils";
+import { getFormattedHours, shortFormatDate } from "../../../../../../../utils/utils"
 
 
 
-const GenInfoPhd = ({ endDateGlobal, endDateOpc, count, numAvance }: { endDateGlobal: string, endDateOpc: string, count: string, numAvance: string }) => {
+
+const GenInfoMD = ({ endDateGlobal, count }: { endDateGlobal: string, count: string }) => {
 
     //const alumnos: CountProps= fetchCountAlumnosDoctoradoOfNumAv(numAvance, "");
     return (
@@ -31,49 +30,12 @@ const GenInfoPhd = ({ endDateGlobal, endDateOpc, count, numAvance }: { endDateGl
 
                     </div>
 
-                </div>
-
-                {/**Fecha limite de entrega para la 1er evaluacion (4to avance) */}
-                {numAvance === '4' && endDateOpc && (
-                    <div className="flex flex-col mt-3 lg:mt-0 lg:ml-16 ">
-                        <label className="mb-3 block text-md font-semibold">
-                            Evaluación de Inicio
-                        </label>
-
-                        <div className="flex flex-row">
-                            <div className="flex flex-row justify-center items-center">
-                                <div className="mr-2">
-                                    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>
-                                </div>
-
-                                <p>{shortFormatDate(endDateOpc)}</p>
-
-                            </div>
-                            <div className="flex flex-row justify-center items-center ml-6">
-                                <div className="mr-2">
-                                    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z"></path></svg>
-                                </div>
-
-                                <p>{getFormattedHours(new Date(endDateOpc))}</p>
-
-                            </div>
-                        </div>
-
-                    </div>
-                )}
+                </div>                
 
                 {/**General [Fecha de cierre] */}
                 <div className="flex flex-col mt-3 lg:mt-0 lg:ml-16 ">
                     <label className="mb-3 block text-md font-semibold">
-                        {numAvance === '4' ? (
-                            <>
-                                <span>Evaluación final</span>
-                            </>
-                        ) : (
-                            <>
-                                <span>Fecha Límite de Entrega de Avances</span>
-                            </>
-                        )}
+                        <span>Fecha Límite de Entrega de Avances</span>
                     </label>
 
                     <div className="flex flex-row">
@@ -98,4 +60,4 @@ const GenInfoPhd = ({ endDateGlobal, endDateOpc, count, numAvance }: { endDateGl
     )
 }
 
-export default GenInfoPhd
+export default GenInfoMD

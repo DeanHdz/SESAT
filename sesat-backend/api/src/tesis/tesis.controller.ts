@@ -59,11 +59,11 @@ export class TesisController {
   findStudentsGroupCount(@Param("numAv") numAv: string) {
     return this.tesisService.findStudentsCountByNumAv(+numAv);
   }
-  //por que no funciona con 3 guiones?  tesis-status/masters/mid-time
-  /**Encuentra cuantos alumnos de doctorado activos hay agrupados por numero de avance */
-  @Get("/tesis-status/phd")
-  findTesisStatusPhd() {
-    return this.tesisService.findTesisStatusPhd();
+
+  /**Encuentra cuantos alumnos de maestria activos hay para X numero de avance */
+  @Get("/students-count/md/:numAv/:modalidad")
+  findMDStudentsGroupCount(@Param("numAv") numAv: string, @Param("modalidad") modalidad: string) {
+    return this.tesisService.findMDStudentsCountByNumAv(+numAv, +modalidad);
   }
 
   /**Encuentra cuantos alumnos de maestria medio tiempo activos hay agrupados por numero de avance */
@@ -81,6 +81,17 @@ export class TesisController {
   @Put()
   update(@Body() updateTesisDto: UpdateTesisDto) {
     return this.tesisService.update(updateTesisDto);
+  }
+
+  /**Todos los alumnos que cuya asignacion cumpla con:
+   * Estatus entregada = 1
+   * num_avance === ultimo_avance
+   * estado_finalizacion = false
+   * Se actualiza numero de avance(semestre) al crear un periodo
+   */
+  @Put("update-num_avance/all/:id_periodo")
+  updateNumAvance(@Param("id_periodo") id_periodo: string) {
+    return this.tesisService.updateNumAvanceForEvaluatedStudents(+id_periodo);
   }
 
   @Delete(":id")
