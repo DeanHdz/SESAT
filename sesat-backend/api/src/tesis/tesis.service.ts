@@ -10,6 +10,8 @@ import { Programa } from 'src/programa/entities/programa.entity';
 import { Asignacion } from 'src/asignacion/entities/asignacion.entity';
 import { GradoEstudio } from 'src/grado-estudio/entities/grado-estudio.entity';
 import { Modalidad } from 'src/modalidad/entities/modalidad.entity';
+import { Periodo } from 'src/periodo/entities/periodo.entity';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 
 @Injectable()
@@ -71,7 +73,7 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 6 })//revisar
+      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 7 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Medio Tiempo' })
       .getRawMany()     // fetch raw results, which will give us data from all the tables.
@@ -79,35 +81,35 @@ export class TesisService {
     return resp;
   }
 
-/**Tesis de maestria tiempo completo terminadas(se muestran en el archivo de tesis) */
+  /**Tesis de maestria tiempo completo terminadas(se muestran en el archivo de tesis) */
   async findCompletedMDegreeFullTime() {
 
     const resp = await this.tesisRepository
-    .createQueryBuilder("tesis")
-    .select("tesis.titulo")
-    .addSelect("tesis.fecha_registro")
-    .addSelect("tesis.id_tesis")
-    .addSelect("usuario.id_usuario")  // This includes all columns from the "usuario" table in the result.      
-    .addSelect("usuario.nombre")
-    .addSelect("usuario.apellido_paterno")
-    .addSelect("usuario.apellido_materno")
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecha_registro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.id_usuario")  // This includes all columns from the "usuario" table in the result.      
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
 
-    .from(Usuario, 'usuario')
-    .from(DatosAlumno, 'datos_alumno')
-    .from(Modalidad, 'modalidad')
-    .from(GradoEstudio, 'ge')
+      .from(Usuario, 'usuario')
+      .from(DatosAlumno, 'datos_alumno')
+      .from(Modalidad, 'modalidad')
+      .from(GradoEstudio, 'ge')
 
-    .where('tesis.id_usuario = usuario.id_usuario')
-    .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
-    .andWhere('datos_alumno.id_modalidad = modalidad.id_modalidad')
-    .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
+      .where('tesis.id_usuario = usuario.id_usuario')
+      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
+      .andWhere('datos_alumno.id_modalidad = modalidad.id_modalidad')
+      .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
-    .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-    .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 3 })//revisar
-    .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
-    .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Tiempo Completo' })
-    .getRawMany()     // fetch raw results, which will give us data from all the tables.
-  //otherwise it won't return anything
+      .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
+      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 4 })//revisar
+      .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
+      .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Tiempo Completo' })
+      .getRawMany()     // fetch raw results, which will give us data from all the tables.
+    //otherwise it won't return anything
     return resp;
   }
 
@@ -134,7 +136,7 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 6 })
+      .andWhere('tesis.ultimo_avance BETWEEN :min AND :max', { min: 6, max: 8 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Doctorado' })
       .getRawMany()     // fetch raw results, which will give us data from all the tables.
     //otherwise it won't return anything
@@ -175,39 +177,39 @@ export class TesisService {
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
       .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
-      
-      .select("COUNT(t.id_tesis)", "count")    
+
+      .select("COUNT(t.id_tesis)", "count")
       .where("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
       .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
       .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Doctorado' })
-      
+
       .getRawOne()
 
     return resp;
   }
 
-  /**Devuelve el numero de alumnos de doctorado activos para cada numero de avance
-   * El formato es una tabla de dos columnas, una con el numero de avance y la otra la cantidad de alumnos
-   * Si no hay alumnos NO agrega el renglon
-   */
-  async findTesisStatusPhd() {
+
+  //Devuelve cuantos alumnos de doctorado hay para x numAvance(X seminario)
+  async findMDStudentsCountByNumAv(numAvance: number, modalidad: number) {
+    let modName = modalidad === 1 ? 'Tiempo Completo' : 'Medio Tiempo';
     const resp = await this.tesisRepository
       .createQueryBuilder("t")
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
       .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
-      .select("t.ultimo_avance")
-      .addSelect("COUNT(t.id_tesis)", "count")
-      .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 8 })
+      .innerJoin(Modalidad, "mod", "da.id_modalidad = mod.id_modalidad")
+      .select("COUNT(t.id_tesis)", "count")
+      .where("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
       .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
-      .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Doctorado' })
-      .groupBy("t.ultimo_avance")
-      .getRawMany()
+      .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Maestría' })
+      .andWhere("mod.nombre_modalidad = :nombreMod", { nombreMod: modName })
+      .getRawOne()
 
     return resp;
   }
+
 
   async findTesisStatusMastersFullTime() {
     const resp = await this.tesisRepository
@@ -219,7 +221,7 @@ export class TesisService {
       .select("t.ultimo_avance")
       .addSelect("COUNT(t.id_tesis)", "count")
       .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 3 })
-      .where("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
+      .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
       .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
       .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Maestría' })
       .andWhere("mod.nombre_modalidad = :nombreMod", { nombreMod: 'Tiempo Completo' })
@@ -239,7 +241,7 @@ export class TesisService {
       .select("t.ultimo_avance")
       .addSelect("COUNT(t.id_tesis)", "count")
       .where("t.ultimo_avance BETWEEN :min AND :max", { min: 1, max: 6 })
-      .where("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
+      .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
       .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
       .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Maestría' })
       .andWhere("mod.nombre_modalidad = :nombreMod", { nombreMod: 'Medio Tiempo' })
@@ -263,6 +265,68 @@ export class TesisService {
 
   update(updateTesisDto: UpdateTesisDto) {
     return this.tesisRepository.save(updateTesisDto);
+  }
+  /**Todos los alumnos que cuya asignacion cumpla con:
+   * estado_entrega === 1
+   * num_avance === ultimo_avance
+   * estado_finalizacion === false
+   * calificacion !== null
+   * NOTA: Los alumnos de 4to sem phd no deben poder entregar la asignacion final
+   * si no estan evaluados en la primera
+   * En maestria todas las asignaciones son tipo 1
+   */
+  async getEvaluatedStudents(id_periodo: number) {
+    const resp = await this.tesisRepository
+      .createQueryBuilder("t")
+      .innerJoin(Asignacion, "a", "a.id_tesis = t.id_tesis")
+      .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")
+      .innerJoin(Periodo, "p", "p.id_periodo = a.id_periodo")
+      .select("t.id_tesis AS id_tesis")
+      .where("t.ultimo_avance = a.num_avance")
+      .andWhere("a.estado_entrega = :edoEntrega", { edoEntrega: 1 })
+      .andWhere("a.calificacion IS NOT NULL")
+      .andWhere("a.tipo = :tipoAsig", { tipoAsig: 1 })
+      .andWhere("t.estado_finalizacion = :estadoFinalizacion", { estadoFinalizacion: false })
+      .andWhere("da.estado_activo = :estadoActivo", { estadoActivo: true })
+      .andWhere("p.id_periodo = :idPeriodo", { idPeriodo: id_periodo })
+      .groupBy("t.id_tesis")
+      .getRawMany()
+
+    return resp;
+  }
+
+  //actualiza 'semestre' para todos los alumnos que fueron evaluados en el periodo anterior
+  async updateNumAvanceForEvaluatedStudents(id_periodo: number) {
+    try {
+      let idTesisArray = await this.getEvaluatedStudents(id_periodo)
+
+      const promises = idTesisArray.map(async (elem) => {
+        //obtener la tesis
+        const tesis = await this.findOne(elem.id_tesis);
+
+        let updated_avance = tesis.ultimo_avance + 1;
+        //Crear copia del DTO, asignar ultimo_avance
+        const updatedTesis = {
+          ...tesis,
+          ultimo_avance: updated_avance,
+        };
+        //Guardar copia actualizada
+        await this.update(updatedTesis)
+
+      })
+
+      await Promise.all(promises);
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Las asignaciones se han actualizado con éxito',
+      };
+    }
+    catch (error) {
+      throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
   }
 
   remove(id: number) {
