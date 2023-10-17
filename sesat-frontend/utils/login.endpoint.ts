@@ -1,5 +1,5 @@
 import { LoggedUser } from "../types/ISESAT";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export namespace LoginEndpoint {
   interface LoginInterface {
@@ -23,9 +23,12 @@ export namespace LoginEndpoint {
       throw new Error("Error fetching the data");
     }
     const result = await response.json();
-    
-    const sessionTime: number = 1000*60*60*2; //2 hours?
-    Cookies.set("session", JSON.stringify(result), {expires: sessionTime});
+
+    const sessionTime: number = 1000 * 60 * 60 * 2; //2 hours?
+    console.log(result.token);
+    Cookies.set("session", JSON.stringify(result.token), {
+      expires: sessionTime,
+    });
     return result;
   }
 }
