@@ -1,12 +1,18 @@
-import Calendar from "../components/Calendar";
-import CompletedAssignments from '../components/CompletedAssignments'
-import NotificacionSection from "../components/NotificationSection";
-import ContactoAsesor from "../components/ContactoAsesor";
+import Drawer from "../components/Drawer";
+import Calendar from "./components/Calendar";
+import CompletedAssignments from './components/CompletedAssignments'
+import NotificacionSection from "./components/NotificationSection";
+import ContactoAsesor from "./components/ContactoAsesor";
 
 export default function Home() {
   return (
-    <main className="w-full">
+    <main className="w-full flex">
 
+    <div className="hidden lg:flex lg:w-3/12">
+        <Drawer />
+    </div>
+
+    <div className="w-9/12">
       <div className="w-full flex justify-center mt-6 mb-6 pt-2 p-2 border-b border-light-gray-22 border-solid ">
         <p className="text-3xl font-bold">Tablero</p>
       </div>
@@ -44,7 +50,8 @@ export default function Home() {
           <NotificacionSection />
         </div>
       </div>
-
+    </div>
+    
     </main>
   );
 }

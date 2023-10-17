@@ -5,7 +5,7 @@ export default function Drawer() {
   return (
     <div className="w-10/12 bg-dark-blue-10 mr-auto h-fit gray__border p-2">
       <ul className="menu p-0  text-white font-light">
-        <Link href="/alumnos-dashboard" className={`${cssMenu}`}>
+        <Link href="/alumno-dashboard" className={`${cssMenu}`}>
           <div className="w-[20px]">
             <svg
               stroke="currentColor"
@@ -23,7 +23,7 @@ export default function Drawer() {
         </Link>
 
         <Link
-          href="/profile-history"
+          href="/alumno-dashboard/profile-history"
           className={`${cssMenu}`}
         >
           <div className="w-[20px]">

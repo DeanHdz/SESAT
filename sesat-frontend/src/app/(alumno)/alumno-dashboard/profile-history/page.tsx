@@ -1,13 +1,26 @@
+import Drawer from "../../components/Drawer";
 import AssignmentPath from "../components/AssignmentPath";
 import StudentProfile from "./components/StudentProfile";
+import ThesisHistory from "./components/ThesisHistory";
 import ThesisTitle from "./components/ThesisTitle";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="w-full">
-      <>
+  <div className="flex">
+    <div className="hidden lg:flex lg:w-3/12 flex-col">
+      <Drawer />
+      <ThesisHistory />
+    </div>
+
+    <div className="w-full lg:w-9/12">
+      <label className="mb-6 block text-4xl font-bold">
+        Historial de alumno
+      </label>
       <StudentProfile />
+      <div className="flex lg:hidden">
+        <ThesisHistory />
+      </div>
       <ThesisTitle />
       <label className="mb-6 block text-2xl font-bold">
           Historial de asignaciones
@@ -76,7 +89,7 @@ export default function Home() {
           </tbody>
         </table>
       </div>
-    </>
-    </main>
+    </div>
+  </div>
   );
 }
