@@ -3,6 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 import { resolve } from "path";
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { UsuarioService } from "src/usuario/usuario.service";
+import { encrypt } from "./crypto";
 
 @Injectable()
 export class AuthService {
@@ -30,14 +31,17 @@ export class AuthService {
         family_name: user.apellido_materno,
         token: this.jwtService.sign(
           {
-            usuario: {
-              id_usuario: user.id_usuario,
-              name: user.nombre,
-              last_name: user.apellido_paterno,
-              family_name: user.apellido_materno,
-            },
+            id_usuario: user.id_usuario,
+            name: user.nombre,
+            last_name: user.apellido_paterno,
+            family_name: user.apellido_materno,
+            digest: encrypt(
+              JSON.stringify({
+                password: user.password,
+                role: user.rol.nombre_rol,
+              })
+            ),
           },
-          //Va encriptado
           {
             secret: process.env.SECRET_JWT,
           }
