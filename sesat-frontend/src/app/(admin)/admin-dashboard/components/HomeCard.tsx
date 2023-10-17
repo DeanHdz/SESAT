@@ -4,7 +4,7 @@ const HomeCard = ({ title, webLink }: { title: string; webLink: string }) => {
   return (
     <Link
       href={webLink}
-      className="mb-6 bg-light-blue-10 w-[45vw] lg:w-full flex flex-col items-center justify-center p-6 h-[250px] rounded border border-light-gray-22 border-solid hover:bg-light-blue-15"
+      className="mb-6 bg-light-blue-10 lg:w-full flex flex-col items-center justify-center p-6 h-fit lg:h-[250px] rounded border border-light-gray-22 border-solid hover:bg-light-blue-15"
     >
       <svg
         stroke="currentColor"

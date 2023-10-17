@@ -12,7 +12,7 @@ export class PeriodoService {
     private periodoRepository: Repository<Periodo>
   ) {}
 
-  create(createPeriodoDto: CreatePeriodoDto) {
+  create(createPeriodoDto: CreatePeriodoDto) {    
     return this.periodoRepository.save(createPeriodoDto);
   }
 
@@ -28,7 +28,13 @@ export class PeriodoService {
   async findLatestPeriod() {    
     const result = await this.periodoRepository
       .createQueryBuilder('p')  
-      .select(['p.id_periodo', 'p.fecha_apertura', 'p.fecha_cierre'])  
+      .select([
+        'p.id_periodo',
+        'p.fecha_apertura',
+        'p.fecha_cierre',
+        'p.fecha_apertura_opc',
+        'p.fecha_cierre_opc',
+      ])
       .orderBy('p.id_periodo', 'DESC')
       .limit(1)
       .getOne();

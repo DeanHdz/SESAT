@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 
-const AssingmentCardInfo = ({ title, subtitle, tipo, pendientes, entregadas, avance, activa }: { title: string, subtitle: string, tipo: number, pendientes: number, entregadas: number, avance: string, activa: boolean }) => {
+const MDAssingmentCardInfo = ({ title, subtitle, pendientes, entregadas, avance, activa, modalidad }: { title: string, subtitle: string, pendientes: number, entregadas: number, avance: string, activa: boolean, modalidad: string }) => {
     const navigate = useRouter()
     const handleClick = () => {
         if(activa){
-            navigate.push(`/admin-dashboard/assignments/phd/${avance}/details/${tipo}`)
+            navigate.push(`/admin-dashboard/assignments/masters/${modalidad}/${avance}/details/`)
         }else{
-            navigate.push(`/admin-dashboard/assignments/phd/${avance}/create-assignment/${tipo}`)
+            navigate.push(`/admin-dashboard/assignments/masters/${modalidad}/${avance}/create-assignment`)
         }        
     }
 
@@ -37,4 +37,4 @@ const AssingmentCardInfo = ({ title, subtitle, tipo, pendientes, entregadas, ava
     )
 }
 
-export default AssingmentCardInfo
+export default MDAssingmentCardInfo
