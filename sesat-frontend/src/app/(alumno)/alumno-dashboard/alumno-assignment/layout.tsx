@@ -2,19 +2,19 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Sistema de Evaluación y Seguimiento de Tesis',
-  description: 'Historial de alumno',
+  description: 'Vista de asignación alumno',
   icons: '/images/uaslp-logo.png',
 }
 
-export default function ProfileHistoryLayout({
+export default function AssignmentLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
 
   return (
-    <main className='w-full'> 
+    <div className='w-full'> 
       {children}
-    </main>
+    </div>
   )
 }

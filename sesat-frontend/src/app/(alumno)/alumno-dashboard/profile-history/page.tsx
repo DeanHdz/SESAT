@@ -1,4 +1,4 @@
-import Drawer from "../../components/Drawer";
+import Drawer from "../components/Drawer";
 import AssignmentPath from "../components/AssignmentPath";
 import StudentProfile from "./components/StudentProfile";
 import ThesisHistory from "./components/ThesisHistory";

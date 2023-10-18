@@ -1,5 +1,5 @@
-import Drawer from "../components/Drawer";
-import Calendar from "./components/Calendar";
+import Drawer from './components/Drawer';
+import Calendar from './components/Calendar';
 import CompletedAssignments from './components/CompletedAssignments'
 import NotificacionSection from "./components/NotificationSection";
 import ContactoAsesor from "./components/ContactoAsesor";
