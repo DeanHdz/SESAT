@@ -104,7 +104,7 @@ const modalData: IModalData = {
   
           </div>
   
-          <div className="block mt-0 w-auto bg-light-blue-10 rounded px-8 py-4 mb-10 h-fit border border-light-gray-22 border-solid">
+          {/* <div className="block mt-0 w-auto bg-light-blue-10 rounded px-8 py-4 mb-10 h-fit border border-light-gray-22 border-solid">
             <label className="mb-0 block text-base font-bold">
               Versiones anteriores de la tesis
             </label>
@@ -121,7 +121,7 @@ const modalData: IModalData = {
             </select>
   
   
-          </div>
+          </div> */}
 
 
           <div className="block mt-0 w-auto bg-light-blue-10 rounded px-8 py-4 mb-10 h-fit border border-light-gray-22 border-solid">
@@ -158,6 +158,11 @@ const modalData: IModalData = {
           <div className="mt-6 flex flex-row justify-center w-full">
             <PrimaryButton onClick={viewPDFDocument} text="Ver PDF Completo" />
           </div>
+          <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+            <div className="text-center text-[#ffffff]">
+              Revision
+            </div>
+          </button>
         </div>
       </div>
     );
