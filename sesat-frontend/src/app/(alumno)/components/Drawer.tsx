@@ -37,7 +37,7 @@ export default function Drawer() {
             </svg>
           </div>
 
-          <span className="ml-6">Historial</span>
+          <span className="ml-6">Historial de tesis</span>
         </Link>
 
       </ul>

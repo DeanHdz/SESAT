@@ -46,9 +46,6 @@ export default function Home() {
             <ContactoAsesor />
           </div>
         </div>
-        <div className="w-full p-2 lg:w-1/3">
-          <NotificacionSection />
-        </div>
       </div>
     </div>
     
