@@ -14,9 +14,35 @@ export async function fetchAsesorByIDTesis(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    next:{
-      revalidate: 20
-    },
+    cache: 'no-store' as RequestCache    
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+  return result;
+
+}
+
+export async function fetchAvancesEntregadosByAsesor(
+  idPeriodo: string,
+  idAsesor: string,
+  idFuncion: string,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/asesor/turned-in/${idPeriodo}/${idAsesor}/${idFuncion}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    }, 
+    cache: 'no-store' as RequestCache   
   };
   const response = await fetch(url, options);
 

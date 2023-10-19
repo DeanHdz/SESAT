@@ -10,7 +10,6 @@ import { GradoEstudio } from "src/grado-estudio/entities/grado-estudio.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import { Modalidad } from "src/modalidad/entities/modalidad.entity";
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { Periodo } from "src/periodo/entities/periodo.entity";
 
 @Injectable()
 export class AsignacionService {
