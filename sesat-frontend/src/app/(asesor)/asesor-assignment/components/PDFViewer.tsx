@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
-import ProcessingAnim from './ProcessingAnim';
+import ProcessingAnim from '@/app/components/ProcessingAnim';
 
 {/**
 PDF VIEWER
@@ -121,7 +121,14 @@ const PDFViewer = ({
 
 
         return (
-            <div className='w-full'>
+            <div className='w-full flex flex-col pt-5 mt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
+                
+                <label className="flex text-2xl font-bold mb-2">
+                    Vista previa de avance
+                </label>    
+
+                <div className='w-full m-2 mb-4 border border-solid border-gray-200'></div>
+
                 {/**Document Toolbar */}
                 <div className='sticky__toolbar text-[#5f5f5f] px-3 flex items-center w-full border border-solid border-slate-300/80 h-[50px] bg-[#eeeeee]'>
                     {/**Zoom In */}
