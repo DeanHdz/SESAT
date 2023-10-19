@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
 
-{/**
+  {/**
 
   const [comment, setComment] = useState("");
   const [addedComment, setAddedComment] = useState(false);
@@ -42,8 +42,8 @@ const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
   }
    */}
   return (
-    <div className="w-full mt-5 mb-5 shadow-md">
-      <form action="" className="w-full p-4" onSubmit={()=>{}}>
+    <div className="w-full mt-5 mb-5 bg-light-blue-10">
+      <form action="" className="w-full p-4" onSubmit={() => { }}>
         <label className="block mb-2">
           <span className="text-gray-600">Añade un comentario</span>
           <textarea
@@ -54,7 +54,10 @@ const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
             }}
           ></textarea>
         </label>
-        <button className="px-3 py-2 text-sm btn text-blue-100 bg-primary rounded">
+        {/* <button className="px-3 py-2 text-sm btn text-blue-100 bg-primary rounded">
+          Guardar Comentario
+        </button> */}
+        <button className="primary__btn">
           Guardar Comentario
         </button>
       </form>
