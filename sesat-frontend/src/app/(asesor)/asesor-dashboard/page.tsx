@@ -1,10 +1,25 @@
+import { fetchAvancesEntregadosByAsesor } from "../../../../utils/comite.endpoint";
+import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
 import Calendar from "./components/Calendar";
 import CommentCard from "./components/CommentCard";
 import CompletedAssignments from './components/CompletedAssignments'
 import NotificacionSection from "./components/NotificationSection";
 import Drawer from "./components/Drawer";
 
-export default function Home() {
+type AsignacionProps = {
+  id_tesis: number,
+  nombre: string,
+  apellido_paterno: string,
+  apellido_materno: string,
+  titulo: string,
+  fecha_entrega: string,
+}
+
+export default async function Home() {
+  let asesorID = 333333;
+  let idFuncion = 1;
+  let periodo = await fetchLatestPeriod("");
+  let asignaciones: AsignacionProps[] = await fetchAvancesEntregadosByAsesor(periodo.id_periodo, asesorID.toString(), idFuncion.toString(), "")
   return (
     <main className="w-full flex">
 

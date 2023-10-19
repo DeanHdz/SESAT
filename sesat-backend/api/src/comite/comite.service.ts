@@ -6,13 +6,19 @@ import { UpdateComiteDto } from "./dto/update-comite.dto";
 import { Comite } from "./entities/comite.entity";
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Funcion } from "src/funcion/entities/funcion.entity";
+import { Tesis } from "src/tesis/entities/tesis.entity";
+import { Asignacion } from "src/asignacion/entities/asignacion.entity";
+import { group } from "console";
 
 @Injectable()
 export class ComiteService {
   constructor(
     @InjectRepository(Comite)
-    private comiteRepository: Repository<Comite>
-  ) {}
+    private comiteRepository: Repository<Comite>,
+
+    @InjectRepository(Asignacion)
+    private readonly asignacionRepository: Repository<Asignacion>,
+  ) { }
 
   create(CreateComiteDto: CreateComiteDto) {
     return this.comiteRepository.save(CreateComiteDto);
@@ -45,6 +51,38 @@ export class ComiteService {
       })
       .getRawOne(); // fetch raw results, which will give us one data ROW comibined from all the tables.
     //otherwise it won't return anything
+    return resp;
+  }
+  //Estados de entrega:
+  //EDO 0 -> No entregado
+  //EDO 1 -> Entregado
+  // EDO 2 -> Vencido
+  async findAsignacionesAsesorados(idPeriodo: number, idAsesor: number, idFuncion: number) {
+
+
+    const subquery = this.comiteRepository
+      .createQueryBuilder("c")
+      .select("c.id_tesis")
+      .where("c.id_usuario = :id_usuario", { id_usuario: idAsesor })
+      .andWhere("c.id_funcion = :id_funcion", { id_funcion: idFuncion });
+
+    const resp = await this.asignacionRepository
+      .createQueryBuilder("a")
+      .select([
+        "t.id_tesis AS id_tesis",
+        "u.nombre AS nombre",
+        "u.apellido_paterno AS apellido_paterno",
+        "u.apellido_materno AS apellido_materno",
+        "a.titulo AS titulo", 
+        "a.fecha_entrega AS fecha_entrega"])
+      .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
+      .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+      .where(`a.id_tesis IN (${subquery.getQuery()})`)
+      .andWhere("a.estado_entrega = :estado_entrega", { estado_entrega: 1 })
+      .andWhere("a.id_periodo = :id_periodo", { id_periodo: idPeriodo })
+      .setParameters(subquery.getParameters())
+      .getRawMany();          
+
     return resp;
   }
 

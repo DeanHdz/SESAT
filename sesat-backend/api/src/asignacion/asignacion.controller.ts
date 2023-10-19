@@ -72,9 +72,8 @@ export class AsignacionController {
   /**Devuelve El NUMERO de asignaciones entregadas para determinado num_avance de alumnos de maestria*/
   @Get('num-entregadas/md/:idPeriodo/:numAvance/:mod')
   findNumAsignacionesEntregadasMD(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string, @Param('mod') mod: string) {
-    return this.asignacionService.findNumAsignacionesEntregadasMD(+idPeriodo,+numAvance, +mod);
+    return this.asignacionService.findNumAsignacionesEntregadasMD(+idPeriodo, +numAvance, +mod);
   }
-
 
   @Post()
   create(@Body() createAsignacionDto: CreateAsignacionDto) {
@@ -97,11 +96,11 @@ export class AsignacionController {
     return this.asignacionService.updatePhdGroup(updateAsignacionDto);
   }
 
-   //Actualizar grupo de asignaciones
-   @Put('md/update_group/')
-   updateAssignmentGroupMD(@Body() updateAsignacionDto: UpdateAsignacionDto) {
-     return this.asignacionService.updateMDGroup(updateAsignacionDto);
-   }
+  //Actualizar grupo de asignaciones
+  @Put('md/update_group/')
+  updateAssignmentGroupMD(@Body() updateAsignacionDto: UpdateAsignacionDto) {
+    return this.asignacionService.updateMDGroup(updateAsignacionDto);
+  }
 
 
   @Put()
