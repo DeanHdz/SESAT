@@ -1,8 +1,18 @@
 import HistoryPath from "./components/HistoryPath";
+import Drawer from "../../../components/Drawer";
 
 export default function Home() {
   return (
-    <main className="w-full">
+    <main className="w-full flex">
+
+      <div className="hidden lg:flex lg:w-3/12 flex-col">
+        <Drawer />
+      </div>
+
+      <div className="w-full lg:w-9/12">
+      <label className="mb-6 block text-4xl font-bold">
+          Alumnos de Maestría
+        </label>
       <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
         <input
           type="search"
@@ -66,6 +76,7 @@ export default function Home() {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     </main>
   );

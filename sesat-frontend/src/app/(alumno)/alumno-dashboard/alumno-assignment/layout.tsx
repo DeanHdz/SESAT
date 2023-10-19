@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Sistema de Evaluación y Seguimiento de Tesis',
-  description: 'Vista de asignación alumno',
+  description: 'Ver asignación (alumno)',
   icons: '/images/uaslp-logo.png',
 }
 

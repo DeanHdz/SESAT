@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import AsesorNavbar from './components/AsesorNavbar'
 
 export const metadata: Metadata = {
   title: 'Sistema de Evaluación y Seguimiento de Tesis',
@@ -7,14 +6,14 @@ export const metadata: Metadata = {
   icons: '/images/uaslp-logo.png',
 }
 
-export default function Layout({
+export default function AssignmentLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
 
   return (
-    <div>
+    <div className='w-full'>
       {children}
     </div>
   )
