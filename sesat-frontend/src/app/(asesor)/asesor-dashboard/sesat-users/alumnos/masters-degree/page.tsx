@@ -3,7 +3,6 @@ import HistoryPath from "./components/HistoryPath";
 export default function Home() {
   return (
     <main className="w-full">
-      <>
       <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
         <input
           type="search"
@@ -68,7 +67,6 @@ export default function Home() {
           </tbody>
         </table>
       </div>
-    </>
     </main>
   );
 }
