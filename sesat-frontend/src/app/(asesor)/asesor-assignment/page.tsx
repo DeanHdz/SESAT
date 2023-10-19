@@ -1,7 +1,4 @@
-'use client'
-
 import AddComment from "@/app/components/AddComment"
-import Reply from "@/app/components/Reply"
 import Drawer from "./components/Drawer"
 import AssignmentHeader from "./components/AssignmentHeader"
 import Feedback from "./components/Feedback"
