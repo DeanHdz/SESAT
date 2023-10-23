@@ -24,23 +24,24 @@ const FeedbackModal = ({
 
     return (
         isOpen && (
-            <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50">
-
-                <div className='max-w-[400px] bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2'>
-                    <div className='w-full'><PDFViewer/></div>
-                    <div className='flex flex-col'>
-                        <div className='flex flex-row justify-evenly mt-4'>
-                            <button onClick={saveChanges} className="primary__btn">
-                                Guardar
-                            </button>
-                            <button onClick={onClose} className='secondary__btn'>
-                                Cancelar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
+            <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50 ">
+    <div className='max-w-[800px] max-h-[700px] bg-[#ffffff] rounded-[15px] border border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2'>
+        <div className='w-full' style={{ overflowY: 'auto' }}>
+            <PDFViewer/>
+        </div>
+        <div className='flex flex-col'>
+            <div className='flex flex-row justify-evenly mt-4'>
+                <button onClick={saveChanges} className="primary__btn">
+                    Guardar
+                </button>
+                <button onClick={onClose} className='secondary__btn'>
+                    Cancelar
+                </button>
             </div>
+        </div>
+    </div>
+</div>
+
         )
     );
 };
@@ -78,7 +79,7 @@ const Feedback = (props: FeedbackProps) => {
                         Acta de evaluación
                     </p>
                     <div className="flex flex-row justify-evenly">
-                    <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                    
                             <button onClick={openFeedbackModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
                                 <div className="text-center text-[#ffffff]">
                                     Ver PDF
@@ -89,7 +90,6 @@ const Feedback = (props: FeedbackProps) => {
                                 onClose={closeFeedbackModal}
                                 onSave={handleFeedbackSave}
                             />
-                        </button>
                         <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
                             <div className="text-center text-[#ffffff]">Rellenar Acta</div>
                         </button>
@@ -100,7 +100,6 @@ const Feedback = (props: FeedbackProps) => {
                         Formato de evaluación
                     </p>
                     <div className="flex flex-row justify-evenly">
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
                             <button onClick={openFeedbackModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
                                 <div className="text-center text-[#ffffff]">
                                     Ver PDF
@@ -111,7 +110,6 @@ const Feedback = (props: FeedbackProps) => {
                                 onClose={closeFeedbackModal}
                                 onSave={handleFeedbackSave}
                             />
-                        </button>
                         <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
                             <div className="text-center text-[#ffffff]">Rellenar Formato</div>
                         </button>
