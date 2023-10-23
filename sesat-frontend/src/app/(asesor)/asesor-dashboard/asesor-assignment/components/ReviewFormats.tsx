@@ -1,12 +1,125 @@
 'use client'
-import PDFViewer from '@/app/components/PDFViewer';
 import React, { useState } from 'react';
+import PDFViewer from './PDFViewer';
+import ReportForm, {ReportFormProps} from './ReportForm';
+import ActForm, {ActFormProps} from './ActForm';
 
-export interface FeedbackProps {
-    texto: string;
+export interface ReviewFormatsProps {
+    acta_pdf: Uint8Array;
+    reporte_pdf: Uint8Array;
+    acta_form: ActFormProps,
+    reporte_form: ReportFormProps
 }
 
-const FeedbackModal = ({
+const PDFViewerModal = ({
+    pdf,
+    isOpen,
+    onClose,
+}: {
+    pdf: Uint8Array;
+    isOpen: boolean;
+    onClose: () => void;
+}) => {
+
+    return (
+        isOpen && (
+            <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50">
+
+                <div className='max-w-[1000px] bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2'>
+                    <div className='w-full flex flex-col'>
+                        <PDFViewer buffer={pdf}/>
+                    </div>
+                    <div className='flex flex-row justify-evenly mt-4'>
+                        <button onClick={onClose} className='secondary__btn'>
+                            Cerrar
+                        </button>
+                    </div>
+                 </div>
+            </div>
+        )
+    );
+};
+
+const ReportFormModal = ({
+    isOpen,
+    onClose,
+    onSave,
+  }: {
+    isOpen: boolean;
+    onClose: () => void;
+    onSave: (value: string) => void;
+  }) => {
+    const [updatedValue, setUpdatedValue] = useState('');
+  
+    const saveChanges = () => {
+      onSave(updatedValue);
+      onClose();
+    };
+
+    return (
+        isOpen && (
+            <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50">
+
+                <div className='max-w-[1000px] bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2'>
+                    <div className='w-full flex flex-col'>
+                        {/*<ReportForm />*/}
+                        <p className="flex items-center text-2xl font-bold justify-center mb-4">
+                            Reporte de evaluación
+                        </p>
+                        <form /*onSubmit={void handleSubmit}*/>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Título:</label>
+                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                            </div>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Programa:</label>
+                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                            </div>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Estudiante:</label>
+                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                            </div>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Asesor:</label>
+                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                            </div>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Co-Asesor:</label>
+                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                            </div>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Comité:</label>
+                                <textarea className="disabled textarea border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]"  value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}></textarea>
+                            </div>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Título de tesis:</label>
+                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                            </div>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Fecha de comienzo:</label>
+                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                            </div>
+                            <div className='flex flex-row justify-evenly p-2'>
+                                <label className='p-2'>Fecha límite para examen de grado:</label>
+                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                            </div>
+                        </form>
+                    </div>
+                    <div className='flex flex-row justify-evenly mt-4'>
+                        <button onClick={saveChanges} className="primary__btn">
+                            Guardar
+                        </button>
+                        <button onClick={onClose} className='secondary__btn'>
+                            Cancelar
+                        </button>
+                    </div>
+                 </div>
+            </div>
+        )
+    );
+};
+
+const ActFormModal = ({
     isOpen,
     onClose,
     onSave,
@@ -18,48 +131,320 @@ const FeedbackModal = ({
     const [updatedValue, setUpdatedValue] = useState('');
 
     const saveChanges = () => {
-        onSave(updatedValue);
-        onClose();
-    };
+    onSave(updatedValue);
+    onClose();
+  };
 
-    return (
-        isOpen && (
-            <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50">
-
-                <div className='max-w-[400px] bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2'>
-                    <div className='w-full'><PDFViewer/></div>
-                    <div className='flex flex-col'>
-                        <div className='flex flex-row justify-evenly mt-4'>
-                            <button onClick={saveChanges} className="primary__btn">
-                                Guardar
-                            </button>
-                            <button onClick={onClose} className='secondary__btn'>
-                                Cancelar
-                            </button>
+  return (
+    isOpen && (
+        <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50">
+            <div className='max-w-[1000px] bg-[#ffffff] rounded-[15px] border border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2' style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+                <div className='w-full flex flex-col'>
+                    {/*<ActForm />*/}
+                    <form /*onSubmit={handleSubmit}*/>
+                        <div className="flex flex-row  w-5/6 m-auto mt-6 mb-0 h-fit p-0">
+                            <div className="flex flex-row w-full justify-end items-center sm:mb-10">
+                                <label className="block mr-4 text-lg font-bold">
+                                    Fecha de evaluación:
+                                </label>
+                                {/* <CustomCalendar setSelectedDate={setFechaEval} />*/}
+                            </div>
                         </div>
-                    </div>
+                        <div className="flex flex-row  w-5/6 m-auto mb-0 h-fit p-0">
+                            <label className="mb-3 block text-lg font-bold">
+                                Datos del alumno
+                            </label>
+                        </div>
+                        <div className="flex flex-col  w-5/6 m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
+                            <div className="flex flex-col lg:flex-row">
+                                <div className="lg:w-1/3">
+                                    <label className="mb-3 block text-lg font-bold">
+                                        Apellido Paterno:
+                                    </label>
+                                    <label className="mb-3 block text-lg font-sans">
+                                        {/*alumno?.last_name*/}
+                                    </label>
+                                </div>
+                                <div className="lg:w-1/3">
+                                    <label className="mb-3 block text-lg font-bold">
+                                        Apellido Materno:
+                                    </label>
+                                    <label className="mb-3 block text-lg font-sans">
+                                        {/*alumno?.family_name*/}
+                                    </label>
+                                </div>
+                                <div className="lg:w-1/3">
+                                    <label className="mb-3 block text-lg font-bold">Nombre:</label>
+                                    <label className="mb-3 block text-lg font-sans">
+                                        {/*alumno?.name*/}
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="flex flex-col lg:flex-row">
+                                <div className="flex flex-col lg:w-1/2">
+                                    <label className="mb-3 block text-lg font-bold">
+                                        Estudiante del programa:
+                                    </label>
+                                    <label className="mb-3 block text-lg font-sans">
+                                        {/*programa?.nombreprograma*/}
+                                    </label>
+                                </div>
+                                <div className="flex flex-row w-1/2">
+                                    <div className="flex flex-col w-1/2">
+                                        <label className="mb-3 block text-lg font-bold">
+                                            Clave Única:
+                                        </label>
+                                        <label className="mb-3 block text-lg font-sans">
+                                            {/*claveUnica*/}
+                                        </label>
+                                    </div>
+                                    <div className="flex flex-col w-1/2">
+                                        <label className="mb-3 block text-lg font-bold">Avance No.:</label>
+                                        <label className="mb-3 block text-lg font-sans">
+                                            {/*tesis?.ultimo_avance*/}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-row  w-5/6 m-auto mb-0 h-fit p-0 mt-10">
+                            <label className="mb-3 block text-lg font-bold">
+                                Datos de la Tesis
+                            </label>
+                        </div>
+                        <div className="flex flex-col w-5/6 m-auto ">
+                            <div className="flex flex-col py-6 px-6 bg-light-blue-10 rounded border border-solid border-light-gray-22 mb-10">
+                                <label className="mb-3 block text-lg font-bold">
+                                    Título de la tesis
+                                </label>
+                                <label className="mb-3 block text-lg">
+                                    {/*tesis?.titulo*/}
+                                </label>
+                            </div>
+                            <div className="flex flex-col ">
+                                <label className="mb-3 block text-lg font-bold">
+                                    Porcentaje de avance en el desarrollo del proyecto de tesis
+                                </label>
+                                <input
+                                className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                                type="number"
+                                placeholder="%"
+                                pattern="^(100|[1-9][0-9]?|0)$"
+                                value={ 1 /*porcentajeAv*/}
+                                required
+                                onChange={
+                                (e) => {
+                                    //setPrcAvance(e.target.value);
+                                }
+                                }
+                                />
+                                <label className="mb-3 block text-lg font-bold">
+                                    Comentarios y sugerencias
+                                </label>
+                                <textarea
+                                className="textarea h-48 w-full px-10  border-primary rounded text-base mb-10 "
+                                placeholder="Escriba sus sugerencias o comentarios"
+                                value={ 1 /*comentarios*/}
+                                required
+                                onChange={
+                                (e) => {
+                                    //autosize(e.currentTarget);
+                                    //setComentarios(e.target.value);
+                                }
+                                }
+                                ></textarea>
+                                <label className="mb-3 block text-lg font-bold">Evaluación</label>
+                                <div className="flex flex-col  w-full m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
+                                    <div className="flex flex-col lg:flex-row justify-between">
+                                        <div className="flex flex-col">
+                                            <label className="mb-3 block text-lg font-bold">
+                                                Documento de avance
+                                            </label>
+                                            <input
+                                            className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                                            type="number"
+                                            placeholder="%"
+                                            pattern="^(100|[1-9][0-9]?|0)$"
+                                            value={ 1 /*documentoAvance*/}
+                                            required
+                                            onChange={
+                                            (e) => {
+                                                //setDocAvance(e.target.value);
+                                            }
+                                            }
+                                            />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <label className="mb-3 block text-lg font-bold">
+                                                Exposición
+                                            </label>
+                                            <input
+                                            className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                                            type="number"
+                                            placeholder="%"
+                                            pattern="^(100|[1-9][0-9]?|0)$"
+                                            value={ 1 /*exposicion*/}
+                                            required
+                                            onChange={
+                                            (e) => {
+                                                //setExposicion(e.target.value);
+                                            }
+                                            }
+                                            />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <label className="mb-3 block text-lg font-bold">
+                                                Dominio del tema
+                                            </label>
+                                            <input
+                                            className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                                            type="number"
+                                            placeholder="%"
+                                            pattern="^(100|[1-9][0-9]?|0)$"
+                                            value={ 1 /*dominioTema*/}
+                                            required
+                                            onChange={
+                                            (e) => {
+                                                //setDominioTema(e.target.value);
+                                                 }
+                                            }
+                                            />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <label className="mb-3 block text-lg font-bold">
+                                                Grado de avance en el periodo
+                                            </label>
+                                            <input
+                                            className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                                            type="number"
+                                            placeholder="%"
+                                            pattern="^(100|[1-9][0-9]?|0)$"
+                                            value={ 1 /*gradoAvance*/}
+                                            required
+                                            onChange={
+                                            (e) => {
+                                                //setGradoAvance(e.target.value);
+                                                }
+                                            }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-row">
+                                        <div className="flex flex-col">
+                                            <label className="mb-3 block text-lg font-bold">
+                                                Promedio de la evaluación
+                                            </label>
+                                            <label className="mb-3 block text-lg">
+                                                { 1 /*promedio*/} %
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label className="mt-10 mb-3 block text-lg font-bold">Acerca del examen TOEFL</label>
+                                <div className="flex flex-col  w-full m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
+                                    <div className="flex flex-col lg:flex-row justify-normal">
+                                        <div className="flex flex-col mr-20">
+                                            <label className="mb-3 block text-lg font-bold">
+                                                Fecha de presentación del examen
+                                            </label>
+                                            {/*<CustomCalendar setSelectedDate={setFechaToefl} />*/}
+                                        </div>
+                                        <div className="flex flex-col mt-10">
+                                            <label className="mb-3 block text-lg font-bold">
+                                                Puntaje obtenido
+                                            </label>
+                                            <input
+                                            className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                                            type="number"
+                                            placeholder="pts"
+                                            pattern="^(100|[1-9][0-9]?|0)$"
+                                            value={ 1 /*puntajeToefl*/}
+                                            required
+                                            onChange={
+                                            (e) => {
+                                                //setPuntajeToefl(e.target.value);
+                                            }
+                                            }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-row">
+                                        <div className="flex flex-col">
+                                            <label className="mb-3 block text-lg font-bold">
+                                                Próxima fecha para presentar el examen TOEFL
+                                            </label>
+                                            {/*<CustomCalendar setSelectedDate={setProxToefl} />*/}
+                                        </div>
+                                    </div>
+                                </div>
+                                <label className="mb-3 mt-10 block text-lg font-bold">
+                                    Observaciones y compromisos
+                                </label>
+                                <textarea
+                                className="textarea h-12 w-full px-10 border-primary rounded text-base mb-10"
+                                placeholder="Escriba sus observaciones y compromisos para el alumno"
+                                value={ 1 /*observaciones*/}
+                                required
+                                onChange={
+                                (e) => {
+                                    //autosize(e.currentTarget);
+                                    //setObservaciones(e.target.value);
+                                }
+                                }
+                                ></textarea>
+                                <div className='flex flex-row justify-evenly mt-4'>
+                                    <button type="submit" onClick={saveChanges} className="primary__btn">
+                                        Guardar acta de evaluación
+                                    </button>
+                                    <button onClick={onClose} className='secondary__btn'>
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
             </div>
+        </div>
         )
     );
 };
 
-const Feedback = (props: FeedbackProps) => {
-    const [isFeedbackModalOpen, setIsFechaEntregaModalOpen] = useState(false);
-    const [modifiedFeedback, setModifiedFeedback] = useState(props.texto);
+const ReviewFormats = (props: ReviewFormatsProps) => {
+    const [isPDFViewerModalOpen, setIsPDFViewerModalOpen] = useState(false);
+    const [isReportFormModalOpen, setIsReportFormModalOpen] = useState(false);
+    const [isActFormModalOpen, setIsActFormModalOpen] = useState(false);
 
-    const openFeedbackModal = () => {
-        setIsFechaEntregaModalOpen(true);
+    const openPDFViewerModal = () => {
+        setIsPDFViewerModalOpen(true);
     };
 
-    const closeFeedbackModal = () => {
-        setIsFechaEntregaModalOpen(false);
+    const closePDFViewerModal = () => {
+        setIsPDFViewerModalOpen(false);
     };
 
-    const handleFeedbackSave = (value: string) => {
-        //(Dean) Falta meter logica para guardar cambio en Base de datos o verificacion de input
-        setModifiedFeedback(value);
+    const openReportFormModal = () => {
+        setIsReportFormModalOpen(true);
+    };
+
+    const closeReportFormModal = () => {
+        setIsReportFormModalOpen(false);
+    };
+
+    const handleReportFormSave = () => {
+        //setModifiedReport(value);
+    };
+
+    const openActFormModal = () => {
+        setIsActFormModalOpen(true);
+    };
+
+    const closeActFormModal = () => {
+        setIsActFormModalOpen(false);
+    };
+
+    const handleActFormSave = () => {
+        //setModifiedAct(value);
     };
 
     return (
@@ -78,43 +463,53 @@ const Feedback = (props: FeedbackProps) => {
                         Acta de evaluación
                     </p>
                     <div className="flex flex-row justify-evenly">
-                    <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <button onClick={openFeedbackModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                                <div className="text-center text-[#ffffff]">
-                                    Ver PDF
-                                </div>
-                            </button>
-                            <FeedbackModal
-                                isOpen={isFeedbackModalOpen}
-                                onClose={closeFeedbackModal}
-                                onSave={handleFeedbackSave}
-                            />
+                        <button onClick={openPDFViewerModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                            <div className="text-center text-[#ffffff]">
+                                Ver PDF
+                            </div>
                         </button>
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <div className="text-center text-[#ffffff]">Rellenar Acta</div>
+                        <PDFViewerModal
+                            pdf={props.acta_pdf}
+                            isOpen={isPDFViewerModalOpen}
+                            onClose={closePDFViewerModal}
+                        />
+                        <button onClick={openActFormModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                            <div className="text-center text-[#ffffff]">
+                                Rellenar Acta
+                            </div>
                         </button>
+                        <ActFormModal 
+                            isOpen={isActFormModalOpen}
+                            onClose={closeActFormModal}
+                            onSave={handleActFormSave}
+                        />
                     </div>
                 </div>
                 <div className="bg-[#ffffff] rounded-[15px] border border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2">
                     <p className="flex items-center text-2xl font-bold justify-center mb-2">
-                        Formato de evaluación
+                        Reporte de evaluación
                     </p>
                     <div className="flex flex-row justify-evenly">
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <button onClick={openFeedbackModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                                <div className="text-center text-[#ffffff]">
-                                    Ver PDF
-                                </div>
-                            </button>
-                            <FeedbackModal
-                                isOpen={isFeedbackModalOpen}
-                                onClose={closeFeedbackModal}
-                                onSave={handleFeedbackSave}
-                            />
+                        <button onClick={openPDFViewerModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                            <div className="text-center text-[#ffffff]">
+                                Ver PDF
+                            </div>
                         </button>
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <div className="text-center text-[#ffffff]">Rellenar Formato</div>
+                        <PDFViewerModal
+                            pdf={props.reporte_pdf}
+                            isOpen={isPDFViewerModalOpen}
+                            onClose={closePDFViewerModal}
+                        />
+                        <button onClick={openReportFormModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                            <div className="text-center text-[#ffffff]">
+                                Rellenar Reporte
+                            </div>
                         </button>
+                        <ReportFormModal 
+                            isOpen={isReportFormModalOpen}
+                            onClose={closeReportFormModal}
+                            onSave={handleActFormSave}
+                        />
                     </div>
                 </div>
             </div>
@@ -122,4 +517,4 @@ const Feedback = (props: FeedbackProps) => {
     )
 }
 
-export default Feedback
+export default ReviewFormats

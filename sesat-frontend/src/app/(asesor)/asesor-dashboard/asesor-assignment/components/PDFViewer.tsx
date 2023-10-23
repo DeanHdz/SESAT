@@ -125,7 +125,7 @@ const PDFViewer = ({
             <div className='w-full flex flex-col pt-5 mt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
                 
                 <label className="flex text-2xl font-bold mb-2">
-                    Vista previa de avance
+                    Vista previa de PDF
                 </label>    
 
                 <div className='w-full m-2 mb-4 border border-solid border-gray-200'></div>
