@@ -34,6 +34,8 @@ export class Comentario {
   @Column()
   texto: string;
 
+  @Column()
+  fecha_comentario: Date;
   /*@OneToMany(() => Respuesta, (respuesta) => respuesta.comentario, {
     eager: true,
   })

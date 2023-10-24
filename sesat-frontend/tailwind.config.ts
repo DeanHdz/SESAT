@@ -19,6 +19,20 @@ const config: Config = {
       fontFamily: {
         SESAT: ["SESAT", "semibold"],
       },
+      animation: {
+        'slide-up': 'slideUp 0.3s ease-out',
+        'slide-down': 'slideDown 0.5s ease-in'
+      },
+      keyframes: {
+        slideUp: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' }
+        },
+        slideDown: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(100%)' }
+        }
+      },
     },
   },
   plugins: [require('@tailwindcss/typography'),

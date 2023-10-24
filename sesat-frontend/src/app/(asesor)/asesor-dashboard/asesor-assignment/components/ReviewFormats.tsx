@@ -1,96 +1,48 @@
 'use client'
 import React, { useState } from 'react';
+import PDFModal from './PDFModal';
+import test from 'node:test';
 
-export interface ReviewFormatsProps{
+export interface ReviewFormatsProps {
+    tesis: Array<number>;
     actaPDF: string;
-    evaluacionPDF: string;
+    evaluacionPDF: string;    
 }
 
-const ReviewFormats = (props: ReviewFormatsProps) =>{
+const ReviewFormats = (props: ReviewFormatsProps) => {
+    
 
-const FormActaModal = ({
-  isOpen,
-  onClose,
-  onSave,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (value: string) => void;
-}) => {
-  const [updatedValue, setUpdatedValue] = useState('');
-
-  const saveChanges = () => {
-    onSave(updatedValue);
-    onClose();
-  };
-
-  return (
-    isOpen && (
-      <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50">
-        
-        <div className='max-w-[400px] bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2'>
-            <p className="flex items-center text-2xl font-bold justify-center mb-4">
-                Retroalimentación de asignación:
-            </p>
-            <div className='flex flex-col'>
-                <input type="text" value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                <div className='flex flex-row justify-evenly mt-4'>
-                    <button onClick={saveChanges} className="primary__btn">
-                        Guardar
-                    </button>
-                    <button onClick={onClose} className='secondary__btn'>
-                        Cancelar
-                    </button>
-                </div>
-            </div>
-        </div>
-
-      </div>
-    )
-  );
-};
-
-    return(
+    return (
         <div className='flex flex-col w-full pt-5 mt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
 
             <label className="flex text-2xl font-bold">
-                Formatos de revisión
+                Evaluación
             </label>
 
-            <div className='w-full m-2 border border-solid border-gray-200'></div>
+            <div className='w-full my-2 mx-auto border border-solid border-gray-200'></div>
 
             <div className='w-full flex flex-col'>
-                <div className="bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2">
-                    <p className="flex items-center text-2xl font-bold justify-center mb-2">
+                <div className="bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full px-5 flex flex-row items-center mb-2">
+                    <div className='w-[20px] h-[20px] opacity-40 my-3'>
+                        <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" strokeWidth="2" d="M4.99787498,8.99999999 L4.99787498,0.999999992 L19.4999998,0.999999992 L22.9999998,4.50000005 L23,23 L4,23 M18,1 L18,6 L23,6 M3,12 L3.24999995,12 L4.49999995,12 C6.5,12 6.75,13.25 6.75,14 C6.75,14.75 6.5,16 4.49999995,16 L3.24999995,16 L3.24999995,18 L3,17.9999999 L3,12 Z M9.5,18 L9.5,12 C9.5,12 10.4473684,12 11.2052633,12 C12.3421053,12 13.5,12.5 13.5,15 C13.5,17.5 12.3421053,18 11.2052633,18 C10.4473684,18 9.5,18 9.5,18 Z M16.5,19 L16.5,12 L20.5,12 M16.5,15.5 L19.5,15.5"></path></svg>
+                    </div>
+                    <p className="flex items-center font-SESAT font-bold justify-center ml-3">
                         Acta de evaluación
                     </p>
-                    <div className="flex flex-row justify-evenly">
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <div className="text-center text-[#ffffff]">
-                                Ver PDF
-                            </div>
-                        </button>
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <div className="text-center text-[#ffffff]">
-                                Rellenar Acta
-                            </div>
-                        </button>
-                    </div>
+
                 </div>
-                <div className="bg-[#ffffff] rounded-[15px] border border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2">
-                    <p className="flex items-center text-2xl font-bold justify-center mb-2">
-                        Formato de evaluación
+                <div className="bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full px-5 flex flex-row items-center mb-2">
+                    <div className='w-[20px] h-[20px] opacity-40 my-3'>
+                        <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" strokeWidth="2" d="M4.99787498,8.99999999 L4.99787498,0.999999992 L19.4999998,0.999999992 L22.9999998,4.50000005 L23,23 L4,23 M18,1 L18,6 L23,6 M3,12 L3.24999995,12 L4.49999995,12 C6.5,12 6.75,13.25 6.75,14 C6.75,14.75 6.5,16 4.49999995,16 L3.24999995,16 L3.24999995,18 L3,17.9999999 L3,12 Z M9.5,18 L9.5,12 C9.5,12 10.4473684,12 11.2052633,12 C12.3421053,12 13.5,12.5 13.5,15 C13.5,17.5 12.3421053,18 11.2052633,18 C10.4473684,18 9.5,18 9.5,18 Z M16.5,19 L16.5,12 L20.5,12 M16.5,15.5 L19.5,15.5"></path></svg>
+                    </div>
+                    <p className="flex items-center font-SESAT font-bold justify-center ml-3">
+                        Reporte de evaluación
                     </p>
-                    <div className="flex flex-row justify-evenly">
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <div className="text-center text-[#ffffff]">Ver PDF</div>
-                        </button>
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <div className="text-center text-[#ffffff]">Rellenar Formato</div>
-                        </button>
-                    </div>
+
                 </div>
+
             </div>
+            <PDFModal document={props.tesis}/>
         </div>
     )
 }

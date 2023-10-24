@@ -7,7 +7,7 @@ import NotificacionSection from "./components/NotificationSection";
 import Drawer from "./components/Drawer";
 
 type AsignacionProps = {
-  id_tesis: number,
+  id_asignacion: number,
   nombre: string,
   apellido_paterno: string,
   apellido_materno: string,
@@ -33,7 +33,7 @@ export default async function Home() {
       </div>
 
       <div className="w-full flex justify-center pt-2 pb-2">
-        <CompletedAssignments />
+        <CompletedAssignments asignaciones={asignaciones}/>
       </div>
 
       <div className="hidden lg:flex w-full justify-center pt-2 pb-2">

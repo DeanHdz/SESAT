@@ -69,7 +69,7 @@ export class ComiteService {
     const resp = await this.asignacionRepository
       .createQueryBuilder("a")
       .select([
-        "t.id_tesis AS id_tesis",
+        "a.id_asignacion AS id_asignacion",
         "u.nombre AS nombre",
         "u.apellido_paterno AS apellido_paterno",
         "u.apellido_materno AS apellido_materno",

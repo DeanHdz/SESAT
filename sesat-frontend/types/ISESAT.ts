@@ -106,17 +106,21 @@ export interface UpdateDatosAsesorExterno {
 
 export interface Asignacion {
   id_asignacion: number;
+  id_formato_evaluacion: number;
+  id_acta_evaluacion: number;
+  id_tesis: number;
+  id_modalidad: number;
+  id_periodo: number;
   num_avance: number;
   titulo: string;
   descripcion: string;
-  apertura: Date;
-  cierre: Date;
-  calificacion: number;
-  documento: string;
+  fecha_entrega: string;
+  calificacion: number;    
+  documento: {type: string; data: Array<number>};
   estado_entrega: number;
   retroalimentacion: string;
-  id_formato_evaluacion: number;
-  id_acta_evaluacion: number;
+  tipo: number;
+  fecha_presentacion: string;
 }
 
 export interface CreateAsignacion {
@@ -360,9 +364,10 @@ export interface Comentario {
 }
 
 export interface CreateComentario {
-  clave_usuario: number;
+  id_usuario: number;
   id_asignacion: number;
   texto: string;
+  fecha_comentario: string;
 }
 
 export interface UpdateComentario {
@@ -370,6 +375,7 @@ export interface UpdateComentario {
   clave_usuario: number;
   id_asignacion: number;
   texto: string;
+  fecha_comentario: string;  
 }
 
 /*------------------ RESPUESTA INTERFACE ------------------*/
