@@ -89,7 +89,8 @@ const ReportFormModal = ({
 
     return (
         isOpen && (
-            <div>
+            <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50">
+            <div className='max-w-[1000px] bg-[#ffffff] rounded-[15px] border border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2' style={{ maxHeight: '90vh', overflowY: 'auto' }}>
       <form onSubmit={handleSubmit}>
         <div className="w-full">
           <div className="mb-4">
@@ -204,7 +205,16 @@ const ReportFormModal = ({
             />
           </div>
         </div>
+        <div className='flex flex-row justify-evenly mt-4'>
+            <button type="submit" onClick={saveChanges} className="primary__btn">
+                Guardar Reporte de evaluación
+            </button>
+            <button onClick={onClose} className='secondary__btn'>
+                Cancelar
+            </button>
+        </div>
       </form>
+    </div>
     </div>
         )
     );
