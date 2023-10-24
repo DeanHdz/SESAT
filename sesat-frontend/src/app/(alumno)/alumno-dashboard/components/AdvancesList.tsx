@@ -10,7 +10,7 @@ const AdvancesList = () => {
             <label className="mt-6 mb-2 block text-base font-light">
               Listado de avances
             </label>
-            <select className="mt-0 select h-1/4 py-2 px-10 shadow appearance-none border-primary rounded w-full mb-10">
+            <select className="mt-0 select h-1/4 py-2 px-2 shadow appearance-none border-primary rounded w-full mb-10">
               <option disabled selected>
                 Seleccione para previsualizar
               </option>

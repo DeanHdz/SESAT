@@ -1,12 +1,13 @@
 'use client'
 import PDFViewer from '@/app/components/PDFViewer';
 import React, { useState } from 'react';
+import Formato from './Formato';
 
-export interface FeedbackProps {
+export interface PdfProps {
     texto: string;
 }
 
-const FeedbackModal = ({
+const PdfModal = ({
     isOpen,
     onClose,
     onSave,
@@ -27,7 +28,8 @@ const FeedbackModal = ({
             <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50 ">
     <div className='max-w-[800px] max-h-[700px] bg-[#ffffff] rounded-[15px] border border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2'>
         <div className='w-full' style={{ overflowY: 'auto' }}>
-            <PDFViewer/>
+            {/* <PDFViewer/> */}
+            <Formato/>
         </div>
         <div className='flex flex-col'>
             <div className='flex flex-row justify-evenly mt-4'>
@@ -46,21 +48,21 @@ const FeedbackModal = ({
     );
 };
 
-const Feedback = (props: FeedbackProps) => {
-    const [isFeedbackModalOpen, setIsFechaEntregaModalOpen] = useState(false);
-    const [modifiedFeedback, setModifiedFeedback] = useState(props.texto);
+const Pdf = (props: PdfProps) => {
+    const [isPdfModalOpen, setIsFechaEntregaModalOpen] = useState(false);
+    const [modifiedPdf, setModifiedPdf] = useState(props.texto);
 
-    const openFeedbackModal = () => {
+    const openPdfModal = () => {
         setIsFechaEntregaModalOpen(true);
     };
+    
 
-    const closeFeedbackModal = () => {
+    const closePdfModal = () => {
         setIsFechaEntregaModalOpen(false);
     };
 
-    const handleFeedbackSave = (value: string) => {
-        //(Dean) Falta meter logica para guardar cambio en Base de datos o verificacion de input
-        setModifiedFeedback(value);
+    const handlePdfSave = (value: string) => {
+        setModifiedPdf(value);
     };
 
     return (
@@ -80,19 +82,21 @@ const Feedback = (props: FeedbackProps) => {
                     </p>
                     <div className="flex flex-row justify-evenly">
                     
-                            <button onClick={openFeedbackModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                            <button onClick={openPdfModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
                                 <div className="text-center text-[#ffffff]">
                                     Ver PDF
                                 </div>
                             </button>
-                            <FeedbackModal
-                                isOpen={isFeedbackModalOpen}
-                                onClose={closeFeedbackModal}
-                                onSave={handleFeedbackSave}
+                            <PdfModal
+                                isOpen={isPdfModalOpen}
+                                onClose={closePdfModal}
+                                onSave={handlePdfSave}
                             />
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <div className="text-center text-[#ffffff]">Rellenar Acta</div>
-                        </button>
+                        <button onClick={openPdfModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                                <div className="text-center text-[#ffffff]">
+                                    Rellenar Acta
+                                </div>
+                            </button>
                     </div>
                 </div>
                 <div className="bg-[#ffffff] rounded-[15px] border border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2">
@@ -100,19 +104,21 @@ const Feedback = (props: FeedbackProps) => {
                         Formato de evaluación
                     </p>
                     <div className="flex flex-row justify-evenly">
-                            <button onClick={openFeedbackModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                            <button onClick={openPdfModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
                                 <div className="text-center text-[#ffffff]">
                                     Ver PDF
                                 </div>
                             </button>
-                            <FeedbackModal
-                                isOpen={isFeedbackModalOpen}
-                                onClose={closeFeedbackModal}
-                                onSave={handleFeedbackSave}
+                            <PdfModal
+                                isOpen={isPdfModalOpen}
+                                onClose={closePdfModal}
+                                onSave={handlePdfSave}
                             />
-                        <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
-                            <div className="text-center text-[#ffffff]">Rellenar Formato</div>
-                        </button>
+                        <button onClick={openPdfModal} className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none">
+                                <div className="text-center text-[#ffffff]">
+                                    Rellenar Formato
+                                </div>
+                            </button>
                     </div>
                 </div>
             </div>
@@ -120,4 +126,4 @@ const Feedback = (props: FeedbackProps) => {
     )
 }
 
-export default Feedback
+export default Pdf
