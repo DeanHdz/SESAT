@@ -17,17 +17,16 @@ export interface ReportFormProps{
 }
 
 const ReportForm = (props : ReportFormProps) =>{
-  const [received, setReceived] = useState(false);
-  const [titulo, setPrcAvance] = useState("");
-  const [programa, setComentarios] = useState("");
-  const [estudiante, setDocAvance] = useState("");
-  const [asesor, setExposicion] = useState("");
-  const [co_asesor, setDominioTema] = useState("");
-  const [comite, setGradoAvance] = useState("");
-  const [titulo_tesis, setPromedio] = useState("");
-  const [fecha_comienzo, setFechaToefl] = useState(new Date());
-  const [fecha_limite, setProxToefl] = useState(new Date());
-  
+  const [titulo, setTitulo] = useState("");
+  const [programa, setPrograma] = useState("");
+  const [estudiante, setEstudiante] = useState("");
+  const [asesor, setAsesor] = useState("");
+  const [coasesor, setCoasesor] = useState("");
+  const [comiteTesis, setComiteTesis] = useState("");
+  const [tituloTesis, setTituloTesis] = useState("");
+  const [fechaComienzo, setFechaComienzo] = useState("");
+  const [fechaLimite, setFechaLimite] = useState("");
+
   function formatDate(dateValue: Date) {
     let day = dateValue.getDate();
     let month = dateValue.getMonth() + 1; //(Esta indexado desde 0)
@@ -35,6 +34,19 @@ const ReportForm = (props : ReportFormProps) =>{
     let date = day + "/" + month + "/" + year;
    return date;
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Titulo:", titulo);
+    console.log("Programa:", programa);
+    console.log("Estudiante:", estudiante);
+    console.log("Asesor:", asesor);
+    console.log("Coasesor:", coasesor);
+    console.log("ComiteTesis:", comiteTesis);
+    console.log("Titulo Tesis:", tituloTesis);
+    console.log("Fecha Comienzo:", fechaComienzo);
+    console.log("Fecha Limite:", fechaLimite);
+  };
 
   /*async function handleSubmit(e: any) {
     e.preventDefault();

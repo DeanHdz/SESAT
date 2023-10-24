@@ -56,65 +56,156 @@ const ReportFormModal = ({
       onClose();
     };
 
+    const [titulo, setTitulo] = useState("");
+    const [programa, setPrograma] = useState("");
+    const [estudiante, setEstudiante] = useState("");
+    const [asesor, setAsesor] = useState("");
+    const [coasesor, setCoasesor] = useState("");
+    const [comiteTesis, setComiteTesis] = useState("");
+    const [tituloTesis, setTituloTesis] = useState("");
+    const [fechaComienzo, setFechaComienzo] = useState("");
+    const [fechaLimite, setFechaLimite] = useState("");
+
+    function formatDate(dateValue: Date) {
+        let day = dateValue.getDate();
+        let month = dateValue.getMonth() + 1; //(Esta indexado desde 0)
+        let year = dateValue.getFullYear();
+        let date = day + "/" + month + "/" + year;
+    return date;
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("Titulo:", titulo);
+        console.log("Programa:", programa);
+        console.log("Estudiante:", estudiante);
+        console.log("Asesor:", asesor);
+        console.log("Coasesor:", coasesor);
+        console.log("ComiteTesis:", comiteTesis);
+        console.log("Titulo Tesis:", tituloTesis);
+        console.log("Fecha Comienzo:", fechaComienzo);
+        console.log("Fecha Limite:", fechaLimite);
+    };
+
     return (
         isOpen && (
-            <div className="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50">
+            <div>
+      <form onSubmit={handleSubmit}>
+        <div className="w-full">
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="titulo">
+              Titulo:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="titulo"
+              value={titulo}
+              onChange={(e) => setTitulo(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="programa">
+              Programa:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="programa"
+              value={programa}
+              onChange={(e) => setPrograma(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="estudiante">
+              Estudiante:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="estudiante"
+              value={estudiante}
+              onChange={(e) => setEstudiante(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="asesor">
+              Asesor:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="asesor"
+              value={asesor}
+              onChange={(e) => setAsesor(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="coasesor">
+              Co-asesor:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="coasesor"
+              value={coasesor}
+              onChange={(e) => setCoasesor(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="comiteTesis">
+              Comite de Tesis:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="comiteTesis"
+              value={comiteTesis}
+              onChange={(e) => setComiteTesis(e.target.value)}
+            />
+          </div>
 
-                <div className='max-w-[1000px] bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5 flex flex-col mb-2'>
-                    <div className='w-full flex flex-col'>
-                        {/*<ReportForm />*/}
-                        <p className="flex items-center text-2xl font-bold justify-center mb-4">
-                            Reporte de evaluación
-                        </p>
-                        <form /*onSubmit={void handleSubmit}*/>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Título:</label>
-                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                            </div>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Programa:</label>
-                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                            </div>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Estudiante:</label>
-                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                            </div>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Asesor:</label>
-                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                            </div>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Co-Asesor:</label>
-                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                            </div>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Comité:</label>
-                                <textarea className="disabled textarea border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]"  value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}></textarea>
-                            </div>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Título de tesis:</label>
-                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" disabled value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                            </div>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Fecha de comienzo:</label>
-                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                            </div>
-                            <div className='flex flex-row justify-evenly p-2'>
-                                <label className='p-2'>Fecha límite para examen de grado:</label>
-                                <input className="p-2 border border-solid border-black rounded-[15px] w-4/5 max-w-[700px]" type="text" value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
-                            </div>
-                        </form>
-                    </div>
-                    <div className='flex flex-row justify-evenly mt-4'>
-                        <button onClick={saveChanges} className="primary__btn">
-                            Guardar
-                        </button>
-                        <button onClick={onClose} className='secondary__btn'>
-                            Cancelar
-                        </button>
-                    </div>
-                 </div>
-            </div>
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="tituloTesis">
+              Titulo de Tesis:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="tituloTesis"
+              value={tituloTesis}
+              onChange={(e) => setTituloTesis(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="fechaComienzo">
+              Fecha de comienzo:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="fechaComienzo"
+              value={fechaComienzo}
+              onChange={(e) => setFechaComienzo(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-[#000000] mb-2" htmlFor="fechaLimite">
+              Fecha limite para examen de grado:
+            </label>
+            <input
+              className="border rounded p-2 w-full"
+              type="text"
+              id="fechaLimite"
+              value={fechaLimite}
+              onChange={(e) => setFechaLimite(e.target.value)}
+            />
+          </div>
+        </div>
+      </form>
+    </div>
         )
     );
 };
