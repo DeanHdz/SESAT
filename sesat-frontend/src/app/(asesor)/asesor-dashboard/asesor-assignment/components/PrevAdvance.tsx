@@ -74,7 +74,7 @@ const PrevAdvance = ({ idAsignacion }: { idAsignacion: number }) => {
                     Avance 3
                 </div>
             </button>
-            {showModal ? (
+            {showModal && (
                 <>
 
                     <div className='w-screen h-screen bg-black/20 z-50 fixed top-0 right-0 flex justify-center pt-2 overflow-hidden'>
@@ -123,11 +123,8 @@ const PrevAdvance = ({ idAsignacion }: { idAsignacion: number }) => {
                             </div>
                         </div>
                     </div >
-
-
-
                 </>
-            ) : null
+            )
             }
         </>
     )

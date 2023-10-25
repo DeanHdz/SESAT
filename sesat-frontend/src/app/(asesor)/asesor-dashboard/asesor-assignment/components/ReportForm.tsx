@@ -1,15 +1,458 @@
-/*import { Suspense, useEffect, useState } from "react";
-import autosize from 'autosize';
-import { ActaEvaluacionEndpoint } from "../../utils/acta-evaluacion.endpoint";
-import { useRouter } from "next/navigation";
-import { SecondaryButton } from "./SecondaryButton";
-import CustomCalendar from "./CustomCalendar";
-import ProcessingAnim from "./ProcessingAnim";
-import { Asignacion, Programa, Tesis } from "@/types/ISESAT";
+/** Basura vieja, termino siendo implementado directamente en ReviewFormats */
+
+'use client'
+import React from "react";
+import { useState } from "react";
+
+export interface ReportFormProps{
+    titulo: string, //(Dean) toma el titulo de la asignacion? Ejemplo: Reporte 3 - Propuesta de Tesis
+    programa: string,
+    estudiante: string,
+    asesor: string,
+    co_asesor: string,
+    comite: string[],
+    titulo_tesis: string,
+    fecha_comienzo: Date,
+    fecha_limite: Date
+}
+
+const ReportForm = (props : ReportFormProps) =>{
+  const [titulo, setTitulo] = useState("");
+  const [programa, setPrograma] = useState("");
+  const [estudiante, setEstudiante] = useState("");
+  const [asesor, setAsesor] = useState("");
+  const [coasesor, setCoasesor] = useState("");
+  const [comiteTesis, setComiteTesis] = useState("");
+  const [tituloTesis, setTituloTesis] = useState("");
+  const [fechaComienzo, setFechaComienzo] = useState("");
+  const [fechaLimite, setFechaLimite] = useState("");
+
+  function formatDate(dateValue: Date) {
+    let day = dateValue.getDate();
+    let month = dateValue.getMonth() + 1; //(Esta indexado desde 0)
+    let year = dateValue.getFullYear();
+    let date = day + "/" + month + "/" + year;
+   return date;
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Titulo:", titulo);
+    console.log("Programa:", programa);
+    console.log("Estudiante:", estudiante);
+    console.log("Asesor:", asesor);
+    console.log("Coasesor:", coasesor);
+    console.log("ComiteTesis:", comiteTesis);
+    console.log("Titulo Tesis:", tituloTesis);
+    console.log("Fecha Comienzo:", fechaComienzo);
+    console.log("Fecha Limite:", fechaLimite);
+  };
+
+  /*async function handleSubmit(e: any) {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const resp = await ActaEvaluacionEndpoint.putActaEvaluacion(
+        parseInt(id_asignacion),
+       {
+
+         fecha_eval: formatDate(fechaEval),
+         ap_pat: alumno?.last_name! ?? "",
+         ap_mat: alumno?.family_name! ?? "",
+         nombre: alumno?.name! ?? "",
+
+         programa: programa?.nombreprograma! ?? "",
+         no_avance: tesis?.ultimo_avance! ?? "",
+
+         titulo_tesis: tesis?.titulo! ?? "",
+         total_avance: porcentajeAv,
+         comentarios: comentarios,
+
+         cal_doc: parseInt(documentoAvance),
+         cal_expo: parseInt(exposicion),
+         cal_dom: parseInt(dominioTema),
+          grado_avance: parseInt(gradoAvance),
+           promedio: parseInt(promedio),
+          fecha_toefl: formatDate(fechaToefl),
+          puntaje_toefl: parseInt(puntajeToefl),
+          prox_toefl: formatDate(proxToefl),
+          observaciones: observaciones
+
+       },
+        ""
+     );
+     if (resp) {
+        setLoading(false);
+        console.log("Acta guardada");
+        navigate('/view_document/', {
+         state: {
+           id_assign: id_asignacion,
+           pdfType: 2,
+         },
+       }
+       );
+
+
+       } else {
+         console.log('No hubo respuesta del servidor');
+       }
+     }
+     catch (err) {
+       console.log(err);
+     }
+   }*/
+
+  return (
+    <div className="flex-col w-full">
+      <form /*onSubmit={void handleSubmit}*/>
+        
+      </form>
+    </div>
+  );
+};
+
+export default ReportForm
+
+////////// Reciclaje ///////////////
+
+/*
+<div className="flex flex-row  w-5/6 m-auto mt-6 mb-0 h-fit p-0">
+          <div className="flex flex-row w-full justify-end items-center sm:mb-10">
+            <label className="block mr-4 text-lg font-bold">
+              Fecha de evaluación:
+            </label>
+            <CustomCalendar setSelectedDate={setFechaEval} />
+          </div>
+        </div>
+        <div className="flex flex-row  w-5/6 m-auto mb-0 h-fit p-0">
+          <label className="mb-3 block text-lg font-bold">
+            Datos del alumno
+          </label>
+        </div>
+        <div className="flex flex-col  w-5/6 m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
+          <div className="flex flex-col lg:flex-row">
+            <div className="lg:w-1/3">
+              <label className="mb-3 block text-lg font-bold">
+                Apellido Paterno:
+              </label>
+              <label className="mb-3 block text-lg font-sans">
+                {alumno?.last_name}
+              </label>
+            </div>
+            <div className="lg:w-1/3">
+              <label className="mb-3 block text-lg font-bold">
+                Apellido Materno:
+              </label>
+              <label className="mb-3 block text-lg font-sans">
+                {alumno?.family_name}
+              </label>
+            </div>
+            <div className="lg:w-1/3">
+              <label className="mb-3 block text-lg font-bold">Nombre:</label>
+              <label className="mb-3 block text-lg font-sans">
+                {alumno?.name}
+              </label>
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row">
+            <div className="flex flex-col lg:w-1/2">
+              <label className="mb-3 block text-lg font-bold">
+                Estudiante del programa:
+              </label>
+              <label className="mb-3 block text-lg font-sans">
+                {programa?.nombreprograma}
+              </label>
+
+            </div>
+            <div className="flex flex-row w-1/2">
+              <div className="flex flex-col w-1/2">
+                <label className="mb-3 block text-lg font-bold">
+                  Clave Única:
+                </label>
+                <label className="mb-3 block text-lg font-sans">
+                  {claveUnica}
+                </label>
+              </div>
+              <div className="flex flex-col w-1/2">
+                <label className="mb-3 block text-lg font-bold">Avance No.:</label>
+                <label className="mb-3 block text-lg font-sans">
+                  {tesis?.ultimo_avance}
+                </label>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-row  w-5/6 m-auto mb-0 h-fit p-0 mt-10">
+          <label className="mb-3 block text-lg font-bold">
+            Datos de la Tesis
+          </label>
+        </div>
+        <div className="flex flex-col w-5/6 m-auto ">
+          <div className="flex flex-col py-6 px-6 bg-light-blue-10 rounded border border-solid border-light-gray-22 mb-10">
+            <label className="mb-3 block text-lg font-bold">
+              Título de la tesis
+            </label>
+            <label className="mb-3 block text-lg">
+              {tesis?.titulo}
+            </label>
+          </div>
+
+
+          <div className="flex flex-col ">
+            <label className="mb-3 block text-lg font-bold">
+              Porcentaje de avance en el desarrollo del proyecto de tesis
+            </label>
+            <input
+              className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+              type="number"
+              placeholder="%"
+              pattern="^(100|[1-9][0-9]?|0)$"
+              value={porcentajeAv}
+              required
+              onChange={
+                (e) => {
+                  setPrcAvance(e.target.value);
+                }
+              }
+            />
+            <label className="mb-3 block text-lg font-bold">
+              Comentarios y sugerencias
+            </label>
+            <textarea
+              className="textarea h-48 w-full px-10  border-primary rounded text-base mb-10 "
+              placeholder="Escriba sus sugerencias o comentarios"
+              value={comentarios}
+              required
+              onChange={
+                (e) => {
+                  autosize(e.currentTarget);
+                  setComentarios(e.target.value);
+                }
+              }
+            ></textarea>
+            <label className="mb-3 block text-lg font-bold">Evaluación</label>
+           <div className="flex flex-col  w-full m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
+              <div className="flex flex-col lg:flex-row justify-between">
+                <div className="flex flex-col">
+                  <label className="mb-3 block text-lg font-bold">
+                    Documento de avance
+                  </label>
+                  <input
+                    className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                    type="number"
+                    placeholder="%"
+                    pattern="^(100|[1-9][0-9]?|0)$"
+                    value={documentoAvance}
+                    required
+                    onChange={
+                      (e) => {
+                        setDocAvance(e.target.value);
+                      }
+                    }
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="mb-3 block text-lg font-bold">
+                    Exposición
+                  </label>
+                  <input
+                    className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                    type="number"
+                    placeholder="%"
+                    pattern="^(100|[1-9][0-9]?|0)$"
+                    value={exposicion}
+                    required
+                    onChange={
+                      (e) => {
+                        setExposicion(e.target.value);
+                      }
+                    }
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="mb-3 block text-lg font-bold">
+                    Dominio del tema
+                  </label>
+                  <input
+                    className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                    type="number"
+                    placeholder="%"
+                   pattern="^(100|[1-9][0-9]?|0)$"
+                    value={dominioTema}
+                    required
+                    onChange={
+                      (e) => {
+                        setDominioTema(e.target.value);
+                      }
+                    }
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="mb-3 block text-lg font-bold">
+                    Grado de avance en el periodo
+                  </label>
+                 <input
+                    className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                    type="number"
+                    placeholder="%"
+                    pattern="^(100|[1-9][0-9]?|0)$"
+                    value={gradoAvance}
+                    required
+                    onChange={
+                      (e) => {
+                        setGradoAvance(e.target.value);
+                     }
+                    }
+                  />
+               </div>
+              </div>
+              <div className="flex flex-row">
+                <div className="flex flex-col">
+                  <label className="mb-3 block text-lg font-bold">
+                    Promedio de la evaluación
+                  </label>
+                  <label className="mb-3 block text-lg">
+                    {promedio} %
+                 </label>
+                </div>
+              </div>
+            </div>
+
+            <label className="mt-10 mb-3 block text-lg font-bold">Acerca del examen TOEFL</label>
+            <div className="flex flex-col  w-full m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
+              <div className="flex flex-col lg:flex-row justify-normal">
+                <div className="flex flex-col mr-20">
+                  <label className="mb-3 block text-lg font-bold">
+                    Fecha de presentación del examen
+                  </label>
+                  <CustomCalendar setSelectedDate={setFechaToefl} />
+                </div>
+               <div className="flex flex-col mt-10">
+                  <label className="mb-3 block text-lg font-bold">
+                    Puntaje obtenido
+                  </label>
+                  <input
+                    className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                    type="number"
+                    placeholder="pts"
+                    pattern="^(100|[1-9][0-9]?|0)$"
+                    value={puntajeToefl}
+                    required
+                    onChange={
+                      (e) => {
+                        setPuntajeToefl(e.target.value);
+                     }
+                    }
+                  />
+                </div>
+
+
+              </div>
+             <div className="flex flex-row">
+               <div className="flex flex-col">
+                  <label className="mb-3 block text-lg font-bold">
+                    Próxima fecha para presentar el examen TOEFL
+                </label>
+                  <CustomCalendar setSelectedDate={setProxToefl} />
+                </div>
+              </div>
+            </div>
+
+            <label className="mb-3 mt-10 block text-lg font-bold">
+              Observaciones y compromisos
+            </label>
+            <textarea
+              className="textarea h-12 w-full px-10 border-primary rounded text-base mb-10"
+              placeholder="Escriba sus observaciones y compromisos para el alumno"
+              value={observaciones}
+              required
+              onChange={
+                (e) => {
+                  autosize(e.currentTarget);
+                  setObservaciones(e.target.value);
+                }
+              }
+            ></textarea>
+
+            <div className="flex justify-end w-full mb-10 mt-10">
+              <div className="mr-6">
+                <SecondaryButton text="Descartar" onClick={handleGoBack} />
+              </div>
+              <button type="submit" className="btn">
+                Guardar Acta de Evaluación
+              </button>
+            </div>
+          </div>
+        </div>
 */
 
 
-/*
+
+////////// Fin reciclaje ////////////
+
+
+/*import { Suspense, useEffect, useState } from "react";
+import autosize from 'autosize';
+//import { ActaEvaluacion } from "../../../../../../utils/acta-evaluacion.endpoint";
+import { useRouter } from "next/navigation";
+import { SecondaryButton } from "./SecondaryButton";
+import CustomCalendar from "@/app/components/CustomCalendar";
+import ProcessingAnim from "@/app/components/ProcessingAnim";
+
+export interface Tesis {
+  id_tesis: number;
+  id_usuario: number;
+  titulo: string;
+  fecha_registro: Date;
+  generacion: string;
+  registrada: boolean;
+  ultimo_avance: number;
+  estado_finalizacion: boolean;
+}
+
+export interface Programa {
+  id_programa: number;
+  nombre_programa: string;
+}
+
+export interface Asignacion {
+  id_asignacion: number;
+  id_formato_evaluacion: number;
+  id_acta_evaluacion: number;
+  id_tesis: number;
+  id_modalidad: number;
+  id_periodo: number;
+  num_avance: number;
+  titulo: string;
+  descripcion: string;
+  fecha_entrega: Date;
+  calificacion: number;
+  documento: string;
+  estado_entrega: number;
+  retroalimentacion: string;
+  tipo: number;
+  fecha_presentacion: Date;
+}
+
+export interface Usuario {
+  id_usuario: number;
+  id_rol: number;
+  id_datos_alumno: number | null;
+  id_datos_asesorexterno: number | null;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  password: string;
+  correo: string;
+}
+
+export interface ReportFormProps{
+  tesis: Tesis,
+  asignacion: Asignacion
+}
+
 const ReportForm = ({ tesis, asignacion }: { tesis: Tesis, asignacion: Asignacion }) => {
 
 const [programa, setPrograma] = useState<Programa | undefined>();
@@ -48,12 +491,12 @@ function formatDate(dateValue: Date) {
 
 
   useEffect(() => {
-    getPrograma();
+    //getPrograma();
   }, [received])
 
   useEffect(() => {
-   getAlumno();
-   getTesis();
+   //getAlumno();
+   //getTesis();
 //     //Esta pagina requiere la claveUnica del alumno para realizar consultas
 //     //pasar en variables de estado de navigate();
 
@@ -121,115 +564,115 @@ function formatDate(dateValue: Date) {
        );
 
 
-//       } else {
-//         console.log('No hubo respuesta del servidor');
-//       }
-//     }
-//     catch (err) {
-//       console.log(err);
-//     }
-//   }
+       } else {
+         console.log('No hubo respuesta del servidor');
+       }
+     }
+     catch (err) {
+       console.log(err);
+     }
+   }
 
 
-//   return (
-//     <Suspense fallback={<ProcessingAnim title="Generando PDF..." />}>
-//       <div className="lg:flex flex-col w-screen">
-//         <form onSubmit={handleSubmit}>
-//           <div className="flex flex-row  w-5/6 m-auto mt-6 mb-0 h-fit p-0">
-//             <div className="flex flex-row w-full justify-end items-center sm:mb-10">
-//               <label className="block mr-4 text-lg font-bold">
-//                 Fecha de evaluación:
-//               </label>
-//               <CustomCalendar setSelectedDate={setFechaEval} />
-//             </div>
-//           </div>
-//           <div className="flex flex-row  w-5/6 m-auto mb-0 h-fit p-0">
-//             <label className="mb-3 block text-lg font-bold">
-//               Datos del alumno
-//             </label>
-//           </div>
-//           <div className="flex flex-col  w-5/6 m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
-//             <div className="flex flex-col lg:flex-row">
-//               <div className="lg:w-1/3">
-//                 <label className="mb-3 block text-lg font-bold">
-//                   Apellido Paterno:
-//                 </label>
-//                 <label className="mb-3 block text-lg font-sans">
-//                   {alumno?.last_name}
-//                 </label>
-//               </div>
-//               <div className="lg:w-1/3">
-//                 <label className="mb-3 block text-lg font-bold">
-//                   Apellido Materno:
-//                 </label>
-//                 <label className="mb-3 block text-lg font-sans">
-//                   {alumno?.family_name}
-//                 </label>
-//               </div>
-//               <div className="lg:w-1/3">
-//                 <label className="mb-3 block text-lg font-bold">Nombre:</label>
-//                 <label className="mb-3 block text-lg font-sans">
-//                   {alumno?.name}
-//                 </label>
-//               </div>
-//             </div>
-//             <div className="flex flex-col lg:flex-row">
-//               <div className="flex flex-col lg:w-1/2">
-//                 <label className="mb-3 block text-lg font-bold">
-//                   Estudiante del programa:
-//                 </label>
-//                 <label className="mb-3 block text-lg font-sans">
-//                   {programa?.nombreprograma}
-//                 </label>
+   return (
+     <Suspense fallback={<ProcessingAnim title="Generando PDF..." />}>
+       <div className="lg:flex flex-col w-screen">
+         <form onSubmit={handleSubmit}>
+           <div className="flex flex-row  w-5/6 m-auto mt-6 mb-0 h-fit p-0">
+             <div className="flex flex-row w-full justify-end items-center sm:mb-10">
+               <label className="block mr-4 text-lg font-bold">
+                 Fecha de evaluación:
+               </label>
+               <CustomCalendar setSelectedDate={setFechaEval} />
+             </div>
+           </div>
+           <div className="flex flex-row  w-5/6 m-auto mb-0 h-fit p-0">
+             <label className="mb-3 block text-lg font-bold">
+               Datos del alumno
+             </label>
+           </div>
+           <div className="flex flex-col  w-5/6 m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
+             <div className="flex flex-col lg:flex-row">
+               <div className="lg:w-1/3">
+                 <label className="mb-3 block text-lg font-bold">
+                   Apellido Paterno:
+                 </label>
+                 <label className="mb-3 block text-lg font-sans">
+                   {alumno?.last_name}
+                 </label>
+               </div>
+               <div className="lg:w-1/3">
+                 <label className="mb-3 block text-lg font-bold">
+                   Apellido Materno:
+                 </label>
+                 <label className="mb-3 block text-lg font-sans">
+                   {alumno?.family_name}
+                 </label>
+               </div>
+               <div className="lg:w-1/3">
+                 <label className="mb-3 block text-lg font-bold">Nombre:</label>
+                 <label className="mb-3 block text-lg font-sans">
+                   {alumno?.name}
+                 </label>
+               </div>
+             </div>
+             <div className="flex flex-col lg:flex-row">
+               <div className="flex flex-col lg:w-1/2">
+                 <label className="mb-3 block text-lg font-bold">
+                   Estudiante del programa:
+                 </label>
+                 <label className="mb-3 block text-lg font-sans">
+                   {programa?.nombreprograma}
+                 </label>
 
-//               </div>
-//               <div className="flex flex-row w-1/2">
-//                 <div className="flex flex-col w-1/2">
-//                   <label className="mb-3 block text-lg font-bold">
-//                     Clave Única:
-//                   </label>
-//                   <label className="mb-3 block text-lg font-sans">
-//                     {claveUnica}
-//                   </label>
-//                 </div>
-//                 <div className="flex flex-col w-1/2">
-//                   <label className="mb-3 block text-lg font-bold">Avance No.:</label>
-//                   <label className="mb-3 block text-lg font-sans">
-//                     {tesis?.ultimo_avance}
-//                   </label>
-//                 </div>
-
-
-//               </div>
-//             </div>
-//           </div>
-//           <div className="flex flex-row  w-5/6 m-auto mb-0 h-fit p-0 mt-10">
-//             <label className="mb-3 block text-lg font-bold">
-//               Datos de la Tesis
-//             </label>
-//           </div>
-//           <div className="flex flex-col w-5/6 m-auto ">
-//             <div className="flex flex-col py-6 px-6 bg-light-blue-10 rounded border border-solid border-light-gray-22 mb-10">
-//               <label className="mb-3 block text-lg font-bold">
-//                 Título de la tesis
-//               </label>
-//               <label className="mb-3 block text-lg">
-//                 {tesis?.titulo}
-//               </label>
-//             </div>
+               </div>
+               <div className="flex flex-row w-1/2">
+                 <div className="flex flex-col w-1/2">
+                   <label className="mb-3 block text-lg font-bold">
+                     Clave Única:
+                   </label>
+                   <label className="mb-3 block text-lg font-sans">
+                     {claveUnica}
+                   </label>
+                 </div>
+                 <div className="flex flex-col w-1/2">
+                   <label className="mb-3 block text-lg font-bold">Avance No.:</label>
+                   <label className="mb-3 block text-lg font-sans">
+                     {tesis?.ultimo_avance}
+                   </label>
+                 </div>
 
 
-//             <div className="flex flex-col ">
-//               <label className="mb-3 block text-lg font-bold">
-//                 Porcentaje de avance en el desarrollo del proyecto de tesis
-//               </label>
-//               <input
-//                 className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
-//                 type="number"
-//                 placeholder="%"
-//                 pattern="^(100|[1-9][0-9]?|0)$"
-//                 value={porcentajeAv}
-//                 required
+               </div>
+             </div>
+           </div>
+           <div className="flex flex-row  w-5/6 m-auto mb-0 h-fit p-0 mt-10">
+             <label className="mb-3 block text-lg font-bold">
+               Datos de la Tesis
+             </label>
+           </div>
+           <div className="flex flex-col w-5/6 m-auto ">
+             <div className="flex flex-col py-6 px-6 bg-light-blue-10 rounded border border-solid border-light-gray-22 mb-10">
+               <label className="mb-3 block text-lg font-bold">
+                 Título de la tesis
+               </label>
+               <label className="mb-3 block text-lg">
+                 {tesis?.titulo}
+               </label>
+             </div>
+
+
+             <div className="flex flex-col ">
+               <label className="mb-3 block text-lg font-bold">
+                 Porcentaje de avance en el desarrollo del proyecto de tesis
+               </label>
+               <input
+                 className="h-1/4 py-2 px-3 shadow appearance-none rounded w-[80px] mb-10"
+                 type="number"
+                 placeholder="%"
+                 pattern="^(100|[1-9][0-9]?|0)$"
+                 value={porcentajeAv}
+                 required
                  onChange={
                    (e) => {
                      setPrcAvance(e.target.value);
@@ -411,4 +854,4 @@ function formatDate(dateValue: Date) {
    );
  };
 
- export default ReportForm
+ export default */

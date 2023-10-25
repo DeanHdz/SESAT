@@ -30,7 +30,7 @@ const FeedbackModal = ({
                 Retroalimentación de asignación:
             </p>
             <div className='flex flex-col'>
-                <input type="text" value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}/>
+                <textarea className="textarea border border-solid border-black" value={updatedValue} onChange={(e) => setUpdatedValue(e.target.value)}></textarea>
                 <div className='flex flex-row justify-evenly mt-4'>
                     <button onClick={saveChanges} className="primary__btn">
                         Guardar

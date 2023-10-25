@@ -9,7 +9,6 @@ import { formatAsISODate } from "../../../utils/utils";
 const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
 
 
-
   const [comment, setComment] = useState("");
   const router = useRouter();
 
