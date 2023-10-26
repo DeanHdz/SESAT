@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import { LoginEndpoint } from "../../../../utils/login.endpoint";
 
 const LandingLogin = () => {
-  {/** ReactSession.setStoreType("sessionStorage");*/}
+  {
+    /** ReactSession.setStoreType("sessionStorage");*/
+  }
   const [failed, setFailed] = useState(false);
   const [claveUnica, setClaveUnica] = useState("");
   const [contraseña, setContraseña] = useState("");
@@ -18,40 +20,19 @@ const LandingLogin = () => {
         username: claveUnica,
         password: contraseña,
       });
-      /*
-      const resp = await UsuarioEndpoint.getUsuario(parseInt(claveUnica), "");
-      console.log(resp);
-      if (resp && resp.password === contraseña) {
-        sessionStorage.setItem(
-          "loggedUser",
-          JSON.stringify({
-            mensage: "Inicio de sesión correcto",
-            usuario: resp,
-            token: "",
-          })
-        );
-
-        switch(resp.id_rol) //handle boards
-        {
-          case 1: //admin
-            navigate.push("/admin-dashboard");
-            break;
-          case 2: //asesor
-          case 4: //asesor externo
-            navigate.push("/asesor-dashboard");
-            break;
-          case 3: //alumno
-            navigate.push("/alumnos-dashboard");
-            break;
-        }
-      } else {
-        setFailed(true);
+      const role = await LoginEndpoint.getUserRole(token.token);
+      switch(role.rol)
+      {
+        case "Administrador":
+          router.push("/admin-dashboard");
+          break;
+        case "Asesor":
+          router.push("/asesor-dashboard");
+          break;
+        case "Alumno":
+          router.push("/alumnos-dashboard");
+          break; 
       }
-      */
-      //console.log(token.rol);
-
-      
-
     } catch (err) {
       setFailed(true);
       console.log(err);

@@ -24,11 +24,27 @@ export namespace LoginEndpoint {
     }
     const result = await response.json();
 
-    const sessionTime: number = 1000 * 60 * 60 * 2; //2 hours?
-    console.log(result.token);
-    Cookies.set("session", JSON.stringify(result.token), {
+    const sessionTime: number = 1000 * 60 * 60 * 2; //2 hours
+    Cookies.set("SESATsession", JSON.stringify(result.token), {
       expires: sessionTime,
     });
+    return result;
+  }
+
+  export async function getUserRole(token: string): Promise<any | undefined> {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/auth/role`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    const result = await response.json();
     return result;
   }
 }
