@@ -59,7 +59,7 @@ const Comment = (props: CommentProps) => {
               <div className="dropdown dropdown-left">
                 <label tabIndex={0} className="">
                   <button className="mr-2 text-light-blue-10 hover:text-black w-[30px] h-[30px] flex items-center justify-center active:bg-slate-300 rounded-full">
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>
+                    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>
                   </button>
                 </label>
                 <ul tabIndex={0} className="dropdown-content z-[1] menu-sm shadow bg-base-100 w-fit rounded-full">
@@ -67,7 +67,7 @@ const Comment = (props: CommentProps) => {
                     <button id={`button${props.comment_id}`} className="flex flex-row justify-center items-center px-4 py-2 rounded-full active:bg-red-300" onClick={deleteMessage}>
 
                       <div className="mr-2 w-[20px] h-[20px]">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                        <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
                       </div>
                       <span>Eliminar</span>
 

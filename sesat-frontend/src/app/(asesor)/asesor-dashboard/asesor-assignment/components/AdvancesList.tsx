@@ -1,12 +1,7 @@
 import React from "react";
 import PrevAdvance from "./PrevAdvance";
-import { Avance } from "../[idAsignacion]/page";
 
 const AdvancesList = ({ history }: { history: Array<number> }) => {
-
-  //Doctorado --> 8 avances
-  //Maestria Med T --> 7 avances
-  //Maestria T Comp --> 4 avances
   
   return (
     

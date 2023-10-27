@@ -2,7 +2,6 @@
 import AddComment from "@/app/components/AddComment"
 import Drawer from "../components/Drawer"
 import AssignmentHeader from "../components/AssignmentHeader"
-import Feedback from "../components/Feedback"
 import AdvancesList from "../components/AdvancesList"
 import AssignmentData from "../components/AssignmentData"
 import ReviewFormats from "../components/ReviewFormats"
@@ -44,7 +43,7 @@ async function fetchHistoryByIdTesis(idTesis: number): Promise<Array<number>> {
     let { grado_estudio, modalidad } = history[0];
     switch (grado_estudio) {
       case 'Doctorado':
-        // Crear un conjunto para rastrear los valores existentes de t_ultimo_avance
+        
         avancesEntregados = new Array(8).fill(0);
         history.map((item, i) => (
           avancesEntregados[i] = item.id_asignacion
@@ -81,17 +80,12 @@ export default async function Home({
   let tesisInfo: TesisInfo = await fetchOneTesis(asignacion.id_tesis.toString(), "");
   let comments = await fetchAndSortComments(asignacion.id_asignacion, '');
   let history = await fetchHistoryByIdTesis(asignacion.id_tesis);
-  //Historial de avances: 
-  //idAsignacionArray number[]
-  //Grado: string
-  //Modalidad: string
 
 
   return (
     <div className="flex">
       <div className="hidden lg:flex lg:w-3/12 flex-col">
-        <Drawer />
-        {/*<Feedback texto={asignacion.retroalimentacion} />*/}
+        <Drawer />        
         <AdvancesList history={history} />
       </div>
 
