@@ -1,110 +1,29 @@
-/*
-import axios from "axios";
- import { SESAT } from "../Interfaces/ISESAT";
+import { ActaEvalForm } from "../types/ISESAT";
 
-export namespace ActaEvaluacionEndpoint {
-  export const getActaEvaluacion = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.ActaEvaluacion | undefined> => {
-    return await axios
-      .get<SESAT.ActaEvaluacion>(
-        `${import.meta.env.VITE_API_HOSTNAME}/acta-evaluacion/` + id,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+export async function postActaEvaluacion( 
+  idAsignacion: number, 
+  updateActaEvaluacionDto: ActaEvalForm,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/acta-evaluacion/review/${idAsignacion}`;
 
-  export const getAllActaEvaluacions = async (
-    token: string
-  ): Promise<SESAT.ActaEvaluacion[] | undefined> => {
-    return await axios
-      .get<SESAT.ActaEvaluacion[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/acta-evaluacion`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(updateActaEvaluacionDto),
   };
+  const response = await fetch(url, options);
 
-  export const postActaEvaluacion = async (
-    CreateActaEvaluacionDto: SESAT.CreateActaEvaluacion,
-    token: string
-  ): Promise<SESAT.ActaEvaluacion | undefined> => {
-    return await axios
-      .post(
-        `${import.meta.env.VITE_API_HOSTNAME}/acta-evaluacion`,
-        CreateActaEvaluacionDto,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  if(!response.ok){    
+    throw(new Error('Error posting data'))
+  }
 
-  export const putActaEvaluacion = async (
-    UpdateActaEvaluacionDto: SESAT.UpdateActaEvaluacion,
-    token: string
-  ): Promise<SESAT.Usuario | undefined> => {
-    return await axios
-      .put(
-        `${import.meta.env.VITE_API_HOSTNAME}/acta-evaluacion`,
-        UpdateActaEvaluacionDto,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  const result = await response.json();
 
-  export const deleteActaEvaluacion = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.ActaEvaluacion | undefined> => {
-    return await axios
-      .delete(`${import.meta.env.VITE_API_HOSTNAME}/acta-evaluacion/` + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+
+  return result;
+
 }
-
-*/

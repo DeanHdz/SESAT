@@ -10,7 +10,7 @@ export class ActaEvaluacion {
   @Column()
   id_acta_vacia: number;
 
-  /*@OneToOne(() => FormatoVacio, { eager: true })
-  @JoinColumn({ name: "id_acta_vacia" })
-  formatosVacios: FormatoVacio;*/
+  @Column({ type: 'bytea' })
+  documento_rellenado: Buffer;
+
 }

@@ -156,6 +156,7 @@ export class TesisService {
       .addSelect("usuario.apellido_paterno")
       .addSelect("usuario.apellido_materno")
       .addSelect("programa.nombre_programa")
+      .addSelect("datos_alumno.id_grado_estudio")
 
       .from(Usuario, 'usuario')
       .from(DatosAlumno, 'datos_alumno')
@@ -226,6 +227,26 @@ export class TesisService {
       .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Maestría' })
       .andWhere("mod.nombre_modalidad = :nombreMod", { nombreMod: 'Tiempo Completo' })
       .groupBy("t.ultimo_avance")
+      .getRawMany()
+
+    return resp;
+  }
+
+  async findTesisHistory(idTesis: number) {
+    const resp = await this.tesisRepository
+      .createQueryBuilder("t")
+      .innerJoin(Asignacion, "a", "a.id_tesis = t.id_tesis")
+      .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
+      .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
+      .innerJoin(Modalidad, "mod", "da.id_modalidad = mod.id_modalidad")
+      .select([
+        "a.id_asignacion as id_asignacion",
+        "ge.nombre_grado_estudio AS grado_estudio",
+        "mod.nombre_modalidad AS modalidad"      
+      ])      
+      .where("t.id_tesis = :id", { id: idTesis })  
+      .andWhere("a.calificacion IS NOT NULL")          
       .getRawMany()
 
     return resp;

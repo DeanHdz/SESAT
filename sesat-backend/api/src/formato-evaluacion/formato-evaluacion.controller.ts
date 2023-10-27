@@ -1,15 +1,15 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { FormatoEvaluacionService } from './formato-evaluacion.service';
-import { CreateFormatoEvaluacionDto } from './dto/create-formato-evaluacion.dto';
 import { UpdateFormatoEvaluacionDto } from './dto/update-formato-evaluacion.dto';
+import { FilledFormat } from './dto/create-formulario.dto';
 
 @Controller('formato-evaluacion')
 export class FormatoEvaluacionController {
   constructor(private readonly formatoEvaluacionService: FormatoEvaluacionService) {}
 
-  @Post()
-  create(@Body() createFormatoEvaluacionDto: CreateFormatoEvaluacionDto) {
-    return this.formatoEvaluacionService.create(createFormatoEvaluacionDto);
+  @Post('review/:idAsignacion')
+  async create(@Param('idAsignacion') idAsignacion: string, @Body() fillActa: FilledFormat) {
+    return this.formatoEvaluacionService.createActaAndfillDocument(+idAsignacion, fillActa);
   }
 
   @Get()

@@ -73,7 +73,7 @@ export class ComiteService {
         "u.nombre AS nombre",
         "u.apellido_paterno AS apellido_paterno",
         "u.apellido_materno AS apellido_materno",
-        "a.titulo AS titulo", 
+        "a.titulo AS titulo",
         "a.fecha_entrega AS fecha_entrega"])
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
@@ -81,7 +81,24 @@ export class ComiteService {
       .andWhere("a.estado_entrega = :estado_entrega", { estado_entrega: 1 })
       .andWhere("a.id_periodo = :id_periodo", { id_periodo: idPeriodo })
       .setParameters(subquery.getParameters())
-      .getRawMany();          
+      .getRawMany();
+
+    return resp;
+  }
+
+  async findMembers(idTesis: number) {
+    const resp = await this.comiteRepository
+      .createQueryBuilder("c")
+      .select([
+        "u.nombre AS nombre",
+        "u.apellido_paterno AS apellido_paterno",
+        "u.apellido_materno AS apellido_materno",
+        "f.nombre_funcion AS nombre_funcion",
+      ])
+      .innerJoin(Usuario, "u", "u.id_usuario = c.id_usuario")
+      .innerJoin(Funcion, "f", "f.id_funcion = c.id_funcion")
+      .where('c.id_tesis = :id', { id: idTesis })
+      .getRawMany();
 
     return resp;
   }

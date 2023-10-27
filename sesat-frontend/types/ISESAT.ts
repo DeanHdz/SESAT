@@ -115,8 +115,8 @@ export interface Asignacion {
   titulo: string;
   descripcion: string;
   fecha_entrega: string;
-  calificacion: number;    
-  documento: {type: string; data: Array<number>};
+  calificacion: number;
+  documento: { type: string; data: Array<number> };
   estado_entrega: number;
   retroalimentacion: string;
   tipo: number;
@@ -145,7 +145,7 @@ export interface UpdateAsignacion {
   id_asignacion: number;
   id_formato_evaluacion: number | null;
   id_acta_evaluacion: number | null;
-  id_tesis: number| null;    
+  id_tesis: number | null;
   id_modalidad: number | null;
   id_periodo: number;
   num_avance: number;
@@ -296,6 +296,24 @@ export interface FormatoEvaluacion {
   id_formato_vacio: number;
 }
 
+export interface FormatoEvaluacionFilled {
+  titulo_reporte: string;
+  grado: string;
+  estudiante: string;
+  asesor: string;
+  coasesor: string;
+  comite: Array<{
+    nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
+    nombre_funcion: string;
+  }>;
+  titulo_tesis: string;
+  fecha_comienzo: string;
+  fecha_limite: string;
+
+}
+
 export interface CreateFormatoEvaluacion {
   documento_rellenado: string | null;
   id_formato_vacio: number;
@@ -375,7 +393,7 @@ export interface UpdateComentario {
   clave_usuario: number;
   id_asignacion: number;
   texto: string;
-  fecha_comentario: string;  
+  fecha_comentario: string;
 }
 
 /*------------------ RESPUESTA INTERFACE ------------------*/

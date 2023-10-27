@@ -18,7 +18,7 @@ export class AsignacionService {
     private asignacionRepository: Repository<Asignacion>,
 
     @InjectRepository(Tesis)
-    private readonly tesisRepository: Repository<Tesis>,
+    private readonly tesisRepository: Repository<Tesis>,    
 
   ) { }
 
@@ -656,7 +656,7 @@ export class AsignacionService {
     catch (error) {
       throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  }
+  }  
 
   update(updateAsignacionDto: UpdateAsignacionDto) {
     return this.asignacionRepository.save(updateAsignacionDto);
