@@ -20,11 +20,11 @@ export class ComentarioController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.comentarioService.findOne(+id);
-  }
+  }  
 
-  @Get("/per-assignment/:id")
-  findPerAssignment(@Param('id') id: string) {
-    return this.comentarioService.findPerAssignment(+id);
+  @Get('conversation/:idAsignacion')
+  findConversation(@Param('idAsignacion') idAsignacion: string) {
+    return this.comentarioService.findConversationByIdAsignacion(+idAsignacion);
   }
 
   @Put(':id')

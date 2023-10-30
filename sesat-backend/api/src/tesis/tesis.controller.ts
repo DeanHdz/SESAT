@@ -78,6 +78,12 @@ export class TesisController {
     return this.tesisService.findTesisStatusMastersFullTime();
   }
 
+  /**Historial de avances por Tesis */
+  @Get("/history/:idTesis")
+  findHistory(@Param("idTesis") idTesis: string,) {
+    return this.tesisService.findTesisHistory(+idTesis);
+  }
+
   @Put()
   update(@Body() updateTesisDto: UpdateTesisDto) {
     return this.tesisService.update(updateTesisDto);

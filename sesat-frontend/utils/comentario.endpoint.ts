@@ -1,132 +1,81 @@
-/*
-import axios from "axios";
-import { SESAT } from "../Interfaces/ISESAT";
+import { CreateComentario } from "../types/ISESAT";
 
-export namespace ComentarioEndpoint {
-  export const getComentario = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Comentario | undefined> => {
-    return await axios
-      .get<SESAT.Comentario>(
-        `${import.meta.env.VITE_API_HOSTNAME}/comentario/` + id,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+export async function fetchConversationByIdAsignacion(
+  idAsignacion: number,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comentario/conversation/${idAsignacion}`;
 
-  export const getAllComentarios = async (
-    token: string
-  ): Promise<SESAT.Comentario[] | undefined> => {
-    return await axios
-      .get<SESAT.Comentario[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/comentario`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache,
   };
+  const response = await fetch(url, options);
 
-  export const getPerAssignment = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Comentario[] | undefined> => {
-    return await axios
-      .get<SESAT.Comentario[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/comentario/per-assignment/` + id,
-        {
-          headers: {
-            "Content-Type": "application/json", 
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  if(!response.ok){    
+    throw(new Error('Error fetching data'))
+  }
 
-  export const postComentario = async (
-    CreateComentarioDto: SESAT.CreateComentario,
-    token: string
-  ): Promise<SESAT.Comentario | undefined> => {
-    return await axios
-      .post(
-        `${import.meta.env.VITE_API_HOSTNAME}/comentario`,
-        CreateComentarioDto,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  const result = await response.json();
 
-  export const putComentario = async (
-    UpdateComentarioDto: SESAT.UpdateComentario,
-    token: string
-  ): Promise<SESAT.Usuario | undefined> => {
-    return await axios
-      .put(
-        `${import.meta.env.VITE_API_HOSTNAME}/comentario`,
-        UpdateComentarioDto,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
 
-  export const deleteComentario = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Comentario | undefined> => {
-    return await axios
-      .delete(`${import.meta.env.VITE_API_HOSTNAME}/comentario/` + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  return result;
+
 }
 
+export async function postComment(  
+  createCommentDto: CreateComentario,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comentario`;
 
-*/
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(createCommentDto),
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error posting data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+export async function deleteComment(  
+  idComment: number,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comentario/${idComment}`;
+
+  const options = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },    
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error posting data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}

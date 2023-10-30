@@ -14,5 +14,5 @@ export class UpdateActaEvaluacionDto extends PartialType(
   id_acta_vacia: number;
 
   @IsOptional()
-  documento_rellenado: string;
+  documento_rellenado: Buffer;
 }

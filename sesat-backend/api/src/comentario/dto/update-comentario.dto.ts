@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateComentarioDto } from './create-comentario.dto';
 
 export class UpdateComentarioDto extends PartialType(CreateComentarioDto) {
@@ -18,4 +18,8 @@ export class UpdateComentarioDto extends PartialType(CreateComentarioDto) {
     @IsNotEmpty()
     @IsString()
     texto: string;
+
+    @IsNotEmpty()
+    @IsDateString()
+    fecha_comentario: Date;
 }

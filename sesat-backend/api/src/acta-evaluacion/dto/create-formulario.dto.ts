@@ -2,7 +2,7 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 //Esta clase representa lo que el usuario envia desde el lado del cliente
 
-export class CreateFormulario {
+export class FilledActDto {
     @IsNotEmpty()
     @IsString()
     fecha_eval: string;

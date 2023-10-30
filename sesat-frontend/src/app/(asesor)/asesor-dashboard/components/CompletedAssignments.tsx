@@ -3,7 +3,7 @@ import AssignmentPath from './AssignmentPath';
 import { shortFormatDate } from '../../../../../utils/utils';
 
 type AsignacionProps = {
-  id_tesis: number,
+  id_asignacion: number,
   nombre: string,
   apellido_paterno: string,
   apellido_materno: string,
@@ -33,21 +33,14 @@ const CompletedAssignments = ({asignaciones}:{asignaciones: AsignacionProps[]}) 
             {asignaciones?.map((alumno, i) => (
               <>
                 <tr
-                  key={alumno.id_tesis}
-                //onClick={() => setSelectedUser(user)}
-                /** Visualizar la seleccion de un renglon*/
-                /*className={
-                  selectedUser?.clave === user.clave
-                    ? "bg-dark-blue-10 rounded text-white cursor-pointer"
-                    : "cursor-pointer"
-                }*/
+                  key={alumno.id_asignacion}
                 >
                   <td>{`${alumno.nombre} ${alumno.apellido_paterno} ${alumno.apellido_materno}`}</td>
                   <td>{alumno.titulo}</td>
                   <td>{shortFormatDate(alumno.fecha_entrega)}</td>
                   <td>
                     <div>
-                      <AssignmentPath />
+                      <AssignmentPath idAsignacion={alumno.id_asignacion}/>
                     </div>
                   </td>
                 </tr>
