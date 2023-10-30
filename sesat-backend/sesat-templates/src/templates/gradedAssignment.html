@@ -15,27 +15,21 @@
                 </h1>
 
                 <p class="m-0 leading-6">
-                  Tu asignación <span class="font-bold">{{ assignment }}</span>
+                  Tu asignación <span class="font-bold text-blue-950">{{ assignment }}</span>
                   <br>
-                  se encuentra a <span class="font-bold">{{ date }}</span> de vencer.
+                  ha sido calificada, entra al sistema para obtener más información.
                 </p>
 
                 <x-spacer height="24px" />
 
-                <x-button href="http://localhost:3000">
-                  Confirm email address &rarr;
-                </x-button>
-
-                <x-divider space-y="32px" class="bg-slate-200" />
-
-              </td>
-            </tr>
-            <tr role="separator">
-              <td class="leading-12">&zwj;</td>
-            </tr>
+                <div class="w-full flex justify-end">
+                  <a class="shadow rounded-full py-[10px] px-[10px] bg-blue-950 text-white no-underline hover:underline" href="http://localhost:3000">
+                    Ir a SESAT &rarr;
+                  </a>
+                </div>
             <tr>
               <td class="text-center text-slate-600 text-xs px-6">
-                <p class="m-0 mb-2 uppercase">
+                <p class="m-0 my-2 uppercase">
                   Universidad Autónoma de San Luis Potosí
                 </p>
                 <p class="m-0 italic">
