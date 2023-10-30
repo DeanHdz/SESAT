@@ -40,7 +40,7 @@ const PDFPreview = ({
         ).toString();
 
         const [pdf, setPdf] = useState<string | File>("")                
-
+        const [scale, setScale] = useState(0.5);
 
         useEffect(() => {
             const decodeAndSetPDF = () => {
@@ -59,7 +59,14 @@ const PDFPreview = ({
                 }
             }
 
+            const adjustScale = () => {
+                if(window.innerWidth > 1300){
+                    setScale(0.8);
+                }
+            }
+
             decodeAndSetPDF();
+            adjustScale();
 
         }, [])
 
@@ -76,7 +83,7 @@ const PDFPreview = ({
                             <div className='h-fit overflow-hidden flex flex-col items-center justify-center bg-slate-100'>
 
 
-                                <Page key={`page_1`} pageNumber={1} scale={0.8} />
+                                <Page key={`page_1`} pageNumber={1} scale={scale} />
 
 
                             </div>

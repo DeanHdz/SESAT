@@ -43,7 +43,7 @@ export class TesisController {
   @Get("/basic-info/:id")
   findOneBasicInfo(@Param("id") id: string) {
     return this.tesisService.findOneBasicInfo(+id);
-  }
+  }  
 
   @Get(":id")
   findOne(@Param("id") id: string) {
@@ -82,6 +82,12 @@ export class TesisController {
   @Get("/history/:idTesis")
   findHistory(@Param("idTesis") idTesis: string,) {
     return this.tesisService.findTesisHistory(+idTesis);
+  }
+
+  /**Historial completo de tesis para un alumno, debe corresponder al */
+  @Get("/full-history/:idAlumno")
+  findFullHistory(@Param("idAlumno") idAlumno: string) {
+    return this.tesisService.findFullHistory(+idAlumno);
   }
 
   @Put()

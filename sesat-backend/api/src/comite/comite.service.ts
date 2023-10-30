@@ -9,6 +9,7 @@ import { Funcion } from "src/funcion/entities/funcion.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 import { group } from "console";
+import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
 
 @Injectable()
 export class ComiteService {
@@ -69,14 +70,18 @@ export class ComiteService {
     const resp = await this.asignacionRepository
       .createQueryBuilder("a")
       .select([
+        "a.num_avance AS num_avance",
         "a.id_asignacion AS id_asignacion",
         "u.nombre AS nombre",
         "u.apellido_paterno AS apellido_paterno",
         "u.apellido_materno AS apellido_materno",
         "a.titulo AS titulo",
-        "a.fecha_entrega AS fecha_entrega"])
+        "a.fecha_entrega AS fecha_entrega",
+        "da.id_grado_estudio AS grado"
+      ])
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")      
       .where(`a.id_tesis IN (${subquery.getQuery()})`)
       .andWhere("a.estado_entrega = :estado_entrega", { estado_entrega: 1 })
       .andWhere("a.id_periodo = :id_periodo", { id_periodo: idPeriodo })
@@ -99,6 +104,23 @@ export class ComiteService {
       .innerJoin(Funcion, "f", "f.id_funcion = c.id_funcion")
       .where('c.id_tesis = :id', { id: idTesis })
       .getRawMany();
+
+    return resp;
+  }
+
+  //estado activo importa?
+  async validateAsesorRole(idAsesor: number, idAlumno: number) {
+    const resp = await this.comiteRepository
+      .createQueryBuilder("c")
+      .select([
+        "c.id_funcion AS id_funcion",
+        "t.id_tesis AS id_tesis"
+      ])
+      .innerJoin(Tesis, "t", "t.id_tesis = c.id_tesis")      
+      .where('c.id_usuario = :id_asesor', { id_asesor: idAsesor })
+      .andWhere('t.id_usuario = :id_alumno', { id_alumno: idAlumno })
+      .andWhere('t.estado_finalizacion = false')
+      .getRawOne();
 
     return resp;
   }

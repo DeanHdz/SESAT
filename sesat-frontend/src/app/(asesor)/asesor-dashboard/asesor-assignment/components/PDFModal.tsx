@@ -9,7 +9,7 @@ import PDFViewer from './PDFViewer';
 
 
 
-const PDFModal = ({ document }: { document: Array<number> }) => {
+const PDFModal = ({ pdfdocument }: { pdfdocument: Array<number> }) => {
 
     const [showModal, setShowModal] = useState(false);
 
@@ -22,6 +22,7 @@ const PDFModal = ({ document }: { document: Array<number> }) => {
 
 
     function setDefaultState() {
+        document.body.classList.remove('modal-open');
         setShowModal(false)
         setCssError("hidden")
         setCSSDisabled("")
@@ -31,11 +32,16 @@ const PDFModal = ({ document }: { document: Array<number> }) => {
 
     }
 
+    function openPDFModal() {
+        document.body.classList.add('modal-open');
+        setShowModal(true);
+    }
+
 
 
     return (
         <>
-            <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none" type='button' onClick={() => setShowModal(true)}>
+            <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none" type='button' onClick={openPDFModal}>
                 <div className="text-center text-[#ffffff] text-[12px]">
                     Ver documento de avance
                 </div>
@@ -43,8 +49,9 @@ const PDFModal = ({ document }: { document: Array<number> }) => {
             {showModal ? (
                 <>
 
-                    <div className='w-screen h-screen bg-black/20 z-50 fixed top-0 right-0 flex justify-center pt-2 overflow-hidden'>
-                        <div className={`fixed w-11/12 lg:w-11/12 lg:mx-auto py-2 px-6 border-0 rounded-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up`}>
+                    <div className='w-screen h-screen bg-black/40 z-50 fixed top-0 right-0 flex justify-center pt-2 overflow-hidden'>
+                        <div className={`fixed w-full lg:w-11/12 lg:mx-auto p-2 border-0 rounded-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up lg:max-w-[1400px]`}>
+                            {/**Close button */}
                             <div className="w-full flex flex-row h-fit items-center">
                                 <div className='flex flex-row w-full'>
                                     <button className={`ml-auto w-[24px] active:opacity-40`} onClick={setDefaultState}>
@@ -54,7 +61,7 @@ const PDFModal = ({ document }: { document: Array<number> }) => {
 
                             </div>
 
-                            <PDFViewer buffer={document} />
+                            <PDFViewer buffer={pdfdocument} />
                         </div>
                     </div >
 

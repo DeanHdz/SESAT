@@ -43,7 +43,7 @@ const AssignmentData = ( props: AssignmentDataProps) =>{
                 </label>
 
                 <label className="font-SESAT mb-2">
-                    Fecha de entregado:
+                    Fecha de entrega:
                 </label>
                 <label className="pl-4 mb-2">
                     {props.fechaEntrega}

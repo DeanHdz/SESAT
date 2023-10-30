@@ -56,6 +56,11 @@ export class ComiteController {
     return this.comiteService.findMembers(+idTesis);
   }
 
+  @Get('validate-role/:idAsesor/:idAlumno')
+  validateAsesorRole(@Param('idAsesor') idAsesor: string, @Param('idAlumno') idAlumno: string) {
+    return this.comiteService.validateAsesorRole(+idAsesor, +idAlumno);
+  }
+
   @Put()
   update(@Body() updateComiteDto: UpdateComiteDto) {
     return this.comiteService.update(updateComiteDto);

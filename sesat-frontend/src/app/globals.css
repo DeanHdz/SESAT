@@ -15,6 +15,10 @@
 }
 
 @layer utilities {
+  .body{
+    width: 100%;
+    overflow-x: hidden;
+  }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

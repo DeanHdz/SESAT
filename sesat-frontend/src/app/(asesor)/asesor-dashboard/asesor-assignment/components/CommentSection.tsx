@@ -47,7 +47,7 @@ const CommentSection = ({ commentsArray, currentUserID }: { commentsArray: Comme
                         <Comment key={i} body={elem.texto} comment_id={elem.id_comentario} date={elem.fecha_comentario} left={currentUserID === elem.id_usuario ? false : true} userName={`${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno} `} />
                     ))
                 ) : (
-                    <div className="font-SESAT text-lg text-black/40 flex items-center">
+                    <div className="font-SESAT text-lg text-black/40 flex items-center cursor-none pointer-events-none">
                         No hay comentarios
                     </div>
                 )}

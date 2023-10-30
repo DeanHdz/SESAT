@@ -10,6 +10,9 @@ import {
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { runInThisContext } from "vm";
+import { Comite } from "src/comite/entities/comite.entity";
+import { Tesis } from "src/tesis/entities/tesis.entity";
+import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
 
 @Injectable()
 export class UsuarioService {
@@ -110,6 +113,34 @@ export class UsuarioService {
         .toLowerCase()
         .includes(nombre.toLowerCase())
     );
+  }
+
+  /**
+   * Obtener el grupo de alumnos asesorados por determinado asesor
+   * @param idAsesor clave unica del asesor al que le corresponden los asesorados
+   * @param idGrado 1 --> Maestria 2 --> Doctorado
+   * @returns {[id_usuario: number; nombre: string; apellido_paterno: string; apellido_materno: string; correo: string]}
+   */
+  async findAlumnosAsesorados(idAsesor: number, idGrado: number) {
+    const resp = await this.usuarioRepository
+      .createQueryBuilder('u')
+      .innerJoin(Tesis, "t", "t.id_usuario = u.id_usuario")
+      .innerJoin(Comite, "c", "c.id_tesis = t.id_tesis")      
+      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")   
+      
+      .select([
+        "u.id_usuario AS id_usuario",
+        "u.nombre AS nombre",
+        "u.apellido_paterno AS apellido_paterno",
+        "u.apellido_materno AS apellido_materno",
+        "u.correo AS correo"
+      ])      
+      .where("c.id_usuario = :id_user", { id_user: idAsesor })
+      .andWhere("t.estado_finalizacion = :edo_finalizacion", { edo_finalizacion: false })
+      .andWhere("da.id_grado_estudio = :grado_estudio", { grado_estudio: idGrado })
+      .getRawMany()
+
+    return resp;
   }
 
   create(createUsuarioDto: CreateUsuarioDto) {

@@ -1,5 +1,5 @@
 import HistoryPath from "./components/HistoryPath";
-import Drawer from "../../../components/Drawer";
+import Drawer from "../../components/Drawer";
 
 export default function Home() {
   return (

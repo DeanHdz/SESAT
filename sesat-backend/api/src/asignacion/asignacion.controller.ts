@@ -18,6 +18,11 @@ export class AsignacionController {
     return this.asignacionService.findOne(+id);
   }
 
+  @Get('one-to-review/:idAsesor/:idAsignacion')
+  findOneToReview(@Param('idAsesor') idAsesor: string, @Param('idAsignacion') idAsignacion: string) {
+    return this.asignacionService.findOneToReview(+idAsesor, +idAsignacion);
+  }
+
   //Para tablero de asignaciones de doctorado
   @Get('groups-status/phd/:idPeriodo')
   findStudentStatusPHD(@Param('idPeriodo') idPeriodo: string) {

@@ -69,18 +69,18 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
         setShowModal(true);
         document.body.classList.add('modal-open');
 
-        await fetchOneByIdAsignacion(idAsignacion, "").then(async (result) => {
-
-            await fetchOneTesis(result.id_tesis.toString(), "").then((res) => {
+        const res = await fetchOneByIdAsignacion(idAsignacion, "").catch()
+        if (res) {
+            await setAsignacion(res)
+            setcurrentPDF(res.documento.data);
+            await fetchOneTesis(res.id_tesis.toString(), "").then((res) => {
                 settesisInfo(res)
-            })
-            await fetchAndSortComments(result.id_asignacion, '').then((res) => {
+            }).catch()
+            await fetchAndSortComments(res.id_asignacion, '').then((res) => {
                 setcomments(res)
-            })
+            }).catch()
+        }
 
-            setAsignacion(result)
-            setcurrentPDF(result.documento.data);
-        })
     }
 
     return (
@@ -94,7 +94,7 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
                 <>
 
                     <div className='w-screen h-screen bg-black/20 z-50 fixed top-0 right-0 flex justify-center pt-2 overflow-hidden'>
-                        <div className={` w-11/12 lg:w-11/12 lg:mx-auto p-2 border-0 rounded-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up `}>
+                        <div className={` w-full lg:w-11/12 lg:mx-auto p-2 border-0 rounded-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up `}>
 
                             <div className="w-full flex flex-row h-fit items-center">
                                 <div className='ml-6 px-4 font-SESAT text-[12px] gray__border'>
@@ -115,7 +115,7 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
 
                                             <div className="flex flex-col w-full lg:w-3/12 lg:m-2">
                                                 <AssignmentData nombreTesis={tesisInfo.titulo} autor={`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno} `} numAvance={asignacion.num_avance} fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} fechaPresentacion={asignacion.fecha_presentacion} />
-                                                {/*<AssignmentProperties fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} calificacion={10}/> */}                                              
+                                                {/*<AssignmentProperties fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} calificacion={10}/> */}
 
                                                 <div className='flex flex-col w-full pt-5 mt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
 

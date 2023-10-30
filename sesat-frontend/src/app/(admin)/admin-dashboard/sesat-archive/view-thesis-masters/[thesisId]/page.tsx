@@ -1,13 +1,13 @@
 "use client";
 
 import { InactiveTesisProps } from "../../../../../../../types/ISESAT";
-import { fetchDocumentByID } from "../../../../../../../utils/asignacion-tesis.endpoint";
 import { fetchOneTesis } from "../../../../../../../utils/tesis.endpoint";
 import { fetchAsesorByIDTesis } from "../../../../../../../utils/comite.endpoint";
 import { useEffect, useState } from "react";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import PDFViewer from "@/app/components/PDFViewer";
 import NotFound from "../../../not-found";
+import { fetchDocumentByID } from "../../../../../../../utils/asignacion.endpoint";
 
 
 
