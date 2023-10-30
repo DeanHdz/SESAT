@@ -29,6 +29,7 @@ import { ModalidadModule } from "./modalidad/modalidad.module";
 import { FuncionModule } from "./funcion/funcion.module";
 import { EventoModule } from "./evento/evento.module";
 import { PeriodoModule } from "./periodo/periodo.module";
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { PeriodoModule } from "./periodo/periodo.module";
     FuncionModule,
     EventoModule,
     PeriodoModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [

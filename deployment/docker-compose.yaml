@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  sesat-backend:
+    build:
+      context: ./../sesat-backend/api
+    environment:
+      - SECRET_JWT=${SECRET_JWT}
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_TYPE=${DB_TYPE}
+      - DB_HOST=${DB_HOST}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_SCHEMA=${DB_SCHEMA}
+    ports:
+      - '3005:3005'
+      
+  sesat-frontend:
+    build:
+      context: ./../sesat-frontend
+    environment:
+      - NEXT_PUBLIC_SESAT_API_URL=${$NEXT_PUBLIC_SESAT_API_URL}
+    ports:
+      - '3000:3000'

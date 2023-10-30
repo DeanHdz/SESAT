@@ -31,6 +31,11 @@ export class NotificacionController {
     return this.notificacionService.findOne(+id);
   }
 
+  @Get("/user/:id")
+  findByUser(@Param("id") id: string) {
+    return this.notificacionService.findByUser(+id);
+  }
+
   @Put()
   update(@Body() updateNotificationDto: UpdateNotificacionDto) {
     return this.notificacionService.update(updateNotificationDto);
