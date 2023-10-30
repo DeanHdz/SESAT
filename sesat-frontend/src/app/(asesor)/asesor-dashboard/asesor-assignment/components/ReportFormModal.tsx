@@ -5,7 +5,7 @@ import { TesisInfo } from "../[idAsignacion]/page";
 import { Asignacion } from "../../../../../../types/ISESAT";
 import { formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
 import { fetchComiteMembers } from "../../../../../../utils/comite.endpoint";
-import { postFormatoEvaluacion } from "../../../../../../utils/formato-evaluacion.endpoint";
+import { fetchFormatoEvaluacion, postFormatoEvaluacion } from "../../../../../../utils/formato-evaluacion.endpoint";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import PDFViewer from "./PDFViewer";
 
@@ -36,13 +36,25 @@ const ReportFormModal = ({
         fetchComite();
         document.body.classList.add('modal-open');
         setIsOpen(true);
+        if (asignacion.id_formato_evaluacion !== null) {
+            setIsSubmitting(true);
+            fetchReporteEvaluacion(asignacion.id_formato_evaluacion);
+        }
     };
 
+    async function fetchReporteEvaluacion(idReporte: number) {                
+        const res = await fetchFormatoEvaluacion(idReporte, "");
+        setPDF(res.documento_rellenado.data);
+        setIsSubmitting(false);
+    }
+
     async function fetchComite() {
-        const res: ComiteMember[] = await fetchComiteMembers(asignacion.id_tesis, "");
-        setComite(res);
-        setasesor(res.find(usuario => usuario.nombre_funcion === 'Asesor'));
-        setcoasesor(res.find(usuario => usuario.nombre_funcion === 'Co-asesor'));
+        const res: ComiteMember[] = await fetchComiteMembers(asignacion.id_tesis, "").catch(() => { return null });
+        if (res) {
+            setComite(res);
+            setasesor(res.find(usuario => usuario.nombre_funcion === 'Asesor'));
+            setcoasesor(res.find(usuario => usuario.nombre_funcion === 'Co-asesor'));
+        }
     }
 
     const closeReportFormModal = () => {
@@ -56,24 +68,24 @@ const ReportFormModal = ({
         let gradoEstudio = tesisInfo.id_grado_estudio === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computación';
         e.preventDefault();
         //try {
-            setIsSubmitting(true);
-            const res = await postFormatoEvaluacion(
-                asignacion.id_asignacion,
-                {
-                    titulo_reporte: tituloReporte,
-                    grado: gradoEstudio,
-                    estudiante: `${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno}`,
-                    asesor: `${asesor?.nombre} ${asesor?.apellido_paterno} ${asesor?.apellido_materno}`,
-                    coasesor: `${coasesor?.nombre} ${coasesor?.apellido_paterno} ${coasesor?.apellido_materno}`,
-                    comite: comite!,
-                    titulo_tesis: tesisInfo.titulo,
-                    fecha_comienzo: tesisInfo.fecha_registro,
-                    fecha_limite: formatAsISODate(fechaLimite),
-                },
-                ""
-            );
-            setPDF(res.documento_rellenado.data);
-            setIsSubmitting(false);
+        setIsSubmitting(true);
+        const res = await postFormatoEvaluacion(
+            asignacion.id_asignacion,
+            {
+                titulo_reporte: tituloReporte,
+                grado: gradoEstudio,
+                estudiante: `${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno}`,
+                asesor: `${asesor?.nombre} ${asesor?.apellido_paterno} ${asesor?.apellido_materno}`,
+                coasesor: `${coasesor?.nombre} ${coasesor?.apellido_paterno} ${coasesor?.apellido_materno}`,
+                comite: comite!,
+                titulo_tesis: tesisInfo.titulo,
+                fecha_comienzo: tesisInfo.fecha_registro,
+                fecha_limite: formatAsISODate(fechaLimite),
+            },
+            ""
+        );
+        setPDF(res.documento_rellenado.data);
+        setIsSubmitting(false);
         /*}
         catch (err) {
             console.log(err);
@@ -92,7 +104,7 @@ const ReportFormModal = ({
             </button>
             {isOpen && (
                 <div className='w-screen h-screen bg-black/20 z-50 fixed top-0 right-0 flex justify-center pt-2 overflow-hidden'>
-                    <div className={` w-11/12 lg:w-11/12 lg:mx-auto p-2 border-0 rounded-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up`}>
+                    <div className={` w-full lg:w-11/12 lg:mx-auto p-2 pb-10 border-0 rounded-t-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up lg:max-w-[1400px]`}>
 
                         {/**Close button */}
                         <div className="w-full flex flex-row h-fit items-center">
@@ -105,7 +117,7 @@ const ReportFormModal = ({
 
                         {isSubmitting ? (
                             <div>
-                                <ProcessingAnim title="Generando Documento en PDF..." />
+                                <ProcessingAnim title="Obteniendo Documento PDF..." />
                             </div>
                         ) : (
                             <>
@@ -113,19 +125,19 @@ const ReportFormModal = ({
                                     <PDFViewer buffer={generatedPDF} />
                                 ) : (
                                     <>
-                                        <div className='w-5/6 mx-auto flex flex-row mb-3'>
-                                            <div className='font-SESAT text-4xl mr-auto'>
-                                                Formato para la evaluacion de avance de tesis
+                                        <div className='w-11/12 lg:w-5/6 mx-auto flex flex-col lg:flex-row mb-3'>
+                                            <div className='mb-3 lg:mb-0 font-SESAT text-4xl mr-auto'>
+                                                Formato para la evaluación de avance de tesis
                                             </div>
                                             <button type="submit" onClick={handleSubmit} className="primary__btn">
                                                 Generar reporte
                                             </button>
                                         </div>
-                                        <div className="w-5/6 mx-auto mb-10">
+                                        <div className="w-11/12 lg:w-5/6 mx-auto mb-3 lg:mb-10">
                                             <span>Verifique que los datos sean correctos</span>
                                         </div>
                                         <div className="overflow-y-scroll w-full no-scrollbar">
-                                            <table className="w-5/6 mx-auto table table-zebra text-base mb-32">
+                                            <table className="w-11/12 lg:w-5/6 mx-auto table table-zebra text-base mb-32">
                                                 <thead>
                                                     <tr className="text-dark-blue-20">
                                                         <th className="w-1/3"></th>

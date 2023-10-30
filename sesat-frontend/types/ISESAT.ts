@@ -123,6 +123,26 @@ export interface Asignacion {
   fecha_presentacion: string;
 }
 
+export interface AsignacionReview {
+  id_asignacion: number;
+  id_formato_evaluacion: number;
+  id_acta_evaluacion: number;
+  id_tesis: number;
+  id_modalidad: number;
+  id_periodo: number;
+  num_avance: number;
+  titulo: string;
+  descripcion: string;
+  fecha_entrega: string;
+  calificacion: number;
+  documento: { type: string; data: Array<number> };
+  estado_entrega: number;
+  retroalimentacion: string;
+  tipo: number;
+  fecha_presentacion: string;
+  id_funcion: number;
+}
+
 export interface CreateAsignacion {
   id_formato_evaluacion: number | null;
   id_acta_evaluacion: number | null;

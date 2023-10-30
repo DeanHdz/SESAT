@@ -10,6 +10,7 @@ import { GradoEstudio } from "src/grado-estudio/entities/grado-estudio.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import { Modalidad } from "src/modalidad/entities/modalidad.entity";
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { Comite } from "src/comite/entities/comite.entity";
 
 @Injectable()
 export class AsignacionService {
@@ -18,7 +19,7 @@ export class AsignacionService {
     private asignacionRepository: Repository<Asignacion>,
 
     @InjectRepository(Tesis)
-    private readonly tesisRepository: Repository<Tesis>,    
+    private readonly tesisRepository: Repository<Tesis>,
 
   ) { }
 
@@ -56,17 +57,17 @@ export class AsignacionService {
     }
   }
 
- /**
-   * Crear asignaciones pendientes para un determinado GRUPO de alumnos de DOCTORADO
-   * Ver docs del metodo: findArrayAsignacionesPendientesPhd()
-   * @param numAvance equivale al semestre p. ej. 3 representa seminario de tesis II (50%) (modalidad full-time)
-   * @param createAsignacionDto el body del POST request, con datos como titulo, desc y modalidad
-   * @returns HttpStatus ---> OK | Error
-   */
+  /**
+    * Crear asignaciones pendientes para un determinado GRUPO de alumnos de DOCTORADO
+    * Ver docs del metodo: findArrayAsignacionesPendientesPhd()
+    * @param numAvance equivale al semestre p. ej. 3 representa seminario de tesis II (50%) (modalidad full-time)
+    * @param createAsignacionDto el body del POST request, con datos como titulo, desc y modalidad
+    * @returns HttpStatus ---> OK | Error
+    */
   async createMastersGroupByNumaAvance(numAvance: number, createAsignacionDto: CreateAsignacionDto) {
     try {
       let { id_modalidad, id_periodo } = createAsignacionDto
-      
+
       await this.findArrayAsignacionesPendientesMDegree(id_periodo, numAvance, id_modalidad).then(async (idTesisArray) => {
         const promises = idTesisArray.map(async (elem) => {
           //crear una nueva instancia para cada iteracion
@@ -103,28 +104,62 @@ export class AsignacionService {
     return this.asignacionRepository.findOne({ where: { id_asignacion: id } });
   }
 
-/**
- * Titulo y descripcion de un GRUPO de asignaciones de DOCTORADO
- * @param id_periodo el periodo al que pertenece el grupo, normalmente el mas reciente
- * @param numAvance equivale al semestre, 3 representaria el grupo de Seminario de Avance de Tesis 3
- * @param tipo '1'--> cualquier asignacion que cierre al fin de sem., '2' --> evaluacion inicio de sem
- * @returns {titulo: string, descripcion: string} Un objeto JSON con el titulo y descripcion de las asignaciones del grupo
- */
+  async findOneToReview(idAsesor: number, idAsignacion: number) {
+
+    const resp = await this.asignacionRepository.createQueryBuilder('a')
+      .select([
+        "a.id_asignacion AS id_asignacion",
+        "a.id_formato_evaluacion AS id_formato_evaluacion",
+        "a.id_acta_evaluacion AS id_acta_evaluacion",
+        "a.id_tesis AS id_tesis",
+        "a.id_modalidad AS id_modalidad",
+        "a.id_periodo AS id_periodo",
+        "a.num_avance AS num_avance",
+        "a.titulo AS titulo",
+        "a.descripcion AS descripcion",
+        "a.fecha_entrega AS fecha_entrega",
+        "a.calificacion AS calificacion",
+        "a.documento AS documento",
+        "a.estado_entrega AS estado_entrega",
+        "a.retroalimentacion AS retroalimentacion",
+        "a.tipo AS tipo",
+        "a.fecha_presentacion AS fecha_presentacion",
+        "c.id_funcion as id_funcion"
+      ])
+
+      .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
+      .innerJoin(Comite, "c", "c.id_tesis = t.id_tesis")
+
+      .where("a.id_asignacion = :idAsign", { idAsign: idAsignacion })
+      .andWhere("c.id_usuario = :idUser", { idUser: idAsesor })
+
+      .getRawOne()
+
+    return resp;
+  }
+
+  /**
+   * Titulo y descripcion de un GRUPO de asignaciones de DOCTORADO
+   * @param id_periodo el periodo al que pertenece el grupo, normalmente el mas reciente
+   * @param numAvance equivale al semestre, 3 representaria el grupo de Seminario de Avance de Tesis 3
+   * @param tipo '1'--> cualquier asignacion que cierre al fin de sem., '2' --> evaluacion inicio de sem
+   * @returns {titulo: string, descripcion: string} Un objeto JSON con el titulo y descripcion de las asignaciones del grupo
+   */
   async findOneInGroupPHD(id_periodo: number, numAvance: number, tipo: number) {
 
     const resp = await this.asignacionRepository.createQueryBuilder('a')
       .select('a.titulo, a.descripcion')
 
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
-      .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")      
-      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")      
-      .innerJoin(GradoEstudio, "ge", "ge.id_grado_estudio = da.id_grado_estudio") 
+      .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")
+      .innerJoin(GradoEstudio, "ge", "ge.id_grado_estudio = da.id_grado_estudio")
 
       .where("ge.nombre_grado_estudio = :grado", { grado: 'Doctorado' })
       .andWhere("a.id_periodo = :idPeriodo", { idPeriodo: id_periodo })
       .andWhere("a.tipo = :tipoAv", { tipoAv: tipo })//tipo 1, normal, tipo 2 caso 4to av doctorado
-      .andWhere("a.num_avance = t.ultimo_avance")   
-      .andWhere("a.num_avance = :numAv", { numAv: numAvance })            
+      .andWhere("a.num_avance = t.ultimo_avance")
+      .andWhere("a.num_avance = :numAv", { numAv: numAvance })
       .getRawOne()
 
     return resp;
@@ -139,26 +174,26 @@ export class AsignacionService {
    * @returns {titulo: string; descripcion: string} Un objeto JSON con el titulo y descripcion de las asignaciones del grupo, NOTA: al ser del mismo grupo, estos datos son iguales, por eso no es necesario devolver un array
    */
   async findOneInGroupMD(id_periodo: number, numAvance: number, modalidad: number) {
-    
+
     const resp = await this.asignacionRepository.createQueryBuilder('a')
       .select('a.titulo, a.descripcion')
-      
+
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
-      .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")      
-      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")      
-      .innerJoin(GradoEstudio, "ge", "ge.id_grado_estudio = da.id_grado_estudio")      
+      .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")
+      .innerJoin(GradoEstudio, "ge", "ge.id_grado_estudio = da.id_grado_estudio")
 
       .where("ge.nombre_grado_estudio = 'Maestría'")
       .andWhere("a.id_periodo = :idPeriodo", { idPeriodo: id_periodo })
       .andWhere("a.id_modalidad = :idMod", { idMod: modalidad })
-      .andWhere("a.num_avance = t.ultimo_avance")   
-      .andWhere("a.num_avance = :numAv", { numAv: numAvance })            
+      .andWhere("a.num_avance = t.ultimo_avance")
+      .andWhere("a.num_avance = :numAv", { numAv: numAvance })
       .getRawOne();
 
     return resp;
   }
 
-  
+
   /**
    * Encontrar el documento de la tesis terminada(ultimo_avance)
    * @param id El id de la tesis
@@ -176,7 +211,7 @@ export class AsignacionService {
     return resp;
   }
 
-  
+
   /**
    * Total Alumnos inscritos de doctorado agrupados por semestre (num_avance)
    * @returns {[{num_avance: number, alumnos_inscritos: number}]}
@@ -225,7 +260,7 @@ export class AsignacionService {
     return alumnos;
   }
 
-  
+
   /**
    * Total Alumnos inscritos de doctorado agrupados por semestre AGREGA el numero de asignaciones pendientes
    * @param idPeriodo id del periodo mas reciente
@@ -291,7 +326,7 @@ export class AsignacionService {
     return result;
   }
 
-  
+
   /**
    * Devuleve el total de asignaciones pendientes para determinado grupo de DOCTORADO
    * @param id_periodo el periodo al que corresponda
@@ -345,20 +380,20 @@ export class AsignacionService {
       .select('COUNT(t.id_tesis)', 'count')
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
-      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")      
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
       .where(`NOT EXISTS (${subquery.getQuery()})`)
       .andWhere("t.estado_finalizacion = false")
       .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("da.estado_activo = true")
       .andWhere("da.id_modalidad = :idMod", { idMod: idModalidad })
-      .andWhere("ge.nombre_grado_estudio = :grado", { grado: 'Maestría' })      
+      .andWhere("ge.nombre_grado_estudio = :grado", { grado: 'Maestría' })
       .setParameters(subquery.getParameters())
       .getRawOne()
 
     return resp.count;
   }
 
-  
+
   /**
    * TOTAL DE ASIGNACIONES ENTREGADAS DOCTORADO PARA DETERMINADO GRUPO
    * @param idPeriodo el id del periodo actual
@@ -389,7 +424,7 @@ export class AsignacionService {
     return resp.count;
   }
 
-  
+
   /**
    * TOTAL DE ASIGNACIONES ENTREGADAS MAESTRIA PARA N AVANCE 
    * @param idPeriodo el id del periodo actual
@@ -398,13 +433,13 @@ export class AsignacionService {
    * @returns {number}
    */
   async findNumAsignacionesEntregadasMD(idPeriodo: number, numAvance: number, idModalidad: number) {
-    
+
     const resp = await this.asignacionRepository.createQueryBuilder('a')
       .select('COUNT(a.id_tesis)', 'count')
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
-      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")      
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
 
       .where("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("t.ultimo_avance = a.num_avance")
@@ -420,7 +455,7 @@ export class AsignacionService {
     return resp.count;
   }
 
-  
+
   /**
    * ARRAY DE ASIGNACIONES PENDIENTES DE CREAR PARA UN GRUPO DE DOCTORADO
    * @param idPeriodo El ID del periodo correspondiente
@@ -454,7 +489,7 @@ export class AsignacionService {
     return resp;
   }
 
-  
+
   /**
    * ARRAY DE ASIGNACIONES PENDIENTES DE CREAR PARA UN GRUPO DE MAESTRIA
    * @param idPeriodo El ID del periodo correspondiente
@@ -476,19 +511,19 @@ export class AsignacionService {
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
       .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
-      
+
       .where(`NOT EXISTS (${subquery.getQuery()})`)
       .andWhere("t.estado_finalizacion = false")
       .andWhere("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("da.estado_activo = true")
       .andWhere("da.id_modalidad = :id_mod", { id_mod: idModalidad })
-      .andWhere("ge.nombre_grado_estudio = :grado", { grado: 'Maestría' })      
+      .andWhere("ge.nombre_grado_estudio = :grado", { grado: 'Maestría' })
       .setParameters(subquery.getParameters())
       .getRawMany()
     return resp;
   }
 
-  
+
   /**
    * ARRAY DE ASIGNACIONES ACTIVAS PARA UN GRUPO DE DOCTORADO
    * @param id_periodo El ID del periodo correspondiente
@@ -521,7 +556,7 @@ export class AsignacionService {
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
-      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")      
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
 
       .where("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("a.tipo = :tipo", { tipo: tipoAssignacion })
@@ -535,7 +570,7 @@ export class AsignacionService {
     return resp;
   }
 
-  
+
   /**
    * ARRAY DE ASIGNACIONES ACTIVAS PARA UN GRUPO DE MAESTRIA
    * @param id_periodo El ID del periodo correspondiente
@@ -568,7 +603,7 @@ export class AsignacionService {
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
-      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")      
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
 
       .where("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("a.id_modalidad  = :idMod", { idMod: id_modalidad })
@@ -580,8 +615,8 @@ export class AsignacionService {
       .getRawMany()
 
     return resp;
-  }  
-  
+  }
+
   /**
    * Actualizar datos de asignaciones de un grupo de doctorado (Se extraen los datos del grupo del DTO)
    * @param updateAsignacionDto El body del PUT request
@@ -619,7 +654,7 @@ export class AsignacionService {
       throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-  
+
   /**
    * Actualizar datos de asignaciones de un grupo de Maestria (Se extraen los datos del grupo del DTO)
    * @param updateAsignacionDto El body del PUT request
@@ -656,7 +691,7 @@ export class AsignacionService {
     catch (error) {
       throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  }  
+  }
 
   update(updateAsignacionDto: UpdateAsignacionDto) {
     return this.asignacionRepository.save(updateAsignacionDto);

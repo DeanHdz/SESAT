@@ -13,7 +13,7 @@ export default function Home() {
     setSearch(e.target.value);
   };
 
-  useEffect(() => {}, []);
+  
 
   return (
     <>
@@ -51,6 +51,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
+            {/*
             {users?.map((user, i) => (
               <>
                 {parseInt(search) == user.clave ||
@@ -64,10 +65,11 @@ export default function Home() {
                   .toLowerCase()
                   .includes(search.toLowerCase()) ? (
                   /*<StudentProfile user={user} />*/
+                  /*
                   <tr
                     key={user.clave}
                     onClick={() => setSelectedUser(user)}
-                    /** Visualizar la seleccion de un renglon*/
+                    /** Visualizar la seleccion de un renglon*//*
                     className={
                       selectedUser?.clave === user.clave
                         ? "bg-dark-blue-10 rounded text-white cursor-pointer"
@@ -82,7 +84,7 @@ export default function Home() {
                   <></>
                 )}
               </>
-            ))}
+                ))}*/}
           </tbody>
         </table>
       </div>

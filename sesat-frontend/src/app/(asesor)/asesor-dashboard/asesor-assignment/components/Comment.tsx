@@ -40,11 +40,11 @@ const Comment = (props: CommentProps) => {
         </div>
         {props.left === true ? (
           <>
-            <div className="chat-header">
+            <div className="chat-header mt-4">
               {props.userName}
               <time className="text-xs opacity-50 ml-3">{shortFormatDate(props.date)}</time>
             </div>
-            <div className="chat-bubble bg-slate-300 text-black/50">
+            <div className="chat-bubble bg-slate-300 text-black/50 mb-4">
               {props.body}
             </div>
           </>
@@ -56,7 +56,7 @@ const Comment = (props: CommentProps) => {
             </div>
             {/**Div Oculto - Eliminar mensaje */}
             <div className="flex flex-row items-center">
-              <div className="dropdown dropdown-left">
+              <div className="dropdown dropdown-bottom">
                 <label tabIndex={0} className="">
                   <button className="mr-2 text-light-blue-10 hover:text-black w-[30px] h-[30px] flex items-center justify-center active:bg-slate-300 rounded-full">
                     <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>

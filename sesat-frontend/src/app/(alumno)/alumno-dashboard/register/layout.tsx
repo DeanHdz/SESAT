@@ -1,4 +1,4 @@
-import '../../globals.css'
+import '../../../globals.css'
 import Navbar from "@/app/components/Navbar"
 import { Metadata } from "next"
 

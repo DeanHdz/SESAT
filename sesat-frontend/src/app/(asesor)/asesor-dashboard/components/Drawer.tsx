@@ -23,7 +23,7 @@ export default function Drawer() {
         </Link>
 
         <Link
-          href="/asesor-dashboard/sesat-users/alumnos/masters-degree"
+          href="/asesor-dashboard/students/masters-degree"
           className={`${cssMenu}`}
         >
           <div className="w-[20px]">
@@ -46,7 +46,7 @@ export default function Drawer() {
         </Link>
 
         <Link
-          href="/asesor-dashboard/sesat-users/alumnos/phd"
+          href="/asesor-dashboard/students/phd"
           className={`${cssMenu}`}
         >
           <div className="w-[20px]">

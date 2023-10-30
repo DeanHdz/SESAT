@@ -155,10 +155,10 @@ const PDFViewer = ({
                 </div>
 
                 {/**Document Container */}
-                <div className='w-full border-t-0 border border-solid border-slate-300/80 h-[750px] overflow-y-hidden'>
+                <div className='w-full border-t-0 border border-solid border-slate-300/80 h-full overflow-y-hidden'>
                     <center>
 
-                        <div className="z-10 h-[750px] overflow-y-scroll bg-slate-100 ">
+                        <div className="z-10 h-screen overflow-y-scroll bg-slate-100 ">
 
                             <Document file={pdf} onLoadSuccess={onDocumentLoadSuccess} loading={<ProcessingAnim title='Cargando documento...' />}>
 
