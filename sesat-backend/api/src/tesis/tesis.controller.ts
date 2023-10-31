@@ -1,11 +1,14 @@
 import {
   Controller,
   Get,
+  Query,
   Post,
   Body,
   Put,
   Param,
   Delete,
+  ParseIntPipe, 
+  DefaultValuePipe
 } from "@nestjs/common";
 import { TesisService } from "./tesis.service";
 import { CreateTesisDto } from "./dto/create-tesis.dto";
@@ -14,6 +17,51 @@ import { UpdateTesisDto } from "./dto/update-tesis.dto";
 @Controller("tesis")
 export class TesisController {
   constructor(private readonly tesisService: TesisService) {}
+
+  @Get('/paginated/phd')
+  async paginatedCompletedPhd(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  )
+  {
+    limit = limit > 100 ? 100 : limit;
+    return this.tesisService.paginatedCompletedPhd(page, limit);
+  }
+  
+  @Get("/phd/name/:name")
+  async findCompletedPhdByName(@Param("name") name: string) {
+    return await this.tesisService.findCompletedPhdByName(name);
+  }
+  
+  @Get('/paginated/md/half-time')
+  async paginatedCompletedMdHalfTime(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  )
+  {
+    limit = limit > 100 ? 100 : limit;
+    return this.tesisService.paginatedCompletedMdHalfTime(page, limit);
+  }
+
+  @Get("/md/half-time/name/:name")
+  async findCompletedMdHalfTimeByName(@Param("name") name: string) {
+    return await this.tesisService.findCompletedMdHalfTimeByName(name);
+  }
+
+  @Get('/paginated/md/full-time')
+  async paginatedCompletedMdFullTime(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  )
+  {
+    limit = limit > 100 ? 100 : limit;
+    return this.tesisService.paginatedCompletedMdFullTime(page, limit);
+  }
+
+  @Get("/md/half-time/name/:name")
+  async findCompletedMdFullTimeByName(@Param("name") name: string) {
+    return await this.tesisService.findCompletedMdFullTimeByName(name);
+  }
 
   @Post()
   create(@Body() createTesisDto: CreateTesisDto) {

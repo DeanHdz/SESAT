@@ -9,8 +9,6 @@ import PDFViewer from "@/app/components/PDFViewer";
 import NotFound from "../../../not-found";
 import { fetchDocumentByID } from "../../../../../../../utils/asignacion.endpoint";
 
-
-
 type AsesorProps = {
   nombre: string,
   apellido_paterno: string,
@@ -83,8 +81,8 @@ export default function Page({
   {/**Datos recibidos */}
   return (
     <main>      
-        <div tabIndex={0} className="collapse bg-white gray__border w-full mb-6">
-          <div className="collapse-title my-0 text-[16px] font-medium">
+        <div tabIndex={0} className="collapse bg-white gray__border w-full mb-6 mt-4">
+          <div className="collapse-title my-0 text-[16px] font-medium hover:text-dark-blue-10">
             Propiedades
           </div>
           <div className="collapse-content">

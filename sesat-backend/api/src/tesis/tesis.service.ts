@@ -26,6 +26,201 @@ export class TesisService {
 
   ) { }
 
+  async paginatedCompletedPhd(page: number, limit: number) {
+    const resp = await this.tesisRepository
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecha_registro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.id_usuario")
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
+      .from(Usuario, 'usuario')
+      .from(DatosAlumno, 'datos_alumno')
+      .from(GradoEstudio, 'ge')
+      .where('tesis.id_usuario = usuario.id_usuario')
+      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
+      .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
+      .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
+      .andWhere('tesis.ultimo_avance BETWEEN :min AND :max', { min: 6, max: 8 })
+      .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Doctorado' })
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getRawMany();
+  
+    return resp;
+  }
+
+  async findCompletedPhdByName(name: string){
+    const resp = await this.tesisRepository
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecha_registro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.id_usuario")  // This includes all columns from the "usuario" table in the result.
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
+
+      .from(Usuario, 'usuario')
+      .from(DatosAlumno, 'datos_alumno')
+      .from(GradoEstudio, 'ge')
+
+      .where('tesis.id_usuario = usuario.id_usuario')
+      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
+      .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
+
+      .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
+      .andWhere('tesis.ultimo_avance BETWEEN :min AND :max', { min: 6, max: 8 })
+      .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Doctorado' })
+      .getRawMany()
+
+    return resp.filter(
+      (tesis) => (
+        `${tesis.titulo}`
+      )
+        .toLowerCase()
+        .includes(name.toLowerCase())
+    );
+  }
+
+  async paginatedCompletedMdHalfTime(page: number, limit: number)
+  {
+    const resp = await this.tesisRepository
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecha_registro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.id_usuario")  // This includes all columns from the "usuario" table in the result.      
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
+
+      .from(Usuario, 'usuario')
+      .from(DatosAlumno, 'datos_alumno')
+      .from(Modalidad, 'modalidad')
+      .from(GradoEstudio, 'ge')
+
+      .where('tesis.id_usuario = usuario.id_usuario')
+      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
+      .andWhere('datos_alumno.id_modalidad = modalidad.id_modalidad')
+      .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
+
+      .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
+      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 7 })
+      .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
+      .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Medio Tiempo' })
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getRawMany()
+
+      return resp;
+  }
+
+  async findCompletedMdHalfTimeByName(name: string){
+    const resp = await this.tesisRepository
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecha_registro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.id_usuario")  // This includes all columns from the "usuario" table in the result.      
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
+
+      .from(Usuario, 'usuario')
+      .from(DatosAlumno, 'datos_alumno')
+      .from(Modalidad, 'modalidad')
+      .from(GradoEstudio, 'ge')
+
+      .where('tesis.id_usuario = usuario.id_usuario')
+      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
+      .andWhere('datos_alumno.id_modalidad = modalidad.id_modalidad')
+      .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
+
+      .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
+      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 7 })
+      .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
+      .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Medio Tiempo' })
+      .getRawMany()
+
+      return resp.filter(
+        (tesis) => (
+          `${tesis.titulo}`
+        )
+          .toLowerCase()
+          .includes(name.toLowerCase())
+      );
+  }
+
+  async paginatedCompletedMdFullTime(page: number, limit: number){
+    const resp = await this.tesisRepository
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecha_registro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.id_usuario")  // This includes all columns from the "usuario" table in the result.      
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
+
+      .from(Usuario, 'usuario')
+      .from(DatosAlumno, 'datos_alumno')
+      .from(Modalidad, 'modalidad')
+      .from(GradoEstudio, 'ge')
+
+      .where('tesis.id_usuario = usuario.id_usuario')
+      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
+      .andWhere('datos_alumno.id_modalidad = modalidad.id_modalidad')
+      .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
+
+      .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
+      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 4 })//revisar
+      .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
+      .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Tiempo Completo' })
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getRawMany()
+
+      return resp;
+  }
+
+  async findCompletedMdFullTimeByName(name: string){
+    const resp = await this.tesisRepository
+      .createQueryBuilder("tesis")
+      .select("tesis.titulo")
+      .addSelect("tesis.fecha_registro")
+      .addSelect("tesis.id_tesis")
+      .addSelect("usuario.id_usuario")  // This includes all columns from the "usuario" table in the result.      
+      .addSelect("usuario.nombre")
+      .addSelect("usuario.apellido_paterno")
+      .addSelect("usuario.apellido_materno")
+
+      .from(Usuario, 'usuario')
+      .from(DatosAlumno, 'datos_alumno')
+      .from(Modalidad, 'modalidad')
+      .from(GradoEstudio, 'ge')
+
+      .where('tesis.id_usuario = usuario.id_usuario')
+      .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
+      .andWhere('datos_alumno.id_modalidad = modalidad.id_modalidad')
+      .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
+
+      .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
+      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 4 })//revisar
+      .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
+      .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Tiempo Completo' })
+      .getRawMany()
+
+      return resp.filter(
+        (tesis) => (
+          `${tesis.titulo}`
+        )
+          .toLowerCase()
+          .includes(name.toLowerCase())
+      );
+  }
 
   create(createTesisDto: CreateTesisDto) {
     return this.tesisRepository.save(createTesisDto);
@@ -52,7 +247,6 @@ export class TesisService {
    */
   /**Tesis de maestria medio tiempo terminadas(se muestran en el archivo de tesis) */
   async findCompletedMDegreeHalfTime() {
-
     const resp = await this.tesisRepository
       .createQueryBuilder("tesis")
       .select("tesis.titulo")
@@ -117,7 +311,6 @@ export class TesisService {
 
   /**Tesis de doctorado terminadas(se muestran en el archivo de tesis) */
   async findCompletedPhd() {
-
     const resp = await this.tesisRepository
       .createQueryBuilder("tesis")
       .select("tesis.titulo")

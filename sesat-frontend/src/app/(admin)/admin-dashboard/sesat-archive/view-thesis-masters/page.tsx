@@ -1,14 +1,20 @@
-
-
 import EmptyPage from "@/app/components/EmptyPage";
 import TesisRow from "@/app/components/TesisRow";
 import { InactiveTesisProps } from "../../../../../../types/ISESAT";
 import { fetchTesisCompletadasMaestriaMedTiempo, fetchTesisCompletadasMaestriaTiempoComp } from "../../../../../../utils/tesis.endpoint";
 
+import Search from "../../components/Search";
+import clsx from "clsx";
+import Link from "next/link";
 
 
-export default async function Home() {
-  let tesisPartTime: InactiveTesisProps[] | undefined
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  /*let tesisPartTime: InactiveTesisProps[] | undefined
   let tesisFullTime: InactiveTesisProps[] | undefined
   let isDataEmptyA
   let isDataEmptyB
@@ -25,9 +31,6 @@ export default async function Home() {
   } catch (error: any) {
     
   }
-
-  
-
   return (
     <main>
 
@@ -61,8 +64,13 @@ export default async function Home() {
         )}
       </div>
     </main>
-  )
-
+  )*/
+  const page =
+    typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
+  const limit =
+    typeof searchParams.limit === "string" ? Number(searchParams.limit) : 10; //10
+  const search =
+    typeof searchParams.search === "string" ? searchParams.search : undefined;
 
 
 
