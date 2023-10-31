@@ -1,53 +1,57 @@
 import React from 'react';
 import AssignmentPath from './AssignmentPath';
+import { shortFormatDate } from '../../../../../utils/utils';
 
-const CompletedAssignments = () => {
+type AsignacionProps = {
+  num_avance: number;
+  id_asignacion: number,
+  nombre: string,
+  apellido_paterno: string,
+  apellido_materno: string,
+  titulo: string,
+  fecha_entrega: string,
+  grado: number;
+}
+
+
+const CompletedAssignments = ({asignaciones}:{asignaciones: AsignacionProps[]}) => {
+    
   return (
     <div className="w-full">
       <div className="w-full flex justify-center p-2">
-        <p className="text-2xl font-bold">Asignaciones completadas</p>
+        <p className="text-2xl font-bold text-black/40">Avances de tesis completados</p>
       </div>
-      <div className="bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5">
-      <table className="table table-zebra">
-          <thead>
-            <tr className="text-dark-blue-20">
-              <th>Asesorado</th>
-              <th>Titulo</th>
-              <th>Fecha limite de entrega</th>
+      <div className="max-w-full overflow-x-scroll lg:overflow-x-hidden bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5">
+        <table className=" table table-zebra">
+          <thead className=''>
+            <tr className="text-dark-blue-20">              
+              <th>Alumno</th>
+              <th>Título del avance</th>
+              <th>Grado</th>
+              <th>Avance</th>
+              <th>Fecha de entrega</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-                <tr>
-                  <td>Dean Joshua Hernandez</td>
-                  <td>Avance 2024/2025 II</td>
-                  <td>2025-05-15 23:59:59</td>
+            {asignaciones?.map((alumno, i) => (
+              <>
+                <tr
+                  key={alumno.id_asignacion}
+                >
+                  <td>{`${alumno.nombre} ${alumno.apellido_paterno} ${alumno.apellido_materno}`}</td>
+                  <td>{alumno.titulo}</td>
+                  <td>{alumno.grado === 1 ? 'Maestría' : 'Doctorado'}</td>
+                  <td>{alumno.num_avance}</td>
+                  <td>{shortFormatDate(alumno.fecha_entrega)}</td>
                   <td>
                     <div>
-                      <AssignmentPath />
+                      <AssignmentPath idAsignacion={alumno.id_asignacion}/>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>Dean Joshua Hernandez</td>
-                  <td>Avance 2024/2025 II</td>
-                  <td>2025-05-15 23:59:59</td>
-                  <td>
-                    <div>
-                      <AssignmentPath />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Dean Joshua Hernandez</td>
-                  <td>Avance 2024/2025 II</td>
-                  <td>2025-05-15 23:59:59</td>
-                  <td>
-                    <div>
-                      <AssignmentPath />
-                    </div>
-                  </td>
-                </tr>
+              </>
+            ))}
           </tbody>
         </table>
       </div>

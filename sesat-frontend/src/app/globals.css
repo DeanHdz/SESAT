@@ -15,6 +15,10 @@
 }
 
 @layer utilities {
+  .body{
+    width: 100%;
+    overflow-x: hidden;
+  }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -59,7 +63,7 @@
     padding-left: 24px;
     padding-right: 24px;
     padding-top: 8px;
-    padding-bottom: 8px;    
+    padding-bottom: 8px;
 
   }
 
@@ -68,7 +72,7 @@
     border-radius: 6px;
     border-width: 1px;
     border-color: #d5d3dd;
-    border-style: solid; 
+    border-style: solid;
     color: #ef3a3a;
     text-transform: uppercase;
     font-size: 14px;
@@ -76,11 +80,30 @@
     padding-left: 24px;
     padding-right: 24px;
     padding-top: 8px;
-    padding-bottom: 8px;       
+    padding-bottom: 8px;
 
   }
 
-  .primary__btn:focus, .secondary__btn:focus {
+  .secondary__btn_sm {
+    background-color: white;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: #d5d3dd;
+    border-style: solid;
+    color: #ef3a3a;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+  }
+
+  .primary__btn:focus,
+  .secondary__btn:focus,
+  .secondary__btn_sm:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
   }
@@ -89,12 +112,15 @@
     background-color: #06447d;
   }
 
-  .secondary__btn:active {
+  .secondary__btn:active,
+  .secondary__btn_sm:active {
     color: white;
     background-color: #ef3a3a;
   }
 
-  .primary__btn:hover, .secondary__btn:hover {
+  .primary__btn:hover,
+  .secondary__btn:hover,
+  .secondary__btn_sm:hover {
     scale: 102%;
     transition: all;
     transition-duration: 150ms;
@@ -105,9 +131,14 @@
     border-color: #dde3ec;
     border-style: solid;
     border-radius: 6px;
-  }  
+  }
+
   .spin-slow {
     animation: spin 2s linear infinite;
+  }
+
+  .modal-open {
+    overflow: hidden;
   }
 }
 
@@ -116,4 +147,3 @@
 Docs:
 https://csstailwind.com/how-to-add-custom-css-or-classes-in-tailwindcss/
 */
-

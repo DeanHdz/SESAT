@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="w-screen overflow-x-hidden mb-10">
-        <div className="flex lg:flex-row justify-center w-11/12 lg:w-5/6 m-auto mt-6">
+        <div className="flex lg:flex-row justify-center w-11/12 lg:w-5/6 m-auto mt-6 max-w-[1600px]">
 
           <div className="hidden lg:flex lg:w-3/12">
             <Drawer />

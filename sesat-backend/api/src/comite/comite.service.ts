@@ -6,13 +6,20 @@ import { UpdateComiteDto } from "./dto/update-comite.dto";
 import { Comite } from "./entities/comite.entity";
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Funcion } from "src/funcion/entities/funcion.entity";
+import { Tesis } from "src/tesis/entities/tesis.entity";
+import { Asignacion } from "src/asignacion/entities/asignacion.entity";
+import { group } from "console";
+import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
 
 @Injectable()
 export class ComiteService {
   constructor(
     @InjectRepository(Comite)
-    private comiteRepository: Repository<Comite>
-  ) {}
+    private comiteRepository: Repository<Comite>,
+
+    @InjectRepository(Asignacion)
+    private readonly asignacionRepository: Repository<Asignacion>,
+  ) { }
 
   create(CreateComiteDto: CreateComiteDto) {
     return this.comiteRepository.save(CreateComiteDto);
@@ -45,6 +52,76 @@ export class ComiteService {
       })
       .getRawOne(); // fetch raw results, which will give us one data ROW comibined from all the tables.
     //otherwise it won't return anything
+    return resp;
+  }
+  //Estados de entrega:
+  //EDO 0 -> No entregado
+  //EDO 1 -> Entregado
+  // EDO 2 -> Vencido
+  async findAsignacionesAsesorados(idPeriodo: number, idAsesor: number, idFuncion: number) {
+
+
+    const subquery = this.comiteRepository
+      .createQueryBuilder("c")
+      .select("c.id_tesis")
+      .where("c.id_usuario = :id_usuario", { id_usuario: idAsesor })
+      .andWhere("c.id_funcion = :id_funcion", { id_funcion: idFuncion });
+
+    const resp = await this.asignacionRepository
+      .createQueryBuilder("a")
+      .select([
+        "a.num_avance AS num_avance",
+        "a.id_asignacion AS id_asignacion",
+        "u.nombre AS nombre",
+        "u.apellido_paterno AS apellido_paterno",
+        "u.apellido_materno AS apellido_materno",
+        "a.titulo AS titulo",
+        "a.fecha_entrega AS fecha_entrega",
+        "da.id_grado_estudio AS grado"
+      ])
+      .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
+      .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")      
+      .where(`a.id_tesis IN (${subquery.getQuery()})`)
+      .andWhere("a.estado_entrega = :estado_entrega", { estado_entrega: 1 })
+      .andWhere("a.id_periodo = :id_periodo", { id_periodo: idPeriodo })
+      .setParameters(subquery.getParameters())
+      .getRawMany();
+
+    return resp;
+  }
+
+  async findMembers(idTesis: number) {
+    const resp = await this.comiteRepository
+      .createQueryBuilder("c")
+      .select([
+        "u.nombre AS nombre",
+        "u.apellido_paterno AS apellido_paterno",
+        "u.apellido_materno AS apellido_materno",
+        "f.nombre_funcion AS nombre_funcion",
+      ])
+      .innerJoin(Usuario, "u", "u.id_usuario = c.id_usuario")
+      .innerJoin(Funcion, "f", "f.id_funcion = c.id_funcion")
+      .where('c.id_tesis = :id', { id: idTesis })
+      .getRawMany();
+
+    return resp;
+  }
+
+  //estado activo importa?
+  async validateAsesorRole(idAsesor: number, idAlumno: number) {
+    const resp = await this.comiteRepository
+      .createQueryBuilder("c")
+      .select([
+        "c.id_funcion AS id_funcion",
+        "t.id_tesis AS id_tesis"
+      ])
+      .innerJoin(Tesis, "t", "t.id_tesis = c.id_tesis")      
+      .where('c.id_usuario = :id_asesor', { id_asesor: idAsesor })
+      .andWhere('t.id_usuario = :id_alumno', { id_alumno: idAlumno })
+      .andWhere('t.estado_finalizacion = false')
+      .getRawOne();
+
     return resp;
   }
 

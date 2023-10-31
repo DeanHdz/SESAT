@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common'
 import { AsignacionService } from './asignacion.service';
 import { CreateAsignacionDto } from './dto/create-asignacion.dto';
 import { UpdateAsignacionDto } from './dto/update-asignacion.dto';
+import { FilledActDto } from 'src/acta-evaluacion/dto/create-formulario.dto';
 
 @Controller('asignacion')
 export class AsignacionController {
@@ -15,6 +16,11 @@ export class AsignacionController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.asignacionService.findOne(+id);
+  }
+
+  @Get('one-to-review/:idAsesor/:idAsignacion')
+  findOneToReview(@Param('idAsesor') idAsesor: string, @Param('idAsignacion') idAsignacion: string) {
+    return this.asignacionService.findOneToReview(+idAsesor, +idAsignacion);
   }
 
   //Para tablero de asignaciones de doctorado
@@ -72,9 +78,8 @@ export class AsignacionController {
   /**Devuelve El NUMERO de asignaciones entregadas para determinado num_avance de alumnos de maestria*/
   @Get('num-entregadas/md/:idPeriodo/:numAvance/:mod')
   findNumAsignacionesEntregadasMD(@Param('idPeriodo') idPeriodo: string, @Param('numAvance') numAvance: string, @Param('mod') mod: string) {
-    return this.asignacionService.findNumAsignacionesEntregadasMD(+idPeriodo,+numAvance, +mod);
+    return this.asignacionService.findNumAsignacionesEntregadasMD(+idPeriodo, +numAvance, +mod);
   }
-
 
   @Post()
   create(@Body() createAsignacionDto: CreateAsignacionDto) {
@@ -97,12 +102,11 @@ export class AsignacionController {
     return this.asignacionService.updatePhdGroup(updateAsignacionDto);
   }
 
-   //Actualizar grupo de asignaciones
-   @Put('md/update_group/')
-   updateAssignmentGroupMD(@Body() updateAsignacionDto: UpdateAsignacionDto) {
-     return this.asignacionService.updateMDGroup(updateAsignacionDto);
-   }
-
+  //Actualizar grupo de asignaciones
+  @Put('md/update_group/')
+  updateAssignmentGroupMD(@Body() updateAsignacionDto: UpdateAsignacionDto) {
+    return this.asignacionService.updateMDGroup(updateAsignacionDto);
+  }  
 
   @Put()
   update(@Body() updateAsignacionDto: UpdateAsignacionDto) {

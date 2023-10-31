@@ -45,6 +45,22 @@ export class ComiteController {
     return this.comiteService.findPerTesis(+id);
   }
 
+    /*##########################ASESOR#####################################################*/
+  @Get('asesor/turned-in/:idPeriodo/:idAsesor/:idFuncion')
+  findAsignacionesEntregadas(@Param('idPeriodo') idPeriodo: string, @Param('idAsesor') idAsesor: string, @Param('idFuncion') idFuncion: string) {
+    return this.comiteService.findAsignacionesAsesorados(+idPeriodo, +idAsesor, +idFuncion);
+  }
+
+  @Get('members/:idTesis')
+  findMembers(@Param('idTesis') idTesis: string) {
+    return this.comiteService.findMembers(+idTesis);
+  }
+
+  @Get('validate-role/:idAsesor/:idAlumno')
+  validateAsesorRole(@Param('idAsesor') idAsesor: string, @Param('idAlumno') idAlumno: string) {
+    return this.comiteService.validateAsesorRole(+idAsesor, +idAlumno);
+  }
+
   @Put()
   update(@Body() updateComiteDto: UpdateComiteDto) {
     return this.comiteService.update(updateComiteDto);

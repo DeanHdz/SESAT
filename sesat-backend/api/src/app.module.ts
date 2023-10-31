@@ -10,7 +10,6 @@ import { AsignacionModule } from "./asignacion/asignacion.module";
 import { ActaEvaluacionModule } from "./acta-evaluacion/acta-evaluacion.module";
 import { join } from "path";
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { RespuestaModule } from "./respuesta/respuesta.module";
 import { ComentarioModule } from "./comentario/comentario.module";
 import { AuthModule } from "./auth/auth.module";
 import { APP_GUARD, APP_PIPE } from "@nestjs/core";
@@ -65,8 +64,7 @@ import { MailModule } from './mail/mail.module';
     ProgramaModule,
     AsignacionModule,
     ActaEvaluacionModule,
-    FormatoVacioModule,
-    RespuestaModule,
+    FormatoVacioModule,    
     ComentarioModule,
     AuthModule,
     NotificationModule,
