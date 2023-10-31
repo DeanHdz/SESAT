@@ -12,6 +12,7 @@ import { Modalidad } from "src/modalidad/entities/modalidad.entity";
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Periodo } from "src/periodo/entities/periodo.entity";
 import { MailService } from "src/mail/mail.service";
+import { TesisService } from "src/tesis/tesis.service";
 
 @Injectable()
 export class AsignacionService {
@@ -22,7 +23,7 @@ export class AsignacionService {
     @InjectRepository(Tesis)
     private readonly tesisRepository: Repository<Tesis>,
 
-    private mailService: MailService
+    private readonly mailService: MailService,
   ) { }
 
   create(createAsignacionDto: CreateAsignacionDto) {
@@ -47,7 +48,13 @@ export class AsignacionService {
           
           let newAssignment = await this.asignacionRepository.save(newAsignacionDto);
 
-          this.mailService.newAssignment(newAssignment, elem.alumno)
+          let tesis = await this.tesisRepository.findOne({
+            where: { id_tesis: elem.id_tesis },
+            relations: ["alumno"],
+          });
+
+          await this.mailService.newAssignment(newAssignment, tesis.alumno)
+          console.log('repeat');
         })
         await Promise.all(promises);
 

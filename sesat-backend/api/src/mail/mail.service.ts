@@ -11,7 +11,7 @@ export class MailService {
     await this.mailerService.sendMail({
       to: usuario.correo,
       subject: "Se ha publicado una asignacion",
-      template: "./transactional",
+      template: "./newAssignment",
       context: {
         name: usuario.nombre,
         assignment: asignacion.titulo,
