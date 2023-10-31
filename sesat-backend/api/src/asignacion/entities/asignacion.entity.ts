@@ -66,13 +66,13 @@ export class Asignacion {
   @Column()
   fecha_presentacion: Date;
 
-  /*@OneToOne(() => FormatoEvaluacion, { eager: true })
-  @JoinColumn({ name: "id_formato_evaluacion" })
-  formatoEvaluacion: FormatoEvaluacion;
+  // @OneToOne(() => FormatoEvaluacion, { eager: true })
+  // @JoinColumn({ name: "id_formato_evaluacion" })
+  // formatoEvaluacion: FormatoEvaluacion;
 
-  @OneToOne(() => ActaEvaluacion, { eager: true })
-  @JoinColumn({ name: "id_acta_evaluacion" })
-  actaEvaluacion: ActaEvaluacion;
+  // @OneToOne(() => ActaEvaluacion, { eager: true })
+  // @JoinColumn({ name: "id_acta_evaluacion" })
+  // actaEvaluacion: ActaEvaluacion;
 
   @ManyToOne(() => Tesis, (tesis) => tesis.asignaciones)
   @JoinColumn({ name: "id_tesis" })
@@ -81,7 +81,7 @@ export class Asignacion {
   //@OneToMany(() => Comentario, (comentario) => comentario.asignacion)
   //comentarios: Comentario[];
 
-  @OneToOne(() => Modalidad, { eager: true })
-  @JoinColumn({ name: "id_modalidad" })
-  modalidad: Modalidad;*/
+  // @OneToOne(() => Modalidad, { eager: true })
+  // @JoinColumn({ name: "id_modalidad" })
+  // modalidad: Modalidad;
 }

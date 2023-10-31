@@ -11,6 +11,7 @@ import { Tesis } from "src/tesis/entities/tesis.entity";
 import { Modalidad } from "src/modalidad/entities/modalidad.entity";
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Periodo } from "src/periodo/entities/periodo.entity";
+import { MailService } from "src/mail/mail.service";
 
 @Injectable()
 export class AsignacionService {
@@ -21,6 +22,7 @@ export class AsignacionService {
     @InjectRepository(Tesis)
     private readonly tesisRepository: Repository<Tesis>,
 
+    private mailService: MailService
   ) { }
 
   create(createAsignacionDto: CreateAsignacionDto) {
@@ -39,12 +41,14 @@ export class AsignacionService {
     try {
       let { tipo, id_periodo } = createAsignacionDto
       await this.findArrayAsignacionesPendientesPhd(id_periodo, numAvance, tipo).then(async (idTesisArray) => {
-        const promises = idTesisArray.map(async (elem) => {
+        const promises = idTesisArray.map(async (elem: Tesis) => {
           //crear una nueva instancia para cada iteracion
           const newAsignacionDto = { ...createAsignacionDto, id_tesis: elem.id_tesis };
-          await this.asignacionRepository.save(newAsignacionDto);
-        })
+          
+          let newAssignment = await this.asignacionRepository.save(newAsignacionDto);
 
+          this.mailService.newAssignment(newAssignment, elem.alumno)
+        })
         await Promise.all(promises);
 
       })

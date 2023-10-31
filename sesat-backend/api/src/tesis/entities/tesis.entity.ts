@@ -23,9 +23,9 @@ export class Tesis {
   @Column()
   id_usuario: number;
 
-  /*@OneToOne(() => Usuario, { eager: true })
+  @OneToOne(() => Usuario, { eager: true })
   @JoinColumn({ name: "id_usuario" })
-  alumno: Usuario;*/
+  alumno: Usuario;
 
   @Column()
   titulo: string;
@@ -34,20 +34,16 @@ export class Tesis {
   fecha_registro: Date;
 
   @Column()
-  generacion: number;  
+  generacion: number;
 
   @Column()
   ultimo_avance: number;
 
   @Column()
   estado_finalizacion: boolean;
-  
-  /*@OneToMany(
-    () => Asignacion,
-    (asignacion) => asignacion.tesis,
-    {
-      eager: true,
-    }
-  )
-  asignaciones: Asignacion[];*/
+
+  @OneToMany(() => Asignacion, (asignacion) => asignacion.tesis, {
+    eager: true,
+  })
+  asignaciones: Asignacion[];
 }
