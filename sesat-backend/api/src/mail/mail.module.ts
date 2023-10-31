@@ -18,7 +18,9 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
             pass: config.get("MAIL_PASSWORD"),
           },
           pool: true,
-          maxConnections: 2,
+          maxConnections: 1,
+          rateLimit: 30,
+          rateDelta: 1000 * 60,
         },
         defaults: {
           from: `"SESAT" <${config.get("MAIL_FROM")}>`,

@@ -55,7 +55,6 @@ export class AsignacionService {
           });
 
           this.mailService.newAssignment(newAssignment, tesis.alumno)
-          console.log('repeat');
         })
         await Promise.all(promises);
 
