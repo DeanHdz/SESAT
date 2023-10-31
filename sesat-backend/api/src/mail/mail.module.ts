@@ -1,9 +1,9 @@
-import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { Global, Module } from '@nestjs/common';
-import { MailService } from './mail.service';
-import { join } from 'path';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MailerModule } from "@nestjs-modules/mailer";
+import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
+import { Global, Module } from "@nestjs/common";
+import { MailService } from "./mail.service";
+import { join } from "path";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Global()
 @Module({
@@ -11,18 +11,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     MailerModule.forRootAsync({
       useFactory: async (config: ConfigService) => ({
         transport: {
-          host: config.get('MAIL_HOST'),
+          host: config.get("MAIL_HOST"),
           secure: false,
           auth: {
-            user: config.get('MAIL_USER'),
-            pass: config.get('MAIL_PASSWORD'),
+            user: config.get("MAIL_USER"),
+            pass: config.get("MAIL_PASSWORD"),
           },
+          pool: true,
         },
         defaults: {
-          from: `"SESAT" <${config.get('MAIL_FROM')}>`,
+          from: `"SESAT" <${config.get("MAIL_FROM")}>`,
         },
         template: {
-          dir: join(__dirname, 'templates'),
+          dir: join(__dirname, "templates"),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,

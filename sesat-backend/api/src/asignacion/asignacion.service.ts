@@ -53,7 +53,7 @@ export class AsignacionService {
             relations: ["alumno"],
           });
 
-          await this.mailService.newAssignment(newAssignment, tesis.alumno)
+          this.mailService.newAssignment(newAssignment, tesis.alumno)
           console.log('repeat');
         })
         await Promise.all(promises);
