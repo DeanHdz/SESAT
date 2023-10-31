@@ -30,7 +30,7 @@ const LandingLogin = () => {
           router.push("/asesor-dashboard");
           break;
         case "Alumno":
-          router.push("/alumnos-dashboard");
+          router.push("/alumno-dashboard");
           break; 
       }
     } catch (err) {

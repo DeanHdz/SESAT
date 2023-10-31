@@ -10,15 +10,13 @@ import { MailService } from "src/mail/mail.service";
 export class NotificacionService {
   constructor(
     @InjectRepository(Notificacion)
-    private notificacionRepository: Repository<Notificacion>,
-    private mailService: MailService
+    private notificacionRepository: Repository<Notificacion>
   ) {}
   create(createNotificacionDto: CreateNotificacionDto) {
     return this.notificacionRepository.save(createNotificacionDto);
   }
 
   findAll() {
-    this.mailService.sendUserConfirmation();
     return this.notificacionRepository.find();
   }
 
