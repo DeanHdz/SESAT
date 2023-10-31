@@ -1,0 +1,45 @@
+<x-main>
+  <div class="bg-slate-50 sm:px-4 font-sans">
+    <table align="center">
+      <tr>
+        <td class="w-[552px] max-w-full">
+          <div class="my-8 sm:my-4 text-center">
+            <img src="https://onedrive.live.com/embed?resid=8F8ACCC48C82704F%21106&authkey=%21AH9A5CxevuJu3no&width=375&height=117" width="375" height="117" alt="SESAT"/>
+          </div>
+
+          <table class="w-full">
+            <tr>
+              <td class="p-6 sm:px-6 text-base text-slate-700 bg-white rounded shadow-sm">
+                <h1 class="m-0 mb-6 text-2xl sm:leading-8 text-black font-semibold">
+                  Saludos, {{ name }}
+                </h1>
+
+                <p class="m-0 leading-6">
+                  Tu asignación <span class="font-bold text-blue-950">{{ assignment }}</span>
+                  <br>
+                  ha sido calificada, entra al sistema para obtener más información.
+                </p>
+
+                <x-spacer height="24px" />
+
+                <div class="w-full flex justify-end">
+                  <a class="shadow rounded-full py-[10px] px-[10px] bg-blue-950 text-white no-underline hover:underline" href="http://localhost:3000">
+                    Ir a SESAT &rarr;
+                  </a>
+                </div>
+            <tr>
+              <td class="text-center text-slate-600 text-xs px-6">
+                <p class="m-0 my-2 uppercase">
+                  Universidad Autónoma de San Luis Potosí
+                </p>
+                <p class="m-0 italic">
+                  Sistema de Evaluación y Seguimiento de Avances de Tesis 2023
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</x-main>
