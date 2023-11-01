@@ -129,7 +129,7 @@ const AssignmentProperties = (props: AssignmentPropertiesProps) => {
       <div className='w-full m-2 border border-solid border-gray-200'></div>
       <div className='w-full flex flex-col'>
         <div className='flex place-content-between mb-4'>
-          <label className="font-bold mb-2">
+          <label className="font-SESAT mb-2">
             Fecha límite de entrega: {modifiedFechaEntrega}
           </label>
           <button
@@ -145,7 +145,7 @@ const AssignmentProperties = (props: AssignmentPropertiesProps) => {
           />
         </div>
         <div className='flex place-content-between'>
-          <label className="font-bold mb-2">
+          <label className="font-SESAT mb-2">
             Calificación: {modifiedCalificacion}
           </label>
           <button

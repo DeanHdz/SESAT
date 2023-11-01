@@ -1,115 +1,56 @@
+import { FormatoEvaluacionFilled } from "../types/ISESAT";
 
-/*
+export async function postFormatoEvaluacion( 
+  idAsignacion: number, 
+  updateActaEvaluacionDto: FormatoEvaluacionFilled,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/formato-evaluacion/review/${idAsignacion}`;
 
-
-
-import axios from "axios";
-import { SESAT } from "../Interfaces/ISESAT";
-
-export namespace FormatoEvaluacion {
-  export const getFormatoEvaluacion = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.FormatoEvaluacion | undefined> => {
-    return await axios
-      .get<SESAT.FormatoEvaluacion>(
-        `${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion/` + id,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(updateActaEvaluacionDto),
   };
+  const response = await fetch(url, options);
 
-  export const getAllFormatoEvaluacions = async (
-    token: string
-  ): Promise<SESAT.FormatoEvaluacion[] | undefined> => {
-    return await axios
-      .get<SESAT.FormatoEvaluacion[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  if(!response.ok){    
+    throw(new Error('Error posting data'))
+  }
 
-  export const postFormatoEvaluacion = async (
-    CreateformatoEvaluacionDto: SESAT.CreateFormatoEvaluacion,
-    token: string
-  ): Promise<SESAT.FormatoEvaluacion | undefined> => {
-    return await axios
-      .post(
-        `${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion`,
-        CreateformatoEvaluacionDto,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  const result = await response.json();
 
-  export const putFormatoEvaluacion = async (
-    UpdateformatoEvaluacionDto: SESAT.UpdateFormatoEvaluacion,
-    token: string
-  ): Promise<SESAT.Usuario | undefined> => {
-    return await axios
-      .put(
-        `${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion`,
-        UpdateformatoEvaluacionDto,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
 
-  export const deleteFormatoEvaluacion = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.FormatoEvaluacion | undefined> => {
-    return await axios
-      .delete(`${import.meta.env.VITE_API_HOSTNAME}/formato-evaluacion/` + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  return result;
+
 }
 
+export async function fetchFormatoEvaluacion( 
+  idFormato: number,   
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/formato-evaluacion/${idFormato}`;
 
-*/
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error posting data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}

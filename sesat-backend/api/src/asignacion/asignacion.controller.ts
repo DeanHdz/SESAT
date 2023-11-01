@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common'
 import { AsignacionService } from './asignacion.service';
 import { CreateAsignacionDto } from './dto/create-asignacion.dto';
 import { UpdateAsignacionDto } from './dto/update-asignacion.dto';
+import { FilledActDto } from 'src/acta-evaluacion/dto/create-formulario.dto';
 
 @Controller('asignacion')
 export class AsignacionController {
@@ -15,6 +16,11 @@ export class AsignacionController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.asignacionService.findOne(+id);
+  }
+
+  @Get('one-to-review/:idAsesor/:idAsignacion')
+  findOneToReview(@Param('idAsesor') idAsesor: string, @Param('idAsignacion') idAsignacion: string) {
+    return this.asignacionService.findOneToReview(+idAsesor, +idAsignacion);
   }
 
   //Para tablero de asignaciones de doctorado
@@ -100,8 +106,7 @@ export class AsignacionController {
   @Put('md/update_group/')
   updateAssignmentGroupMD(@Body() updateAsignacionDto: UpdateAsignacionDto) {
     return this.asignacionService.updateMDGroup(updateAsignacionDto);
-  }
-
+  }  
 
   @Put()
   update(@Body() updateAsignacionDto: UpdateAsignacionDto) {

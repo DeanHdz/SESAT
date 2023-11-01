@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { shortFormatDate } from "../../../utils/utils";
 
 const TesisRow = ({titulo, fechaEntrega, autor, weblink}:{titulo: string; fechaEntrega: string; autor: string; weblink: string;}) => {
     return (
@@ -9,7 +10,7 @@ const TesisRow = ({titulo, fechaEntrega, autor, weblink}:{titulo: string; fechaE
             <div className="ml-6 block w-auto">
                 <p className="mt-1 text-[16px] font-SESAT">{titulo}</p>   
                 <p className="mt-1 text-sm">{autor}</p>             
-                <p className="mt-1 text-sm font-sans">Fecha: {fechaEntrega?.substring(0,10)}</p>                
+                <p className="mt-1 text-sm font-sans">Fecha: {shortFormatDate(fechaEntrega)}</p>                
             </div>            
         </Link>
     );

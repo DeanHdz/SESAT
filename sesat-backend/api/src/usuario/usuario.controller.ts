@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  UseGuards,
-  Query,
-  ParseIntPipe,
-  DefaultValuePipe
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Query, ParseIntPipe, DefaultValuePipe } from "@nestjs/common";
 import { UsuarioService } from "./usuario.service";
 import { CreateUsuarioDto } from "./dto/create-usuario.dto";
 import { UpdateUsuarioDto } from "./dto/update-usuario.dto";
@@ -77,6 +66,11 @@ export class UsuarioController{
   @Get("/alumnos-phd/name/:name")
   async findAlumnosPhdByName(@Param("name") nombre: string) {
     return await this.usuarioService.findAlumnosPhdByName(nombre);
+  }
+
+  @Get("alumnos-asesorados/:idAsesor/:idGrado")
+  async findAlumnosAsesorados(@Param("idAsesor") idAsesor: string, @Param("idGrado") idGrado: string) {
+    return await this.usuarioService.findAlumnosAsesorados(+idAsesor, +idGrado);
   }
 
   //@UseGuards(JwtAuthGuard)

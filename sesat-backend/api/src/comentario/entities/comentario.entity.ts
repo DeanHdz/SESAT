@@ -10,7 +10,7 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Respuesta } from "src/respuesta/entities/respuesta.entity";
+
 
 @Entity()
 export class Comentario {
@@ -34,6 +34,8 @@ export class Comentario {
   @Column()
   texto: string;
 
+  @Column()
+  fecha_comentario: Date;
   /*@OneToMany(() => Respuesta, (respuesta) => respuesta.comentario, {
     eager: true,
   })

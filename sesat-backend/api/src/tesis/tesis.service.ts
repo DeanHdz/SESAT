@@ -12,6 +12,7 @@ import { GradoEstudio } from 'src/grado-estudio/entities/grado-estudio.entity';
 import { Modalidad } from 'src/modalidad/entities/modalidad.entity';
 import { Periodo } from 'src/periodo/entities/periodo.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { Comite } from 'src/comite/entities/comite.entity';
 
 
 @Injectable()
@@ -156,6 +157,7 @@ export class TesisService {
       .addSelect("usuario.apellido_paterno")
       .addSelect("usuario.apellido_materno")
       .addSelect("programa.nombre_programa")
+      .addSelect("datos_alumno.id_grado_estudio")
 
       .from(Usuario, 'usuario')
       .from(DatosAlumno, 'datos_alumno')
@@ -226,6 +228,56 @@ export class TesisService {
       .andWhere("ge.nombre_grado_estudio = :nombreGradoEstudio", { nombreGradoEstudio: 'Maestría' })
       .andWhere("mod.nombre_modalidad = :nombreMod", { nombreMod: 'Tiempo Completo' })
       .groupBy("t.ultimo_avance")
+      .getRawMany()
+
+    return resp;
+  }
+
+  async findTesisHistory(idTesis: number) {
+    const resp = await this.tesisRepository
+      .createQueryBuilder("t")
+      .innerJoin(Asignacion, "a", "a.id_tesis = t.id_tesis")
+      .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
+      .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
+      .innerJoin(Modalidad, "mod", "da.id_modalidad = mod.id_modalidad")
+      .select([
+        "a.id_asignacion as id_asignacion",
+        "ge.nombre_grado_estudio AS grado_estudio",
+        "mod.nombre_modalidad AS modalidad"      
+      ])      
+      .where("t.id_tesis = :id", { id: idTesis })  
+      .andWhere("a.id_acta_evaluacion IS NOT NULL")          
+      .andWhere("a.id_formato_evaluacion IS NOT NULL")   
+      .getRawMany()
+
+    return resp;
+  }
+
+  async findFullHistory(idAlumno: number) {
+    const resp = await this.tesisRepository
+      .createQueryBuilder("t")
+      
+      
+      .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
+      .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")      
+      .innerJoin(Programa, "p", "p.id_programa = da.id_programa")      
+      .select([
+        "t.id_tesis AS id_tesis",
+        "t.titulo AS titulo",
+        "t.estado_finalizacion AS estado_finalizacion",
+        "t.fecha_registro AS fecha_registro",
+        "da.id_grado_estudio AS grado",
+        "u.nombre AS nombre",
+        "u.apellido_paterno AS apellido_paterno",
+        "u.apellido_materno AS apellido_materno",
+        "u.correo AS correo",
+        "p.nombre_programa AS nombre_programa",
+        "da.estado_activo AS estado_activo"
+
+      ])      
+      .where("t.id_usuario = :id", { id: idAlumno })  
+      
       .getRawMany()
 
     return resp;

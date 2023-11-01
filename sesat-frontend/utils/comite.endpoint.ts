@@ -1,7 +1,4 @@
 
-
-
-
 export async function fetchAsesorByIDTesis(
   id: string,
   token: string,
@@ -28,7 +25,7 @@ export async function fetchAsesorByIDTesis(
 
 }
 
-export async function fetchAvancesEntregadosByAsesor(
+export async function fetchAvancesEntregados(
   idPeriodo: string,
   idAsesor: string,
   idFuncion: string,
@@ -55,141 +52,57 @@ export async function fetchAvancesEntregadosByAsesor(
   return result;
 
 }
-/*
-import { SESAT } from "@/types/ISESAT";
 
+export async function fetchComiteMembers(  
+  idTesis: number,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/members/${idTesis}`;
 
-export namespace ComiteEndpoint {
-  export const getComite = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Comite | undefined> => {
-    return await axios
-      .get<SESAT.Comite>(`${import.meta.env.VITE_API_HOSTNAME}/comite/` + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    }, 
+    cache: 'no-store' as RequestCache   
   };
+  const response = await fetch(url, options);
 
-  export const getAllComites = async (
-    token: string
-  ): Promise<SESAT.Comite[] | undefined> => {
-    return await axios
-      .get<SESAT.Comite[]>(`${import.meta.env.VITE_API_HOSTNAME}/comite`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
 
-  export const getPerAsesor = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Comite[] | undefined> => {
-    return await axios
-      .get<SESAT.Comite[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/comite/per-asesor/` + id,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  const result = await response.json();
 
-  export const getPerTesis = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Comite[] | undefined> => {
-    return await axios
-      .get<SESAT.Comite[]>(
-        `${import.meta.env.VITE_API_HOSTNAME}/comite/per-tesis/` + id,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${token}`,
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
+  return result;
 
-  export const postComite = async (
-    CreateComiteDto: SESAT.CreateComite,
-    token: string
-  ): Promise<SESAT.Comite | undefined> => {
-    return await axios
-      .post(`${import.meta.env.VITE_API_HOSTNAME}/comite`, CreateComiteDto, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-
-  export const putComite = async (
-    UpdateComiteDto: SESAT.UpdateComite,
-    token: string
-  ): Promise<SESAT.Usuario | undefined> => {
-    return await axios
-      .put(`${import.meta.env.VITE_API_HOSTNAME}/comite`, UpdateComiteDto, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
-
-  export const deleteComite = async (
-    id: number,
-    token: string
-  ): Promise<SESAT.Comite | undefined> => {
-    return await axios
-      .delete(`${import.meta.env.VITE_API_HOSTNAME}/comite/` + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data) {
-          return data;
-        }
-      });
-  };
 }
 
-*/
+export async function fetchValidateRole(  
+  idAsesor: number,
+  idAlumno: number,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/validate-role/${idAsesor}/${idAlumno}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    }, 
+    cache: 'no-store' as RequestCache   
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+  return result;
+
+}
+

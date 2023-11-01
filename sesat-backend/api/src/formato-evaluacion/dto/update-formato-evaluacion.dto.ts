@@ -1,6 +1,6 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { CreateFormatoEvaluacionDto } from "./create-formato-evaluacion.dto";
-import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class UpdateFormatoEvaluacionDto extends PartialType(
   CreateFormatoEvaluacionDto
@@ -13,6 +13,6 @@ export class UpdateFormatoEvaluacionDto extends PartialType(
   @IsNumber()
   id_formato_vacio: number;
 
-  @IsOptional()
-  documento_rellenado: string;
+  @IsNotEmpty()  
+  documento_rellenado: Buffer;
 }
