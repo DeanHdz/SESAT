@@ -58,7 +58,7 @@ export class TesisController {
     return this.tesisService.paginatedCompletedMdFullTime(page, limit);
   }
 
-  @Get("/md/half-time/name/:name")
+  @Get("/md/full-time/name/:name")
   async findCompletedMdFullTimeByName(@Param("name") name: string) {
     return await this.tesisService.findCompletedMdFullTimeByName(name);
   }

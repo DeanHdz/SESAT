@@ -21,7 +21,7 @@ export default function Search({url}:{url: string}) {
     <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
         <input
           type="search"
-          placeholder="Buscar alumnos"
+          placeholder="Buscar..."
           className="rounded-full border-b border-light-gray-22 border-solid px-6"
           onChange={(e) => {
             setText(e.target.value);

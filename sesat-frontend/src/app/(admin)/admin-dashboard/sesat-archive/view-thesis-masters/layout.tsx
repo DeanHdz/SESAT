@@ -8,10 +8,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           Tesis de Maestría
         </label>
         <label className=" block text-xl font-bold">Repositorio de tesis</label>
-
         <Tabs />
-
-        {children}
+        <div className="mt-2">
+          {children}
+        </div>
       </div>
     </main>
   );

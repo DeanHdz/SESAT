@@ -21,12 +21,9 @@ export default async function Home({
     typeof searchParams.search === "string" ? searchParams.search : undefined;
 
   if (search) {
-    const tesisList: InactiveTesisProps[] | undefined =
-      await getTesisCompletadasPhdByName("[token]", search).catch(() => {
-        return null;
-      });
-    const isDataEmpty =
-      !Array.isArray(tesisList) || tesisList.length < 1 || !tesisList; //?
+    const tesisListData: Promise<InactiveTesisProps[]> = getTesisCompletadasPhdByName("[token]", search);
+    const tesisList = await tesisListData;
+    const isDataEmpty = !Array.isArray(tesisList) || tesisList.length < 1 || !tesisList; //?
     return (
       <>
         <Search url={"/admin-dashboard/sesat-archive/view-thesis-phd"} />
@@ -49,20 +46,16 @@ export default async function Home({
       </>
     );
   } else {
-    const tesisList: InactiveTesisProps[] | undefined =
-      await fetchTesisCompletadasPhdPaginated("[token]", page, limit).catch(
-        () => {
-          return null;
-        }
-      );
-    const isDataEmpty =
-      !Array.isArray(tesisList) || tesisList.length < 1 || !tesisList; //?
-    const totalTesisList: InactiveTesisProps[] | undefined =
-      await fetchTesisCompletadasPhd("[token]").catch(() => {
-        return null;
-      });
+    const tesisListData: Promise<InactiveTesisProps[]> = fetchTesisCompletadasPhdPaginated("[token]", page, limit);
+    const tesisList = await tesisListData;
+    const isDataEmpty = !Array.isArray(tesisList) || tesisList.length < 1 || !tesisList; //?
+
+    const totalTesisListData: Promise<InactiveTesisProps[]> = fetchTesisCompletadasPhd("[token]");
+    const totalTesisList = await totalTesisListData;
+    
     const totalCount: number = totalTesisList?.length ?? 0;
     const totalPages: number = Math.ceil(totalCount / limit);
+
     return (
       <>
         <Search url={"/admin-dashboard/sesat-archive/view-thesis-phd"} />
