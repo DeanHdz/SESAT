@@ -15,6 +15,7 @@ import { Comentario } from "src/comentario/entities/comentario.entity";
 import { ActaEvaluacion } from "src/acta-evaluacion/entities/acta-evaluacion.entity";
 import { FormatoEvaluacion } from "src/formato-evaluacion/entities/formato-evaluacion.entity";
 import { Modalidad } from "src/modalidad/entities/modalidad.entity";
+import { Periodo } from "src/periodo/entities/periodo.entity";
 
 @Entity()
 export class Asignacion {
@@ -35,6 +36,10 @@ export class Asignacion {
 
   @Column()
   id_periodo: number;
+
+  @OneToOne(() => Periodo, { eager: false })
+  @JoinColumn({ name: "id_periodo" })
+  periodo: Periodo;
 
   @Column()
   num_avance: number;

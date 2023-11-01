@@ -28,10 +28,12 @@ import { ModalidadModule } from "./modalidad/modalidad.module";
 import { FuncionModule } from "./funcion/funcion.module";
 import { EventoModule } from "./evento/evento.module";
 import { PeriodoModule } from "./periodo/periodo.module";
-import { MailModule } from './mail/mail.module';
+import { MailModule } from "./mail/mail.module";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 10,
@@ -64,7 +66,7 @@ import { MailModule } from './mail/mail.module';
     ProgramaModule,
     AsignacionModule,
     ActaEvaluacionModule,
-    FormatoVacioModule,    
+    FormatoVacioModule,
     ComentarioModule,
     AuthModule,
     NotificationModule,

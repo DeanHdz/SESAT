@@ -307,7 +307,7 @@ export class TesisService {
   //https://typeorm.io/select-query-builder#using-subqueries
 
   findOne(id: number) {
-    return this.tesisRepository.findOne({ where: { id_tesis: id } });
+    return this.tesisRepository.findOne({ where: { id_tesis: id }, relations: ['alumno'] });
   }
 
   findTesisPerStudent(id_usuario: number) {

@@ -1,13 +1,21 @@
 import { MailerModule } from "@nestjs-modules/mailer";
 import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
-import { Global, Module } from "@nestjs/common";
+import { Global, Module, forwardRef } from "@nestjs/common";
 import { MailService } from "./mail.service";
 import { join } from "path";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { AsignacionService } from "src/asignacion/asignacion.service";
+import { TesisService } from "src/tesis/tesis.service";
+import { AsignacionModule } from "src/asignacion/asignacion.module";
+import { TesisModule } from "src/tesis/tesis.module";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 
 @Global()
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Asignacion]),
+    TesisModule,
     MailerModule.forRootAsync({
       useFactory: async (config: ConfigService) => ({
         transport: {

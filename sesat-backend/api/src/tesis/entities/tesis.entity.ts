@@ -23,7 +23,7 @@ export class Tesis {
   @Column()
   id_usuario: number;
 
-  @OneToOne(() => Usuario, { eager: true })
+  @OneToOne(() => Usuario, { eager: false })
   @JoinColumn({ name: "id_usuario" })
   alumno: Usuario;
 
