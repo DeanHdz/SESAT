@@ -1,13 +1,13 @@
 "use client";
 
-import { InactiveTesisProps } from "../../../../../../../types/ISESAT";
-import { fetchOneTesis } from "../../../../../../../utils/tesis.endpoint";
-import { fetchAsesorByIDTesis } from "../../../../../../../utils/comite.endpoint";
+import { InactiveTesisProps } from "../../../../../../../../types/ISESAT";
+import { fetchOneTesis } from "../../../../../../../../utils/tesis.endpoint";
+import { fetchAsesorByIDTesis } from "../../../../../../../../utils/comite.endpoint";
 import { useEffect, useState } from "react";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import PDFViewer from "@/app/components/PDFViewer";
-import NotFound from "../../../not-found";
-import { fetchDocumentByID } from "../../../../../../../utils/asignacion.endpoint";
+import NotFound from "@/app/(admin)/admin-dashboard/not-found";
+import { fetchDocumentByID } from "../../../../../../../../utils/asignacion.endpoint";
 
 type AsesorProps = {
   nombre: string;

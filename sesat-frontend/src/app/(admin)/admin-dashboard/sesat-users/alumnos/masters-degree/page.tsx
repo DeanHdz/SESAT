@@ -16,7 +16,7 @@ export default async function SearchMastersStudents({
   const page =
     typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
   const limit =
-    typeof searchParams.limit === "string" ? Number(searchParams.limit) : 2; //10
+    typeof searchParams.limit === "string" ? Number(searchParams.limit) : 10; //10
   const search =
     typeof searchParams.search === "string" ? searchParams.search : undefined;
 

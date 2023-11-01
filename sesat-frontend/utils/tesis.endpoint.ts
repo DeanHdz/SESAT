@@ -1,3 +1,110 @@
+export async function fetchTesisCompletadasPhdPaginated(token: string, page: number, limit: number)
+{
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/paginated/phd?page=${page}&limit=${limit}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },  
+  };
+  const response = await fetch(url, options);
+  if(!response.ok){
+    throw(new Error('Error fetching the data'))
+  }
+  const result = await response.json();
+  return result;
+}
+
+export async function getTesisCompletadasPhdByName(token: string, query: string)
+{
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/phd/name/${query}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },  
+  };
+  const response = await fetch(url, options);
+  if(!response.ok){
+    throw(new Error('Error fetching the data'))
+  }
+  const result = await response.json();
+  return result;
+}
+
+export async function fetchTesisCompletadasMdHalfTimePaginated(token: string, page: number, limit: number)
+{
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/paginated/md/half-time?page=${page}&limit=${limit}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },  
+  };
+  const response = await fetch(url, options);
+  if(!response.ok){
+    throw(new Error('Error fetching the data'))
+  }
+  const result = await response.json();
+  return result;
+}
+
+export async function getTesisCompletadasMdHalfTimeByName(token: string, query: string)
+{
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/md/half-time/name/${query}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },  
+  };
+  const response = await fetch(url, options);
+  if(!response.ok){
+    throw(new Error('Error fetching the data'))
+  }
+  const result = await response.json();
+  return result;
+}
+
+export async function fetchTesisCompletadasMdFullTimePaginated(token: string, page: number, limit: number)
+{
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/paginated/md/full-time?page=${page}&limit=${limit}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },  
+  };
+  const response = await fetch(url, options);
+  if(!response.ok){
+    throw(new Error('Error fetching the data'))
+  }
+  const result = await response.json();
+  return result;
+}
+
+export async function getTesisCompletadasMdFullTimeByName(token: string, query: string)
+{
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/md/full-time/name/${query}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },  
+  };
+  const response = await fetch(url, options);
+  if(!response.ok){
+    throw(new Error('Error fetching the data'))
+  }
+  const result = await response.json();
+  return result;
+}
 
 export async function fetchOneTesis(
   id: string,
