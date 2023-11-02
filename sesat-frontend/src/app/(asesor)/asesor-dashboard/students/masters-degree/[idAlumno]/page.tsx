@@ -46,7 +46,7 @@ export default async function Home({
 
       {role && role.id_tesis ? (
         <div className="w-full lg:w-9/12">
-          <div className="w-full mb-6 flex flex-col lg:flex-row">
+          <div className="w-full mb-6 flex flex-col ">
             <div className="ml-auto flex flex-row items-center mb-6 lg:mb-0">
               <div className="mr-3">
                 <svg

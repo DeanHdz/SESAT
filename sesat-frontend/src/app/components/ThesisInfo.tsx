@@ -75,7 +75,7 @@ const ThesisInfo = (props: TesisProps) => {
                         <p className="mt-1 text-sm font-sans text-black/40">{props.tesis.grado === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computacións'}</p>
                     </div>
                     <div className="flex w-[50px] ml-auto text-dark-blue-10 justify-center items-center">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"></path></svg>
+                        <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"></path></svg>
                     </div>
                 </div>
             </div>
@@ -132,7 +132,7 @@ const ThesisInfo = (props: TesisProps) => {
                                     <div className="flex flex-row">
                                         <div className="flex flex-row justify-center items-center">
                                             <div className="mr-2">
-                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M21,8c-0.202,0-4.85,0.029-9,2.008C7.85,8.029,3.202,8,3,8C2.447,8,2,8.447,2,9v9.883c0,0.271,0.11,0.53,0.305,0.719 c0.195,0.188,0.48,0.305,0.729,0.28l0.127-0.001c0.683,0,4.296,0.098,8.416,2.025c0.016,0.008,0.034,0.005,0.05,0.011 C11.746,21.966,11.871,22,12,22s0.254-0.034,0.374-0.083c0.016-0.006,0.034-0.003,0.05-0.011c4.12-1.928,7.733-2.025,8.416-2.025 l0.127,0.001c0.238,0.025,0.533-0.092,0.729-0.28C21.89,19.413,22,19.153,22,18.883V9C22,8.447,21.553,8,21,8z M4,10.049 c1.485,0.111,4.381,0.48,7,1.692v7.742c-3-1.175-5.59-1.494-7-1.576V10.049z M20,17.907c-1.41,0.082-4,0.401-7,1.576v-7.742 c2.619-1.212,5.515-1.581,7-1.692V17.907z"></path><circle cx="12" cy="5" r="3"></circle></svg>
+                                                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M21,8c-0.202,0-4.85,0.029-9,2.008C7.85,8.029,3.202,8,3,8C2.447,8,2,8.447,2,9v9.883c0,0.271,0.11,0.53,0.305,0.719 c0.195,0.188,0.48,0.305,0.729,0.28l0.127-0.001c0.683,0,4.296,0.098,8.416,2.025c0.016,0.008,0.034,0.005,0.05,0.011 C11.746,21.966,11.871,22,12,22s0.254-0.034,0.374-0.083c0.016-0.006,0.034-0.003,0.05-0.011c4.12-1.928,7.733-2.025,8.416-2.025 l0.127,0.001c0.238,0.025,0.533-0.092,0.729-0.28C21.89,19.413,22,19.153,22,18.883V9C22,8.447,21.553,8,21,8z M4,10.049 c1.485,0.111,4.381,0.48,7,1.692v7.742c-3-1.175-5.59-1.494-7-1.576V10.049z M20,17.907c-1.41,0.082-4,0.401-7,1.576v-7.742 c2.619-1.212,5.515-1.581,7-1.692V17.907z"></path><circle cx="12" cy="5" r="3"></circle></svg>
                                             </div>
                                             <p>
                                                 {modalidad}
@@ -151,7 +151,7 @@ const ThesisInfo = (props: TesisProps) => {
                                 <div className="flex flex-row">
                                     <div className="flex flex-row justify-center items-center">
                                         <div className="mr-2">
-                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z"></path></g></svg>
+                                            <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z"></path></g></svg>
                                         </div>
                                         <p>{props.tesis.nombre_programa}</p>
                                     </div>
@@ -175,11 +175,11 @@ const ThesisInfo = (props: TesisProps) => {
                                     {history && (
                                         history.map((elem, i) => (
                                             elem !== 0 ? (
-                                                <li className="step step-primary">
-                                                    <PrevAdvance idAsignacion={elem} avance={i + 1} />
+                                                <li className="step step-primary" key={i}>
+                                                    <PrevAdvance idAsignacion={elem} key={i} avance={i + 1} />
                                                 </li>
                                             ) : (
-                                                <li className="step">
+                                                <li className="step" key={i}>
                                                     {`Avance ${i + 1}`}
                                                 </li>
                                             )
