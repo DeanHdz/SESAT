@@ -138,7 +138,7 @@ export default function Drawer() {
             className="dropdown-content menu p-2 shadow bg-dark-blue-20 rounded w-auto"
           >
             <Link
-              href="/admin-dashboard/sesat-users/alumnos/masters-degree"
+              href="/admin-dashboard/students/masters-degree"
               className={`${cssMenu}`}
             >
               <div className="w-[20px]">

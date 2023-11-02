@@ -8,14 +8,17 @@ type AsignacionProps = {
   nombre: string,
   apellido_paterno: string,
   apellido_materno: string,
+  calificacion: number;
+  id_acta_evaluacion: number;
+  id_formato_evaluacion: number;
   titulo: string,
   fecha_entrega: string,
   grado: number;
 }
 
 
-const CompletedAssignments = ({asignaciones}:{asignaciones: AsignacionProps[]}) => {
-    
+const CompletedAssignments = ({ asignaciones }: { asignaciones: AsignacionProps[] }) => {
+
   return (
     <div className="w-full">
       <div className="w-full flex justify-center p-2">
@@ -24,12 +27,12 @@ const CompletedAssignments = ({asignaciones}:{asignaciones: AsignacionProps[]}) 
       <div className="max-w-full overflow-x-scroll lg:overflow-x-hidden bg-[#ffffff] rounded-[15px] border  border-light-gray-22 border-solid w-full p-5">
         <table className=" table table-zebra">
           <thead className=''>
-            <tr className="text-dark-blue-20">              
+            <tr className="text-dark-blue-20">
               <th>Alumno</th>
               <th>Título del avance</th>
               <th>Grado</th>
               <th>Avance</th>
-              <th>Fecha de entrega</th>
+              <th>Fecha de entrega</th>              
               <th></th>
             </tr>
           </thead>
@@ -43,10 +46,10 @@ const CompletedAssignments = ({asignaciones}:{asignaciones: AsignacionProps[]}) 
                   <td>{alumno.titulo}</td>
                   <td>{alumno.grado === 1 ? 'Maestría' : 'Doctorado'}</td>
                   <td>{alumno.num_avance}</td>
-                  <td>{shortFormatDate(alumno.fecha_entrega)}</td>
+                  <td>{shortFormatDate(alumno.fecha_entrega)}</td>                  
                   <td>
                     <div>
-                      <AssignmentPath idAsignacion={alumno.id_asignacion}/>
+                      <AssignmentPath idAsignacion={alumno.id_asignacion} />
                     </div>
                   </td>
                 </tr>
