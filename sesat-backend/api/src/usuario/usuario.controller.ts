@@ -12,6 +12,13 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
 
+  @Get('/external/:id')
+  async getExternalStudent(@Param("id") id_usuario: string)
+  {
+    return await this.usuarioService.getExternalStudent(+id_usuario);
+  }
+
+
   @Get('/paginated/alumnosMasters')
   async index(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,

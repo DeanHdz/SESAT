@@ -1,13 +1,13 @@
 export default function Layout({
-  children, // will be a page or nested layout
+  children,
 }: {
   children: React.ReactNode
 }) {
   return (
     <main>
       <div className="w-full flex flex-col">
-        <label className="mb-6 block text-4xl font-bold">
-          Alumnos de Maestría
+        <label className="mb-2 block text-4xl font-bold">
+          Registro de Alumnos
         </label>
 
         {children}

@@ -13,13 +13,22 @@ import { runInThisContext } from "vm";
 import { Comite } from "src/comite/entities/comite.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
+import { HttpService } from "@nestjs/axios";
+import { lastValueFrom } from "rxjs";
 
 @Injectable()
 export class UsuarioService {
   constructor(
     @InjectRepository(Usuario)
-    private usuarioRepository: Repository<Usuario>
+    private usuarioRepository: Repository<Usuario>,
+    private readonly httpService: HttpService
   ) {}
+
+  async getExternalStudent(id: number){
+    const url = `http://ciep.ing.uaslp.mx/sesat/student.php?id=${id}`;
+    const data = await lastValueFrom(this.httpService.get(url))
+    return data.data[data.data.length-1];
+  }
 
   async paginateMasterStudents(options: IPaginationOptions): Promise<Pagination<Usuario>> {
     const alumnosMaestriaQuery = this.usuarioRepository
