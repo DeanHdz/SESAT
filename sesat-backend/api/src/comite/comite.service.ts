@@ -111,6 +111,22 @@ export class ComiteService {
     return resp;
   }
 
+  async findContacts(idTesis: number) {
+    const resp = await this.comiteRepository
+      .createQueryBuilder("c")
+      .select([
+        "u.nombre AS nombre",
+        "u.apellido_paterno AS apellido_paterno",
+        "u.apellido_materno AS apellido_materno",
+        "u.correo AS correo"
+      ])
+      .innerJoin(Usuario, "u", "u.id_usuario = c.id_usuario")
+      .where('c.id_tesis = :id', { id: idTesis })
+      .getRawMany();
+
+    return resp;
+  }
+
   //estado activo importa?
   async validateAsesorRole(idAsesor: number, idAlumno: number) {
     const resp = await this.comiteRepository

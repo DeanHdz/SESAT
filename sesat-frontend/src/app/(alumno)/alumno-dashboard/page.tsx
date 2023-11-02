@@ -2,10 +2,13 @@ import Drawer from './components/Drawer';
 import Calendar from './components/Calendar';
 import CompletedAssignments from './components/CompletedAssignments'
 import NotificacionSection from "./components/NotificationSection";
-import ContactoAsesor from "./components/ContactoAsesor";
+import ContactoAsesor from "./components/Contacts";
 
 import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
 import {findAsignacionesByPeriodAndAlumno } from '../../../../utils/asignacion.endpoint';
+import { Usuario } from '../../../../types/ISESAT';
+import Contacts from './components/Contacts';
+import { findContactsByIdTesis } from '../../../../utils/comite.endpoint';
 
 type AsignacionProps = {
   id_asignacion: number,
@@ -19,7 +22,7 @@ export default async function Home() {
   let alumnoID = 230443;
   let periodo = await fetchLatestPeriod("").catch();
   let asignaciones: AsignacionProps[] = await findAsignacionesByPeriodAndAlumno(periodo.id_periodo, alumnoID, "");
-
+  let contactos: Usuario[] = await findContactsByIdTesis(6,"");
 
   return (
     <main className="w-full flex">
@@ -44,7 +47,7 @@ export default async function Home() {
           </div>
           <div className="mt-2 w-full">
             <Calendar />
-            <ContactoAsesor />
+            <Contacts contacts={contactos}/>
           </div>
         </div>
         <div className="w-full p-2 lg:w-1/3">
@@ -59,7 +62,8 @@ export default async function Home() {
           </div>
           <div className="mt-2 w-full">
             <Calendar />
-            <ContactoAsesor />
+            <NotificacionSection />
+            <Contacts contacts={contactos}/>
           </div>
         </div>
       </div>

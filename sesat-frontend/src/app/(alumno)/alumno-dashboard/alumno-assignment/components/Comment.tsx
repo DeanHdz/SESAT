@@ -1,4 +1,4 @@
-import Reply from "./Reply"
+import Reply from "../../components/Reply"
 import React from "react"
 
 export interface CommentProps{
