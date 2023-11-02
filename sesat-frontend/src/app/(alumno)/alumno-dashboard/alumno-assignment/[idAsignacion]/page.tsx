@@ -1,10 +1,10 @@
 import AddComment from "@/app/components/AddComment"
-import Drawer from "../components/Drawer"
-import AssignmentHeader from "../components/AssignmentHeader"
-import AdvancesList from "../components/AdvancesList"
-import AssignmentData from "../components/AssignmentData"
-import PDFViewer from "../components/PDFViewer"
-import CommentSection from "../components/CommentSection"
+import Drawer from "../../components/Drawer"
+import AssignmentHeader from "../../components/AssignmentHeader"
+import AdvancesList from "../../components/AdvancesList"
+import AssignmentData from "../../components/AssignmentData"
+import PDFViewer from "../../components/PDFViewer"
+import CommentSection from "../../components/CommentSection"
 import { PrimaryButton } from "@/app/components/PrimaryButton"
 
 

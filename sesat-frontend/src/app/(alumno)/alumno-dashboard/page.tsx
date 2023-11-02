@@ -4,7 +4,23 @@ import CompletedAssignments from './components/CompletedAssignments'
 import NotificacionSection from "./components/NotificationSection";
 import ContactoAsesor from "./components/ContactoAsesor";
 
-export default function Home() {
+import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
+import {findAsignacionesByPeriodAndAlumno } from '../../../../utils/asignacion.endpoint';
+
+type AsignacionProps = {
+  id_asignacion: number,
+  num_avance: number,
+  titulo: string,
+  fecha_entrega: string
+}
+
+export default async function Home() {
+
+  let alumnoID = 230443;
+  let periodo = await fetchLatestPeriod("").catch();
+  let asignaciones: AsignacionProps[] = await findAsignacionesByPeriodAndAlumno(periodo.id_periodo, alumnoID, "");
+
+
   return (
     <main className="w-full flex">
 
@@ -18,7 +34,7 @@ export default function Home() {
       </div>
 
       <div className="w-full flex justify-center pt-2 pb-2">
-        <CompletedAssignments />
+        <CompletedAssignments asignaciones={asignaciones}/>
       </div>
 
       <div className="hidden lg:flex w-full justify-center pt-2 pb-2">
