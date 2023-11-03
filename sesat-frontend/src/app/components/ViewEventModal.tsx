@@ -1,5 +1,5 @@
 import React from 'react'
-import { getFormattedHours } from '../../../../../utils/utils';
+import { getFormattedHours } from '../../../utils/utils';
 
 
 

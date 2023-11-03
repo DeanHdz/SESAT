@@ -6,9 +6,11 @@ import { LocalStrategy } from "./local.strategy";
 import { JwtStrategy } from "./jwt.strategy";
 import { PassportModule } from "@nestjs/passport";
 import { AuthController } from "./auth.controller";
+import { HttpModule } from "@nestjs/axios";
 
 @Module({
   imports: [
+    HttpModule,
     PassportModule,
     UsuarioModule,
     JwtModule.register({
