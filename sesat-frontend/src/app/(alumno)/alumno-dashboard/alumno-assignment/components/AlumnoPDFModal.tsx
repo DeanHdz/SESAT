@@ -4,21 +4,39 @@ import React, { useState } from 'react'
 import ProcessingAnim from '@/app/components/ProcessingAnim';
 
 import { useRouter } from 'next/navigation';
-import PDFViewer from './PDFViewer';
+import PDFViewer from '@/app/(asesor)/asesor-dashboard/asesor-assignment/components/PDFViewer';
+import { fetchActaEvaluacion } from '../../../../../../utils/acta-evaluacion.endpoint';
+import { fetchFormatoEvaluacion } from '../../../../../../utils/formato-evaluacion.endpoint';
 
 
 
 
-const PDFModal = ({ pdfdocument }: { pdfdocument: Array<number> }) => {
+
+
+const AlumnoPDFModal = ({ id_document, docType }: { id_document: number, docType: number }) => {
 
     const [showModal, setShowModal] = useState(false);
 
     const [cssDisabled, setCSSDisabled] = useState("")
     const [cssHide, setcssHide] = useState("")
     const [cssError, setCssError] = useState("hidden")
-    const [cssOk, setCssOk] = useState("hidden")    
+    const [cssOk, setCssOk] = useState("hidden")
+    const [pdf, setPDF] = useState<undefined | Array<number>>(undefined);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter()
-    
+
+    async function fetchPDFActaEvaluacion(idActa: number) {
+        const res = await fetchActaEvaluacion(idActa, "");
+        setPDF(res.documento_rellenado.data);
+        setIsSubmitting(false);
+    }
+
+    async function fetchReporteEvaluacion(idReporte: number) {
+        const res = await fetchFormatoEvaluacion(idReporte, "");
+        setPDF(res.documento_rellenado.data);
+        setIsSubmitting(false);
+    }
+
 
 
     function setDefaultState() {
@@ -35,6 +53,14 @@ const PDFModal = ({ pdfdocument }: { pdfdocument: Array<number> }) => {
     function openPDFModal() {
         document.body.classList.add('modal-open');
         setShowModal(true);
+        setIsSubmitting(true);
+        if (docType === 1) {            
+            fetchPDFActaEvaluacion(id_document);
+        } else {            
+            fetchReporteEvaluacion(id_document);
+        }
+
+
     }
 
 
@@ -60,8 +86,17 @@ const PDFModal = ({ pdfdocument }: { pdfdocument: Array<number> }) => {
                                 </div>
 
                             </div>
-
-                            <PDFViewer buffer={pdfdocument} />
+                            {isSubmitting ? (
+                                <div>
+                                    <ProcessingAnim title="Obteniendo Documento PDF..." />
+                                </div>
+                            ) : (
+                                <>
+                                    {pdf && (
+                                        <PDFViewer buffer={pdf} />
+                                    )}
+                                </>
+                            )}
                         </div>
                     </div >
 
@@ -75,4 +110,4 @@ const PDFModal = ({ pdfdocument }: { pdfdocument: Array<number> }) => {
     )
 }
 
-export default PDFModal;
+export default AlumnoPDFModal;

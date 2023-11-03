@@ -171,13 +171,13 @@ export interface UpdateAsignacion {
   num_avance: number;
   titulo: string;
   descripcion: string;
-  fecha_entrega: Date | null;
+  fecha_entrega: string | null;
   calificacion: number | null;
   documento: string | null;
   estado_entrega: number;
   retroalimentacion: string | null;
   tipo: number;
-  fecha_presentacion: Date | null;
+  fecha_presentacion:string | null;
 }
 
 /*------------------ ASIGNACION-TESIS INTERFACE ------------------*/

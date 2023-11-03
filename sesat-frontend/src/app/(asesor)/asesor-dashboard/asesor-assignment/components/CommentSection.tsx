@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
 import Comment from "./Comment";
-import EmptyPage from "@/app/components/EmptyPage";
 
 type CommentProps = {
     nombre: string;

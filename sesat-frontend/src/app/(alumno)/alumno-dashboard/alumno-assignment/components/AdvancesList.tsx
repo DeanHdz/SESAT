@@ -1,5 +1,6 @@
+import PrevAdvance from "@/app/(asesor)/asesor-dashboard/asesor-assignment/components/PrevAdvance";
 import React from "react";
-import PrevAdvance from "./PrevAdvance";
+
 
 const AdvancesList = ({ history }: { history: Array<number> | undefined }) => {
 

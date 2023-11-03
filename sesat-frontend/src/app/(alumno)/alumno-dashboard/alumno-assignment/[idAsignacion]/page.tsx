@@ -3,20 +3,17 @@ import Drawer from "../../components/Drawer"
 import AssignmentHeader from "../components/AssignmentHeader"
 import AdvancesList from "../components/AdvancesList"
 import AssignmentData from "../components/AssignmentData"
-import PDFViewer from "../components/PDFViewer"
-import CommentSection from "../components/CommentSection"
-import { PrimaryButton } from "@/app/components/PrimaryButton"
+
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
 import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.endpoint"
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint"
-import { Asignacion, AsignacionReview } from "../../../../../../types/ISESAT"
-import { fetchOneByIdAsignacion, fetchOneToBeReviewed } from "../../../../../../utils/asignacion.endpoint"
+import { Asignacion } from "../../../../../../types/ISESAT"
+import { fetchOneByIdAsignacion } from "../../../../../../utils/asignacion.endpoint"
 import NotFound from "@/app/(admin)/admin-dashboard/not-found"
-import PDFPreview from "../components/PDFPreview"
-import ReviewFormats from "../components/ReviewFormats"
-import { shortFormatDate } from "../../../../../../utils/utils"
-import { useState } from "react"
+import { getFormattedHours, shortFormatDate } from "../../../../../../utils/utils"
 import PDFUploadForm from "../components/PDFUploadForm"
+import CommentSection from "@/app/(asesor)/asesor-dashboard/asesor-assignment/components/CommentSection"
+import Results from "../components/Results"
 
 export type TesisInfo = {
   programa_nombre_programa: string;
@@ -115,43 +112,103 @@ export default async function Home({
         <>
           <div className="w-full lg:w-9/12">
 
-            <AssignmentHeader titulo={asignacion.titulo} descripcion={asignacion.descripcion} />
-
             <div className="flex flex-col lg:flex-row">
 
-              <div className="flex flex-col w-full m-2">
+              <div className="flex flex-col w-full">
                 {typeof tesisInfo !== 'undefined' && (
                   <>
-                    <AssignmentData nombreTesis={tesisInfo.titulo} autor={`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno} `} numAvance={asignacion.num_avance} fechaEntrega={shortFormatDate(periodo.fecha_cierre)} fechaPresentacion={asignacion.fecha_presentacion} />
+                    <div className="w-full flex flex-row mb-10">
+                      <label className="text-3xl font-bold">
+                        {asignacion.titulo}
+                      </label>
+                      <div className="ml-auto flex items-center">
+                        {asignacion.estado_entrega === 0 ? (
+                          <>
+                            <span className="font-SESAT text-black/40"> No entregado</span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="font-SESAT text-black/40"> Entregado</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-row">
+                      <div className="w-1/2 flex flex-col pr-16">
+                        <span className="font-SESAT text-lg mb-6">Instrucciones</span>
+                        <span className="mb-6 block">
+                          {asignacion.descripcion}
+                        </span>
+                      </div>
 
-                    {asignacion.estado_entrega === 0 ? (
-                      <>
-                        <PDFUploadForm fecha_cierre={periodo.fecha_cierre} asignacion={asignacion}/>
-                      </>
-                    ) : (
-                      <>
-                        <PDFUploadForm fecha_cierre={periodo.fecha_cierre} asignacion={asignacion}/>
-                      </>
+                      <div className='flex flex-col w-1/2 pt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
+
+                        <label className="flex text-2xl font-bold">
+                          Información general
+                        </label>
+
+                        <div className='w-full m-2 border border-solid border-gray-200'></div>
+
+                        <div className='w-full flex flex-col'>
+
+                          <label className="font-SESAT mb-2">
+                            Título de la tesis:
+                          </label>
+
+                          <label className="pl-4 mb-2">
+                            {tesisInfo.titulo}
+                          </label>
+
+                          <label className="font-SESAT mb-2">
+                            Avance:
+                          </label>
+
+                          <label className="pl-4 mb-2">
+                            {asignacion.num_avance}
+                          </label>
+
+                          <label className="font-SESAT mb-2">
+                            Fecha límite de entrega:
+                          </label>
+
+                          <label className="pl-4 mb-2">
+                            {`${shortFormatDate(periodo.fecha_cierre)}    ${getFormattedHours(new Date(periodo.fecha_cierre))}`}
+                          </label>
+
+                          <label className="font-SESAT mb-2">
+                            Fecha de presentación:
+                          </label>
+
+                          <label className="pl-4 mb-2">
+                            {asignacion.fecha_presentacion ? (
+                              <span>{shortFormatDate(asignacion.fecha_presentacion)}</span>
+                            ) : (
+                              <span>{'Sin definir'}</span>
+                            )}
+                          </label>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                    {asignacion.calificacion && (
+                      <Results calificacion={asignacion.calificacion} id_acta_evaluacion={asignacion.id_acta_evaluacion} id_formato_evaluacion={asignacion.id_formato_evaluacion}/>
                     )}
-
+                    <PDFUploadForm fecha_cierre={periodo.fecha_cierre} asignacion={asignacion} />
+                                                        
 
                   </>
                 )}
               </div>
-
-              {/*<div className="flex flex-col w-full lg:w-3/5 mb-6 lg:mb-0 lg:m-2">
-                <PDFPreview buffer={asignacion.documento.data} />
-              </div>*/}
-
-              {/*<ReviewFormats tesisInfo={tesisInfo!} asignacion={asignacion} /> */}
 
             </div>
             <div className="lg:hidden w-full">
               <AdvancesList history={history} />
             </div>
             {/**El id de usuario debe obtenerse de la cookie */}
-            <CommentSection commentsArray={comments} currentUserID={333333} />
-            <AddComment id_asignacion={asignacion.id_asignacion} />
+            <CommentSection commentsArray={comments} currentUserID={230443} />
+            <AddComment id_asignacion={asignacion.id_asignacion} idUsuario={230443} />
 
           </div>
         </>

@@ -46,7 +46,7 @@ export class Asignacion {
   descripcion: string;
 
   @Column()
-  fecha_entrega: Date;
+  fecha_entrega: string;
 
   @Column()
   calificacion: number;
@@ -64,7 +64,7 @@ export class Asignacion {
   tipo: number;
 
   @Column()
-  fecha_presentacion: Date;
+  fecha_presentacion: string;
 
   /*@OneToOne(() => FormatoEvaluacion, { eager: true })
   @JoinColumn({ name: "id_formato_evaluacion" })

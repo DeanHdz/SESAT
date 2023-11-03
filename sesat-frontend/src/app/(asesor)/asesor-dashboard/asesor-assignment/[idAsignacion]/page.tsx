@@ -137,7 +137,7 @@ export default async function Home({
             </div>
             {/**El id de usuario debe obtenerse de la cookie */}
             <CommentSection commentsArray={comments} currentUserID={333333} />
-            <AddComment id_asignacion={asignacion.id_asignacion} />
+            <AddComment id_asignacion={asignacion.id_asignacion} idUsuario={333333} />
 
           </div>
         </>
