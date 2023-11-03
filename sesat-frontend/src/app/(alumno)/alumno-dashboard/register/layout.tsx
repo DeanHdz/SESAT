@@ -1,24 +1,20 @@
-import '../../../globals.css'
-import Navbar from "@/app/components/Navbar"
-import { Metadata } from "next"
-
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Registrar tesis',
-  description: 'SESAT',
+  title: 'Sistema de Evaluación y Seguimiento de Tesis',
+  description: 'Ver asignación (alumno)',
+  icons: '/images/uaslp-logo.png',
 }
 
-export default function RootLayout({
+export default function AssignmentLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
   return (
-    <html lang="en">
-      <body>
-        <Navbar />
-        {children}
-      </body>
-    </html>
+    <div className='w-full'> 
+      {children}
+    </div>
   )
 }
