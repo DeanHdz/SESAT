@@ -24,6 +24,10 @@ export class ProgramaService {
     return this.programaRepository.findOne({ where: { id_programa: id } });
   }
 
+  findOneByName(name: string) {
+    return this.programaRepository.findOne({ where: { nombre_programa: name } });
+  }
+
   update(updateProgramaDto: UpdateProgramaDto) {
     return this.programaRepository.save(updateProgramaDto);
   }

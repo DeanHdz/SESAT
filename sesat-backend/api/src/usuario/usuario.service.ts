@@ -3,31 +3,146 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreateUsuarioDto } from "./dto/create-usuario.dto";
 import { UpdateUsuarioDto } from "./dto/update-usuario.dto";
+import { CreateFromExternalDto } from "./dto/create-usuario-external.dto";
 import { Usuario } from "./entities/usuario.entity";
 import {
   paginate,
   Pagination,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-import { runInThisContext } from "vm";
 import { Comite } from "src/comite/entities/comite.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
+import { DatosAlumnoService } from "src/datos-alumno/datos-alumno.service";
+import { CreateDatosAlumnoDto } from "src/datos-alumno/dto/create-datos-alumno.dto";
+import { CreateTesisDto } from "src/tesis/dto/create-tesis.dto";
 import { HttpService } from "@nestjs/axios";
 import { lastValueFrom } from "rxjs";
+import { ProgramaService } from "src/programa/programa.service";
+import { CreateProgramaDto } from "src/programa/dto/create-programa.dto";
+import { GradoEstudioService } from "src/grado-estudio/grado-estudio.service";
+import { TesisService } from "src/tesis/tesis.service";
+import { AsignacionService } from "src/asignacion/asignacion.service";
+import { CreateAsignacionDto } from "src/asignacion/dto/create-asignacion.dto";
 
 @Injectable()
 export class UsuarioService {
   constructor(
     @InjectRepository(Usuario)
     private usuarioRepository: Repository<Usuario>,
+    private readonly datosAlumnoService: DatosAlumnoService,
+    private readonly programaService: ProgramaService,
+    private readonly gradoEstudioService: GradoEstudioService,
+    private readonly tesisService: TesisService,
+    private readonly asignacionService: AsignacionService,
     private readonly httpService: HttpService
   ) {}
 
+  async createFromExternalStudent(createFromExternal: CreateFromExternalDto)
+  {
+    console.log(createFromExternal);
+    let modalidad = 0;
+    switch(createFromExternal.dedicacion)
+    {
+      case "MT":
+        modalidad = 2;
+      break;
+      case "TC":
+        modalidad = 1;
+      break;
+    }
+
+    let programa = await this.programaService.findOneByName(createFromExternal.programa);
+    if(!programa)
+    {
+      const programData: CreateProgramaDto = {
+        nombre_programa: createFromExternal.programa
+      }
+      programa = await this.programaService.create(programData);
+    }
+
+    const gradoEstudio = await this.gradoEstudioService.findOneByName(createFromExternal.grado_estudio);
+
+    let hasAvancePrevio = false;
+    let avancePrevio = 1; //theses start at 1
+    if(createFromExternal.skipToAvance != null)
+    {
+      hasAvancePrevio = true;
+      avancePrevio = createFromExternal.skipToAvance;
+    }
+      
+      
+    const datosAlumnoData: CreateDatosAlumnoDto = {
+      id_modalidad: modalidad,
+      id_programa: programa.id_programa,
+      id_grado_estudio: gradoEstudio.id_grado_estudio,
+      generacion: parseInt(createFromExternal.gen),
+      estado_activo: true, //always defaults to true, admin has to turn off manually
+      avance_previo: hasAvancePrevio,
+    } 
+
+    const datosAlumno = await this.datosAlumnoService.create(datosAlumnoData);
+    const apellidos: string[] = createFromExternal.apellidos.split(" ");
+
+    const user = this.usuarioRepository.create({
+      id_usuario: createFromExternal.id,
+      id_rol: 3,
+      id_datos_alumno: datosAlumno.id_datos_alumno,
+      nombre: createFromExternal.nombre,
+      apellido_materno: apellidos[0],
+      apellido_paterno: apellidos[1],
+      correo: createFromExternal.email
+    })
+
+    await this.usuarioRepository.save(user);
+
+    const tesisData: CreateTesisDto = {
+      id_usuario: user.id_usuario,
+      generacion: datosAlumno.generacion,
+      estado_finalizacion: false,
+      ultimo_avance: avancePrevio,
+      titulo: null,
+      fecha_registro: null
+    }
+
+    const tesis = await this.tesisService.create(tesisData);
+
+    let asignacionData: CreateAsignacionDto = null;
+    for(let i = 1; i <= avancePrevio; i++)
+    {
+      asignacionData = {
+        id_formato_evaluacion: null,
+        id_acta_evaluacion: null,
+        id_tesis: tesis.id_tesis,
+        id_modalidad: datosAlumno.id_modalidad,
+        id_periodo: 1, //1 is the generic one, in the past
+        num_avance: i,
+        titulo: "Asignación Creada por el Sistema",
+        descripcion: "Esta asignación se ha creado para acomodar al alumno en el sistema, favor de ignorar.",
+        fecha_entrega: null,
+        calificacion: null,
+        documento: null,
+        estado_entrega: 1,
+        retroalimentacion: null,
+        tipo: i === 5 ? 2 : 1,
+        fecha_presentacion: null
+      }
+      await this.asignacionService.create(asignacionData);
+    }
+    
+    return user;
+  }
+
   async getExternalStudent(id: number){
+    console.log(id);
     const url = `http://ciep.ing.uaslp.mx/sesat/student.php?id=${id}`;
     const data = await lastValueFrom(this.httpService.get(url))
-    return data.data[data.data.length-1];
+    if(data.data.length !== 0){
+      const userInSystem = await this.findOne(id);
+      if(!userInSystem)
+        return data.data[data.data.length-1];}
+    else{
+      return null;}
   }
 
   async paginateMasterStudents(options: IPaginationOptions): Promise<Pagination<Usuario>> {

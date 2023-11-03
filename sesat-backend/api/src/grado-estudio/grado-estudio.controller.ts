@@ -7,6 +7,11 @@ import { UpdateGradoEstudioDto } from './dto/update-grado-estudio.dto';
 export class GradoEstudioController {
   constructor(private readonly gradoEstudioService: GradoEstudioService) {}
 
+  @Get('/name/:name')
+  async findOneByName(@Param('name') name: string) {
+    return await this.gradoEstudioService.findOneByName(name);
+  }
+  
   @Post()
   create(@Body() createGradoEstudioDto: CreateGradoEstudioDto) {
     return this.gradoEstudioService.create(createGradoEstudioDto);

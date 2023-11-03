@@ -625,3 +625,27 @@ export interface CreateEvento {
   fecha_termino: Date | null;
 }
 
+/*------------------ EXTERNAL USER INTERFACE ------------------*/
+export interface ExternalUser {
+  nombre: string;
+  apellidos: string;
+  email: string;
+  dedicacion: string;
+  programa: string;
+  grado_estudio: string;
+  gen: string;
+  status: string;
+}
+
+export interface CreateExternalUser {
+  id: number;
+  nombre: string;
+  apellidos: string;
+  email: string;
+  dedicacion: string;
+  programa: string;
+  grado_estudio: string;
+  gen: string;
+  status: string;
+  skipToAvance: number | null;
+}

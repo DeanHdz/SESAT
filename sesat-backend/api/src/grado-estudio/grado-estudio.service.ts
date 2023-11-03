@@ -12,6 +12,10 @@ export class GradoEstudioService {
     private gradoEstudioRepository: Repository<GradoEstudio>,
   ) {}
 
+  async findOneByName(name: string){
+    return this.gradoEstudioRepository.findOne({where: {nombre_grado_estudio: name}});
+  }
+
   create(createGradoEstudioDto: CreateGradoEstudioDto) {
     return this.gradoEstudioRepository.save(createGradoEstudioDto);
   }

@@ -20,11 +20,11 @@ export class CreateTesisDto {
   @IsDateString()
   fecha_registro: Date;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   generacion: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   ultimo_avance: number;
 

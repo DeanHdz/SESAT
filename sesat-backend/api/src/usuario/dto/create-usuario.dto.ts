@@ -35,7 +35,7 @@ export class CreateUsuarioDto {
   @IsString()
   apellido_materno: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   password: string;
 

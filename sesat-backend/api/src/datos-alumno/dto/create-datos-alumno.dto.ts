@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsNumber, IsString, IsOptional } from "class-validator";
 
 export class CreateDatosAlumnoDto {
   @IsNotEmpty()
@@ -20,4 +20,8 @@ export class CreateDatosAlumnoDto {
   @IsNotEmpty()
   @IsBoolean()
   estado_activo: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  avance_previo: boolean;
 }

@@ -28,6 +28,9 @@ export class DatosAlumno {
   @Column()
   estado_activo: boolean;
 
+  @Column()
+  avance_previo: boolean;
+
   /*@OneToOne(() => Programa, { eager: true })
   @JoinColumn({ name: "id_programa" })
   programa: Programa;

@@ -7,6 +7,11 @@ import { UpdateProgramaDto } from './dto/update-programa.dto';
 export class ProgramaController {
   constructor(private readonly programaService: ProgramaService) {}
 
+  @Get('/name/:name')
+  async findOneByName(@Param('name') name: string) {
+    return this.programaService.findOneByName(name);
+  }
+
   @Post()
   create(@Body() createProgramaDto: CreateProgramaDto) {
     return this.programaService.create(createProgramaDto);

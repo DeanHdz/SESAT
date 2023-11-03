@@ -1,5 +1,28 @@
 export namespace UsuarioEndpoint {
 
+  export async function findExternalUser( token: string, id: number )
+  {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/external/student/${id}`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },  
+    };
+    const response = await fetch(url, options);
+    if(!response.ok){
+      throw(new Error('Error fetching the data'))
+    }
+
+    try{
+      const result = await response.json();
+      return result;
+    }catch (e){
+      return null;
+    }
+  }
+
 
   //revalidate tag when creating student user
   export async function getAlumnosMaestria( token: string )
