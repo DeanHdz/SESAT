@@ -40,7 +40,6 @@ export class UsuarioService {
 
   async createFromExternalStudent(createFromExternal: CreateFromExternalDto)
   {
-    console.log(createFromExternal);
     let modalidad = 0;
     switch(createFromExternal.dedicacion)
     {
@@ -64,7 +63,7 @@ export class UsuarioService {
     const gradoEstudio = await this.gradoEstudioService.findOneByName(createFromExternal.grado_estudio);
 
     let hasAvancePrevio = false;
-    let avancePrevio = 1; //theses start at 1
+    let avancePrevio = 0; //theses start at 1
     if(createFromExternal.skipToAvance != null)
     {
       hasAvancePrevio = true;
@@ -100,7 +99,7 @@ export class UsuarioService {
       id_usuario: user.id_usuario,
       generacion: datosAlumno.generacion,
       estado_finalizacion: false,
-      ultimo_avance: avancePrevio,
+      ultimo_avance: avancePrevio === 0 ? 1 : avancePrevio,
       titulo: null,
       fecha_registro: null
     }
@@ -134,7 +133,6 @@ export class UsuarioService {
   }
 
   async getExternalStudent(id: number){
-    console.log(id);
     const url = `http://ciep.ing.uaslp.mx/sesat/student.php?id=${id}`;
     const data = await lastValueFrom(this.httpService.get(url))
     if(data.data.length !== 0){

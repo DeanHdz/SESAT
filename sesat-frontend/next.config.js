@@ -7,6 +7,11 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
+  },
   webpack: (config) => { 
       config.externals.push({ 
           sharp: 'commonjs sharp', 
