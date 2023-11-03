@@ -7,8 +7,8 @@ import { Evento } from "../../../../../types/ISESAT";
 import { EventClickArg } from "@fullcalendar/core/index.js";
 import { useState } from "react";
 import esLocale from "@fullcalendar/core/locales/es";
-import ViewEventModal from "./ViewEventModal";
-import AddEventModal from "./AddEventModal";
+import ViewEventModal from "../../../components/ViewEventModal";
+import AddEventModal from "../../../components/AddEventModal";
 
 /**
  * Docs
