@@ -16,13 +16,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
 
+  {/* Si el cookie a recibir contiene el nombre de usuario remover el get y reemplazar la variable a pasar el AlumnoNavbar -> user */}
   let usuario: Usuario | null = null;
-
-  try {
-    usuario = await UsuarioEndpoint.getUserById(314118, '');
-  } catch (error) {
-    console.error('Error fetching user:', error);
-  }
+  usuario = await UsuarioEndpoint.getUserById(314118, '').catch();
 
   return (
     <html lang="es">

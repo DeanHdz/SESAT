@@ -85,7 +85,7 @@ export default function AlumnoNavbar(props: AlumnoNavbarProps) {
             `${props.user.nombre} ${props.user.apellido_paterno} ${props.user.apellido_materno}`
           ) : (
             "Usuario no definido"
-          )}  
+          )}
         </h1>
       </div>
 
