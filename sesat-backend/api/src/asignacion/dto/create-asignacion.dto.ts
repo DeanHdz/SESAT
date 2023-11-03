@@ -49,8 +49,8 @@ export class CreateAsignacionDto {
   calificacion: number;
 
   @IsOptional()
-  @IsString()
-  documento: string;
+  //@IsString()
+  documento: Buffer;
 
   @IsNotEmpty()
   @IsNumber()

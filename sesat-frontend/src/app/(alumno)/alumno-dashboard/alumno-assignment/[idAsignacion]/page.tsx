@@ -9,12 +9,14 @@ import { PrimaryButton } from "@/app/components/PrimaryButton"
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
 import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.endpoint"
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint"
-import { AsignacionReview } from "../../../../../../types/ISESAT"
-import { fetchOneToBeReviewed } from "../../../../../../utils/asignacion.endpoint"
+import { Asignacion, AsignacionReview } from "../../../../../../types/ISESAT"
+import { fetchOneByIdAsignacion, fetchOneToBeReviewed } from "../../../../../../utils/asignacion.endpoint"
 import NotFound from "@/app/(admin)/admin-dashboard/not-found"
 import PDFPreview from "../components/PDFPreview"
 import ReviewFormats from "../components/ReviewFormats"
 import { shortFormatDate } from "../../../../../../utils/utils"
+import { useState } from "react"
+import PDFUploadForm from "../components/PDFUploadForm"
 
 export type TesisInfo = {
   programa_nombre_programa: string;
@@ -70,7 +72,7 @@ async function fetchHistoryByIdTesis(idTesis: number): Promise<Array<number>> {
         }
         break;
     }
-  }  
+  }
   return avancesEntregados;
 }
 
@@ -82,7 +84,7 @@ export default async function Home({
   let { idAsignacion } = params;
   let error = false;
   let periodo = await fetchLatestPeriod("").catch();
-  let asignacion: AsignacionReview = await fetchOneToBeReviewed(333333, parseInt(idAsignacion), "").catch(() => { return undefined });
+  let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, "").catch(() => { return undefined });
 
   let tesisInfo: TesisInfo | undefined = undefined;
   let comments = undefined;
@@ -96,15 +98,12 @@ export default async function Home({
     error = true;
   }
 
-
-
-
   //La asignacion corresponde a un comite
   //solo el asesor puede generar el reporte y acta
   //si la asignacion esta revisada no se puede volver a crear el acta
   return (
     <div className="flex">
-      
+
       <div className="hidden lg:flex lg:w-3/12 flex-col">
         <Drawer />
         {error === false && (
@@ -123,10 +122,19 @@ export default async function Home({
               <div className="flex flex-col w-full m-2">
                 {typeof tesisInfo !== 'undefined' && (
                   <>
-                    <AssignmentData nombreTesis={tesisInfo.titulo} autor={`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno} `} numAvance={asignacion.num_avance} fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} fechaPresentacion={asignacion.fecha_presentacion} />
-                    <button className="mt-10 mb-10 primary__btn">
-                      Enviar PDF
-                    </button>
+                    <AssignmentData nombreTesis={tesisInfo.titulo} autor={`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno} `} numAvance={asignacion.num_avance} fechaEntrega={shortFormatDate(periodo.fecha_cierre)} fechaPresentacion={asignacion.fecha_presentacion} />
+
+                    {asignacion.estado_entrega === 0 ? (
+                      <>
+                        <PDFUploadForm fecha_cierre={periodo.fecha_cierre} asignacion={asignacion}/>
+                      </>
+                    ) : (
+                      <>
+                        <PDFUploadForm fecha_cierre={periodo.fecha_cierre} asignacion={asignacion}/>
+                      </>
+                    )}
+
+
                   </>
                 )}
               </div>
@@ -135,7 +143,7 @@ export default async function Home({
                 <PDFPreview buffer={asignacion.documento.data} />
               </div>*/}
 
-              <ReviewFormats tesisInfo={tesisInfo!} asignacion={asignacion} />  
+              {/*<ReviewFormats tesisInfo={tesisInfo!} asignacion={asignacion} /> */}
 
             </div>
             <div className="lg:hidden w-full">

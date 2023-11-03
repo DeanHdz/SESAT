@@ -24,6 +24,7 @@ const AssignmentData = ( props: AssignmentDataProps) =>{
                 <label className="font-SESAT mb-2">
                     Nombre de tesis:
                 </label>
+
                 <label className="pl-4 mb-2">
                     {props.nombreTesis}
                 </label>
@@ -31,6 +32,7 @@ const AssignmentData = ( props: AssignmentDataProps) =>{
                 <label className="font-SESAT mb-2">
                     Autor:
                 </label>
+
                 <label className="pl-4 mb-2">
                     {props.autor}
                 </label>
@@ -38,13 +40,15 @@ const AssignmentData = ( props: AssignmentDataProps) =>{
                 <label className="font-SESAT mb-2">
                     Numero de avance:
                 </label>
+
                 <label className="pl-4 mb-2">
                     {props.numAvance}
                 </label>
 
                 <label className="font-SESAT mb-2">
-                    Fecha de entrega:
+                    Fecha límite de entrega:
                 </label>
+
                 <label className="pl-4 mb-2">
                     {props.fechaEntrega}
                 </label>  
@@ -52,6 +56,7 @@ const AssignmentData = ( props: AssignmentDataProps) =>{
                 <label className="font-SESAT mb-2">
                     Fecha de presentación:
                 </label>
+                
                 <label className="pl-4 mb-2">
                     {props.fechaPresentacion ? (
                         <span>{shortFormatDate(props.fechaPresentacion)}</span>

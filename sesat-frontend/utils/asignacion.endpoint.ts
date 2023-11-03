@@ -377,6 +377,30 @@ export async function postAsignacionesPhdByNumAv(
 
 }
 
+export async function updateAsignacion(   
+  asignacionDto: UpdateAsignacion,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/asignacion`;
+
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(asignacionDto),
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+  return result;
+}
+
 export async function updateAsignacionesPhdByNumAv(   
   asignacionDto: UpdateAsignacion,
   token: string,

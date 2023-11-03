@@ -55,8 +55,8 @@ export class UpdateAsignacionDto extends PartialType(CreateAsignacionDto) {
   calificacion: number;
 
   @IsOptional()
-  @IsString()
-  documento: string;
+  //@IsString()
+  documento: Buffer;
 
   @IsNotEmpty()
   @IsNumber()
