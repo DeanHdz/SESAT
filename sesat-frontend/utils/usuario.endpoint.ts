@@ -10,7 +10,7 @@ export namespace UsuarioEndpoint {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      next: { tags: ['FetchedExternalUser'] } 
+      next: { tags: ["FetchedExternalUser"] },
     };
     const response = await fetch(url, options);
     if (!response.ok) {
@@ -40,6 +40,21 @@ export namespace UsuarioEndpoint {
         tags: ["eventos"],
       },
       body: JSON.stringify(data),
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+  }
+
+  export async function getUserById(idUser: number, token: string) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/${idUser}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     };
     const response = await fetch(url, options);
     if (!response.ok) {

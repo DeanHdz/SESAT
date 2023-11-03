@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { formatAsISODate } from "../../../utils/utils";
 
 
-const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
+const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsuario: number }) => {
 
 
   const [comment, setComment] = useState("");
@@ -17,7 +17,7 @@ const AddComment = ({ id_asignacion }: { id_asignacion: number }) => {
     try {
       await postComment(
         {
-          id_usuario: 333333,//obtener de la cookie
+          id_usuario: idUsuario,//obtener de la cookie
           id_asignacion: id_asignacion,
           texto: comment,
           fecha_comentario: formatAsISODate(new Date()),

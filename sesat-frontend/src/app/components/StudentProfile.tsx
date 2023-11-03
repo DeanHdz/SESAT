@@ -1,87 +1,45 @@
+import React from "react";
+import { ThesisFullHistory } from "../(asesor)/asesor-dashboard/students/masters-degree/[idAlumno]/page";
 
-import { useState, useEffect, ChangeEvent } from "react";
-import StudentProfileModal from "../(admin)/admin-dashboard/sesat-users/alumnos/components/StudentProfileModal";
-import { Programa, Usuario } from "../../../types/ISESAT";
+type InfoProps = {
+  tesis: ThesisFullHistory;
+}
 
-
-
-const StudentProfile = ({ user }: { user: Usuario }) => {
-
-  
-  //const [tesis, setTesis] = useState<SESAT.Tesis>();
-  //const [comite, setComite] = useState<SESAT.Comite[]>();
-  const [localUser, setLocalUser] = useState(user);
-  const [asesorName, setAsesorName] = useState("");
-  const [claveAsesor, setClaveAsesor] = useState<number>();
-  const [asesor, setAsesor] = useState<Usuario[]>();
-  const [programs, setPrograms] = useState<Programa[]>();
-  const [correo, setCorreo] = useState("");
-  const [programSelected, setProgramSelected] = useState("");
-  const [estado, setEstado] = useState<boolean>();
-
-  useEffect(() => {
-    console.log("UE");
-    /*
-    TesisEndpoint.getTesisPerStudent(user.clave, "").then((tesis) => {
-      if (tesis) {
-        ComiteEndpoint.getPerTesis(tesis.id_tesis, "").then((comite) => {
-          if (comite) {
-            comite.forEach((c) => {
-              if (c.funcion.nombre == "Asesor") {
-                setAsesorName(
-                  c.asesor.nombre +
-                    " " +
-                    c.asesor.apellido_paterno +
-                    " " +
-                    c.asesor.apellido_materno
-                );
-              }
-            });
-          }
-        });
-      }
-    });
-    */
-  }, []);
-
+const StudentProfile = (props: InfoProps) => {
   return (
-    <div className="flex flex-col mb-1 p-2 bg-light-blue-10 rounded border border-light-gray-22 border-solid">
-      <div className="flex flex-wrap ml-4 gap-4 mt-4 place-content-start">
-        <div className="avatar online placeholder w-16 h-16">
-          <div className="bg-neutral-focus text-neutral-content rounded-full w-16 h-16">
-            <span className="text-xl">
-              {user.nombre[0] + user.apellido_paterno[0]}
-            </span>
-          </div>
-        </div>
-        <div className="self-center">
-          <span className="text-3xl">
-            {user.nombre +
-              " " +
-              user.apellido_paterno +
-              " " +
-              user.apellido_materno}
-          </span>
-          <div className="mt-2 flex flex-col">
-            <span className="font-bold">Programa: </span>
-            <span>{user.datos_alumno?.programa?.nombreprograma}</span>
-            <span className="font-bold">Estado del alumno: </span>
-            <span>
-              {user.datos_alumno?.estado_activo ? "Activo" : "Inactivo"}
-            </span>
-            <span className="font-bold">Dirección Email: </span>
-            <span>{user.correo}</span>
-            <span className="font-bold">Asesor: </span>
-            <span>{asesorName ? asesorName : "Sin registrar"}</span>
-          </div>
-        </div>
+    <div className="w-full px-8 py-10 mt-4 mb-4 bg-light-blue-10 bg-opacity-50 gray__border !rounded-[15px] flex flex-col lg:flex-row">
+      <div className="w-full lg:w-fit flex items-center justify-center lg:items-start">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 48 48"><g fill="currentColor" fillRule="evenodd" clipRule="evenodd"><path d="M24 27a8 8 0 1 0 0-16a8 8 0 0 0 0 16Zm0-2a6 6 0 1 0 0-12a6 6 0 0 0 0 12Z" /><path d="M44 24c0 11.046-8.954 20-20 20S4 35.046 4 24S12.954 4 24 4s20 8.954 20 20ZM33.63 39.21A17.915 17.915 0 0 1 24 42a17.916 17.916 0 0 1-9.832-2.92c-.24-.3-.483-.61-.73-.93A2.144 2.144 0 0 1 13 36.845c0-1.077.774-1.98 1.809-2.131c6.845-1 11.558-.914 18.412.035A2.077 2.077 0 0 1 35 36.818c0 .48-.165.946-.463 1.31c-.307.374-.61.735-.907 1.082Zm3.355-2.744c-.16-1.872-1.581-3.434-3.49-3.698c-7.016-.971-11.92-1.064-18.975-.033c-1.92.28-3.335 1.856-3.503 3.733A17.94 17.94 0 0 1 6 24c0-9.941 8.059-18 18-18s18 8.059 18 18a17.94 17.94 0 0 1-5.015 12.466Z" /></g></svg>
       </div>
-      <div className="flex align-middle justify-end mr-4">
-        <StudentProfileModal user={user} />
+
+      <div className="w-full ml-2 mr-2 flex-wrap">
+        <label className="mb-2 block">
+          Nombre:
+        </label>
+        <div className="rounded-[15px] bg-[#E8EDEF] p-2 px-4 ml-2 mr-2">
+          <span className="font-semibold align-middle">{`${props.tesis.nombre} ${props.tesis.apellido_paterno} ${props.tesis.apellido_materno}`}</span>
+        </div>
+        <label className="mb-2 block">
+          Correo:
+        </label>
+        <div className="rounded-[15px] bg-[#E8EDEF] p-2 px-4 ml-2 mr-2">
+          <span className="font-semibold align-middle">{props.tesis.correo}</span>
+        </div>
+        <label className="mb-2 block">
+          Programa:
+        </label>
+        <div className="rounded-[15px] bg-[#E8EDEF] p-2 px-4 ml-2 mr-2">
+          <span className="font-semibold align-middle">{props.tesis.nombre_programa}</span>
+        </div>
+        <label className="mb-2 block">
+          Estado:
+        </label>
+        <div className="rounded-[15px] bg-[#E8EDEF] p-2 px-4 ml-2 mr-2">
+          <span className="font-semibold align-middle">{props.tesis.estado_activo === true ? 'Inscrito' : 'No inscrito'}</span>
+        </div>
       </div>
     </div>
   );
-
 };
 
 export default StudentProfile;

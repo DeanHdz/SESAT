@@ -77,6 +77,9 @@ export class ComiteService {
         "u.apellido_materno AS apellido_materno",
         "a.titulo AS titulo",
         "a.fecha_entrega AS fecha_entrega",
+        "a.calificacion AS calificacion",
+        "a.id_acta_evaluacion AS id_acta_evaluacion",
+        "a.id_formato_evaluacion AS id_formato_evaluacion",   
         "da.id_grado_estudio AS grado"
       ])
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
@@ -108,15 +111,32 @@ export class ComiteService {
     return resp;
   }
 
+  async findContacts(idTesis: number) {
+    const resp = await this.comiteRepository
+      .createQueryBuilder("c")
+      .select([
+        "u.nombre AS nombre",
+        "u.apellido_paterno AS apellido_paterno",
+        "u.apellido_materno AS apellido_materno",
+        "u.correo AS correo"
+      ])
+      .innerJoin(Usuario, "u", "u.id_usuario = c.id_usuario")
+      .where('c.id_tesis = :id', { id: idTesis })
+      .getRawMany();
+
+    return resp;
+  }
+
   //estado activo importa?
   async validateAsesorRole(idAsesor: number, idAlumno: number) {
     const resp = await this.comiteRepository
       .createQueryBuilder("c")
       .select([
-        "c.id_funcion AS id_funcion",
+        "f.nombre_funcion AS nombre_funcion",
         "t.id_tesis AS id_tesis"
       ])
       .innerJoin(Tesis, "t", "t.id_tesis = c.id_tesis")      
+      .innerJoin(Funcion, "f", "f.id_funcion = c.id_funcion") 
       .where('c.id_usuario = :id_asesor', { id_asesor: idAsesor })
       .andWhere('t.id_usuario = :id_alumno', { id_alumno: idAlumno })
       .andWhere('t.estado_finalizacion = false')

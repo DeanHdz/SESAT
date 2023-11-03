@@ -67,6 +67,20 @@
 
   }
 
+  .primary__btn_sm {
+    background-color: #03396c;
+    border-radius: 6px;
+    color: white;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+  }
+
   .secondary__btn {
     background-color: white;
     border-radius: 6px;
@@ -102,13 +116,15 @@
   }
 
   .primary__btn:focus,
+  .primary__btn_sm:focus,
   .secondary__btn:focus,
   .secondary__btn_sm:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
   }
 
-  .primary__btn:active {
+  .primary__btn:active,
+  .primary__btn_sm:active {
     background-color: #06447d;
   }
 
@@ -119,6 +135,7 @@
   }
 
   .primary__btn:hover,
+  .primary__btn_sm:hover,
   .secondary__btn:hover,
   .secondary__btn_sm:hover {
     scale: 102%;

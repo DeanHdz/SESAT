@@ -2,9 +2,28 @@ import Drawer from './components/Drawer';
 import Calendar from './components/Calendar';
 import CompletedAssignments from './components/CompletedAssignments'
 import NotificacionSection from "./components/NotificationSection";
-import ContactoAsesor from "./components/ContactoAsesor";
+import ContactoAsesor from "./components/Contacts";
 
-export default function Home() {
+import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
+import {findAsignacionesByPeriodAndAlumno } from '../../../../utils/asignacion.endpoint';
+import { Usuario } from '../../../../types/ISESAT';
+import Contacts from './components/Contacts';
+import { findContactsByIdTesis } from '../../../../utils/comite.endpoint';
+
+type AsignacionProps = {
+  id_asignacion: number,
+  num_avance: number,
+  titulo: string,
+  fecha_entrega: string
+}
+
+export default async function Home() {
+
+  let alumnoID = 230443;
+  let periodo = await fetchLatestPeriod("").catch();
+  let asignaciones: AsignacionProps[] = await findAsignacionesByPeriodAndAlumno(periodo.id_periodo, alumnoID, "");
+  let contactos: Usuario[] = await findContactsByIdTesis(6,"");
+
   return (
     <main className="w-full flex">
 
@@ -18,7 +37,7 @@ export default function Home() {
       </div>
 
       <div className="w-full flex justify-center pt-2 pb-2">
-        <CompletedAssignments />
+        <CompletedAssignments asignaciones={asignaciones}/>
       </div>
 
       <div className="hidden lg:flex w-full justify-center pt-2 pb-2">
@@ -28,7 +47,7 @@ export default function Home() {
           </div>
           <div className="mt-2 w-full">
             <Calendar />
-            <ContactoAsesor />
+            <Contacts contacts={contactos}/>
           </div>
         </div>
         <div className="w-full p-2 lg:w-1/3">
@@ -43,7 +62,8 @@ export default function Home() {
           </div>
           <div className="mt-2 w-full">
             <Calendar />
-            <ContactoAsesor />
+            <NotificacionSection />
+            <Contacts contacts={contactos}/>
           </div>
         </div>
       </div>

@@ -179,6 +179,28 @@ export class AsignacionService {
     return resp;
   }
 
+  //Regresar asignaciones en base al periodo e ID de usuario
+  async findAsignacionesByPeriodAndAlumno(idPeriodo: number, idAlumno: number) {
+
+    const resp = await this.asignacionRepository.createQueryBuilder('a')
+      .select([
+        "a.id_asignacion AS id_asignacion",
+        "a.num_avance AS num_avance",
+        "a.titulo AS titulo",
+        "a.fecha_entrega AS fecha_entrega",
+      ])
+
+      .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
+      .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+
+      .where("a.id_periodo = :id_periodo", { id_periodo: idPeriodo })
+      .andWhere("u.id_usuario = :idUser", { idUser: idAlumno })
+
+      .getRawMany()
+
+    return resp;
+  }
+
   /**
    * Titulo y descripcion de un GRUPO de asignaciones de DOCTORADO
    * @param id_periodo el periodo al que pertenece el grupo, normalmente el mas reciente

@@ -14,8 +14,6 @@ export interface ReviewFormatsProps {
     asignacion: AsignacionReview;
 }
 
-
-
 const ReviewFormats = (props: ReviewFormatsProps) => {
 
     return (

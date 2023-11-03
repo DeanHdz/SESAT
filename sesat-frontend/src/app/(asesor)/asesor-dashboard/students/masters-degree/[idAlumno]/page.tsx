@@ -1,14 +1,14 @@
 import Drawer from "../../../components/Drawer";
 import AssignmentPath from "../../../components/AssignmentPath";
-import StudentProfile from "./components/StudentProfile";
+import StudentProfile from "../../../../../components/StudentProfile";
 import ThesisHistory from "./components/ThesisHistory";
-import ThesisInfo from "./components/ThesisInfo";
-import { fetchLatestPeriod } from "../../../../../../../utils/periodo.endpoint";
+import ThesisInfo from "../../../../../components/ThesisInfo";
 import { fetchValidateRole } from "../../../../../../../utils/comite.endpoint";
 import { fetchFullTesisHistory } from "../../../../../../../utils/tesis.endpoint";
+import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 
 type RoleProps = {
-  id_funcion: number;
+  nombre_funcion: string;
   id_tesis: number;
 }
 
@@ -32,12 +32,11 @@ export default async function Home({
   params: { idAlumno: string }
 }) {
   let { idAlumno } = params;
-  let periodo = await fetchLatestPeriod("").catch();
-  let role: RoleProps = await fetchValidateRole(333333, parseInt(idAlumno), "").catch();
+  let role: RoleProps = await fetchValidateRole(333333, +idAlumno, "").catch(() => { return null });
   let fullHistory: undefined | ThesisFullHistory[] = undefined;
 
   if (role && role.id_tesis) {
-    fullHistory = await fetchFullTesisHistory(parseInt(idAlumno), "").catch()
+    fullHistory = await fetchFullTesisHistory(+idAlumno, "").catch(() => { return null });
   }
   return (
     <div className="flex mb-40">
@@ -45,27 +44,54 @@ export default async function Home({
         <Drawer />
       </div>
 
-      <div className="w-full lg:w-9/12">
-        <label className="mb-6 block text-4xl font-bold">
-          Datos del alumno
-        </label>
-        {Array.isArray(fullHistory) && (
-          <StudentProfile tesis={fullHistory[0]} />
-        )}
+      {role && role.id_tesis ? (
+        <div className="w-full lg:w-9/12">
+          <div className="w-full mb-6 flex flex-col ">
+            <div className="ml-auto flex flex-row items-center mb-6 lg:mb-0">
+              <div className="mr-3">
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  strokeWidth="0"
+                  version="1.2"
+                  baseProfile="tiny"
+                  viewBox="0 0 24 24"
+                  height="20px"
+                  width="20px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12 14c1.381 0 2.631-.56 3.536-1.465.904-.904 1.464-2.154 1.464-3.535s-.56-2.631-1.464-3.535c-.905-.905-2.155-1.465-3.536-1.465s-2.631.56-3.536 1.465c-.904.904-1.464 2.154-1.464 3.535s.56 2.631 1.464 3.535c.905.905 2.155 1.465 3.536 1.465zM20 15c.69 0 1.315-.279 1.768-.731.453-.452.732-1.077.732-1.769 0-.69-.279-1.315-.732-1.768-.453-.453-1.078-.732-1.768-.732-.691 0-1.316.279-1.769.732-.452.453-.731 1.078-.731 1.768 0 .691.279 1.316.731 1.769s1.078.731 1.769.731zM20 15.59c-1.331 0-2.332.406-2.917.968-1.115-.917-2.878-1.558-5.083-1.558-2.266 0-3.995.648-5.092 1.564-.596-.565-1.608-.974-2.908-.974-2.188 0-3.5 1.09-3.5 2.182 0 .545 1.312 1.092 3.5 1.092.604 0 1.146-.051 1.623-.133l-.04.27c0 1 2.406 2 6.417 2 3.762 0 6.417-1 6.417-2l-.02-.255c.463.073.995.118 1.603.118 2.051 0 3.5-.547 3.5-1.092 0-1.092-1.373-2.182-3.5-2.182zM4 15c.69 0 1.315-.279 1.768-.732.453-.453.732-1.078.732-1.768 0-.689-.279-1.314-.732-1.768-.453-.452-1.078-.732-1.768-.732-.691 0-1.316.28-1.769.732-.452.454-.731 1.079-.731 1.768 0 .69.279 1.315.731 1.768.453.453 1.078.732 1.769.732z"></path>
+                </svg>
+              </div>
+              <p className="font-SESAT">Función en el Comité de evaluación:</p>
+              <p className="ml-3 font-light">{role.nombre_funcion}</p>
+            </div>
+            <label className="text-4xl text-black/40 font-bold">
+              Datos del alumno
+            </label>
+          </div>
+          {Array.isArray(fullHistory) && (
+            <StudentProfile tesis={fullHistory[0]} />
+          )}
 
-        {/*<div className="flex">
+          {/*<div className="flex">
           <ThesisHistory />
   </div>*/}
 
-        <label className="mb-6 mt-16 block text-4xl font-bold">
-          Historial de tesis completo
-        </label>        
+          <label className="mb-6 mt-16 block text-4xl text-black/40 font-bold">
+            Historial de tesis completo
+          </label>
 
-        {fullHistory?.map((elem) => (
-          <ThesisInfo tesis={elem} />
-        ))}
+          {fullHistory?.map((elem) => (
+            <ThesisInfo tesis={elem} />
+          ))}
 
-      </div>
+        </div>
+      ) : (
+        <div className="w-full lg:w-9/12">
+          <NotFound />
+        </div>
+      )}
     </div>
   );
 }

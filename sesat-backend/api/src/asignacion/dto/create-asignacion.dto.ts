@@ -42,15 +42,15 @@ export class CreateAsignacionDto {
 
   @IsOptional()
   @IsDateString()
-  fecha_entrega: Date;
+  fecha_entrega: string;
 
   @IsOptional()
   @IsNumber()
   calificacion: number;
 
   @IsOptional()
-  @IsString()
-  documento: string;
+  //@IsString()
+  documento: Buffer;
 
   @IsNotEmpty()
   @IsNumber()
@@ -66,5 +66,5 @@ export class CreateAsignacionDto {
 
   @IsOptional()
   @IsDateString()
-  fecha_presentacion: Date;
+  fecha_presentacion: string;
 }

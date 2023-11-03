@@ -70,4 +70,11 @@ export class ComiteController {
   remove(@Param("id") id: string) {
     return this.comiteService.remove(+id);
   }
+
+  /************* Alumno **************/
+  @Get('contacts/:idTesis')
+  findContacts(@Param('idTesis') idTesis: string) {
+    return this.comiteService.findContacts(+idTesis);
+  }
+
 }

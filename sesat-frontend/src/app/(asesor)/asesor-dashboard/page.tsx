@@ -13,6 +13,9 @@ type AsignacionProps = {
   apellido_paterno: string,
   apellido_materno: string,
   titulo: string,
+  calificacion: number;
+  id_acta_evaluacion: number;
+  id_formato_evaluacion: number;
   fecha_entrega: string,
   grado: number;
 }

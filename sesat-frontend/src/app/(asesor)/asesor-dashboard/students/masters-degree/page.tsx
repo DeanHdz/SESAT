@@ -1,6 +1,7 @@
-import HistoryPath from "./components/HistoryPath";
+
 import Drawer from "../../components/Drawer";
 import { UsuarioEndpoint } from "../../../../../../utils/usuario.endpoint";
+import HistoryPath from "../../components/HistoryPath";
 
 type Asesorado = {
   id_usuario: number;
@@ -44,7 +45,7 @@ export default async function Home() {
             </svg>
           </div>
         </div>
-        <div className="mt-6 bg-white gray__border p-3">
+        <div className="max-w-full overflow-x-scroll lg:overflow-x-hidden mt-6 bg-white gray__border p-3">
           <table className="table table-zebra">
             <thead>
               <tr className="text-dark-blue-20">
@@ -64,7 +65,7 @@ export default async function Home() {
                     <td>{`${alumno.nombre} ${alumno.apellido_paterno} ${alumno.apellido_materno}`}</td>
                     <td>{alumno.correo}</td>
                     <td>
-                      <HistoryPath idAlumno={alumno.id_usuario}/>
+                      <HistoryPath idAlumno={alumno.id_usuario} route="masters-degree"/>
                     </td>
                   </tr>
                 </>

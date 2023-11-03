@@ -440,7 +440,8 @@ export class TesisService {
         "mod.nombre_modalidad AS modalidad"      
       ])      
       .where("t.id_tesis = :id", { id: idTesis })  
-      .andWhere("a.calificacion IS NOT NULL")          
+      .andWhere("a.id_acta_evaluacion IS NOT NULL")          
+      .andWhere("a.id_formato_evaluacion IS NOT NULL")   
       .getRawMany()
 
     return resp;

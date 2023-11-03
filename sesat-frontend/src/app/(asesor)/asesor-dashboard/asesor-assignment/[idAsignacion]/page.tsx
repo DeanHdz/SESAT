@@ -1,12 +1,11 @@
 
 import AddComment from "@/app/components/AddComment"
-import Drawer from "../components/Drawer"
 import AssignmentHeader from "../components/AssignmentHeader"
 import AdvancesList from "../components/AdvancesList"
 import AssignmentData from "../components/AssignmentData"
 import ReviewFormats from "../components/ReviewFormats"
 import CommentSection from "../components/CommentSection"
-import { Asignacion, AsignacionReview } from "../../../../../../types/ISESAT"
+import { AsignacionReview } from "../../../../../../types/ISESAT"
 import { shortFormatDate } from "../../../../../../utils/utils"
 import { fetchOneToBeReviewed } from "../../../../../../utils/asignacion.endpoint";
 import PDFPreview from "../components/PDFPreview"
@@ -14,6 +13,7 @@ import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint"
 import NotFound from "@/app/(admin)/admin-dashboard/not-found"
+import Drawer from "../../components/Drawer"
 
 async function fetchAndSortComments(idAsignacion: number, token: string) {
   let comments = await fetchConversationByIdAsignacion(idAsignacion, token);
@@ -42,6 +42,7 @@ async function fetchHistoryByIdTesis(idTesis: number): Promise<Array<number>> {
   let history: Avance[] = await fetchTesisHistory(idTesis, "");
   let avancesEntregados = new Array();
   if (history.length > 0) {
+    history.sort((a, b) => a.id_asignacion - b.id_asignacion);
     let { grado_estudio, modalidad } = history[0];
     switch (grado_estudio) {
       case 'Doctorado':
@@ -67,8 +68,7 @@ async function fetchHistoryByIdTesis(idTesis: number): Promise<Array<number>> {
         }
         break;
     }
-  }
-  avancesEntregados.sort((a, b) => a.id_asignacion - b.id_asignacion)
+  }  
   return avancesEntregados;
 }
 
@@ -137,7 +137,7 @@ export default async function Home({
             </div>
             {/**El id de usuario debe obtenerse de la cookie */}
             <CommentSection commentsArray={comments} currentUserID={333333} />
-            <AddComment id_asignacion={asignacion.id_asignacion} />
+            <AddComment id_asignacion={asignacion.id_asignacion} idUsuario={333333} />
 
           </div>
         </>

@@ -1,95 +1,109 @@
 import Drawer from "../components/Drawer";
 import AssignmentPath from "../components/AssignmentPath";
-import StudentProfile from "./components/StudentProfile";
+import StudentProfile from "../../../components/StudentProfile";
 import ThesisHistory from "./components/ThesisHistory";
 import ThesisTitle from "./components/ThesisTitle";
 import Link from "next/link";
+import NotFound from "@/app/(admin)/admin-dashboard/not-found";
+import { fetchFullTesisHistory } from "../../../../../utils/tesis.endpoint";
+import { fetchComiteMembers, fetchValidateRole } from "../../../../../utils/comite.endpoint";
+import ThesisInfo from "@/app/components/ThesisInfo";
 
-export default function Home() {
+export type ThesisFullHistory = {
+  nombre_programa: string;
+  id_tesis: number;
+  titulo: string;
+  grado: number;
+  fecha_registro: string;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  correo: string;
+  estado_finalizacion: boolean;
+  estado_activo: boolean;
+}
+
+type ComiteMember = {
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  nombre_funcion: string;
+}
+
+export default async function Home() {
+
+  let fullHistory: undefined | ThesisFullHistory[] = await fetchFullTesisHistory(230443, "").catch(() => { return null });
+
+  let comite: undefined | ComiteMember[];
+  if (fullHistory && Array.isArray(fullHistory)) {
+    comite = await fetchComiteMembers(fullHistory[0].id_tesis, "").catch(() => { return null });
+  }
+
   return (
-  <div className="flex">
-    <div className="hidden lg:flex lg:w-3/12 flex-col">
-      <Drawer />
-      <ThesisHistory />
-    </div>
+    <div className="flex">
+      <div className="hidden lg:flex lg:w-3/12 flex-col">
+        <Drawer />
+        {/*<ThesisHistory />*/}
+      </div>
 
-    <div className="w-full lg:w-9/12">
-      <label className="mb-6 block text-4xl font-bold">
-        Historial de alumno
-      </label>
-      <StudentProfile />
-      <div className="flex lg:hidden">
-        <ThesisHistory />
-      </div>
-      <ThesisTitle />
-      <label className="mb-6 block text-2xl font-bold">
-          Historial de asignaciones
-      </label>
-      <div className="mt-6 mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
-        <input
-          type="search"
-          placeholder="Buscar asignación"
-          className="rounded-full border-b border-light-gray-22 border-solid px-6"
-        />
-        <div className="flex items-center ml-2">
-          <svg
-            stroke="#d5d3dd"
-            fill="#d5d3dd"
-            strokeWidth="0"
-            viewBox="0 0 24 24"
-            height="24px"
-            width="24px"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M19.023,16.977c-0.513-0.488-1.004-0.997-1.367-1.384c-0.372-0.378-0.596-0.653-0.596-0.653l-2.8-1.337 C15.34,12.37,16,10.763,16,9c0-3.859-3.14-7-7-7S2,5.141,2,9s3.14,7,7,7c1.763,0,3.37-0.66,4.603-1.739l1.337,2.8 c0,0,0.275,0.224,0.653,0.596c0.387,0.363,0.896,0.854,1.384,1.367c0.494,0.506,0.988,1.012,1.358,1.392 c0.362,0.388,0.604,0.646,0.604,0.646l2.121-2.121c0,0-0.258-0.242-0.646-0.604C20.035,17.965,19.529,17.471,19.023,16.977z M9,14 c-2.757,0-5-2.243-5-5s2.243-5,5-5s5,2.243,5,5S11.757,14,9,14z"></path>
-          </svg>
+      {fullHistory ? (
+        <div className="w-full lg:w-9/12">
+          <div className="w-full mb-6 flex">
+            <label className="text-4xl text-black/40 font-bold">
+              Tus Datos
+            </label>
+          </div>
+          {Array.isArray(fullHistory) && (
+            <StudentProfile tesis={fullHistory[0]} />
+          )}
+
+          <div className="w-full mt-16 mb-6 flex">
+            <label className="text-4xl text-black/40 font-bold">
+              Comité de Evaluación
+            </label>
+          </div>
+
+          <div className="w-full px-8 py-10 mt-4 mb-4 bg-light-blue-10 bg-opacity-50 gray__border !rounded-[15px] flex flex-col lg:flex-row">
+            <table className="table table-zebra">
+              <thead>
+                <tr className="text-dark-blue-20">                  
+                  <th>Nombre</th>
+                  <th>Función</th>                  
+                </tr>
+              </thead>
+              <tbody>
+                {comite?.map((member, i) => (
+                  <>
+                    <tr                      
+                    >
+                      
+                      <td>{`${member.nombre} ${member.apellido_paterno} ${member.apellido_materno}`}</td>
+                      <td>{member.nombre_funcion}</td>                                            
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/*<div className="flex">
+          <ThesisHistory />
+  </div>*/}
+
+          <label className="mb-6 mt-16 block text-4xl text-black/40 font-bold">
+            Historial de tesis completo
+          </label>
+
+          {fullHistory?.map((elem, i) => (
+            <ThesisInfo tesis={elem} key={i}/>
+          ))}
+
         </div>
-      </div>
-      <div className="mt-6 bg-white gray__border p-3">
-        <table className="table table-zebra">
-          <thead>
-            <tr className="text-dark-blue-20">
-              <th>Num. Asig.</th>
-              <th>Titulo</th>
-              <th>Fecha limite de entrega</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr>
-              <td>3</td>
-              <td>Avance 2024/2025 II</td>
-              <td>2025-05-15 23:59:59</td>
-              <td>
-                <div>
-                  <AssignmentPath />
-                </div>
-              </td>
-            </tr>
-          <tr>
-              <td>2</td>
-              <td>Avance 2024/2025 I</td>
-              <td>2024-12-2 23:59:59</td>
-              <td>
-                <div>
-                  <AssignmentPath />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>Avance 2023/2024 II</td>
-              <td>2024-05-15 23:59:59</td>
-              <td>
-                <div>
-                  <AssignmentPath />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      ) : (
+        <div className="w-full lg:w-9/12">
+          <NotFound />
+        </div>
+      )}
     </div>
-  </div>
   );
 }

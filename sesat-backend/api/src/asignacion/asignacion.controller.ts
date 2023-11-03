@@ -81,6 +81,12 @@ export class AsignacionController {
     return this.asignacionService.findNumAsignacionesEntregadasMD(+idPeriodo, +numAvance, +mod);
   }
 
+  //
+  @Get('alumno/:idPeriodo/:idAlumno')
+  findAsignacionesByPeriodAndAlumno(@Param('idPeriodo') idPeriodo: string, @Param('idAlumno') idAlumno: string) {
+    return this.asignacionService.findAsignacionesByPeriodAndAlumno(+idPeriodo, +idAlumno);
+  }
+
   @Post()
   create(@Body() createAsignacionDto: CreateAsignacionDto) {
     return this.asignacionService.create(createAsignacionDto);
