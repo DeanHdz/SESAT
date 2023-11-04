@@ -4,7 +4,6 @@ import { ExternalUser } from "../../../../../../../types/ISESAT";
 import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
 import AddUserForm from "./components/AddUserForm";
-import revalidator from "./actions";
 
 export default async function SearchMastersStudents({
   searchParams,
@@ -13,8 +12,6 @@ export default async function SearchMastersStudents({
 }) {
   const search =
     typeof searchParams.search === "string" ? searchParams.search : undefined;
-
-  revalidator("FetchedExternalUser");
 
   if (search) {
     const userData: Promise<ExternalUser> = UsuarioEndpoint.findExternalStudent(

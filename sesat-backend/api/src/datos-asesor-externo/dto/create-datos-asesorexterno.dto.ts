@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString } from "class-validator";
 export class CreateDatosAsesorexternoDto {
     @IsNotEmpty()
     @IsString()
-    telefono: string;
+    telefono: number;
 
     @IsNotEmpty()
     @IsString()

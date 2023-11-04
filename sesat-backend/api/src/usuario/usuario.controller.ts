@@ -8,11 +8,24 @@ import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
 import { Usuario } from "./entities/usuario.entity";
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { CreateForeignAsesorDto } from "./dto/create-foreign-asesor.dto";
 
 @Controller("usuario")
 export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
 
+  @Get('/external/asesor/:id')
+  async getExternalAsesor(@Param("id") id_usuario: string)
+  {
+    return await this.usuarioService.getExternalAsesor(+id_usuario);
+  }
+
+  @Post('/asesor/foreign')
+  async createForeignAsesor(@Body() createForeignAsesorDto: CreateForeignAsesorDto)
+  {
+    return await this.usuarioService.createForeignAsesor(createForeignAsesorDto);
+  }
+  
   @Post('/external/student')
   async createFromExternalStudent(@Body() createFromExternalDto: CreateFromExternalDto) {
     return await this.usuarioService.createFromExternalStudent(createFromExternalDto);

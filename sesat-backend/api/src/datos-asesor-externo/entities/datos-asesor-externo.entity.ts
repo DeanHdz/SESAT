@@ -6,7 +6,7 @@ export class DatosAsesorExterno {
     id_datos_asesor_externo: number;
 
     @Column()
-    telefono: string;
+    telefono: number;
 
     @Column()
     institucion: string;

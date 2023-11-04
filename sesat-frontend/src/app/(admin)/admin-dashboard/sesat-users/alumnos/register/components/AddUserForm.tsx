@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CreateExternalUser } from "../../../../../../../../types/ISESAT";
 import { UsuarioEndpoint } from "../../../../../../../../utils/usuario.endpoint";
 import { useRouter } from 'next/navigation';
+import revalidator from "@/app/(admin)/admin-dashboard/actions";
 
 export default function AddUserForm({ user, id }: { user: ExternalUser, id: number }) {
   const router = useRouter();
@@ -87,7 +88,7 @@ export default function AddUserForm({ user, id }: { user: ExternalUser, id: numb
 
     const res = await UsuarioEndpoint.postExternalStudent("[Token]", data);
     setShowModal(!showModal);
-    if(res)
+    if(res != null)
       setShowSuccessModal(!showSuccessModal);
   }
 
@@ -192,6 +193,7 @@ export default function AddUserForm({ user, id }: { user: ExternalUser, id: numb
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 onClick={() => {
                   setShowSuccessModal(!showSuccessModal);
+                  revalidator("FetchedExternalUser");
                   router.push("/admin-dashboard/sesat-users/alumnos/register");
                 }}
               >

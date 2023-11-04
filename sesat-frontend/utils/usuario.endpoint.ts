@@ -1,7 +1,50 @@
 import { revalidateTag } from "next/cache";
 import { CreateExternalUser } from "../types/ISESAT";
+import { CreateForeignAsesor } from "../types/ISESAT";
 
 export namespace UsuarioEndpoint {
+  export async function postForeignAsesor(
+    token: string,
+    data: CreateForeignAsesor
+  ) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/asesor/foreign`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+  }
+  
+  export async function findExternalAsesor(token: string, id: number) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/external/asesor/${id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ["FetchedExternalAsesor"] },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
+    }
+  }
+  
   export async function findExternalStudent(token: string, id: number) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/external/student/${id}`;
     const options = {
@@ -35,9 +78,6 @@ export namespace UsuarioEndpoint {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      },
-      next: {
-        tags: ["eventos"],
       },
       body: JSON.stringify(data),
     };

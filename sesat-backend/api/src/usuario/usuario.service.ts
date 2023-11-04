@@ -24,6 +24,11 @@ import { GradoEstudioService } from "src/grado-estudio/grado-estudio.service";
 import { TesisService } from "src/tesis/tesis.service";
 import { AsignacionService } from "src/asignacion/asignacion.service";
 import { CreateAsignacionDto } from "src/asignacion/dto/create-asignacion.dto";
+import { CreateForeignAsesorDto } from "./dto/create-foreign-asesor.dto";
+import { DatosAsesorexternoService } from "src/datos-asesor-externo/datos-asesor-externo.service";
+import { CreateDatosAsesorexternoDto } from "src/datos-asesor-externo/dto/create-datos-asesorexterno.dto";
+import { VariablesSistemaService } from "src/variables-sistema/variables-sistema.service";
+import { UpdateVariablesSistemaDto } from "src/variables-sistema/dto/update-variables-sistema.dto";
 
 @Injectable()
 export class UsuarioService {
@@ -35,9 +40,55 @@ export class UsuarioService {
     private readonly gradoEstudioService: GradoEstudioService,
     private readonly tesisService: TesisService,
     private readonly asignacionService: AsignacionService,
+    private readonly datosAsesorexternoService: DatosAsesorexternoService,
+    private readonly variablesSistemaService: VariablesSistemaService,
     private readonly httpService: HttpService
   ) {}
 
+  async createForeignAsesor(createForeignAsesorDto: CreateForeignAsesorDto)
+  {
+    const datosAsesorExternoData: CreateDatosAsesorexternoDto = {
+      telefono: createForeignAsesorDto.telefono,
+      institucion: createForeignAsesorDto.organizacion
+    }
+
+    const datosAsesorExterno = await this.datosAsesorexternoService.create(datosAsesorExternoData);
+
+    const systemVariables = await this.variablesSistemaService.findOne(1);
+
+    const systemVariablesData: UpdateVariablesSistemaDto = {
+      id_variables_sistema: 1,
+      indice_clave_asesorexterno: systemVariables.id_variables_sistema + 1
+    }
+
+    await this.variablesSistemaService.update(systemVariablesData);
+
+    const user = this.usuarioRepository.create({
+      id_usuario: systemVariables.id_variables_sistema,
+      id_rol: 2,
+      id_datos_asesor_externo: datosAsesorExterno.id_datos_asesor_externo,
+      nombre: createForeignAsesorDto.nombre,
+      apellido_paterno: createForeignAsesorDto.apellido_paterno,
+      apellido_materno: createForeignAsesorDto.apellido_materno,
+      correo: createForeignAsesorDto.correo
+    });
+
+    await this.usuarioRepository.save(user);
+
+    return user;
+  }
+  
+  async getExternalAsesor(id: number){
+    const url = `http://ciep.ing.uaslp.mx/sesat/asesor.php?id=${id}`;
+    const data = await lastValueFrom(this.httpService.get(url))
+    if(data.data.length !== 0){
+      const userInSystem = await this.findOne(id);
+      if(!userInSystem)
+        return data.data[data.data.length-1];}
+    else{
+      return null;}
+  }
+  
   async createFromExternalStudent(createFromExternal: CreateFromExternalDto)
   {
     let modalidad = 0;
@@ -88,8 +139,8 @@ export class UsuarioService {
       id_rol: 3,
       id_datos_alumno: datosAlumno.id_datos_alumno,
       nombre: createFromExternal.nombre,
-      apellido_materno: apellidos[0],
-      apellido_paterno: apellidos[1],
+      apellido_paterno: apellidos[0],
+      apellido_materno: apellidos[1],
       correo: createFromExternal.email
     })
 

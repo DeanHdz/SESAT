@@ -9,6 +9,8 @@ import { ProgramaModule } from "src/programa/programa.module";
 import { GradoEstudioModule } from "src/grado-estudio/grado-estudio.module";
 import { TesisModule } from "src/tesis/tesis.module";
 import { AsignacionModule } from "src/asignacion/asignacion.module";
+import { DatosAsesorexternoModule } from "src/datos-asesor-externo/datos-asesor-externo.module";
+import { VariablesSistemaModule } from "src/variables-sistema/variables-sistema.module";
 
 @Module({
   imports: [
@@ -18,7 +20,9 @@ import { AsignacionModule } from "src/asignacion/asignacion.module";
     ProgramaModule,
     GradoEstudioModule,
     TesisModule,
-    AsignacionModule
+    AsignacionModule,
+    VariablesSistemaModule,
+    DatosAsesorexternoModule
   ],
   controllers: [UsuarioController],
   providers: [UsuarioService],

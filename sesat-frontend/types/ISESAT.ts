@@ -626,6 +626,7 @@ export interface CreateEvento {
 }
 
 /*------------------ EXTERNAL USER INTERFACE ------------------*/
+  //In this context, external as in received from the external service
 export interface ExternalUser {
   nombre: string;
   apellidos: string;
@@ -648,4 +649,19 @@ export interface CreateExternalUser {
   gen: string;
   status: string;
   skipToAvance: number | null;
+}
+
+export interface ExternalAsesor {
+  nombre: string;
+  apellidos: string;
+  email: string;
+}
+
+export interface CreateForeignAsesor {
+  nombre: string,
+  apellido_materno: string | null,
+  apellido_paterno: string,
+  telefono: number,
+  correo: string,
+  organizacion: string, 
 }

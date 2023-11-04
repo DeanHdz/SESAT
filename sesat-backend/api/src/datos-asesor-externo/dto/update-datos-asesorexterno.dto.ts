@@ -9,7 +9,7 @@ export class UpdateDatosAsesorexternoDto extends PartialType(CreateDatosAsesorex
 
     @IsNotEmpty()
     @IsString()
-    telefono: string;
+    telefono: number;
 
     @IsNotEmpty()
     @IsString()
