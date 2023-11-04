@@ -1,5 +1,5 @@
 import Drawer from "../components/Drawer"
-import Formato from "../components/Formato"
+import ThesisRegistrationForm from "../components/ThesisRegistrationForm"
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       </div>
 
       <div className="w-full">
-        <Formato/>
+        <ThesisRegistrationForm/>
       </div>
 
     </div>
