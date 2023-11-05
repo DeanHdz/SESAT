@@ -1,9 +1,11 @@
 "use client";
-import { ChangeEvent, useState } from "react";
-import { CreateForeignAsesor, UsuarioPrueba } from "../../../../../../../types/ISESAT";
+import { useState, useEffect } from "react";
+import { CreateExternalAsesor, CreateForeignAsesor, ExternalAsesor, Usuario, UsuarioPrueba } from "../../../../../../../types/ISESAT";
 import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import { useRouter } from "next/navigation";
 import revalidator from "../../../actions";
+import { useDebounce } from 'use-debounce';
+import Search from "../../../components/Search";
 
 export const AsesorRegistryForm = () => {
   const router = useRouter();
@@ -42,8 +44,28 @@ export const AsesorRegistryForm = () => {
   );
 
   const [showModal1, setShowModal1] = useState<boolean | undefined>(false);
+  const [showModal2, setShowModal2] = useState<boolean | undefined>(false);
   const [errorState1, setErrorState1] = useState<boolean>(false);
   const [showSuccessModal, setShowSuccessModal] = useState<boolean | undefined>(false);
+  const [showErrorModal, setShowErrorModal] = useState<boolean | undefined>(false);
+
+  const postAsesor = async () => {
+    const externalAsesorDto: CreateExternalAsesor = {
+      id: parseInt(query),
+      nombre: asesor?.nombre ? asesor.nombre : "",
+      apellidos: asesor?.apellidos ? asesor.apellidos : "",
+      email: asesor?.email ? asesor.email : ""
+    }
+
+    const externalAsesor = await UsuarioEndpoint.postExternalAsesor("[Token]", externalAsesorDto)
+
+    if(externalAsesor != null) {
+      setShowSuccessModal(!showSuccessModal); //is success
+    }
+    else{
+      setShowErrorModal(!showErrorModal);
+    }
+  }
 
   const postForeignAsesor = async () => {
     const foreignAsesorDto: CreateForeignAsesor = {
@@ -55,11 +77,58 @@ export const AsesorRegistryForm = () => {
       organizacion: foreignOrganizacion ? foreignOrganizacion : "", 
     }
 
-    const asesor = await UsuarioEndpoint.postForeignAsesor("[Token]", foreignAsesorDto)
+    const foreignAsesor = await UsuarioEndpoint.postForeignAsesor("[Token]", foreignAsesorDto)
 
-    if(asesor != null)
-      setShowSuccessModal(!showSuccessModal);
+    if(foreignAsesor != null) {
+      setShowSuccessModal(!showSuccessModal); //is success
+    }
+    else{
+      setShowErrorModal(!showErrorModal);
+    }
   }
+
+  const [text, setText] = useState("");
+  const [query] = useDebounce(text, 750);
+
+  const [asesor, setAsesor] = useState<ExternalAsesor | null>();
+
+  useEffect(() => {
+    const getAsesor = async () => {
+      const asesorData: Promise<ExternalAsesor> = UsuarioEndpoint.findExternalAsesor("[token]", parseInt(query));
+      const fetchedAsesor = await asesorData;
+      setAsesor(fetchedAsesor);
+    }
+
+    if(query){
+      getAsesor();
+    }
+  }, [query, router]);
+
+  const searchBar = (
+    <div className="mb-6 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
+      <input
+        type="search"
+        placeholder="Buscar por RPE"
+        className="rounded-full border-b border-light-gray-22 border-solid px-6"
+        onChange={(e) => {
+          setText(e.target.value);
+        }}
+      />
+      <div className="flex items-center ml-2">
+        <svg
+          stroke="#d5d3dd"
+          fill="#d5d3dd"
+          strokeWidth="0"
+          viewBox="0 0 24 24"
+          height="24px"
+          width="24px"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M19.023,16.977c-0.513-0.488-1.004-0.997-1.367-1.384c-0.372-0.378-0.596-0.653-0.596-0.653l-2.8-1.337 C15.34,12.37,16,10.763,16,9c0-3.859-3.14-7-7-7S2,5.141,2,9s3.14,7,7,7c1.763,0,3.37-0.66,4.603-1.739l1.337,2.8 c0,0,0.275,0.224,0.653,0.596c0.387,0.363,0.896,0.854,1.384,1.367c0.494,0.506,0.988,1.012,1.358,1.392 c0.362,0.388,0.604,0.646,0.604,0.646l2.121-2.121c0,0-0.258-0.242-0.646-0.604C20.035,17.965,19.529,17.471,19.023,16.977z M9,14 c-2.757,0-5-2.243-5-5s2.243-5,5-5s5,2.243,5,5S11.757,14,9,14z"></path>
+        </svg>
+      </div>
+    </div>
+  ) 
 
   const modal1 = (
     <div
@@ -189,6 +258,116 @@ export const AsesorRegistryForm = () => {
     </div>
   );
 
+  const modal2 = (
+    <div
+      className="relative z-10"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg
+                    className="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Verificar Acción
+                  </h3>
+                  <div className="mt-1">
+                    <p className="text-sm text-gray-500">
+                      Verifique que los datos del asesor sean correctos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="my-2 gray__border w-full px-2 py-2 flex flex-col md:flex-row">
+                <div className="flex flex-col lg:w-3/6">
+                  <p className="mb-2">
+                    <span className="font-bold text-dark-blue-10 text-sm">
+                      RPE:
+                    </span>
+                    <br />
+                    <span className="text-base text-dark-blue-20 italic">
+                      {query}
+                    </span>
+                  </p>
+                  <p className="mb-2">
+                    <span className="font-bold text-dark-blue-10 text-sm">
+                      Apellidos:
+                    </span>
+                    <br />
+                    <span className="text-base text-dark-blue-20 italic">
+                      {asesor?.apellidos}
+                    </span>
+                  </p> 
+                </div>
+                <div className="flex flex-col lg:w-3/6">
+                  <p className="mb-2">
+                    <span className="font-bold text-dark-blue-10 text-sm">
+                      Nombre:
+                    </span>
+                    <br />
+                    <span className="text-base text-dark-blue-20 italic">
+                      {asesor?.nombre}
+                    </span>
+                  </p>
+                  <p className="mb-2">
+                    <span className="font-bold text-dark-blue-10 text-sm">
+                      Correo:
+                    </span>
+                    <br />
+                    <span className="text-base text-dark-blue-20 italic">
+                      {asesor?.email}
+                    </span>
+                  </p>      
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
+                className="inline-flex w-full justify-center rounded-md bg-dark-blue-10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto"
+                onClick={postAsesor}
+              >
+                Agregar
+              </button>
+              <button
+                type="button"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={() => {
+                  setShowModal2(!showModal2);
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const successModal = (
     <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
@@ -223,8 +402,73 @@ export const AsesorRegistryForm = () => {
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 onClick={() => {
                   setShowSuccessModal(!showSuccessModal);
-                  revalidator("FetchedExternalAsesor");
-                  router.push("/admin-dashboard/sesat-users/asesores/register");
+                  if(userType === "externo"){
+                    revalidator("FetchedAsesorList");
+                    setShowModal1(!showModal1);
+                  }
+                  else if(userType === "asesor"){
+                    revalidator("FetchedAsesorList");
+                    revalidator("FetchedExternalAsesor");
+                  }
+                  router.push("/admin-dashboard/sesat-users/asesores");
+                }}
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const errorModal = (
+    <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                <svg
+                    className="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Operación fallida</h3>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">Ha ocurrido un error, por favor intente nuevamente.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"> 
+              <button 
+                type="button" 
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={() => {
+                  setShowErrorModal(!showErrorModal);
+                  if(userType === "externo"){
+                    revalidator("FetchedAsesorList");
+                    setShowModal1(!showModal1);
+                  }
+                  else if(userType === "asesor"){
+                    revalidator("FetchedAsesorList");
+                    revalidator("FetchedExternalAsesor");
+                  }
+                  router.push("/admin-dashboard/sesat-users/asesores")
                 }}
               >
                 Cerrar
@@ -238,7 +482,10 @@ export const AsesorRegistryForm = () => {
 
   const handleSubmit = () => {
     if (userType === "asesor") {
-
+      if(asesor)
+      {
+        setShowModal2(!showModal2);
+      }
     }
     else if (userType === "externo") {
       setErrorState1(!errorState1);
@@ -269,10 +516,11 @@ export const AsesorRegistryForm = () => {
             </span>
             <select
               onChange={handleUserTypeChange}
+              defaultValue="Seleccione una opción"
               className="select select-bordered max-w-sm lg:ml-3 mt-3"
             >
-              <option value="" disabled selected>
-                Seleccione
+              <option value="Seleccione una opción" disabled>
+                Seleccione una opción
               </option>
               <option value={"asesor"}>Sí</option>
               <option value={"externo"}>
@@ -283,23 +531,8 @@ export const AsesorRegistryForm = () => {
 
           {userType === "asesor" && (
             <div className={`h-fit w-full my-10`}>
-              <div className="flex flex-col mt-10">
-                <span className="mt-3">
-                  Ingrese la clave única o el nombre asesor para buscar,
-                  seleccione una opción.
-                </span>
-                <div className="mt-6">
-                  <input
-                    type="number"
-                    placeholder="Clave única"
-                    maxLength={6}
-                    className="gray__border input-bordered w-full max-w-lg"
-                    value={claveUnica}
-                    onChange={(e) => {
-                      setClaveUnica(e.target.value);
-                    }}
-                  />
-                </div>
+              <div className="flex flex-col mt-2">
+                {searchBar}
               </div>
 
               <div className="mt-6 bg-white gray__border p-3">
@@ -309,28 +542,26 @@ export const AsesorRegistryForm = () => {
                     <thead>
                       <tr className="text-dark-blue-20">
                         <th></th>
-                        <th>Clave Única</th>
                         <th>Nombre</th>
+                        <th>Apellidos</th>
                         <th>Correo</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {usuariosPrueba?.map((user) => (
-                        <tr
-                          key={user.clave_unica}
-                          onClick={() => setSelectedUser(user)}
-                          /** Visualizar la seleccion de un renglon*/
-                          className={
-                            selectedUser?.clave_unica === user.clave_unica
-                              ? "bg-white cursor-pointer"
-                              : "cursor-pointer"
-                          }
-                        >
-                          <td>{user.clave_unica}</td>
-                          <td>{`${user.nombre} ${user.apellido_pat} ${user.apellido_mat}`}</td>
-                          <td>{user.correo}</td>
-                        </tr>
-                      ))}
+                      { asesor ? 
+                        (
+                          <tr>
+                            <td>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/> 
+                              </svg>
+                            </td>
+                            <td>{asesor?.nombre}</td>
+                            <td>{asesor?.apellidos}</td>
+                            <td>{asesor?.email}</td>
+                          </tr>
+                        ) : (<></>)   
+                      }
                     </tbody>
                   </table>
                 </div>
@@ -355,6 +586,7 @@ export const AsesorRegistryForm = () => {
                     <input
                       type="text"
                       placeholder="Nombre"
+                      tabIndex={1}
                       value={foreignNombre}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setForeignNombre(e.target.value);
@@ -373,6 +605,7 @@ export const AsesorRegistryForm = () => {
                     <input
                       type="text"
                       placeholder="Apellido Materno"
+                      tabIndex={3}
                       value={foreignApMaterno}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setForeignApMaterno(e.target.value);
@@ -390,6 +623,7 @@ export const AsesorRegistryForm = () => {
                     <input
                       type="text"
                       placeholder="Correo"
+                      tabIndex={5}
                       value={foreignCorreo}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setForeignCorreo(e.target.value);
@@ -410,6 +644,7 @@ export const AsesorRegistryForm = () => {
                     <input
                       type="text"
                       placeholder="Apellido Paterno"
+                      tabIndex={2}
                       value={foreignApPaterno}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setForeignApPaterno(e.target.value);
@@ -427,10 +662,10 @@ export const AsesorRegistryForm = () => {
                       </span>
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       placeholder="Número de teléfono a 10 dígitos"
+                      tabIndex={4}
                       maxLength={10}
-                      minLength={10}
                       value={foreignTelefono}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setForeignTelefono(e.target.value);
@@ -449,6 +684,7 @@ export const AsesorRegistryForm = () => {
                     <input
                       type="text"
                       placeholder="Nombre"
+                      tabIndex={6}
                       value={foreignOrganizacion}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setForeignOrganizacion(e.target.value);
@@ -474,10 +710,20 @@ export const AsesorRegistryForm = () => {
         </div>
       </div>
       {showModal1 ? <>{modal1}</> : ""}
+      {showModal2 ? <>{modal2}</> : ""}
       {showSuccessModal ? 
         (
           <>
             {successModal}
+          </>
+        ) : (
+          ""
+        )
+      }
+      {showErrorModal ? 
+        (
+          <>
+            {errorModal}
           </>
         ) : (
           ""

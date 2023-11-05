@@ -29,6 +29,7 @@ import { DatosAsesorexternoService } from "src/datos-asesor-externo/datos-asesor
 import { CreateDatosAsesorexternoDto } from "src/datos-asesor-externo/dto/create-datos-asesorexterno.dto";
 import { VariablesSistemaService } from "src/variables-sistema/variables-sistema.service";
 import { UpdateVariablesSistemaDto } from "src/variables-sistema/dto/update-variables-sistema.dto";
+import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
 
 @Injectable()
 export class UsuarioService {
@@ -45,6 +46,56 @@ export class UsuarioService {
     private readonly httpService: HttpService
   ) {}
 
+  async createExternalAsesor(createExternalAsesorDto: CreateExternalAsesorDto)
+  {
+    const apellidos: string[] = createExternalAsesorDto.apellidos.split(" ");
+
+    const user = this.usuarioRepository.create({
+      id_usuario: createExternalAsesorDto.id,
+      id_rol: 2,
+      nombre: createExternalAsesorDto.nombre,
+      apellido_paterno: apellidos[0],
+      apellido_materno: apellidos[1] ? apellidos[1] : "",
+      correo: createExternalAsesorDto.email
+    });
+
+    await this.usuarioRepository.save(user);
+
+    return user;
+  }
+
+  async paginateAsesores(options: IPaginationOptions): Promise<Pagination<Usuario>> {
+    const asesoresQuery = this.usuarioRepository
+      .createQueryBuilder('usuario')
+      .where('usuario.id_rol = :id_rol', { id_rol: 2 })
+
+    return paginate<Usuario>(asesoresQuery, options);
+  }
+
+  async findAsesoresById(id_usuario: number){
+    const asesores: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 2 },
+      relations: ["datos_asesor_externo"],
+    });
+
+    return asesores.filter(
+      (asesor) => asesor.id_usuario === id_usuario
+    );
+  }
+
+  async findAsesoresByName(nombre: string){
+    const asesores: Usuario[] = await this.usuarioRepository.find({
+      where: { id_rol: 2 },
+      relations: ["datos_asesor_externo"],
+    });
+
+    return asesores.filter(
+      (asesor) => ( `${asesor.nombre} ${asesor.apellido_paterno} ${asesor.apellido_materno}`)
+        .toLowerCase()
+        .includes(nombre.toLowerCase())
+    );
+  }
+
   async createForeignAsesor(createForeignAsesorDto: CreateForeignAsesorDto)
   {
     const datosAsesorExternoData: CreateDatosAsesorexternoDto = {
@@ -55,18 +106,19 @@ export class UsuarioService {
     const datosAsesorExterno = await this.datosAsesorexternoService.create(datosAsesorExternoData);
 
     const systemVariables = await this.variablesSistemaService.findOne(1);
-
+    const newIndex: number = systemVariables.indice_clave_asesor_externo + 1;
     const systemVariablesData: UpdateVariablesSistemaDto = {
       id_variables_sistema: 1,
-      indice_clave_asesorexterno: systemVariables.id_variables_sistema + 1
+      indice_clave_asesor_externo: newIndex
     }
 
     await this.variablesSistemaService.update(systemVariablesData);
 
     const user = this.usuarioRepository.create({
-      id_usuario: systemVariables.id_variables_sistema,
+      id_usuario: newIndex,
       id_rol: 2,
       id_datos_asesor_externo: datosAsesorExterno.id_datos_asesor_externo,
+      password: "pass1234", //fix later
       nombre: createForeignAsesorDto.nombre,
       apellido_paterno: createForeignAsesorDto.apellido_paterno,
       apellido_materno: createForeignAsesorDto.apellido_materno,
@@ -140,7 +192,7 @@ export class UsuarioService {
       id_datos_alumno: datosAlumno.id_datos_alumno,
       nombre: createFromExternal.nombre,
       apellido_paterno: apellidos[0],
-      apellido_materno: apellidos[1],
+      apellido_materno: apellidos[1] ? apellidos[1] : "",
       correo: createFromExternal.email
     })
 

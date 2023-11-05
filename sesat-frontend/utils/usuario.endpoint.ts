@@ -1,8 +1,89 @@
-import { revalidateTag } from "next/cache";
-import { CreateExternalUser } from "../types/ISESAT";
+import { CreateExternalAsesor, CreateExternalUser } from "../types/ISESAT";
 import { CreateForeignAsesor } from "../types/ISESAT";
 
 export namespace UsuarioEndpoint {
+
+  export async function postExternalAsesor(
+    token: string,
+    data: CreateExternalAsesor
+  ) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/asesor/external`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  export async function getAsesoresPaginated(
+    token: string,
+    page: number,
+    limit: number
+  ) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/paginated/asesores?page=${page}&limit=${limit}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ["FetchedAsesorList"] }
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    const result = await response.json();
+    return result;
+  }
+  
+  export async function getAsesoresById(token: string, query: number) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/asesor/id/${query}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    const result = await response.json();
+    return result;
+  }
+  
+  export async function getAsesoresByName(token: string, query: string) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/asesor/name/${query}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    const result = await response.json();
+    return result;
+  }
+
   export async function postForeignAsesor(
     token: string,
     data: CreateForeignAsesor
@@ -20,8 +101,14 @@ export namespace UsuarioEndpoint {
     if (!response.ok) {
       throw new Error("Error fetching the data");
     }
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
+    }
   }
-  
+
   export async function findExternalAsesor(token: string, id: number) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/external/asesor/${id}`;
     const options = {
@@ -44,7 +131,7 @@ export namespace UsuarioEndpoint {
       return null;
     }
   }
-  
+
   export async function findExternalStudent(token: string, id: number) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/external/student/${id}`;
     const options = {
@@ -84,6 +171,12 @@ export namespace UsuarioEndpoint {
     const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error("Error fetching the data");
+    }
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
     }
   }
 
@@ -137,6 +230,7 @@ export namespace UsuarioEndpoint {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      next: { tags: ["PaginatedMastersList"] }
     };
     const response = await fetch(url, options);
     if (!response.ok) {
@@ -213,6 +307,7 @@ export namespace UsuarioEndpoint {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      next: { tags: ["PaginatedPhdList"] }
     };
     const response = await fetch(url, options);
     if (!response.ok) {

@@ -64,7 +64,7 @@ const LandingLogin = () => {
             placeholder="Clave Única"
             value={claveUnica}
             required
-            maxLength={6}
+            maxLength={7}
             onChange={(e) => {
               setClaveUnica(e.target.value);
             }}

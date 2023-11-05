@@ -9,11 +9,41 @@ import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { Usuario } from "./entities/usuario.entity";
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { CreateForeignAsesorDto } from "./dto/create-foreign-asesor.dto";
+import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
 
 @Controller("usuario")
 export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
 
+  @Post('/asesor/external')
+  async createExternalAsesor(@Body() createExternalAsesorDto: CreateExternalAsesorDto)
+  {
+    return await this.usuarioService.createExternalAsesor(createExternalAsesorDto);
+  }
+
+  @Get('/paginated/asesores')
+  async paginateAsesores(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ): Promise<Pagination<Usuario>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.usuarioService.paginateAsesores({
+      page,
+      limit,
+      route: '/paginated/asesores',
+    });
+  }
+
+  @Get("/asesor/id/:id")
+  async findAsesoresById(@Param("id") id_usuario: string) {
+    return await this.usuarioService.findAsesoresById(+id_usuario);
+  }
+
+  @Get("/asesor/name/:name")
+  async findAsesoresByName(@Param("name") name: string) {
+    return await this.usuarioService.findAsesoresByName(name);
+  }
+  
   @Get('/external/asesor/:id')
   async getExternalAsesor(@Param("id") id_usuario: string)
   {

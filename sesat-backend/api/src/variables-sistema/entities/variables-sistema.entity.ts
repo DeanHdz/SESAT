@@ -6,6 +6,6 @@ export class VariablesSistema {
     id_variables_sistema: number;
 
     @Column()
-    indice_clave_asesorexterno: number;
+    indice_clave_asesor_externo: number;
 
 }

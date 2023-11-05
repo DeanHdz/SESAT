@@ -3,7 +3,7 @@ export interface Usuario {
   id_usuario: number;
   id_rol: number;
   id_datos_alumno: number | null;
-  id_datos_asesorexterno: number | null;
+  id_datos_asesor_externo: number | null;
   nombre: string;
   apellido_paterno: string;
   apellido_materno: string;
@@ -15,7 +15,7 @@ export interface Usuario {
 export interface CreateUsuario {
   id_rol: number;
   id_datos_alumno: number | null;
-  id_datos_asesorexterno: number | null;
+  id_datos_asesor_externo: number | null;
   nombre: string;
   apellido_paterno: string;
   apellido_materno: string;
@@ -28,7 +28,7 @@ export interface UpdateUsuario {
   id_usuario: number;
   id_rol: number;
   id_datos_alumno: number | null;
-  id_datos_asesorexterno: number | null;
+  id_datos_asesor_externo: number | null;
   nombre: string;
   apellido_paterno: string;
   apellido_materno: string;
@@ -664,4 +664,17 @@ export interface CreateForeignAsesor {
   telefono: number,
   correo: string,
   organizacion: string, 
+}
+
+export interface ExternalAsesor {
+  nombre: string;
+  apellidos: string;
+  email: string;
+}
+
+export interface CreateExternalAsesor {
+  id: number;
+  nombre: string;
+  apellidos: string;
+  email: string;
 }
