@@ -2,14 +2,17 @@ import Drawer from "../components/Drawer"
 import ThesisRegistrationForm from "../components/ThesisRegistrationForm"
 
 export default function Home() {
+
+  /* fetch de usuario y pasarlo al componente, la verificacion si es alumno o no se hace dentro del ThesisRegistrationForm*/
+
   return (
     <div className="flex">
       <div className="hidden lg:flex lg:w-3/12 flex-col">
         <Drawer />
       </div>
 
-      <div className="w-full">
-        <ThesisRegistrationForm/>
+      <div className="w-full lg:w-9/12">
+        <ThesisRegistrationForm id_usuario={230443}/>
       </div>
 
     </div>

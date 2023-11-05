@@ -1,8 +1,26 @@
-/*
-import { SESAT } from "@/types/ISESAT";
+//import { SESAT } from "@/types/ISESAT";
+import { DatosAlumno } from "../types/ISESAT";
 
 
 export namespace DatosAlumnoEndpoint {
+
+  export async function getUserDataById(idUser: number, token: string) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/datos-alumno/${idUser}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    const result = await response.json();
+    return result;
+  }
+
   export const getDatosAlumno = async (
     id: number,
     token: string
@@ -107,4 +125,3 @@ export namespace DatosAlumnoEndpoint {
   };
 }
 
-*/
