@@ -22,6 +22,11 @@ export class DatosAlumnoController {
     return this.datosAlumnoService.findOne(+id);
   }
 
+  @Get('user/:id')
+  fetchByUserId(@Param('id') id: string) {
+    return this.datosAlumnoService.fetchByUserId(+id);
+  }
+
   @Put()
   update(@Body() updateDatosAlumnoDto: UpdateDatosAlumnoDto) {
     return this.datosAlumnoService.update(updateDatosAlumnoDto);

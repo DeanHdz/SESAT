@@ -22,6 +22,18 @@ export function shortFormatDate(dateString: string): string {
 
     return `${day.toString().padStart(2, '0')}/${month}/${year}`;
 }
+
+//Regresa dd/MMM/yyyy con la fecha actual
+export function shortFormatDateNew(): string {
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const date = new Date();
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day.toString().padStart(2, '0')}/${month}/${year}`;
+}
+
 //Regresa HH:MM AM/PM
 export function getFormattedHours(date: any): string {
     let hours = date.getHours();

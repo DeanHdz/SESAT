@@ -5,7 +5,7 @@ import { DatosAlumno } from "../types/ISESAT";
 export namespace DatosAlumnoEndpoint {
 
   export async function getUserDataById(idUser: number, token: string) {
-    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/datos-alumno/${idUser}`;
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/datos-alumno/user/${idUser}`;
     const options = {
       method: "GET",
       headers: {
