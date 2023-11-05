@@ -242,24 +242,22 @@ export interface Tesis {
 }
 
 export interface CreateTesis {
-  clave_alumno: number;
-  titulo: string | null;
-  fecharegistro: Date | null;
-  generacion: string | null;
-  registrada: boolean;
-  ultimo_avance: number | null; //0 is lacking registry
-  estado_activo: boolean;
+  id_usuario: number;
+  titulo: string;
+  fecha_registro: Date;
+  generacion: number;
+  ultimo_avance: number;
+  estado_finalizacion: boolean;
 }
 
 export interface UpdateTesis {
   id_tesis: number;
-  clave_alumno: number;
+  id_usuario: number;
   titulo: string;
-  fecharegistro: Date;
-  generacion: string | undefined;
-  registrada: boolean;
+  fecha_registro: Date;
+  generacion: number;
   ultimo_avance: number;
-  estado_activo: boolean;
+  estado_finalizacion: boolean;
 }
 
 /*------------------ COMITE INTERFACE ------------------*/
@@ -275,16 +273,16 @@ export interface Comite {
 }
 
 export interface CreateComite {
-  clave_asesor: number;
-  id_tesis: number;
-  id_funcion: number;
+  id_usuario: number,
+  id_tesis: number,
+  id_funcion: number
 }
 
 export interface UpdateComite {
-  id_comite: number;
-  clave_asesor: number;
-  id_tesis: number;
-  id_funcion: number;
+  id_comite: number,
+  id_usuario: number,
+  id_tesis: number,
+  id_funcion: number
 }
 
 /*------------------ COMITE INTERFACE ------------------*/

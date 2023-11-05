@@ -1,3 +1,29 @@
+import { CreateTesis, UpdateTesis } from "../types/ISESAT";
+
+export async function createTesis(   
+  tesisDto: CreateTesis,
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis`;
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(tesisDto),
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+  return result;
+}
+
 export async function fetchTesisCompletadasPhdPaginated(token: string, page: number, limit: number)
 {
   const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/paginated/phd?page=${page}&limit=${limit}`;

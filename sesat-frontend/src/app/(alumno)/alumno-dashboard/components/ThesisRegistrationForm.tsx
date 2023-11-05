@@ -1,7 +1,12 @@
 'use client'
 import React, { useState } from "react";
+import NotFound from "@/app/(admin)/admin-dashboard/not-found"
 import { DatosAlumnoEndpoint } from "../../../../../utils/datos-alumno.endpoint";
+import { create } from "domain";
+import { createTesis } from "../../../../../utils/tesis.endpoint";
+import { createComite } from "../../../../../utils/comite.endpoint";
 
+//interfaz creado para no interrumpir flujo de trabajo de otros, interfaz difiere con ISESAT por un atributo. Probablemente no pasa nada al agregarlo?
 interface DatosAlumno {
   id_datos_alumno: number;
   id_modalidad: number;
@@ -11,23 +16,6 @@ interface DatosAlumno {
   estado_activo: boolean;
   avance_previo: boolean;
 }
-
-/*interface comite {
-  id_comite: number;
-  id_usuario: number;
-  id_tesis: number;
-  id_funcion: number;
-}*/
-
-/*interface Tesis {
-  id_tesis: number;
-  id_usuario: number;
-  titulo: string;
-  fecha_registro: Date;
-  generacion: number;
-  ultimo_avance: number;//Consultar alfredo, por default inicia en 1 pero probablemente se define con un fetch
-  estado_finalizacion: boolean;
-}*/
 
 interface ThesisRegistrationFormProps {
   id_usuario: number
@@ -42,21 +30,50 @@ const ThesisRegistrationForm = (props: ThesisRegistrationFormProps) => {
     try {
       alumno_datos = await DatosAlumnoEndpoint.getUserDataById(props.id_usuario, '');
       // Rest of your code that uses alumno_datos
-    } catch (error) {
+    } catch (err) {
       // Handle any errors that might occur during the asynchronous operation.
     }
   }
   fetchDatos();
 
-  if(alumno_datos === null){
+  if(alumno_datos === null || alumno_datos === undefined){
     error = true;
   }
 
 
   //PASO 2 - si es alumno procede con el resto
-  const handleSubmit = (e: any) => {
+  async function handleSubmit (e: any) {
     e.preventDefault();
-    //console.log("Título:", title);
+    try{
+      //Crear condiciones de entradas. Y verificar si la creacion de tesis en conjunto al comite se hacen correctamente, de no ser asi -> deberian eliminarse?...
+
+      //Subida de prueba tesis
+      await createTesis(
+        {
+          id_usuario: props.id_usuario,
+          titulo: titulo,
+          fecha_registro: new Date(),
+          generacion: 2019,
+          ultimo_avance: 1,
+          estado_finalizacion: false
+        }, "");
+      //Verificar subida de tesis con fetch y recuperar el id que se le asigna. En caso de no existir dar un mensaje de alerta y detener el proceso
+      
+      alert("El registro de tesis se ha realizado.");
+
+
+      //Subida de prueba de un miembro de comite, debe recuperar el id_tesis generado anteriormente
+      await createComite(
+        {
+          id_usuario: 444444,
+          id_tesis: 2,
+          id_funcion: 3
+        }, "");
+      alert("El registro de comite se ha realizado.");
+
+    }catch(err){
+      console.log(err);
+    }
   };
 
   //Registro de Tesis
@@ -75,7 +92,7 @@ const ThesisRegistrationForm = (props: ThesisRegistrationFormProps) => {
   const [monitor, setMonitor] = useState('');
   const [isDropdownMonitorVisible, setDropdownMonitorVisible] = useState(false);
 
-  const names = ['John', 'Jane', 'Bob', 'Alice', 'Charlie']; // Lista de nombres
+  const names = ['John', 'Jane', 'Bob', 'Alice', 'Charlie']; // Lista de nombres, reemplazar con fetch de asesores
 
   const handleAsesorChange = (e: any) => {
     setAsesor(e.target.value);
