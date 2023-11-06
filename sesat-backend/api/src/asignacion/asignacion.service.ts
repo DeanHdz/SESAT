@@ -14,6 +14,8 @@ import { Periodo } from "src/periodo/entities/periodo.entity";
 import { MailService } from "src/mail/mail.service";
 import { TesisService } from "src/tesis/tesis.service";
 import { Comite } from "src/comite/entities/comite.entity";
+import { NotificacionService } from "src/notification/notification.service";
+import { ComiteService } from "src/comite/comite.service";
 
 @Injectable()
 export class AsignacionService {
@@ -24,7 +26,11 @@ export class AsignacionService {
     @InjectRepository(Tesis)
     private readonly tesisRepository: Repository<Tesis>,
 
-    private readonly mailService: MailService
+    private readonly mailService: MailService,
+
+    private readonly notificacionService: NotificacionService,
+
+    private readonly comiteService: ComiteService
   ) {}
 
   create(createAsignacionDto: CreateAsignacionDto) {
@@ -65,6 +71,22 @@ export class AsignacionService {
             relations: ["alumno"],
           });
 
+          let comite = await this.comiteService.findPerTesis(elem.id_tesis);
+
+          comite.forEach((member) => {
+            this.notificacionService.create({
+              id_usuario: member.id_usuario,
+              titulo: "Se ha creado una Asignacion",
+              descripcion: `La asignacion ${newAssignment.titulo} ha sido creada para el alumno ${tesis.alumno.nombre} ${tesis.alumno.apellido_paterno} ${tesis.alumno.apellido_materno}`,
+              fecha_expedicion: new Date(),
+            });
+          });
+          this.notificacionService.create({
+            id_usuario: tesis.alumno.id_usuario,
+            titulo: "Se ha creado una Asignacion",
+            descripcion: `La asignacion ${newAssignment.titulo} ha sido creada`,
+            fecha_expedicion: new Date(),
+          });
           this.mailService.newAssignment(newAssignment, tesis.alumno);
         });
         await Promise.all(promises);
@@ -133,7 +155,10 @@ export class AsignacionService {
   }
 
   findActive() {
-    return this.asignacionRepository.find({ where: { estado_entrega: 0 }, relations: ['periodo'] });
+    return this.asignacionRepository.find({
+      where: { estado_entrega: 0 },
+      relations: ["periodo"],
+    });
   }
 
   /**
@@ -181,8 +206,8 @@ export class AsignacionService {
 
   //Regresar asignaciones en base al periodo e ID de usuario
   async findAsignacionesByPeriodAndAlumno(idPeriodo: number, idAlumno: number) {
-
-    const resp = await this.asignacionRepository.createQueryBuilder('a')
+    const resp = await this.asignacionRepository
+      .createQueryBuilder("a")
       .select([
         "a.id_asignacion AS id_asignacion",
         "a.num_avance AS num_avance",
@@ -196,7 +221,7 @@ export class AsignacionService {
       .where("a.id_periodo = :id_periodo", { id_periodo: idPeriodo })
       .andWhere("u.id_usuario = :idUser", { idUser: idAlumno })
 
-      .getRawMany()
+      .getRawMany();
 
     return resp;
   }

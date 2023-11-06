@@ -1,13 +1,16 @@
-import '../../globals.css';
-import type { Metadata } from 'next';
-import AlumnoNavbar from './components/AlumnoNavbar';
-import { UsuarioEndpoint } from '../../../../utils/usuario.endpoint';
-import { Usuario } from '../../../../types/ISESAT';
+import "../../globals.css";
+import type { Metadata } from "next";
+import AlumnoNavbar from "./components/AlumnoNavbar";
+import { UsuarioEndpoint } from "../../../../utils/usuario.endpoint";
+import { LoggedUser, Usuario } from "../../../../types/ISESAT";
+import Cookies from "js-cookie";
+import { LoginEndpoint } from "../../../../utils/login.endpoint";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
-  title: 'Sistema de Evaluación y Seguimiento de Tesis',
-  description: 'Panel de alumno',
-  icons: '/images/uaslp-logo.png',
+  title: "Sistema de Evaluación y Seguimiento de Tesis",
+  description: "Panel de alumno",
+  icons: "/images/uaslp-logo.png",
 };
 
 export default async function RootLayout({
@@ -15,10 +18,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-  {/* Si el cookie a recibir contiene el nombre de usuario remover el get y reemplazar la variable a pasar el AlumnoNavbar -> user */}
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
   let usuario: Usuario | null = null;
-  usuario = await UsuarioEndpoint.getUserById(230443, '').catch();
+  usuario = await UsuarioEndpoint.getUserById(user.id_usuario, token).catch();
 
   return (
     <html lang="es">

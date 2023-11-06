@@ -6,9 +6,11 @@ import ContactoAsesor from "./components/Contacts";
 
 import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
 import {findAsignacionesByPeriodAndAlumno } from '../../../../utils/asignacion.endpoint';
-import { Usuario } from '../../../../types/ISESAT';
+import { LoggedUser, Usuario } from '../../../../types/ISESAT';
 import Contacts from './components/Contacts';
 import { findContactsByIdTesis } from '../../../../utils/comite.endpoint';
+import { LoginEndpoint } from '../../../../utils/login.endpoint';
+import { cookies } from 'next/headers';
 
 type AsignacionProps = {
   id_asignacion: number,
@@ -18,11 +20,14 @@ type AsignacionProps = {
 }
 
 export default async function Home() {
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
 
-  let alumnoID = 230443;
+  let alumnoID = user.id_usuario;
   let periodo = await fetchLatestPeriod("").catch();
-  let asignaciones: AsignacionProps[] = await findAsignacionesByPeriodAndAlumno(periodo.id_periodo, alumnoID, "");
-  let contactos: Usuario[] = await findContactsByIdTesis(6,"");
+  let asignaciones: AsignacionProps[] = await findAsignacionesByPeriodAndAlumno(periodo.id_periodo, alumnoID, token);
+  let contactos: Usuario[] = await findContactsByIdTesis(6, token);
 
   return (
     <main className="w-full flex">
