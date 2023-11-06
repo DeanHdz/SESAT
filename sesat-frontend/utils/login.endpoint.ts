@@ -39,7 +39,7 @@ export namespace LoginEndpoint {
         "Content-Type": "application/json",
         Authorization: `bearer ${token}`,
       },
-      next: { revalidate: 3600 },
+      next: { tags: ["UserRole"] }
     };
     const response = await fetch(url, options);
     if (!response.ok) {

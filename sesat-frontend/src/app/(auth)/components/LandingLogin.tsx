@@ -21,9 +21,11 @@ const LandingLogin = () => {
         password: contraseña,
       });
       const role = await LoginEndpoint.getUserRole(token.token);
+      console.log(role)
       switch(role.rol)
       {
         case "Administrador":
+          console.log("???")
           router.push("/admin-dashboard");
           break;
         case "Asesor":
