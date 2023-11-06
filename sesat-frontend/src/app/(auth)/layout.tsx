@@ -4,9 +4,9 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'SESAT',
-  description: 'Iniciar Sesión',
+  description: 'Inicio de Sesión',
+  icons: '/images/uaslp-logo.png',
 }
-
 export default function RootLayout({
   children,
 }: {
