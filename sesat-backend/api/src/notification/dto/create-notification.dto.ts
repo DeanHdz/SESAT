@@ -11,7 +11,7 @@ export class CreateNotificacionDto {
 
     @IsNotEmpty()
     @IsString()
-    decripcion: string;
+    descripcion: string;
 
     @IsNotEmpty()
     @IsDateString()

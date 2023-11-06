@@ -177,7 +177,7 @@ export interface UpdateAsignacion {
   estado_entrega: number;
   retroalimentacion: string | null;
   tipo: number;
-  fecha_presentacion:string | null;
+  fecha_presentacion: string | null;
 }
 
 /*------------------ ASIGNACION-TESIS INTERFACE ------------------*/
@@ -266,23 +266,20 @@ export interface UpdateTesis {
 
 export interface Comite {
   id_comite: number;
-  clave_asesor: number;
+  id_usuario: number;
   id_tesis: number;
   id_funcion: number;
-  asesor: Usuario;
-  tesis: Tesis;
-  funcion: Funcion;
 }
 
 export interface CreateComite {
-  clave_asesor: number;
+  id_usuario: number;
   id_tesis: number;
   id_funcion: number;
 }
 
 export interface UpdateComite {
   id_comite: number;
-  clave_asesor: number;
+  id_usuario: number;
   id_tesis: number;
   id_funcion: number;
 }
@@ -331,7 +328,6 @@ export interface FormatoEvaluacionFilled {
   titulo_tesis: string;
   fecha_comienzo: string;
   fecha_limite: string;
-
 }
 
 export interface CreateFormatoEvaluacion {
@@ -442,25 +438,25 @@ export interface UpdateRespuesta {
 
 export interface Notificacion {
   id_notificacion: number;
-  clave_usuario: number;
+  id_usuario: number;
   titulo: string;
   descripcion: string;
-  fecha_expedicion: Date;
+  fecha_expedicion: string;
 }
 
 export interface CreateNotificacion {
-  clave_usuario: number;
+  id_usuario: number;
   titulo: string;
   descripcion: string;
-  fecha_expedicion: Date;
+  fecha_expedicion: string;
 }
 
 export interface UpdateNotificacion {
   id_notificacion: number;
-  clave_usuario: number;
+  id_usuario: number;
   titulo: string;
   descripcion: string;
-  fecha_expedicion: Date;
+  fecha_expedicion: string;
 }
 
 /*------------------ DATOS ALUMNO INTERFACE ------------------*/
@@ -528,9 +524,10 @@ export interface ActaEvalForm {
 /*------------------ MISCELANEOUS -----------*/
 
 export interface LoggedUser {
-  message: string;
-  usuario: Usuario;
-  token: string;
+  id_usuario: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
 }
 
 export interface UsuarioPrueba {
@@ -600,7 +597,6 @@ export interface Evento {
   fecha_inicio: Date;
   fecha_termino: Date | null;
 }
-
 
 /*------------------ Periodo INTERFACE ------------------*/
 export interface CreatePeriodo {

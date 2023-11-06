@@ -22,7 +22,7 @@ export class UpdateNotificacionDto extends PartialType(CreateNotificacionDto) {
 
   @IsNotEmpty()
   @IsString()
-  decripcion: string;
+  descripcion: string;
 
   @IsNotEmpty()
   @IsDateString()
