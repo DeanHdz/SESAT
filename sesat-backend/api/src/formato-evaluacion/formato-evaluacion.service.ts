@@ -123,7 +123,7 @@ export class FormatoEvaluacionService {
       base64 = await pdfDoc.saveAsBase64();
 
       //Crear DTO 
-      createActa = new CreateFormatoEvaluacionDto(Buffer.from(base64), 1);
+      createActa = new CreateFormatoEvaluacionDto(Buffer.from(base64), 2);
 
     } catch (error) {
       logger.log(error);

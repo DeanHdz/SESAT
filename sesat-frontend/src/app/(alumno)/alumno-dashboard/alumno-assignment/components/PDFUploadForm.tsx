@@ -8,10 +8,12 @@ import PDFPreview from "@/app/(asesor)/asesor-dashboard/asesor-assignment/compon
 import PDFModal from "@/app/(asesor)/asesor-dashboard/asesor-assignment/components/PDFModal";
 import { formatAsISODate, getFormattedHours, shortFormatDate } from "../../../../../../utils/utils";
 import { useRouter } from "next/navigation";
+import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
 
 interface PDFUploadFormProps {
   asignacion: Asignacion;
   fecha_cierre: string;
+  server_time: string;
 }
 
 export const PDFUploadForm = (props: PDFUploadFormProps) => {
@@ -20,13 +22,14 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
   const [base64, setBase64] = useState<string>("");
   const [isSubmiting, setIsSubmitting] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [hideEditBtn, setHideEditBtn] = useState(false);
   const [cssDisabled, setCSSDisabled] = useState("")
   const [cssError, setCssError] = useState("hidden")
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
 
   let fecha_limite = new Date(props.fecha_cierre);
+  let fecha_actual = new Date(props.server_time);
+  let evaluacion_realizada = props.asignacion.calificacion && props.asignacion.id_acta_evaluacion && props.asignacion.id_formato_evaluacion;
   const router = useRouter();
 
   function bytesToMegabytes(bytes: number): number {
@@ -51,7 +54,7 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
         setCssError("");
       }
       else if (fileExtension !== "pdf") {
-        setmsg("Solo puedes subir documentos PDF");
+        setmsg("Solo se permiten archivos en formato PDF");
         setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
         setCssError("");
       } else {
@@ -69,46 +72,64 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
     }
   }
 
+  function setDefaultState() {
+    if (editMode) {//se hizo click en cancelar
+      setCssError("hidden");
+    } else {//se hizo click en editar
+      setCssOk("hidden");
+      setBuffer(undefined);
+      setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed");
+    }
+    setEditMode(!editMode)
+  }
+
   //Nota: el archivo seleccionado requiere ser leido para obtener los datos binarios del contenido
   //El hecho de que esté seleccionado solo nos da los metadatos
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      if (fileSelected) {
-        setIsSubmitting(true);
-        await updateAsignacion(
-          {
-            id_asignacion: props.asignacion.id_asignacion,
-            id_formato_evaluacion: props.asignacion.id_formato_evaluacion,
-            id_acta_evaluacion: props.asignacion.id_acta_evaluacion,
-            id_tesis: props.asignacion.id_tesis,
-            id_modalidad: props.asignacion.id_modalidad,
-            id_periodo: props.asignacion.id_periodo,
-            num_avance: props.asignacion.num_avance,
-            titulo: props.asignacion.titulo,
-            descripcion: props.asignacion.descripcion,
-            fecha_entrega: formatAsISODate(new Date()),
-            calificacion: props.asignacion.calificacion,
-            documento: base64,
-            estado_entrega: 1, // Actualizar el estado de entrega a 1
-            retroalimentacion: props.asignacion.retroalimentacion,
-            tipo: props.asignacion.tipo,
-            fecha_presentacion: props.asignacion.fecha_presentacion
-          }, "").catch(() => {
-            setIsSubmitting(false)
-            setmsg("Algo salió mal")
-            setCssError("")
-          });
-        router.refresh();
-        setEditMode(false)
-        setIsSubmitting(false);
-        setmsg("El documento se guardó correctamente")
-        setCssOk("")
-        setCssError("hidden")
+      let periodo = await fetchLatestPeriod("").catch();
+      if (periodo.fecha_cierre > periodo.server_time) {
+        if (fileSelected) {
+          setIsSubmitting(true);
+          await updateAsignacion(
+            {
+              id_asignacion: props.asignacion.id_asignacion,
+              id_formato_evaluacion: props.asignacion.id_formato_evaluacion,
+              id_acta_evaluacion: props.asignacion.id_acta_evaluacion,
+              id_tesis: props.asignacion.id_tesis,
+              id_modalidad: props.asignacion.id_modalidad,
+              id_periodo: props.asignacion.id_periodo,
+              num_avance: props.asignacion.num_avance,
+              titulo: props.asignacion.titulo,
+              descripcion: props.asignacion.descripcion,
+              fecha_entrega: formatAsISODate(new Date()),
+              calificacion: props.asignacion.calificacion,
+              documento: base64,
+              estado_entrega: 1, // Actualizar el estado de entrega a 1
+              retroalimentacion: props.asignacion.retroalimentacion,
+              tipo: props.asignacion.tipo,
+              fecha_presentacion: props.asignacion.fecha_presentacion
+            }, "").catch(() => {
+              setIsSubmitting(false)
+              setmsg("Algo salió mal")
+              setCssError("")
+            });
+          router.refresh();
+          setEditMode(false)
+          setIsSubmitting(false);
+          setmsg("El documento se guardó correctamente")
+          setCssOk("")
+          setCssError("hidden")
+        } else {
+          setmsg("Selecciona un archivo para entregar")
+          setCssError("")
+        }
       } else {
-        setmsg("Selecciona un documento")
+        setmsg("La fecha de entrega ha vencido")
         setCssError("")
       }
+
       //alert("El archivo PDF se ha subido.");
     } catch (error) {
       console.log(error);
@@ -120,22 +141,48 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
 
   return (
     <div className="w-full h-fit mt-6 mb-10 gray__border">
-      <div className="px-6 py-3 mb-3 flex flex-col lg:flex-row items-center text-xl font-semibold border-b">
-        <span>{props.asignacion.estado_entrega === 0 ? 'Subir un documento' : 'Avance de tesis entregado'}</span>
-        {props.asignacion.estado_entrega === 0 ? (
-          <button className={`ml-auto primary__btn_sm ${cssDisabled}`} onClick={handleSubmit}>
-            {isSubmiting ? (
-              <ProcessingAnim title="" />
-            ) : (
-              "Entregar"
-            )
-            }
-          </button>
-        ) : (
-          <button className={`ml-auto btn btn-sm px-6`} onClick={() => { setEditMode(!editMode) }}>
-            {editMode ? 'Cancelar' : 'Editar'}
-          </button>
-        )}
+
+      <div className={`px-6 py-3 mb-3 flex ${editMode && 'flex-col'}  lg:flex-row lg:items-center text-xl font-semibold border-b`}>
+        <span>
+          {props.asignacion.estado_entrega === 0 ? 'Subir un documento' : 'Avance de tesis entregado'}
+        </span>
+        <>
+          {!evaluacion_realizada ? (
+            <div className="ml-auto w-fit">
+              {
+                props.asignacion.estado_entrega === 0 && fecha_limite > fecha_actual ? (
+                  <button className={`btn btn-sm px-6 ${cssDisabled}`} onClick={handleSubmit}>
+                    {isSubmiting ? (
+                      <ProcessingAnim title="" />
+                    ) : (
+                      "Entregar"
+                    )
+                    }
+                  </button>
+                ) : (
+                  <>
+                    {fecha_limite > fecha_actual && (
+                      <div className={`flex flex-row ${editMode && 'mt-3'} lg:mt-0`}>
+                        <button className={`ml-auto btn btn-sm px-6`} onClick={setDefaultState}>
+                          {editMode ? 'Cancelar' : 'Editar'}
+                        </button>
+
+                        <button className={`ml-3 btn btn-sm px-6 ${cssDisabled} ${editMode ? '' : 'hidden'}`} onClick={handleSubmit}>
+                          {isSubmiting ? (
+                            <ProcessingAnim title="" />
+                          ) : (
+                            "Actualizar documento"
+                          )
+                          }
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )
+              }
+            </div>
+          ) : null}
+        </>
       </div>
       <div className="w-full flex flex-col h-fit px-6 pb-10">
         <div className={`font-SESAT rounded-md w-full p-3 my-3 bg-red-100 ${cssError}`}>
@@ -168,13 +215,15 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
           </>
         ) : (
           <>
-            <div className="flex flex-row">
-              <div className="flex flex-col mr-6">
-                <span className="font-SESAT">Fecha de entrega</span>
-                <p>{`${shortFormatDate(props.asignacion.fecha_entrega)} ${getFormattedHours(new Date(props.asignacion.fecha_entrega))}`}</p>
+            {props.asignacion.estado_entrega === 1 && (
+              <div className="flex flex-row">
+                <div className="flex flex-col mr-6">
+                  <span className="font-SESAT">Fecha de entrega</span>
+                  <p>{`${shortFormatDate(props.asignacion.fecha_entrega)} ${getFormattedHours(new Date(props.asignacion.fecha_entrega))}`}</p>
+                </div>
+                <PDFModal pdfdocument={props.asignacion.documento.data} />
               </div>
-              <PDFModal pdfdocument={props.asignacion.documento.data} />
-            </div>
+            )}
           </>
         )}
 

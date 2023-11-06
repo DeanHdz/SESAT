@@ -51,8 +51,8 @@ const AlumnoPDFModal = ({ id_document, docType }: { id_document: number, docType
     }
 
     function openPDFModal() {
-        document.body.classList.add('modal-open');
         setShowModal(true);
+        document.body.classList.add('modal-open');        
         setIsSubmitting(true);
         if (docType === 1) {            
             fetchPDFActaEvaluacion(id_document);
@@ -69,14 +69,13 @@ const AlumnoPDFModal = ({ id_document, docType }: { id_document: number, docType
         <>
             <button className="bg-[#004A8C] hover:bg-dark-blue-10 rounded-[15px] p-2 px-5 shadow hover:shadow-lg mr-1 mb-1 outline-none focus:outline-none" type='button' onClick={openPDFModal}>
                 <div className="text-center text-[#ffffff] text-[12px]">
-                    Ver documento de avance
+                    Ver documento
                 </div>
             </button>
-            {showModal ? (
+            {showModal && (
                 <>
-
                     <div className='w-screen h-screen bg-black/40 z-50 fixed top-0 right-0 flex justify-center pt-2 overflow-hidden'>
-                        <div className={`fixed w-full lg:w-11/12 lg:mx-auto p-2 border-0 rounded-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up lg:max-w-[1400px]`}>
+                        <div className={`w-full lg:w-11/12 lg:mx-auto p-2 pb-16 lg:pb-2 border-0 rounded-t-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up lg:max-w-[1400px]`}>
                             {/**Close button */}
                             <div className="w-full flex flex-row h-fit items-center">
                                 <div className='flex flex-row w-full'>
@@ -103,8 +102,7 @@ const AlumnoPDFModal = ({ id_document, docType }: { id_document: number, docType
 
 
                 </>
-            ) : null
-            }
+            )}
         </>
 
     )

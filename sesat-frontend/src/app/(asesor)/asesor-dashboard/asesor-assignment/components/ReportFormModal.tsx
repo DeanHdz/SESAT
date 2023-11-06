@@ -42,7 +42,7 @@ const ReportFormModal = ({
         }
     };
 
-    async function fetchReporteEvaluacion(idReporte: number) {                
+    async function fetchReporteEvaluacion(idReporte: number) {
         const res = await fetchFormatoEvaluacion(idReporte, "");
         setPDF(res.documento_rellenado.data);
         setIsSubmitting(false);
@@ -65,9 +65,10 @@ const ReportFormModal = ({
 
 
     async function handleSubmit(e: any) {
-        let gradoEstudio = tesisInfo.id_grado_estudio === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computación';
         e.preventDefault();
+        let gradoEstudio = tesisInfo.id_grado_estudio === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computación';        
         //try {
+        
         setIsSubmitting(true);
         const res = await postFormatoEvaluacion(
             asignacion.id_asignacion,
@@ -86,6 +87,7 @@ const ReportFormModal = ({
         );
         setPDF(res.documento_rellenado.data);
         setIsSubmitting(false);
+        
         /*}
         catch (err) {
             console.log(err);
@@ -125,93 +127,99 @@ const ReportFormModal = ({
                                     <PDFViewer buffer={generatedPDF} />
                                 ) : (
                                     <>
-                                        <div className='w-11/12 lg:w-5/6 mx-auto flex flex-col lg:flex-row mb-3'>
-                                            <div className='mb-3 lg:mb-0 font-SESAT text-4xl mr-auto'>
-                                                Formato para la evaluación de avance de tesis
+                                        <form action="submit" onSubmit={handleSubmit} className="w-full h-full overflow-y-scroll no-scrollbar">
+                                            <div className='w-11/12 lg:w-5/6 mx-auto flex flex-col lg:flex-row mb-3'>
+                                                <div className='mb-3 lg:mb-0 font-SESAT text-4xl mr-auto'>
+                                                    Formato para la evaluación de avance de tesis
+                                                </div>
+                                                <button type="submit" className="primary__btn">
+                                                    Generar reporte
+                                                </button>
                                             </div>
-                                            <button type="submit" onClick={handleSubmit} className="primary__btn">
-                                                Generar reporte
-                                            </button>
-                                        </div>
-                                        <div className="w-11/12 lg:w-5/6 mx-auto mb-3 lg:mb-10">
-                                            <span>Verifique que los datos sean correctos</span>
-                                        </div>
-                                        <div className="overflow-y-scroll w-full no-scrollbar">
-                                            <table className="w-11/12 lg:w-5/6 mx-auto table table-zebra text-base mb-32">
-                                                <thead>
-                                                    <tr className="text-dark-blue-20">
-                                                        <th className="w-1/3"></th>
-                                                        <th className="w-2/3"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td className="font-SESAT">Reporte </td>
-                                                        <td>
-                                                            <input
-                                                                className="py-2 px-3 appearance-none gray__border w-full"
-                                                                type="text"
-                                                                placeholder="Nombre del reporte"
-                                                                required
-                                                                value={tituloReporte}
-                                                                onChange={
-                                                                    (e) => {
-                                                                        settituloReporte(e.target.value)
+                                            <div className="w-11/12 lg:w-5/6 mx-auto mb-3 lg:mb-10">
+                                                <span>Verifique que los datos sean correctos</span>
+                                            </div>
+                                            <div className="w-full flex flex-col">
+                                                <table className="w-11/12 lg:w-5/6 mx-auto table table-zebra text-base">
+                                                    <thead>
+                                                        <tr className="text-dark-blue-20">
+                                                            <th className="w-1/3"></th>
+                                                            <th className="w-2/3"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td className="font-SESAT">Reporte </td>
+                                                            <td className="flex flex-row items-center">
+                                                                <input
+                                                                    className="py-2 px-3 appearance-none gray__border w-full"
+                                                                    type="text"
+                                                                    placeholder="Nombre del reporte"
+                                                                    required
+                                                                    maxLength={40}
+                                                                    value={tituloReporte}
+                                                                    onChange={
+                                                                        (e) => {
+                                                                            settituloReporte(e.target.value)
+                                                                        }
                                                                     }
-                                                                }
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="font-SESAT">Estudiante</td>
-                                                        <td>{`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno}`}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="font-SESAT">Asesor</td>
-                                                        <td>{`${asesor?.nombre} ${asesor?.apellido_paterno} ${asesor?.apellido_materno}`}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="font-SESAT">Coasesor</td>
-                                                        <td>{`${coasesor?.nombre} ${coasesor?.apellido_paterno} ${coasesor?.apellido_materno}`}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="font-SESAT">Comité de tesis</td>
-                                                        <td className="whitespace-normal">
-                                                            {comite?.map((elem, index) => (
-                                                                <span key={index}>
-                                                                    {`${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno}`}<br />
-                                                                </span>
-                                                            ))}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="font-SESAT">Titulo de tesis</td>
-                                                        <td>{tesisInfo.titulo}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="font-SESAT">Fecha de comienzo</td>
-                                                        <td>{shortFormatDate(tesisInfo.fecha_registro)}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="font-SESAT">Fecha limite para examen de grado:</td>
-                                                        <td><Flatpickr
-                                                            className={`gray__border w-full`}
-                                                            options={{
-                                                                enableTime: false,
-                                                                noCalendar: false,
-                                                                static: true,
-                                                            }}
-                                                            //data-enable-time
-                                                            placeholder=""
-                                                            value={fechaLimite}
-                                                            onChange={([date]) => {
-                                                                setFechaLimite(date)
-                                                            }}
-                                                        /></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                                />
+                                                                <p className="ml-3 text-black/30 font-SESAT">{tituloReporte.length}/40</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className="font-SESAT">Fecha limite para examen de grado:</td>
+                                                            <td><Flatpickr
+                                                                className={`gray__border w-full`}
+                                                                options={{
+                                                                    enableTime: false,
+                                                                    noCalendar: false,
+                                                                    static: true,
+                                                                }}
+                                                                //data-enable-time
+                                                                placeholder=""
+                                                                value={fechaLimite}
+                                                                onChange={([date]) => {
+                                                                    setFechaLimite(date)
+                                                                }}
+                                                            /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className="font-SESAT">Estudiante</td>
+                                                            <td>{`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno}`}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className="font-SESAT">Asesor</td>
+                                                            <td>{`${asesor?.nombre} ${asesor?.apellido_paterno} ${asesor?.apellido_materno}`}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className="font-SESAT">Coasesor</td>
+                                                            <td>{`${coasesor?.nombre} ${coasesor?.apellido_paterno} ${coasesor?.apellido_materno}`}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className="font-SESAT">Comité de tesis</td>
+                                                            <td className="whitespace-normal">
+                                                                {comite?.map((elem, index) => (
+                                                                    <span key={index}>
+                                                                        {`${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno}`}<br />
+                                                                    </span>
+                                                                ))}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className="font-SESAT">Titulo de tesis</td>
+                                                            <td>{tesisInfo.titulo}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className="font-SESAT">Fecha de comienzo</td>
+                                                            <td>{shortFormatDate(tesisInfo.fecha_registro)}</td>
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>                                                
+                                                
+                                            </div>
+                                        </form>
+
                                     </>
                                 )}
                             </>

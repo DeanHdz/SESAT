@@ -10,6 +10,11 @@ import { decode } from 'base64-arraybuffer';
 import { FormatoVacio } from 'src/formato-vacio/entities/formato-vacio.entity';
 import { shortFormatDate } from 'src/utils/utils';
 import { Asignacion } from 'src/asignacion/entities/asignacion.entity';
+import { Tesis } from 'src/tesis/entities/tesis.entity';
+import { Comite } from 'src/comite/entities/comite.entity';
+import { Funcion } from 'src/funcion/entities/funcion.entity';
+import { Usuario } from 'src/usuario/entities/usuario.entity';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 
 @Injectable()
@@ -47,10 +52,30 @@ export class ActaEvaluacionService {
     return this.actaEvalRepo.save(updateActaEvaluacionDto);
   }
 
-  async createActaAndfillDocument(idAsignacion: number, fillActa: FilledActDto) {    
+  async findComiteMembers(idAsignacion: number) {
+    const result = await this.asignacionRepository.createQueryBuilder('a')
+      .select([
+        'u.nombre AS nombre',
+        'u.apellido_paterno AS apellido_paterno',
+        'u.apellido_materno AS apellido_materno',
+        'f.nombre_funcion AS funcion'
+      ])
+      .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
+      .innerJoin(Comite, "c", "c.id_tesis = t.id_tesis")
+      .innerJoin(Usuario, "u", "u.id_usuario = c.id_usuario")
+      .innerJoin(Funcion, "f", "f.id_funcion = c.id_funcion")
+      .where('a.id_asignacion = :id_asignacion', { id_asignacion: idAsignacion })
+      .getRawMany()
+    return result;
+  }
+
+  async createActaAndfillDocument(idAsignacion: number, fillActa: FilledActDto) {
     var createActa: CreateActaEvaluacionDto;
     //obtener formato de la BD para rellenarlo, el resultado 
-    //por default se carga en un ArrayBuffer aunque sea un string       
+    //por default se carga en un ArrayBuffer aunque sea un string      
+
+    var comite = await this.findComiteMembers(fillActa.id_asignacion);
+    //Nota el id_formato_vacio siempre es fijo ya que la tabla solo contiene 2 registros(acta y formato)
     var emptyFormat = await this.formatoVacioRepository.findOne({ where: { id_formato_vacio: 1 } });
     var buffer = emptyFormat.acta_evaluacion;
 
@@ -81,18 +106,18 @@ export class ActaEvaluacionService {
       });*/
 
       //Nombres de las variables de los campos del PDF (FOR DEBUG)
-      const fieldNames = pdfDoc
+      /*const fieldNames = pdfDoc
         .getForm()
         .getFields()
         .map((f) => f.getName());
 
       logger.log('PDF Fields: ', fieldNames);
-      logger.log('ID: ',idAsignacion);
-      //Editar campos del PDF
+      logger.log('ID: ', idAsignacion);*/
 
+      //Editar campos del PDF
       var form = pdfDoc.getForm();
 
-      form.getTextField('posgrado').setText("Ciencias de la Computación");
+      form.getTextField('posgrado').setText("POSGRADO EN COMPUTACIÓN");
       form.getTextField('fecha_eval').setText(shortFormatDate(fillActa.fecha_eval));
       form.getTextField('ap_paterno').setText(fillActa.ap_pat);
       form.getTextField('ap_materno').setText(fillActa.ap_mat);
@@ -115,6 +140,10 @@ export class ActaEvaluacionService {
       form.getTextField('prox_toefl').setText(shortFormatDate(fillActa.prox_toefl));
       form.getTextField('observaciones').setText(fillActa.observaciones);
 
+      comite.map((elem, i) => {
+        form.getTextField(`nom_comite_${i + 1}`).setText(`${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno}`);
+        form.getTextField(`funcion_${i + 1}`).setText(elem.funcion);
+      })
 
       form.getTextField('posgrado').enableReadOnly();
       form.getTextField('fecha_eval').enableReadOnly();
@@ -139,8 +168,10 @@ export class ActaEvaluacionService {
       form.getTextField('prox_toefl').enableReadOnly();
       form.getTextField('observaciones').enableReadOnly();
 
-
-
+      for (let i = 0; i < 7; i++) {
+        form.getTextField(`nom_comite_${i + 1}`).enableReadOnly();
+        form.getTextField(`funcion_${i + 1}`).enableReadOnly();
+      }
 
       //Codificar datos binarios a base64                
       base64 = await pdfDoc.saveAsBase64();
@@ -148,24 +179,23 @@ export class ActaEvaluacionService {
       //Crear DTO 
       createActa = new CreateActaEvaluacionDto(Buffer.from(base64), 1);
 
+      let result = await this.actaEvalRepo.save(createActa);
+
+      const asignacion = await this.asignacionRepository.findOne({ where: { id_asignacion: idAsignacion } });
+      const newAsignacion = {
+        ...asignacion,
+        calificacion: fillActa.promedio,
+        id_acta_evaluacion: result.id_acta_evaluacion,
+        retroalimentacion: fillActa.comentarios
+      }
+      await this.asignacionRepository.save(newAsignacion);
+      return result;
+
     } catch (error) {
-      logger.log(error);
+      throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //Pendientes
-    //Actualizar calificacion en tabla asignacion
 
-    let result = await this.actaEvalRepo.save(createActa);
-    
-    const asignacion = await this.asignacionRepository.findOne({where: {id_asignacion: idAsignacion}});
-    const newAsignacion = {
-      ...asignacion,
-      calificacion: fillActa.promedio,
-      id_acta_evaluacion: result.id_acta_evaluacion,
-      retroalimentacion: fillActa.comentarios
-    }
-    await this.asignacionRepository.save(newAsignacion);
-    return result;
 
   }
 

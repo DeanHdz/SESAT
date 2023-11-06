@@ -30,6 +30,11 @@ export class ActaEvaluacionController {
     return this.actaEvaluacionService.findOne(+id);
   }
 
+  @Get('members/:idAsignacion')
+  findComiteMembers(@Param('idAsignacion') idAsignacion: string) {
+    return this.actaEvaluacionService.findComiteMembers(+idAsignacion);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateActaEvaluacionDto: UpdateActaEvaluacionDto) {
     return this.actaEvaluacionService.update(updateActaEvaluacionDto);

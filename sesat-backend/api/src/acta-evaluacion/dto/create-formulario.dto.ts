@@ -1,8 +1,18 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-//Esta clase representa lo que el usuario envia desde el lado del cliente
+//Nota este DTO se usa unicamente en acta evaluacion y no corresponde
+//a los campos de la tabla, sino a los campos del acta de evaluacion
+//que es el documento que se guarda en esta tabla
 
 export class FilledActDto {
+    @IsNotEmpty()
+    @IsNumber()
+    id_asignacion: number;
+
+    @IsNotEmpty()
+    @IsString()
+    grado_estudio: string;
+
     @IsNotEmpty()
     @IsString()
     fecha_eval: string;

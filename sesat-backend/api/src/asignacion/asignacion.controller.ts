@@ -119,6 +119,11 @@ export class AsignacionController {
     return this.asignacionService.update(updateAsignacionDto);
   }
 
+  @Put('student/turn_in')
+  turnInThesisAdvance(@Body() updateAsignacionDto: UpdateAsignacionDto) {
+    return this.asignacionService.turnInThesisAdvance(updateAsignacionDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.asignacionService.remove(+id);

@@ -4,15 +4,16 @@ import { UpdatePeriodoDto } from './dto/update-periodo.dto';
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Periodo } from './entities/periodo.entity';
+import { formatAsISODate } from 'src/utils/utils';
 
 @Injectable()
 export class PeriodoService {
   constructor(
     @InjectRepository(Periodo)
     private periodoRepository: Repository<Periodo>
-  ) {}
+  ) { }
 
-  create(createPeriodoDto: CreatePeriodoDto) {    
+  create(createPeriodoDto: CreatePeriodoDto) {
     return this.periodoRepository.save(createPeriodoDto);
   }
 
@@ -25,9 +26,9 @@ export class PeriodoService {
   }
 
   //Obtener el ultimo periodo creado
-  async findLatestPeriod() {    
+  async findLatestPeriod() {
     const result = await this.periodoRepository
-      .createQueryBuilder('p')  
+      .createQueryBuilder('p')
       .select([
         'p.id_periodo',
         'p.fecha_apertura',
@@ -38,11 +39,24 @@ export class PeriodoService {
       .orderBy('p.id_periodo', 'DESC')
       .limit(1)
       .getOne();
-  
-    return result;
+
+    // hora del servidor
+    const serverTime = new Date();
+
+    // incluir hora del servidor en la respuesta
+    const response = {
+      id_periodo: result.id_periodo,
+      fecha_apertura: result.fecha_apertura,
+      fecha_cierre: result.fecha_cierre,
+      fecha_apertura_opc: result.fecha_apertura_opc,
+      fecha_cierre_opc: result.fecha_cierre_opc,
+      server_time: serverTime.toISOString()
+    };
+
+    return response;
   }
 
-  
+
 
   update(updatePeriodoDto: UpdatePeriodoDto) {
     return this.periodoRepository.save(updatePeriodoDto);

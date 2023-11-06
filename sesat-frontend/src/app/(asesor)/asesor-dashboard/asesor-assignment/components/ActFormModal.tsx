@@ -31,6 +31,10 @@ const ActFormModal = ({
   const [proxToefl, setProxToefl] = useState(new Date());
   const [observaciones, setObservaciones] = useState("");
 
+  let condicionFinalizacion = tesisInfo.id_grado_estudio === 2 && asignacion.num_avance === 6 || asignacion.num_avance === 7;
+  
+  const [marcarFinalizada, setMarcarFinalizada] = useState('');
+
   const openActFormModal = () => {
     document.body.classList.add('modal-open');
     setIsOpen(true);
@@ -41,7 +45,11 @@ const ActFormModal = ({
     }
   };
 
-  async function fetchPDFActaEvaluacion(idActa: number) {    
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMarcarFinalizada(event.target.value);
+  };
+
+  async function fetchPDFActaEvaluacion(idActa: number) {
     const res = await fetchActaEvaluacion(idActa, "");
     setPDF(res.documento_rellenado.data);
     setIsSubmitting(false);
@@ -64,6 +72,8 @@ const ActFormModal = ({
       const res = await postActaEvaluacion(
         asignacion.id_asignacion,
         {
+          id_asignacion: asignacion.id_asignacion,
+          grado_estudio: tesisInfo.id_grado_estudio === 1 ? 'Maestría' : 'Doctorado',
           fecha_eval: formatAsISODate(fechaEval),
           ap_pat: tesisInfo.apellido_paterno,
           ap_mat: tesisInfo.apellido_materno,
@@ -90,6 +100,7 @@ const ActFormModal = ({
       );
       setPDF(res.documento_rellenado.data);
       setIsSubmitting(false);
+
     }
     catch (err) {
       console.log(err);
@@ -110,7 +121,7 @@ const ActFormModal = ({
       {
         isOpen && (
           <div className='w-screen h-screen bg-black/40 z-50 fixed top-0 right-0 flex justify-center pt-2 overflow-hidden'>
-            <div className={` w-full lg:w-11/12 lg:mx-auto p-2 pb-16 lg:pb-2 border-0 rounded-t-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up lg:max-w-[1400px]`}>
+            <div className={`w-full lg:w-11/12 lg:mx-auto p-2 border-0 rounded-t-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up lg:max-w-[1400px] h-full`}>
 
               {/**Close button */}
               <div className="w-full flex flex-row h-fit items-center">
@@ -128,25 +139,25 @@ const ActFormModal = ({
                 <>
                   {generatedPDF ? (
                     <>
+
                       <PDFViewer buffer={generatedPDF} />
                     </>
                   ) : (
                     <>
-                      {/**Title bar */}
-                      <div className='w-11/12 lg:w-5/6 mx-auto flex flex-col lg:flex-row pr-3 mb-3'>
-                        <div className='font-SESAT text-4xl mr-auto mb-3 lg:mb-0'>
-                          Acta de evaluación de avance de tesis
-                        </div>
-                        <button type="submit" onClick={handleSubmit} className="primary__btn">
-                          Guardar
-                        </button>
-                      </div>
+                      <form action="submit" onSubmit={handleSubmit} className="w-full h-full overflow-y-hidden">
+                        {/**Title bar */}
 
-                      {/**Content */}
-                      <div className='w-full flex flex-col overflow-y-scroll'>
-                        {/*<ActForm />*/}
-                        <form /*onSubmit={handleSubmit}*/>
-                          <div className="flex flex-row w-11/12 lg:w-5/6 m-auto mt-6 mb-0 h-fit p-0">
+                        <div className='w-11/12 lg:w-5/6 mx-auto mb-3 bg-white flex flex-col lg:flex-row'>
+                          <div className='font-SESAT text-4xl mr-auto mb-3 lg:mb-0'>
+                            Acta de evaluación de avance de tesis
+                          </div>
+                          <button type="submit" className="primary__btn mr-3">
+                            Guardar
+                          </button>
+                        </div>
+                        {/**Content */}
+                        <div className='h-fit max-h-[80vh] w-full flex flex-col overflow-y-scroll pb-48 lg:pb-20'>
+                          <div className="flex flex-row w-11/12 lg:w-5/6 m-auto mt-10 mb-0 h-fit p-0">
                             <div className="flex flex-row w-full lg:justify-end items-center sm:mb-10">
                               <label className="block mr-4 text-lg font-bold">
                                 Fecha de evaluación:
@@ -239,11 +250,13 @@ const ActFormModal = ({
                               <label className="mb-3 block text-lg font-bold">
                                 Comentarios y sugerencias
                               </label>
+                              <p className="text-black/30 font-SESAT">{comentarios.length}/600</p>
                               <textarea
-                                className="textarea h-48 w-full px-6 lg:px-10 gray__border text-base mb-10 "
+                                className="textarea h-36 w-full px-6 lg:px-10 gray__border text-base mb-10 "
                                 placeholder="Escriba sus sugerencias o comentarios"
                                 value={comentarios}
                                 required
+                                maxLength={600}
                                 onChange={
                                   (e) => {
                                     autosize(e.currentTarget);
@@ -262,7 +275,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="%"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={100}
                                       value={documentoAvance}
                                       required
                                       onChange={
@@ -280,7 +294,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="%"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={100}
                                       value={exposicion}
                                       required
                                       onChange={
@@ -298,7 +313,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="%"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={100}
                                       value={dominioTema}
                                       required
                                       onChange={
@@ -316,7 +332,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="%"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={100}
                                       value={gradoAvance}
                                       required
                                       onChange={
@@ -338,6 +355,35 @@ const ActFormModal = ({
                                   </div>
                                 </div>
                               </div>
+                              {condicionFinalizacion && (
+                                <>
+                                  <label className="mt-10 mb-3 block text-lg font-bold">Avance de tesis {asignacion.num_avance}</label>
+                                  <div className="flex flex-col py-6 px-6 bg-light-blue-10 rounded border border-solid border-light-gray-22 mb-10">
+                                    <label className="mb-3 block text-lg font-bold">
+                                      Con base en el avance entregado, ¿El alumno ha concluido su tesis?
+                                    </label>
+                                    <div className="flex flex-row items-center mb-3">
+                                      <div className="flex flex-row items-center mr-16">
+                                        <label className="mr-3 block text-lg font-bold">
+                                          Sí
+                                        </label>
+                                        <input type="radio" name="radio-2" className="radio radio-primary" value="Si" checked={marcarFinalizada === 'Si'} onChange={handleRadioChange} />
+                                      </div>
+
+                                      <div className="flex flex-row items-center">
+                                        <label className="mr-3 block text-lg font-bold">
+                                          No
+                                        </label>
+                                        <input type="radio" name="radio-2" className="radio radio-primary" onChange={handleRadioChange} value="No" checked={marcarFinalizada === 'No'} />
+                                      </div>
+                                    </div>
+
+                                    <label className="mb-3 block text-lg">
+                                      *En caso de indicar que no, el alumno deberá entregar un avance de tesis al sistema SESAT el próximo periodo
+                                    </label>
+                                  </div>
+                                </>
+                              )}
                               <label className="mt-10 mb-3 block text-lg font-bold">Acerca del examen TOEFL</label>
                               <div className="flex flex-col  w-full m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
                                 <div className="flex flex-col lg:flex-row justify-normal">
@@ -368,7 +414,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="pts"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={677}
                                       value={puntajeToefl}
                                       required
                                       onChange={
@@ -404,11 +451,13 @@ const ActFormModal = ({
                               <label className="mb-3 mt-10 block text-lg font-bold">
                                 Observaciones y compromisos
                               </label>
+                              <p className="text-black/30 font-SESAT">{observaciones.length}/110</p>
                               <textarea
                                 className="textarea h-20 lg:h-12 w-full px-6 lg:px-10 gray__border text-base mb-10"
                                 placeholder="Escriba sus observaciones y compromisos para el alumno"
                                 value={observaciones}
                                 required
+                                maxLength={110}
                                 onChange={
                                   (e) => {
                                     autosize(e.currentTarget);
@@ -418,8 +467,8 @@ const ActFormModal = ({
                               ></textarea>
                             </div>
                           </div>
-                        </form>
-                      </div>
+                        </div>
+                      </form>
                     </>
                   )}
                 </>
