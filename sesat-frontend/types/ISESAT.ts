@@ -501,6 +501,7 @@ export interface UploadPDF {
 //por ahora solo lo basico para pruebas
 export interface ActaEvalForm {
   id_asignacion: number;
+  id_acta_evaluacion: number | null;
   grado_estudio: string;
   fecha_eval: string;
   ap_pat: string;
