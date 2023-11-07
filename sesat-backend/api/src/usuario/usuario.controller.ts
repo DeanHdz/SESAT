@@ -14,7 +14,7 @@ import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
 @Controller("usuario")
 export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
-
+  
   @Get('/id/:id')
   async getById(@Param("id") id: string)
   {

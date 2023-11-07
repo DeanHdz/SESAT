@@ -592,8 +592,8 @@ export interface UpdatePrograma {
 export interface Evento {
   id_evento: number;
   id_usuario: number;
+  id_creador: number;
   titulo: string;
-  descripcion: string | null;
   fecha_inicio: Date;
   fecha_termino: Date | null;
 }

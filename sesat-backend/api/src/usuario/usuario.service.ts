@@ -30,6 +30,8 @@ import { CreateDatosAsesorexternoDto } from "src/datos-asesor-externo/dto/create
 import { VariablesSistemaService } from "src/variables-sistema/variables-sistema.service";
 import { UpdateVariablesSistemaDto } from "src/variables-sistema/dto/update-variables-sistema.dto";
 import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
+import { EventoService } from "src/evento/evento.service";
+import { Evento } from "src/evento/entities/evento.entity";
 
 @Injectable()
 export class UsuarioService {

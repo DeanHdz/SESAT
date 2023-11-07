@@ -21,15 +21,15 @@ export default async function RootLayout({
   const cookie = cookies().get("SESATsession")?.value;
   const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
-  let usuario: Usuario | null = null;
-  usuario = await UsuarioEndpoint.getUserById(user.id_usuario, token).catch();
+  const usuarioData: Promise<Usuario[]> = UsuarioEndpoint.getUserById(user.id_usuario, token)
+  const usuario = await usuarioData;
 
   return (
     <html lang="es">
       <body className="w-screen overflow-x-hidden mb-10">
         <div className="flex lg:flex-row justify-center w-11/12 m-auto mt-6">
           <div className="w-full">
-            <AlumnoNavbar user={usuario} />
+            <AlumnoNavbar user={usuario[0]} />
             {children}
           </div>
         </div>

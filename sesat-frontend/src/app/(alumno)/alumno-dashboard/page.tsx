@@ -6,11 +6,12 @@ import ContactoAsesor from "./components/Contacts";
 
 import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
 import {findAsignacionesByPeriodAndAlumno } from '../../../../utils/asignacion.endpoint';
-import { LoggedUser, Usuario } from '../../../../types/ISESAT';
+import { Evento, LoggedUser, Usuario } from '../../../../types/ISESAT';
 import Contacts from './components/Contacts';
 import { findContactsByIdTesis } from '../../../../utils/comite.endpoint';
 import { LoginEndpoint } from '../../../../utils/login.endpoint';
 import { cookies } from 'next/headers';
+import { EventoEndpoint } from '../../../../utils/evento.endpoint';
 
 type AsignacionProps = {
   id_asignacion: number,
@@ -23,6 +24,9 @@ export default async function Home() {
   const cookie = cookies().get("SESATsession")?.value;
   const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+
+  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("", user.id_usuario);
+  const eventos = await eventosData;
 
   let alumnoID = user.id_usuario;
   let periodo = await fetchLatestPeriod("").catch();
@@ -51,7 +55,7 @@ export default async function Home() {
             <p className="text-2xl font-bold">Calendario de Actividades</p>
           </div>
           <div className="mt-2 w-full">
-            <Calendar />
+            <Calendar eventos={eventos}/>
             <Contacts contacts={contactos}/>
           </div>
         </div>
@@ -66,7 +70,7 @@ export default async function Home() {
             <p className="text-2xl font-bold">Calendario de Actividades</p>
           </div>
           <div className="mt-2 w-full">
-            <Calendar />
+            <Calendar eventos={eventos}/>
             <NotificacionSection />
             <Contacts contacts={contactos}/>
           </div>

@@ -11,6 +11,7 @@ import { TesisModule } from "src/tesis/tesis.module";
 import { AsignacionModule } from "src/asignacion/asignacion.module";
 import { DatosAsesorexternoModule } from "src/datos-asesor-externo/datos-asesor-externo.module";
 import { VariablesSistemaModule } from "src/variables-sistema/variables-sistema.module";
+import { EventoModule } from "src/evento/evento.module";
 
 @Module({
   imports: [

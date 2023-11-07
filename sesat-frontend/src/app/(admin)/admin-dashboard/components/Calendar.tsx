@@ -9,6 +9,7 @@ import { useState } from "react";
 import esLocale from "@fullcalendar/core/locales/es";
 import ViewEventModal from "../../../components/ViewEventModal";
 import AddEventModal from "../../../components/AddEventModal";
+import { LargeNumberLike } from "crypto";
 
 /**
  * Docs
@@ -26,13 +27,14 @@ export default function Calendar(
   const [startDate, setstartDate] = useState<Date | undefined>(new Date());
   const [endDate, setendDate] = useState<Date | undefined>();
   const [eventTitle, seteventTitle] = useState<string | undefined>(undefined);
+  const [creatorId,setCreatorId] = useState<number>();
   const [isClicked, setClick] = useState(false);
 
-  //const events = [{ title: "Meeting", start: new Date(), end: new Date("2023-10-04T23:59:59") }];
   let events = [];
   events = eventos.map((evento) => {
     return {
       id: `${evento.id_evento}`,
+      id_creador: evento.id_creador,
       title: evento.titulo,
       start: new Date(evento.fecha_inicio),
       end: evento.fecha_termino
@@ -61,11 +63,14 @@ export default function Calendar(
 
   // a custom render function
   function renderEventContent(eventInfo: any) {
+    const title = eventInfo.event.title.split("!!");
+    console.log("title")
+    console.log(title)
     return (
       <>
         <div className="w-full h-full cursor-pointer px-2 flex flex-col overflow-hidden">
           <b>{eventInfo.timeText}</b>
-          <i>{eventInfo.event.title}</i>
+          <i>{title[0]}</i>
         </div>
       </>
     );
@@ -74,6 +79,7 @@ export default function Calendar(
   function showEventDetails(eventClickInfo: any) {
     seteventTitle(eventClickInfo.event.title);
     setstartDate(eventClickInfo.event.start);
+    setendDate(eventClickInfo.event.end);
     (
       document.getElementById("view_event_modal") as HTMLDialogElement
     ).showModal();
@@ -133,7 +139,9 @@ export default function Calendar(
       <ViewEventModal
         eventTitle={eventTitle as string}
         startDate={startDate as Date}
+        endDate={endDate ? endDate : null}
       />
+      {/*event={?}*/}
     </>
   );
 }

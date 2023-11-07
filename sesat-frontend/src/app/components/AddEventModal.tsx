@@ -51,8 +51,6 @@ const AddEventModal = ({
   const [changeDate, setChangeDate] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean | undefined>(false);
 
-
-
   useEffect(() => {
     setStartDate(
       new Date(
@@ -91,7 +89,6 @@ const AddEventModal = ({
   const [tab, setTab] = useState<number>(0);
 
   const setActiveTab = (tab: number) => {
-
     switch (tab) {
       case 1:
       default:
@@ -109,45 +106,45 @@ const AddEventModal = ({
 
   useEffect(() => {
     setActiveTab(tab);
-  }, [])
+  }, []);
 
   const Tabs = (
     <div className="tabs mt-4">
-      <button 
-        className={`text-bold text-dark-blue-10 text-lg tab tab-lifted ${cssTab0}`} 
-        onClick={() => { 
+      <button
+        className={`text-bold text-dark-blue-10 text-lg tab tab-lifted ${cssTab0}`}
+        onClick={() => {
           setActiveTab(1);
-          if(showListSection)
-            setShowListSection(!showListSection);
-          if(!showAddSection)
-            setShowAddSection(!showAddSection);
+          if (showListSection) setShowListSection(!showListSection);
+          if (!showAddSection) setShowAddSection(!showAddSection);
         }}
       >
         Añadir Participantes
       </button>
-      <button 
-        className={`text-bold text-dark-blue-10 text-lg tab tab-lifted ${cssTab1}`} 
+      <button
+        className={`text-bold text-dark-blue-10 text-lg tab tab-lifted ${cssTab1}`}
         onClick={() => {
           setActiveTab(2);
-          if(showAddSection)
-            setShowAddSection(!showAddSection);
-          if(!showListSection)
-            setShowListSection(!showListSection);
+          if (showAddSection) setShowAddSection(!showAddSection);
+          if (!showListSection) setShowListSection(!showListSection);
         }}
       >
         Ver Listado de Participantes
       </button>
-    </div> 
+    </div>
   );
   /* Tabs */
 
   /* Section States */
-  const [showAddSection, setShowAddSection] = useState<boolean | undefined>(true);
-  const [showListSection, setShowListSection] = useState<boolean | undefined>(false);
+  const [showAddSection, setShowAddSection] = useState<boolean | undefined>(
+    true
+  );
+  const [showListSection, setShowListSection] = useState<boolean | undefined>(
+    false
+  );
   /* Section States */
-  
+
   /* AddSection */
-  
+
   /* Search */
   const [text, setText] = useState<string | null>(null);
   const [query] = useDebounce(text, 750);
@@ -155,37 +152,36 @@ const AddEventModal = ({
 
   useEffect(() => {
     const getUsuario = async (op: number) => {
-      switch(op)
-      {
+      switch (op) {
         case 1: //find by Id
-          const usuarioByIdData: Promise<Usuario[]> = UsuarioEndpoint.getUserById(query ? parseInt(query) : 0, "[token]");
+          const usuarioByIdData: Promise<Usuario[]> =
+            UsuarioEndpoint.getUserById(query ? parseInt(query) : 0, "[token]");
           const fetchedUsuarioById = await usuarioByIdData;
-          if(fetchedUsuarioById != null)
-            setUsuario(fetchedUsuarioById);
+          if (fetchedUsuarioById != null) setUsuario(fetchedUsuarioById);
           break;
         case 2: //Find by Name
-          const usuarioByNameData: Promise<Usuario[]> = UsuarioEndpoint.getUserByName("[token]", query ? query : "");
+          const usuarioByNameData: Promise<Usuario[]> =
+            UsuarioEndpoint.getUserByName("[token]", query ? query : "");
           const fetchedUsuarioByName = await usuarioByNameData;
-          if(fetchedUsuarioByName != null)
-            setUsuario(fetchedUsuarioByName);
+          if (fetchedUsuarioByName != null) setUsuario(fetchedUsuarioByName);
           break;
       }
-      
-    }
-    if(query != null && query != "")
-    {
-      if(!isNaN(Number(query))){ //is Nan Shit
+    };
+    if (query != null && query != "") {
+      if (!isNaN(Number(query))) {
+        //is Nan Shit
         getUsuario(1);
-      }
-      else{
+      } else {
         getUsuario(2);
       }
-    } 
+    }
   }, [query]); //,router
 
   const removeUser = (userId: number) => {
     // Find the index of the user with the specified ID
-    const userIndex = participants.findIndex((user: Usuario) => user.id_usuario === userId);
+    const userIndex = participants.findIndex(
+      (user: Usuario) => user.id_usuario === userId
+    );
 
     if (userIndex !== -1) {
       // Create a new array without the user at the found index
@@ -220,13 +216,13 @@ const AddEventModal = ({
         </svg>
       </div>
     </div>
-  )
+  );
   /* Search */
 
   const [addSectionGate, setAddSectionGate] = useState<number>(0);
   const [btn1Active, setBtn1Active] = useState<boolean>(false);
   const [btn2Active, setBtn2Active] = useState<boolean>(false);
-  
+
   const [participants, setParticipants] = useState<Usuario[]>([]);
 
   const AddSection = (
@@ -237,46 +233,53 @@ const AddEventModal = ({
         </p>
         {participants.length === 0 ? (
           <div className="flex justify-center gap-4 mb-2">
-          <button 
-            type="button" 
-            className={`${btn1Active? "bg-dark-blue-10 text-white border border-white" : "text-dark-blue-10 border-blue-700 border"} font-bold rounded-lg text-sm text-center px-2 py-2`}
-            onClick={() => {
-              if(!btn1Active){
-                const gate = addSectionGate + 1;
-                setAddSectionGate(gate)
-              }else{
-                const gate = addSectionGate - 1;
-                setAddSectionGate(gate)
-              }
-              setBtn1Active(!btn1Active)
-            }}
-          >
-            Todos los Alumnos
-          </button>
-          <button 
-            type="button" 
-            className={`${btn2Active? "bg-dark-blue-10 text-white border border-white" : "text-dark-blue-10 border-blue-700 border"} font-bold rounded-lg text-sm text-center px-2 py-2`}
-            onClick={() => {
-              if(!btn2Active){
-                const gate = addSectionGate + 1;
-                setAddSectionGate(gate)
-              }else{
-                const gate = addSectionGate - 1;
-                setAddSectionGate(gate)
-              }
-              setBtn2Active(!btn2Active)
-            }}
-          >
-            Todos los Asesores
-          </button>
-        </div>
+            <button
+              type="button"
+              className={`${
+                btn1Active
+                  ? "bg-dark-blue-10 text-white border border-white"
+                  : "text-dark-blue-10 border-blue-700 border"
+              } font-bold rounded-lg text-sm text-center px-2 py-2`}
+              onClick={() => {
+                if (!btn1Active) {
+                  const gate = addSectionGate + 1;
+                  setAddSectionGate(gate);
+                } else {
+                  const gate = addSectionGate - 1;
+                  setAddSectionGate(gate);
+                }
+                setBtn1Active(!btn1Active);
+              }}
+            >
+              Todos los Alumnos
+            </button>
+            <button
+              type="button"
+              className={`${
+                btn2Active
+                  ? "bg-dark-blue-10 text-white border border-white"
+                  : "text-dark-blue-10 border-blue-700 border"
+              } font-bold rounded-lg text-sm text-center px-2 py-2`}
+              onClick={() => {
+                if (!btn2Active) {
+                  const gate = addSectionGate + 1;
+                  setAddSectionGate(gate);
+                } else {
+                  const gate = addSectionGate - 1;
+                  setAddSectionGate(gate);
+                }
+                setBtn2Active(!btn2Active);
+              }}
+            >
+              Todos los Asesores
+            </button>
+          </div>
         ) : (
           ""
         )}
       </div>
-      { addSectionGate === 0 ? 
-        (
-          <>
+      {addSectionGate === 0 ? (
+        <>
           <p className="my-2 italics font-semibold text-dark-blue-10">
             Buscar participantes:
           </p>
@@ -292,28 +295,46 @@ const AddEventModal = ({
                 </tr>
               </thead>
               <tbody>
-                { usuario?.map((user: Usuario) => (
+                {usuario?.map((user: Usuario) => (
                   <tr>
                     <td className="w-[25px]">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/> 
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                       </svg>
                     </td>
                     <td className="text-center">{user?.nombre}</td>
                     <td className="text-center">{`${user?.apellido_paterno} ${user?.apellido_materno}`}</td>
                     <td className="text-center">
-                      { participants.length > 0 && participants.some((newUser: Usuario) => newUser.id_usuario === user.id_usuario) ? (
+                      {participants.length > 0 &&
+                      participants.some(
+                        (newUser: Usuario) =>
+                          newUser.id_usuario === user.id_usuario
+                      ) ? (
                         ""
                       ) : (
-                        <button 
-                        className="text-dark-blue-10 font-bold rounded-full border border-dark-blue-10 text-sm text-center p-1"
-                        onClick={() => {
-                          if(!participants.some((newUser: Usuario) => newUser.id_usuario === user.id_usuario))
-                            setParticipants((prevArray) => [...prevArray, user]);
-                        }}
-                      >
-                        +
-                      </button>
+                        <button
+                          className="text-dark-blue-10 font-bold rounded-full border border-dark-blue-10 text-sm text-center p-1"
+                          onClick={() => {
+                            if (
+                              !participants.some(
+                                (newUser: Usuario) =>
+                                  newUser.id_usuario === user.id_usuario
+                              )
+                            )
+                              setParticipants((prevArray) => [
+                                ...prevArray,
+                                user,
+                              ]);
+                          }}
+                        >
+                          +
+                        </button>
                       )}
                     </td>
                   </tr>
@@ -322,96 +343,100 @@ const AddEventModal = ({
             </table>
           </div>
         </>
-        )
-        :
-        ("")
-      }
+      ) : (
+        ""
+      )}
     </div>
-  )
+  );
 
   /* AddSection */
 
   /* ListSection */
   const ListSection = (
     <div className="gray__border p-2">
-      <p className="font-semibold">
-        Se asignará a los usuarios seleccionados:
-      </p>
-      { btn1Active ? 
-        (
-          <p className="pl-4">
-            + Todos los <span className="font-bold text-dark-blue-10">Alumnos</span>
-          </p>
-        ) 
-        : 
-        (
-          ""
-        )
-      }
-      { btn2Active ? 
-        (
-          <p className="pl-4">
-            + Todos los <span className="font-bold text-dark-blue-10">Asesores</span>
-          </p>
-        ) 
-        : 
-        (
-          ""
-        ) 
-      }
-      { participants.length > 0 ? 
-        (
-          <div className="max-h-[250px] overflow-auto mt-2">
-            <table className="table table-zebra">
-              <thead>
-                <tr className="text-dark-blue-20 w-[25px]">
-                  <th></th>
-                  <th className="text-center">Nombre</th>
-                  <th className="text-center">Apellidos</th>
-                  <th className="text-center">Remover</th>
+      <p className="font-semibold">Se asignará a los usuarios seleccionados:</p>
+      {btn1Active ? (
+        <p className="pl-4">
+          + Todos los{" "}
+          <span className="font-bold text-dark-blue-10">Alumnos</span>
+        </p>
+      ) : (
+        ""
+      )}
+      {btn2Active ? (
+        <p className="pl-4">
+          + Todos los{" "}
+          <span className="font-bold text-dark-blue-10">Asesores</span>
+        </p>
+      ) : (
+        ""
+      )}
+      {participants.length > 0 ? (
+        <div className="max-h-[250px] overflow-auto mt-2">
+          <table className="table table-zebra">
+            <thead>
+              <tr className="text-dark-blue-20 w-[25px]">
+                <th></th>
+                <th className="text-center">Nombre</th>
+                <th className="text-center">Apellidos</th>
+                <th className="text-center">Remover</th>
+              </tr>
+            </thead>
+            <tbody>
+              {participants?.map((user: Usuario) => (
+                <tr>
+                  <td className="w-[25px]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                    </svg>
+                  </td>
+                  <td className="text-center">{user?.nombre}</td>
+                  <td className="text-center">{`${user?.apellido_paterno} ${user?.apellido_materno}`}</td>
+                  <td className="text-center">
+                    <button
+                      className="text-dark-blue-10 font-bold rounded-full border border-dark-blue-10 text-sm text-center p-1"
+                      onClick={() => {
+                        removeUser(user.id_usuario);
+                      }}
+                    >
+                      -
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                { participants?.map((user: Usuario) => (
-                  <tr>
-                    <td className="w-[25px]">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/> 
-                      </svg>
-                    </td>
-                    <td className="text-center">{user?.nombre}</td>
-                    <td className="text-center">{`${user?.apellido_paterno} ${user?.apellido_materno}`}</td>
-                    <td className="text-center">
-                      <button 
-                        className="text-dark-blue-10 font-bold rounded-full border border-dark-blue-10 text-sm text-center p-1"
-                        onClick={() => {
-                          removeUser(user.id_usuario)
-                        }}
-                      >
-                        -
-                      </button>
-                    </td> 
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) 
-        : 
-        (
-          ""
-        ) 
-      }
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
-  )
+  );
   /* ListSection */
 
-  const [showSuccessModal, setShowSuccessModal] = useState<boolean | undefined>(false);
-  const [showErrorModal, setShowErrorModal] = useState<boolean | undefined>(false);
-  const [showErrorModal2, setShowErrorModal2] = useState<boolean | undefined>(false);
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean | undefined>(
+    false
+  );
+  const [showErrorModal, setShowErrorModal] = useState<boolean | undefined>(
+    false
+  );
+  const [showErrorModal2, setShowErrorModal2] = useState<boolean | undefined>(
+    false
+  );
 
   const successModal = (
-    <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div
+      className="relative z-10"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -419,28 +444,53 @@ const AddEventModal = ({
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                  <svg className="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="40" zoomAndPan="magnify" viewBox="0 0 30 30.000001" height="40" preserveAspectRatio="xMidYMid meet" version="1.0">
+                  <svg
+                    className="h-6 w-6 text-green-600"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    width="40"
+                    zoomAndPan="magnify"
+                    viewBox="0 0 30 30.000001"
+                    height="40"
+                    preserveAspectRatio="xMidYMid meet"
+                    version="1.0"
+                  >
                     <defs>
                       <clipPath id="id1">
-                        <path d="M 2.328125 4.222656 L 27.734375 4.222656 L 27.734375 24.542969 L 2.328125 24.542969 Z M 2.328125 4.222656 " clipRule="nonzero"/>
+                        <path
+                          d="M 2.328125 4.222656 L 27.734375 4.222656 L 27.734375 24.542969 L 2.328125 24.542969 Z M 2.328125 4.222656 "
+                          clipRule="nonzero"
+                        />
                       </clipPath>
                     </defs>
                     <g clipPath="url(#id1)">
-                      <path fill="rgb(0%, 40%, 20%)" d="M 27.5 7.53125 L 24.464844 4.542969 C 24.15625 4.238281 23.65625 4.238281 23.347656 4.542969 L 11.035156 16.667969 L 6.824219 12.523438 C 6.527344 12.230469 6 12.230469 5.703125 12.523438 L 2.640625 15.539062 C 2.332031 15.84375 2.332031 16.335938 2.640625 16.640625 L 10.445312 24.324219 C 10.59375 24.472656 10.796875 24.554688 11.007812 24.554688 C 11.214844 24.554688 11.417969 24.472656 11.566406 24.324219 L 27.5 8.632812 C 27.648438 8.488281 27.734375 8.289062 27.734375 8.082031 C 27.734375 7.875 27.648438 7.679688 27.5 7.53125 Z M 27.5 7.53125 " fillOpacity="1" fillRule="nonzero"/>
+                      <path
+                        fill="rgb(0%, 40%, 20%)"
+                        d="M 27.5 7.53125 L 24.464844 4.542969 C 24.15625 4.238281 23.65625 4.238281 23.347656 4.542969 L 11.035156 16.667969 L 6.824219 12.523438 C 6.527344 12.230469 6 12.230469 5.703125 12.523438 L 2.640625 15.539062 C 2.332031 15.84375 2.332031 16.335938 2.640625 16.640625 L 10.445312 24.324219 C 10.59375 24.472656 10.796875 24.554688 11.007812 24.554688 C 11.214844 24.554688 11.417969 24.472656 11.566406 24.324219 L 27.5 8.632812 C 27.648438 8.488281 27.734375 8.289062 27.734375 8.082031 C 27.734375 7.875 27.648438 7.679688 27.5 7.53125 Z M 27.5 7.53125 "
+                        fillOpacity="1"
+                        fillRule="nonzero"
+                      />
                     </g>
                   </svg>
                 </div>
                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                  <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Operación exitosa</h3>
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Operación exitosa
+                  </h3>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">El evento ha sido agregado al sistema con éxito.</p>
+                    <p className="text-sm text-gray-500">
+                      El evento ha sido agregado al sistema con éxito.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"> 
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <a
-                href="/admin-dashboard" 
+                href="/admin-dashboard"
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 onClick={() => {
                   router.refresh();
@@ -456,7 +506,12 @@ const AddEventModal = ({
   );
 
   const errorModal = (
-    <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div
+      className="relative z-10"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -464,7 +519,7 @@ const AddEventModal = ({
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                <svg
+                  <svg
                     className="h-6 w-6 text-red-600"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -480,14 +535,21 @@ const AddEventModal = ({
                   </svg>
                 </div>
                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                  <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Operación fallida</h3>
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Operación fallida
+                  </h3>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">Ha ocurrido un error, por favor intente nuevamente.</p>
+                    <p className="text-sm text-gray-500">
+                      Ha ocurrido un error, por favor intente nuevamente.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"> 
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <a
                 href="/admin-dashboard"
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
@@ -505,7 +567,12 @@ const AddEventModal = ({
   );
 
   const errorModal2 = (
-    <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div
+      className="relative z-10"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -513,7 +580,7 @@ const AddEventModal = ({
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                <svg
+                  <svg
                     className="h-6 w-6 text-red-600"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -529,14 +596,21 @@ const AddEventModal = ({
                   </svg>
                 </div>
                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                  <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Operación fallida</h3>
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Operación fallida
+                  </h3>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">La fecha de fin debe ser distinta a 00:00:00</p>
+                    <p className="text-sm text-gray-500">
+                      La fecha de fin debe ser distinta a 00:00:00
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"> 
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <a
                 href="/admin-dashboard"
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
@@ -565,9 +639,7 @@ const AddEventModal = ({
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-              <div className="w-full flex justify-start">
-                {Tabs}
-              </div>
+              <div className="w-full flex justify-start">{Tabs}</div>
               <div className="flex flex-col mt-2">
                 {showAddSection ? <>{AddSection}</> : ""}
                 {showListSection ? <>{ListSection}</> : ""}
@@ -582,7 +654,7 @@ const AddEventModal = ({
                 }}
               >
                 Cerrar
-              </button>     
+              </button>
             </div>
           </div>
         </div>
@@ -598,7 +670,7 @@ const AddEventModal = ({
   }, [start]);
 
   useEffect(() => {
-    if(end != undefined && end < start) {
+    if (end != undefined && end < start) {
       const newEndDate = new Date(start.getTime() + 30 * 60000);
       setEndDate(newEndDate);
     }
@@ -613,9 +685,12 @@ const AddEventModal = ({
       end?.getMinutes() == 0 &&
       end?.getSeconds() == 0
     ) {
-      escape=1;
-    }
-    else if(btn1Active == false && btn2Active == false && participants.length == 0) {
+      escape = 1;
+    } else if (
+      btn1Active == false &&
+      btn2Active == false &&
+      participants.length == 0
+    ) {
       evento = await EventoEndpoint.postEvento(
         {
           id_usuario: 100001,
@@ -626,9 +701,7 @@ const AddEventModal = ({
         },
         ""
       );
-    }
-    else if(btn1Active == true && btn2Active == false)
-    {
+    } else if (btn1Active == true && btn2Active == false) {
       const createEventoDto: CreateEventByType = {
         users: null,
         type: 1,
@@ -637,11 +710,9 @@ const AddEventModal = ({
         title: title,
         start: start,
         end: end ? end : start,
-      }
+      };
       evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
-    }
-    else if(btn1Active == false && btn2Active == true)
-    {
+    } else if (btn1Active == false && btn2Active == true) {
       const createEventoDto: CreateEventByType = {
         users: null,
         type: 2,
@@ -650,11 +721,9 @@ const AddEventModal = ({
         title: title,
         start: start,
         end: end ? end : start,
-      }
+      };
       evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
-    }
-    else if(participants.length > 0)
-    {
+    } else if (participants.length > 0) {
       const createEventoDto: CreateEventByType = {
         users: participants,
         type: 3,
@@ -663,238 +732,209 @@ const AddEventModal = ({
         title: title,
         start: start,
         end: end ? end : start,
-      }
+      };
       evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
     }
-    if(evento != null)
-    {
+    if (evento != null) {
       revalidator("Eventos");
       setShowSuccessModal(!showSuccessModal);
-    }
-    else
-      if(escape== 0)
-        setShowErrorModal(!showErrorModal);
-      else
-        setShowErrorModal2(!showErrorModal2);
+    } else if (escape == 0) setShowErrorModal(!showErrorModal);
+    else setShowErrorModal2(!showErrorModal2);
   };
 
   return (
-      <dialog id="add_event_modal" className="modal">
-        {showModal ? <>{modal}</> : ""}
-        {showSuccessModal ? 
-        (
-          <>
-            {successModal}
-          </>
-        ) : (
-          ""
-        )
-      }
-      {showErrorModal ? 
-        (
-          <>
-            {errorModal}
-          </>
-        ) : (
-          ""
-        )
-      }
-      {showErrorModal2 ? 
-        (
-          <>
-            {errorModal2}
-          </>
-        ) : (
-          ""
-        )
-      }
-        <div className="modal-box max-w-[500px]">
-          <div className="w-full flex">
-            <h3 className="flex justify-start font-extrabold text-lg w-5/6 text-dark-blue-10">
-              Crear Nuevo Evento
-            </h3>
-            <div className="flex justify-end">
-              <a
-                href="/admin-dashboard"
-                className="text-gray-300 appearance-none outline-none hover:text-dark-blue-20"
-                onClick={() => {
-                  router.refresh();
-                }}
-              >
-                Cerrar
-              </a>
-            </div>
-          </div>
-          <div className="w-full flex flex-row h-fit">
-            <div className="flex flex-col justify-center">
-              <div className="font-bold text-xl text-center">
-                {months[start.getMonth()]}
-              </div>
-              <div className="font-bold text-3xl text-center">
-                {start.getDate().toString()}
-              </div>
-              <div className="font-light text-sm text-center">
-                {days[start.getDay()!]}
-              </div>
-              <input
-                className="w-[44px] h-[32px] border-none select-none outline-none"
-                type="date"
-                value={start.toISOString().split("T")[0]}
-                onChange={handleStartDate}
-              />
-            </div>
-            {!isClicked && (
-              <>
-                <label className="mx-auto  flex items-center font-thin text-sm">
-                  hasta
-                </label>
-                <div className="flex flex-col justify-center">
-                  <div className="font-bold text-xl text-center">
-                    {months[end ? end.getMonth() : start.getMonth()]}
-                  </div>
-                  <div className="font-bold text-3xl text-center">
-                    {end?.getDate().toString()}
-                  </div>
-                  <div className="font-light text-sm text-center">
-                    {days[end?.getDay()!]}
-                  </div>
-                  <input
-                    className="w-[44px] h-[32px] border-none select-none outline-none"
-                    type="date"
-                    value={end?.toISOString().split("T")[0]}
-                    onChange={handleEndDate}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-          <div className="border-b gray__border mb-3"></div>
-          <div className="modal-action flex flex-col w-full">
-            {/* if there is a button in form, it will close the modal */}
-            {changeDate ? (
-              <div>
-                <a>Fecha Termino</a>
-                <input type="date" value={endDate.toISOString()} />
-              </div>
-            ) : (
-              ""
-            )}
-            <form method="submit" onSubmit={handleSubmit} className="">
-              <div className="h-fit flex flex-row w-full items-center mb-3">
-                <div className="w-[24px] mr-3">
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 24 24"
-                    height="24px"
-                    width="24px"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M20.005 5.995h-1v2h1v8h-1v2h1c1.103 0 2-.897 2-2v-8C22.005 6.893 21.107 5.995 20.005 5.995zM6.005 9.995H15V13.995H6.005z"></path>
-                    <path d="M17.005,17.995v-12V4H20V2h-8v2h3.005v1.995h-11c-1.103,0-2,0.897-2,2v8c0,1.103,0.897,2,2,2h11V20H12v2h8v-2h-2.995 V17.995z M4.005,15.995v-8h11v8H4.005z"></path>
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  value={title}
-                  placeholder="Título"
-                  required
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                  }}
-                  className="gray__border input-bordered w-full"
-                />
-              </div>
-              {/**Fecha Inicio */}
-              <div className="h-fit flex flex-row w-full items-center mb-3">
-                <div className="w-[24px] mr-3">
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 24 24"
-                    height="24px"
-                    width="24px"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10c5.514,0,10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8 s3.589-8,8-8s8,3.589,8,8S16.411,20,12,20z"></path>
-                    <path d="M13 7L11 7 11 13 17 13 17 11 13 11z"></path>
-                  </svg>
-                </div>
-                <p>Inicio</p>
-                <Flatpickr
-                  className="gray__border w-full ml-3"
-                  options={{
-                    enableTime: true,
-                    noCalendar: true,
-                    dateFormat: "H:i",
-                    static: true,
-                    minTime: "00:05",
-                  }}
-                  //data-enable-time
-
-                  placeholder="Inicio"
-                  value={start}
-                  onChange={([date]) => {
-                    console.log("The date is " + date);
-                    setStartDate(date);
-                  }}
-                />
-              </div>
-
-              {/**Fecha Fin */}
-              <div className="h-fit flex flex-row w-full items-center mb-3">
-                <div className="w-[24px] mr-3">
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 24 24"
-                    height="24px"
-                    width="24px"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10c5.514,0,10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8 s3.589-8,8-8s8,3.589,8,8S16.411,20,12,20z"></path>
-                    <path d="M13 7L11 7 11 13 17 13 17 11 13 11z"></path>
-                  </svg>
-                </div>
-                <p>Fin</p>
-                <Flatpickr
-                  className="gray__border w-full ml-3"
-                  options={{
-                    enableTime: true,
-                    noCalendar: true,
-                    dateFormat: "H:i",
-                    static: true,
-                  }}
-                  placeholder="Fin  "
-                  value={end}
-                  onChange={([date]) => {
-                    setEndDate(date);
-                  }}
-                />
-              </div>
-
-              <button
-                className="btn btn-sm btn-active btn-ghost"
-                type="button"
-                onClick={() => {
-                  setShowModal(!showModal);
-                }}
-              >
-                Agregar Participantes
-              </button>
-
-              <div className="w-full flex justify-end mt-3">
-                <button className="primary__btn" type="submit">
-                  Crear evento
-                </button>
-              </div>
-            </form>
+    <dialog id="add_event_modal" className="modal">
+      {showModal ? <>{modal}</> : ""}
+      {showSuccessModal ? <>{successModal}</> : ""}
+      {showErrorModal ? <>{errorModal}</> : ""}
+      {showErrorModal2 ? <>{errorModal2}</> : ""}
+      <div className="modal-box max-w-[500px]">
+        <div className="w-full flex border-b-2 border-gray-300">
+          <h3 className="flex justify-start font-extrabold text-lg w-5/6 text-dark-blue-10">
+            Crear Nuevo Evento
+          </h3>
+          <div className="flex justify-end">
+            <a
+              href="/admin-dashboard"
+              className="text-gray-300 appearance-none outline-none hover:text-dark-blue-20"
+              onClick={() => {
+                router.refresh();
+              }}
+            >
+              Cerrar
+            </a>
           </div>
         </div>
-      </dialog>
+        <div className="w-full flex flex-row h-fit">
+          <div className="flex flex-col justify-center">
+            <div className="font-bold text-xl text-center">
+              {months[start.getMonth()]}
+            </div>
+            <div className="font-bold text-3xl text-center">
+              {start.getDate().toString()}
+            </div>
+            <div className="font-light text-sm text-center">
+              {days[start.getDay()!]}
+            </div>
+            <input
+              className="w-[44px] h-[32px] border-none select-none outline-none"
+              type="date"
+              value={start.toISOString().split("T")[0]}
+              onChange={handleStartDate}
+            />
+          </div>
+          {!isClicked && (
+            <>
+              <label className="mx-auto  flex items-center font-thin text-sm">
+                hasta
+              </label>
+              <div className="flex flex-col justify-center">
+                <div className="font-bold text-xl text-center">
+                  {months[end ? end.getMonth() : start.getMonth()]}
+                </div>
+                <div className="font-bold text-3xl text-center">
+                  {end?.getDate().toString()}
+                </div>
+                <div className="font-light text-sm text-center">
+                  {days[end?.getDay()!]}
+                </div>
+                <input
+                  className="w-[44px] h-[32px] border-none select-none outline-none"
+                  type="date"
+                  value={end?.toISOString().split("T")[0]}
+                  onChange={handleEndDate}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div className="border-b gray__border mb-3"></div>
+        <div className="modal-action flex flex-col w-full">
+          {/* if there is a button in form, it will close the modal */}
+          {changeDate ? (
+            <div>
+              <a>Fecha Termino</a>
+              <input type="date" value={endDate.toISOString()} />
+            </div>
+          ) : (
+            ""
+          )}
+          <form method="submit" onSubmit={handleSubmit} className="">
+            <div className="h-fit flex flex-row w-full items-center mb-3">
+              <div className="w-[24px] mr-3">
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  strokeWidth="0"
+                  viewBox="0 0 24 24"
+                  height="24px"
+                  width="24px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M20.005 5.995h-1v2h1v8h-1v2h1c1.103 0 2-.897 2-2v-8C22.005 6.893 21.107 5.995 20.005 5.995zM6.005 9.995H15V13.995H6.005z"></path>
+                  <path d="M17.005,17.995v-12V4H20V2h-8v2h3.005v1.995h-11c-1.103,0-2,0.897-2,2v8c0,1.103,0.897,2,2,2h11V20H12v2h8v-2h-2.995 V17.995z M4.005,15.995v-8h11v8H4.005z"></path>
+                </svg>
+              </div>
+              <input
+                type="text"
+                value={title}
+                placeholder="Título"
+                required
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                className="gray__border input-bordered w-full"
+              />
+            </div>
+            {/**Fecha Inicio */}
+            <div className="h-fit flex flex-row w-full items-center mb-3">
+              <div className="w-[24px] mr-3">
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  strokeWidth="0"
+                  viewBox="0 0 24 24"
+                  height="24px"
+                  width="24px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10c5.514,0,10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8 s3.589-8,8-8s8,3.589,8,8S16.411,20,12,20z"></path>
+                  <path d="M13 7L11 7 11 13 17 13 17 11 13 11z"></path>
+                </svg>
+              </div>
+              <p>Inicio</p>
+              <Flatpickr
+                className="gray__border w-full ml-3"
+                options={{
+                  enableTime: true,
+                  noCalendar: true,
+                  dateFormat: "H:i",
+                  static: true,
+                  minTime: "00:05",
+                }}
+                //data-enable-time
+
+                placeholder="Inicio"
+                value={start}
+                onChange={([date]) => {
+                  console.log("The date is " + date);
+                  setStartDate(date);
+                }}
+              />
+            </div>
+
+            {/**Fecha Fin */}
+            <div className="h-fit flex flex-row w-full items-center mb-3">
+              <div className="w-[24px] mr-3">
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  strokeWidth="0"
+                  viewBox="0 0 24 24"
+                  height="24px"
+                  width="24px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10c5.514,0,10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8 s3.589-8,8-8s8,3.589,8,8S16.411,20,12,20z"></path>
+                  <path d="M13 7L11 7 11 13 17 13 17 11 13 11z"></path>
+                </svg>
+              </div>
+              <p>Fin</p>
+              <Flatpickr
+                className="gray__border w-full ml-3"
+                options={{
+                  enableTime: true,
+                  noCalendar: true,
+                  dateFormat: "H:i",
+                  static: true,
+                }}
+                placeholder="Fin  "
+                value={end}
+                onChange={([date]) => {
+                  setEndDate(date);
+                }}
+              />
+            </div>
+
+            <button
+              className="btn btn-sm btn-active btn-ghost"
+              type="button"
+              onClick={() => {
+                setShowModal(!showModal);
+              }}
+            >
+              Agregar Participantes
+            </button>
+
+            <div className="w-full flex justify-end mt-3">
+              <button className="primary__btn" type="submit">
+                Crear evento
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
   );
 };
 

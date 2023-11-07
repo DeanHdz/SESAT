@@ -16,6 +16,23 @@ import { CreateEventByTypeDto } from "./dto/create-evento-by-type.dto";
 export class EventoController {
   constructor(private readonly eventoService: EventoService) {}
 
+  @Get("/participants/:title")
+  async getParticipants(@Param("title") title: string)
+  {
+    return await this.eventoService.getParticipants(title);
+  }
+
+  @Get("/deleteByTitle/:title")
+  async deleteAllThatShareTitle(@Param("title") title: string){
+    return await this.eventoService.deleteAllThatShareTitle(title);
+  }
+  
+  @Get("/byTitle/:title")
+  async findAllThatShareTitle(@Param("title") title: string)
+  {
+    return await this.eventoService.findAllThatShareTitle(title);
+  }
+  
   @Post("/typed")
   async createAdminEventByType(@Body() createEventByTypeDto: CreateEventByTypeDto)
   {
