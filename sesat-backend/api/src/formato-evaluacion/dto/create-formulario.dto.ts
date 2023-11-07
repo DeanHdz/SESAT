@@ -1,7 +1,11 @@
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 
 export class FilledFormat {
+    @IsOptional()
+    @IsNumber()
+    id_formato_evaluacion: number;
+
     @IsNotEmpty()
     @IsString()
     titulo_reporte: string;

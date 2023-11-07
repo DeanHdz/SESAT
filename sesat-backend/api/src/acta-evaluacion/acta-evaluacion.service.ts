@@ -8,7 +8,7 @@ import { FilledActDto } from './dto/create-formulario.dto';
 import { PDFDocument } from 'pdf-lib';
 import { decode } from 'base64-arraybuffer';
 import { FormatoVacio } from 'src/formato-vacio/entities/formato-vacio.entity';
-import { shortFormatDate } from 'src/utils/utils';
+import { formatAsISODate, shortFormatDate } from 'src/utils/utils';
 import { Asignacion } from 'src/asignacion/entities/asignacion.entity';
 import { Tesis } from 'src/tesis/entities/tesis.entity';
 import { Comite } from 'src/comite/entities/comite.entity';
@@ -161,6 +161,8 @@ export class ActaEvaluacionService {
 
       //Editar campos del PDF
       var form = pdfDoc.getForm();
+      logger.log('PDF Fields: ', fillActa.fecha_toefl);
+      logger.log('PDF Fields: ', shortFormatDate(fillActa.fecha_toefl));
 
       form.getTextField('posgrado').setText("POSGRADO EN COMPUTACIÓN");
       form.getTextField('fecha_eval').setText(shortFormatDate(fillActa.fecha_eval));
@@ -180,7 +182,7 @@ export class ActaEvaluacionService {
       form.getTextField('grado_avance').setText(fillActa.grado_avance.toString());
       form.getTextField('promedio').setText(fillActa.promedio.toString());
 
-      form.getTextField('fecha_toefl').setText(shortFormatDate(fillActa.fecha_toefl));
+      form.getTextField('fecha_toefl').setText(fillActa.fecha_toefl);
       form.getTextField('puntaje_toefl').setText(fillActa.puntaje_toefl.toString());
       form.getTextField('prox_toefl').setText(shortFormatDate(fillActa.prox_toefl));
       form.getTextField('observaciones').setText(fillActa.observaciones);

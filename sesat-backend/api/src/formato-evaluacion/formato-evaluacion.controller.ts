@@ -22,6 +22,11 @@ export class FormatoEvaluacionController {
     return this.formatoEvaluacionService.findOne(+id);
   }
 
+  @Get('document-data/:id')
+  findDocumentData(@Param('id') id: string) {
+    return this.formatoEvaluacionService.findDocumentData(+id);
+  }
+
   @Put()
   update(@Body() updateFormatoEvaluacionDto: UpdateFormatoEvaluacionDto) {
     return this.formatoEvaluacionService.update(updateFormatoEvaluacionDto);

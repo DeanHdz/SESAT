@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TesisInfo } from "../[idAsignacion]/page";
 import { ActaEvalForm, Asignacion, UpdateActaEvaluacion } from "../../../../../../types/ISESAT";
-import { formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
+import { dateStringToDate, formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
 import "flatpickr/dist/themes/dark.css";
 import Flatpickr from "react-flatpickr";
 import autosize from "autosize";
@@ -61,7 +61,7 @@ const ActFormModal = ({
 
   async function fetchDocumentDataToEdit(idActa: number) {
     const res: ActaEvalForm = await fetchDocumentData(idActa, "");
-    setFechaEval(new Date(res.fecha_eval));
+    setFechaEval(dateStringToDate(res.fecha_eval));
     setPrcAvance(parseInt(res.total_avance));
     setComentarios(res.comentarios);
     setDocAvance(res.cal_doc.toString());
@@ -69,9 +69,9 @@ const ActFormModal = ({
     setDominioTema(res.cal_dom.toString());
     setGradoAvance(res.grado_avance.toString());
     setPromedio(res.promedio.toString());
-    setFechaToefl(new Date(res.fecha_toefl));
+    setFechaToefl(dateStringToDate(res.fecha_toefl));
     setPuntajeToefl(res.puntaje_toefl.toString());
-    setProxToefl(new Date(res.prox_toefl));
+    setProxToefl(dateStringToDate(res.prox_toefl));
     setObservaciones(res.observaciones);    
   }
 
@@ -105,7 +105,7 @@ const ActFormModal = ({
           id_asignacion: asignacion.id_asignacion,
           id_acta_evaluacion: asignacion.id_acta_evaluacion,
           grado_estudio: tesisInfo.id_grado_estudio === 1 ? 'Maestría' : 'Doctorado',
-          fecha_eval: formatAsISODate(fechaEval),
+          fecha_eval: shortFormatDate(formatAsISODate(fechaEval)),
           ap_pat: tesisInfo.apellido_paterno,
           ap_mat: tesisInfo.apellido_materno,
           nombre: tesisInfo.nombre,
@@ -122,9 +122,9 @@ const ActFormModal = ({
           cal_dom: parseInt(dominioTema),
           grado_avance: parseInt(gradoAvance),
           promedio: parseInt(promedio),
-          fecha_toefl: formatAsISODate(fechaToefl),
+          fecha_toefl: shortFormatDate(formatAsISODate(fechaToefl)),
           puntaje_toefl: parseInt(puntajeToefl),
-          prox_toefl: formatAsISODate(proxToefl),
+          prox_toefl: shortFormatDate(formatAsISODate(proxToefl)),
           observaciones: observaciones
         },
         ""

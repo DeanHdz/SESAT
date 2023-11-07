@@ -3,9 +3,9 @@ import "flatpickr/dist/themes/dark.css";
 import Flatpickr from "react-flatpickr";
 import { TesisInfo } from "../[idAsignacion]/page";
 import { Asignacion } from "../../../../../../types/ISESAT";
-import { formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
+import { dateStringToDate, formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
 import { fetchComiteMembers } from "../../../../../../utils/comite.endpoint";
-import { fetchFormatoEvaluacion, postFormatoEvaluacion } from "../../../../../../utils/formato-evaluacion.endpoint";
+import { fetchFormatData, fetchFormatoEvaluacion, postFormatoEvaluacion } from "../../../../../../utils/formato-evaluacion.endpoint";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import PDFViewer from "./PDFViewer";
 
@@ -30,6 +30,7 @@ const ReportFormModal = ({
     const [coasesor, setcoasesor] = useState<undefined | ComiteMember>(undefined);
     const [isOpen, setIsOpen] = useState(false);
     const [generatedPDF, setPDF] = useState<undefined | Array<number>>(undefined);
+    const [msg, setMsg] = useState("");
 
 
     const openReportFormModal = () => {
@@ -62,17 +63,32 @@ const ReportFormModal = ({
         setIsOpen(false);
     };
 
+    async function fetchDocumentDataToEdit(idFormato: number) {
+        const res = await fetchFormatData(idFormato, "");
+        setFechaLimite(dateStringToDate(res.fecha_limite));
+        settituloReporte(res.titulo_reporte);            
+      }
+
+    const editActForm = async () => {
+        setMsg("Recuperando los datos del documento...");
+        setIsSubmitting(true);          
+        setPDF(undefined);
+        await fetchDocumentDataToEdit(asignacion.id_formato_evaluacion);
+        setIsSubmitting(false);
+      };
+
 
 
     async function handleSubmit(e: any) {
         e.preventDefault();
-        let gradoEstudio = tesisInfo.id_grado_estudio === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computación';        
+        let gradoEstudio = tesisInfo.id_grado_estudio === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computación';
         //try {
-        
+
         setIsSubmitting(true);
         const res = await postFormatoEvaluacion(
             asignacion.id_asignacion,
             {
+                id_formato_evaluacion: asignacion.id_formato_evaluacion,
                 titulo_reporte: tituloReporte,
                 grado: gradoEstudio,
                 estudiante: `${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno}`,
@@ -81,13 +97,14 @@ const ReportFormModal = ({
                 comite: comite!,
                 titulo_tesis: tesisInfo.titulo,
                 fecha_comienzo: tesisInfo.fecha_registro,
-                fecha_limite: formatAsISODate(fechaLimite),
+                fecha_limite: shortFormatDate(formatAsISODate(fechaLimite)),
             },
             ""
         );
         setPDF(res.documento_rellenado.data);
+        asignacion.id_formato_evaluacion = res.id_formato_evaluacion;
         setIsSubmitting(false);
-        
+
         /*}
         catch (err) {
             console.log(err);
@@ -110,7 +127,14 @@ const ReportFormModal = ({
 
                         {/**Close button */}
                         <div className="w-full flex flex-row h-fit items-center">
-
+                            {generatedPDF && (
+                                <button className={`w-[24px] flex flex-row active:opacity-40 text-black/60 hover:text-dark-blue-10`} onClick={editActForm}>
+                                    <div className="w-[24px] flex items-center">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M21 15.243v5.765a.993.993 0 0 1-.993.992H3.993A1 1 0 0 1 3 20.993V9h6a1 1 0 0 0 1-1V2h10.002c.551 0 .998.455.998.992v3.765l-8.999 9-.006 4.238 4.246.006L21 15.243zm.778-6.435l1.414 1.414L15.414 18l-1.416-.002.002-1.412 7.778-7.778zM3 7l5-4.997V7H3z"></path></g></svg>
+                                    </div>
+                                    <span className="ml-1">Editar</span>
+                                </button>
+                            )}
                             <button className={`ml-auto w-[24px] active:opacity-40`} onClick={closeReportFormModal}>
                                 <svg stroke="#dd4d4d" fill="#dd4d4d" strokeWidth="0" viewBox="0 0 1024 1024" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm165.4 618.2l-66-.3L512 563.4l-99.3 118.4-66.1.3c-4.4 0-8-3.5-8-8 0-1.9.7-3.7 1.9-5.2l130.1-155L340.5 359a8.32 8.32 0 0 1-1.9-5.2c0-4.4 3.6-8 8-8l66.1.3L512 464.6l99.3-118.4 66-.3c4.4 0 8 3.5 8 8 0 1.9-.7 3.7-1.9 5.2L553.5 514l130 155c1.2 1.5 1.9 3.3 1.9 5.2 0 4.4-3.6 8-8 8z"></path></svg>
                             </button>
@@ -213,10 +237,10 @@ const ReportFormModal = ({
                                                         <tr>
                                                             <td className="font-SESAT">Fecha de comienzo</td>
                                                             <td>{shortFormatDate(tesisInfo.fecha_registro)}</td>
-                                                        </tr>   
+                                                        </tr>
                                                     </tbody>
-                                                </table>                                                
-                                                
+                                                </table>
+
                                             </div>
                                         </form>
 

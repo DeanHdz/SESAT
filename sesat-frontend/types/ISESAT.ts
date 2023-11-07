@@ -317,6 +317,7 @@ export interface FormatoEvaluacion {
 }
 
 export interface FormatoEvaluacionFilled {
+  id_formato_evaluacion: null | number;
   titulo_reporte: string;
   grado: string;
   estudiante: string;
