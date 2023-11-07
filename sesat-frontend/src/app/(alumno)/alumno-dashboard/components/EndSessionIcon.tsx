@@ -1,14 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
+import Cookies from "js-cookie";
 export default function EndSessionIcon() {
   const navigate = useRouter();
 
   function endSession() {
-    
-    /* Logout logic */
-
+    Cookies.remove('SESATsession');
     navigate.push("/");
   }
 

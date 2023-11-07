@@ -24,9 +24,11 @@ export namespace LoginEndpoint {
     }
     const result = await response.json();
 
-    const sessionTime: number = 1000 * 60 * 60 * 2; //2 hours
+    const currentDate = new Date();
+    const expirationDate = new Date(currentDate.getTime() + 2 * 60 * 60 * 1000);
+   
     Cookies.set("SESATsession", JSON.stringify(result.token), {
-      expires: sessionTime,
+      expires: expirationDate,
     });
     return result;
   }
@@ -39,7 +41,7 @@ export namespace LoginEndpoint {
         "Content-Type": "application/json",
         Authorization: `bearer ${token}`,
       },
-      next: { tags: ["UserRole"] }
+      next: { tags: ["UserRole"] },
     };
     const response = await fetch(url, options);
     if (!response.ok) {
