@@ -48,6 +48,51 @@ export class ActaEvaluacionService {
     return this.actaEvalRepo.findOne({ where: { id_acta_evaluacion: id } });
   }
 
+  async findDocumentData(idActaEvaluacion: number) {
+    const document = await this.actaEvalRepo.findOne({ where: { id_acta_evaluacion: idActaEvaluacion } });
+
+    var buffer = document.documento_rellenado;
+
+    //Ver en formato UTF-8, no lo reconoce por default 
+    var base64 = new TextDecoder().decode(buffer);
+
+    //Decodificar de base64, crea Buffer para PDF-LIB
+    var uint8Array = new Uint8Array(decode(base64));
+
+    try {
+      var pdfDoc = await PDFDocument.load(uint8Array);
+      var form = pdfDoc.getForm();
+
+      const response: FilledActDto = {
+        id_asignacion: 0, //no es relevante
+        id_acta_evaluacion: document.id_acta_evaluacion,
+        grado_estudio: '',//no es relevante
+        fecha_eval: form.getTextField('fecha_eval').getText(),
+        ap_pat: form.getTextField('ap_paterno').getText(),
+        ap_mat: form.getTextField('ap_materno').getText(),
+        nombre: form.getTextField('nombres_alumno').getText(),
+        programa: form.getTextField('programa_posgrado').getText(),
+        no_avance: parseInt(form.getTextField('no_avance').getText()),
+        titulo_tesis: form.getTextField('titulo_tesis').getText(),
+        total_avance: form.getTextField('total_avance').getText(),
+        comentarios: form.getTextField('comentarios').getText(),
+        cal_doc: parseInt(form.getTextField('cal_doc_av').getText()),
+        cal_expo: parseInt(form.getTextField('cal_expo').getText()),
+        cal_dom: parseInt(form.getTextField('cal_dom').getText()),
+        grado_avance: parseInt(form.getTextField('grado_avance').getText()),
+        promedio: parseInt(form.getTextField('promedio').getText()),
+        fecha_toefl: form.getTextField('fecha_toefl').getText(),
+        puntaje_toefl: parseInt(form.getTextField('puntaje_toefl').getText()),
+        prox_toefl: form.getTextField('prox_toefl').getText(),
+        observaciones: form.getTextField('observaciones').getText()
+      }
+      return response;
+
+    } catch (error) {
+      throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   update(updateActaEvaluacionDto: UpdateActaEvaluacionDto) {
     return this.actaEvalRepo.save(updateActaEvaluacionDto);
   }
@@ -177,9 +222,16 @@ export class ActaEvaluacionService {
       base64 = await pdfDoc.saveAsBase64();
 
       //Crear DTO 
-      createActa = new CreateActaEvaluacionDto(Buffer.from(base64), 1);
+      //createActa = new CreateActaEvaluacionDto(Buffer.from(base64), 1);
 
-      let result = await this.actaEvalRepo.save(createActa);
+      var acta = new UpdateActaEvaluacionDto()      
+      if(typeof fillActa.id_acta_evaluacion === 'number'){
+        acta.id_acta_evaluacion = fillActa.id_acta_evaluacion
+      }            
+      acta.id_acta_vacia = 1;
+      acta.documento_rellenado = Buffer.from(base64);
+
+      let result = await this.actaEvalRepo.save(acta);
 
       const asignacion = await this.asignacionRepository.findOne({ where: { id_asignacion: idAsignacion } });
       const newAsignacion = {

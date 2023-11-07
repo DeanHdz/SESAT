@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 //Nota este DTO se usa unicamente en acta evaluacion y no corresponde
 //a los campos de la tabla, sino a los campos del acta de evaluacion
@@ -8,6 +8,10 @@ export class FilledActDto {
     @IsNotEmpty()
     @IsNumber()
     id_asignacion: number;
+
+    @IsOptional()
+    @IsNumber()
+    id_acta_evaluacion: number;
 
     @IsNotEmpty()
     @IsString()

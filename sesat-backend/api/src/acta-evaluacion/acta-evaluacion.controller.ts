@@ -30,6 +30,11 @@ export class ActaEvaluacionController {
     return this.actaEvaluacionService.findOne(+id);
   }
 
+  @Get('document-data/:id')
+  findDocumentData(@Param('id') id: string) {
+    return this.actaEvaluacionService.findDocumentData(+id);
+  }
+
   @Get('members/:idAsignacion')
   findComiteMembers(@Param('idAsignacion') idAsignacion: string) {
     return this.actaEvaluacionService.findComiteMembers(+idAsignacion);
