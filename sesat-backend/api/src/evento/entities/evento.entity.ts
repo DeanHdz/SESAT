@@ -9,10 +9,10 @@ export class Evento {
   id_usuario: number;
 
   @Column()
-  titulo: string;
+  id_creador: number;
 
   @Column()
-  descripcion: string;
+  titulo: string;
 
   @Column()
   fecha_inicio: Date;

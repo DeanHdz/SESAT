@@ -41,8 +41,6 @@ export default function Calendar(
     };
   });
 
-  console.log(events);
-
   const handleClick = (arg: EventClickArg): void => {
     setShowModal(true);
     setEventInfo(
@@ -65,7 +63,7 @@ export default function Calendar(
   function renderEventContent(eventInfo: any) {
     return (
       <>
-        <div className="w-full h-full cursor-pointer px-2 flex flex-col">
+        <div className="w-full h-full cursor-pointer px-2 flex flex-col overflow-hidden">
           <b>{eventInfo.timeText}</b>
           <i>{eventInfo.event.title}</i>
         </div>

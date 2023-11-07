@@ -4,11 +4,9 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
-  IsDate,
   IsOptional,
   IsDateString,
 } from "class-validator";
-import { Type } from "class-transformer";
 
 export class UpdateEventoDto extends PartialType(CreateEventoDto) {
   @IsNotEmpty()
@@ -20,12 +18,12 @@ export class UpdateEventoDto extends PartialType(CreateEventoDto) {
   id_usuario: number;
 
   @IsNotEmpty()
+  @IsNumber()
+  id_creador: number;
+
+  @IsNotEmpty()
   @IsString()
   titulo: string;
-
-  @IsOptional()
-  @IsString()
-  descripcion: string;
 
   @IsNotEmpty()
   @IsDateString()

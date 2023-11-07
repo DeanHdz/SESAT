@@ -36,7 +36,7 @@ import { ScheduleModule } from "@nestjs/schedule";
     ScheduleModule.forRoot(),
     ThrottlerModule.forRoot({
       ttl: 60,
-      limit: 30,
+      limit: 15,
     }),
     TypeOrmModule.forRootAsync({
       imports: [

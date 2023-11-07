@@ -10,10 +10,23 @@ import {
 import { EventoService } from "./evento.service";
 import { CreateEventoDto } from "./dto/create-evento.dto";
 import { UpdateEventoDto } from "./dto/update-evento.dto";
+import { CreateEventByTypeDto } from "./dto/create-evento-by-type.dto";
 
 @Controller("evento")
 export class EventoController {
   constructor(private readonly eventoService: EventoService) {}
+
+  @Post("/typed")
+  async createAdminEventByType(@Body() createEventByTypeDto: CreateEventByTypeDto)
+  {
+    return await this.eventoService.createAdminEventByType(createEventByTypeDto);
+  }
+
+  @Get("/user/:id")
+  async findByUserId(@Param("id") id: string)
+  {
+    return await this.eventoService.findByUserId(+id);
+  }
 
   @Post()
   create(@Body() createEventoDto: CreateEventoDto) {

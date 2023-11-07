@@ -615,8 +615,8 @@ export interface UpdatePeriodo {
 }
 export interface CreateEvento {
   id_usuario: number;
+  id_creador: number;
   titulo: string;
-  descripcion: string | null;
   fecha_inicio: Date;
   fecha_termino: Date | null;
 }
@@ -673,4 +673,14 @@ export interface CreateExternalAsesor {
   nombre: string;
   apellidos: string;
   email: string;
+}
+
+export interface CreateEventByType {
+  users: Usuario[] | null,
+  type: number,
+  id: number,
+  id_creador: number,
+  title: string,
+  start: Date,
+  end: Date | null,
 }

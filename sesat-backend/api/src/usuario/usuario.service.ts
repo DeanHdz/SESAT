@@ -46,6 +46,24 @@ export class UsuarioService {
     private readonly httpService: HttpService
   ) {}
 
+  async findById(id: number)
+  {
+    const usuarios: Usuario[] = await this.usuarioRepository.find({
+      where: { id_usuario: id },
+    });
+    return usuarios;
+  }
+
+  async findByName(name: string)
+  {
+    const usuarios: Usuario[] = await this.usuarioRepository.find();
+    return usuarios.filter(
+      (usuario) => ( `${usuario.nombre} ${usuario.apellido_paterno} ${usuario.apellido_materno}`)
+        .toLowerCase()
+        .includes(name.toLowerCase())
+    );
+  }
+
   async createExternalAsesor(createExternalAsesorDto: CreateExternalAsesorDto)
   {
     const apellidos: string[] = createExternalAsesorDto.apellidos.split(" ");
