@@ -8,12 +8,17 @@ import autosize from "autosize";
 import { fetchActaEvaluacion, postActaEvaluacion } from "../../../../../../utils/acta-evaluacion.endpoint";
 import PDFViewer from "./PDFViewer";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
+import Cookies from 'js-cookie';
+import { postNotificacion } from "../../../../../../utils/notification.endpoint";
 
 const ActFormModal = ({
   tesisInfo, asignacion
 }: {
   tesisInfo: TesisInfo, asignacion: Asignacion
 }) => {
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,7 +47,7 @@ const ActFormModal = ({
   };
 
   async function fetchPDFActaEvaluacion(idActa: number) {    
-    const res = await fetchActaEvaluacion(idActa, "");
+    const res = await fetchActaEvaluacion(idActa, token);
     setPDF(res.documento_rellenado.data);
     setIsSubmitting(false);
   }
@@ -86,8 +91,14 @@ const ActFormModal = ({
           prox_toefl: formatAsISODate(proxToefl),
           observaciones: observaciones
         },
-        ""
+        token
       );
+      await postNotificacion({
+        id_usuario: tesisInfo.id_usuario,
+        titulo: "Asignacion Calificada",
+        descripcion: `Su asignación ${asignacion.titulo} ha sido calificada`,
+        fecha_expedicion: formatAsISODate(new Date())
+      }, token)
       setPDF(res.documento_rellenado.data);
       setIsSubmitting(false);
     }

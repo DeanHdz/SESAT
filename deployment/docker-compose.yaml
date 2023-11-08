@@ -1,7 +1,8 @@
 version: '3.9'
 
 services:
-  sesat-backend:
+  backend:
+    container_name: sesat_backend
     build:
       context: ./../sesat-backend/api
     environment:
@@ -13,13 +14,35 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_SCHEMA=${DB_SCHEMA}
+      - DB_PORT=${DB_PORT}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_FROM=${MAIL_FROM}
     ports:
       - '3005:3005'
       
-  sesat-frontend:
-    build:
-      context: ./../sesat-frontend
+  # frontend:
+  #   container_name: sesat_frontend
+  #   build:
+  #     context: ./../sesat-frontend
+  #   environment:
+  #     - NEXT_PUBLIC_SESAT_API_URL=${$NEXT_PUBLIC_SESAT_API_URL}
+  #   ports:
+  #     - '3000:3000'
+
+  postgres-db:
+    container_name: sesat_db
+    image: postgres
     environment:
-      - NEXT_PUBLIC_SESAT_API_URL=${$NEXT_PUBLIC_SESAT_API_URL}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - 'sesat_master_data:/var/lib/postgresql/data'
     ports:
-      - '3000:3000'
+      - '${DB_FORWARDED_PORT}:5432'
+
+volumes:
+  sesat_master_data:
+    driver: local

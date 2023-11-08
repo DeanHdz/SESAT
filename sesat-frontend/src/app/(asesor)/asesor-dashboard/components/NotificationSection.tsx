@@ -20,10 +20,6 @@ const NotificacionSection = async () => {
           {notifications ? notifications.map((notification) => {
             return (<CommentCard title={`${notification.titulo} (${shortFormatDate(notification.fecha_expedicion)})`} webLink="#" texta={notification.descripcion} />)
           }) : null}
-          {/*<CommentCard title="Avance #1" webLink="#" texta="Lorem ipsum dolor, sit amet consectetur adipisicing elit." />
-          <CommentCard title="Avance #2" webLink="#" texta="Lorem ipsum dolor, sit amet consectetur adipisicing elit." />
-          <CommentCard title="Avance #2" webLink="#" texta="Lorem ipsum dolor, sit amet consectetur adipisicing elit." />
-          <CommentCard title="Avance #2" webLink="#" texta="Lorem ipsum dolor, sit amet consectetur adipisicing elit." />*/}
     </div>
   );
 };
