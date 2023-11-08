@@ -14,9 +14,9 @@ export namespace DatosAlumnoEndpoint {
       },
     };
     const response = await fetch(url, options);
-    if (!response.ok) {
-      throw new Error("Error fetching the data");
-    }
+    // if (!response.ok) {
+    //   throw new Error("Error fetching the data");
+    // }
     const result = await response.json();
     return result;
   }

@@ -24,6 +24,12 @@ export class UsuarioController{
     return await this.usuarioService.getExternalStudent(+id_usuario);
   }
 
+  @Get('/gradoestudio/:idusuario')
+  async getGradoEstudio(@Param("idusuario") idusuario: string)
+  {
+    return await this.usuarioService.getGradoEstudio(+idusuario);
+  }
+
   @Get('/paginated/alumnosMasters')
   async index(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -103,6 +109,7 @@ export class UsuarioController{
     return this.usuarioService.findAsesores();
   }
 
+
   //@UseGuards(JwtAuthGuard)
   @Get("/alumnos")
   findAlumnos() {
@@ -115,6 +122,8 @@ export class UsuarioController{
     return this.usuarioService.findOne(+id_usuario);
   }
 
+
+
   //@UseGuards(JwtAuthGuard)
   @Put()
   update(@Body() updateUsuarioDto: UpdateUsuarioDto) {
@@ -126,4 +135,5 @@ export class UsuarioController{
   remove(@Param("id") id_usuario: string) {
     return this.usuarioService.remove(+id_usuario);
   }
+  
 }

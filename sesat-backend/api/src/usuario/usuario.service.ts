@@ -24,6 +24,7 @@ import { GradoEstudioService } from "src/grado-estudio/grado-estudio.service";
 import { TesisService } from "src/tesis/tesis.service";
 import { AsignacionService } from "src/asignacion/asignacion.service";
 import { CreateAsignacionDto } from "src/asignacion/dto/create-asignacion.dto";
+import { GradoEstudio } from "src/grado-estudio/entities/grado-estudio.entity";
 
 @Injectable()
 export class UsuarioService {
@@ -286,6 +287,30 @@ export class UsuarioService {
       where: { id_usuario: id_usuario },
     });
   }
+
+    //Regresar datos de usuario, solo sirve recuperar generacion por el momento
+    async getGradoEstudio(idAlumno: number) {
+
+      const resp = await this.usuarioRepository.createQueryBuilder('u')
+        .select([
+          "u.nombre AS nombre",
+          "u.apellido_paterno AS apellido_paterno",
+          "u.apellido_materno AS apellido_materno",
+          "u.correo AS correo",
+          "u.id_datos_alumno AS id_datos_alumno",
+          "ge.nombre_grado_estudio AS grado_estudio",
+          "t.id_tesis AS id_tesis"
+        ])
+  
+        .innerJoin(Tesis, "t", "t.id_usuario = u.id_usuario")
+        .innerJoin(DatosAlumno, "a", "a.id_datos_alumno = u.id_datos_alumno")
+        .innerJoin(GradoEstudio, "ge", "ge.id_grado_estudio = a.id_grado_estudio")
+  
+        .where("u.id_usuario = :idUser", { idUser: idAlumno })
+        .getRawOne()
+  
+      return resp;
+    }
 
   identify(id_usuario: number /*Tentativo*/, password: string) {
     console.log("Entre al usuario service");

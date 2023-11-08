@@ -26,21 +26,7 @@ export class DatosAlumnoService {
     return this.datosAlumnoRepository.findOne({ where: {id_datos_alumno: id} });
   }
 
-  //Regresar datos de usuario, solo sirve recuperar generacion por el momento
-  async fetchByUserId(idAlumno: number) {
 
-    const resp = await this.datosAlumnoRepository.createQueryBuilder('a')
-      .select([
-        "a.generacion AS generacion"
-      ])
-
-      .innerJoin(Usuario, "u", "u.id_datos_alumno = a.id_datos_alumno")
-
-      .where("u.id_usuario = :idUser", { idUser: idAlumno })
-      .getRawOne()
-
-    return resp;
-  }
 
   update(updateDatosAlumnoDto: UpdateDatosAlumnoDto) {
     return this.datosAlumnoRepository.save(updateDatosAlumnoDto);

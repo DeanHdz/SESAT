@@ -1,20 +1,20 @@
 'use client'
 
 import React, { useState } from "react";
+import { formatAsISODate, shortFormatDate } from "../../../../../utils/utils";
 
 const ThesisRegistrationForm = () => {
   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
   const [abstract, setAbstract] = useState("");
   const [supervisor, setSupervisor] = useState("");
   const [committeeMembers, setCommitteeMembers] = useState("");
   const [submissionDate, setSubmissionDate] = useState("");
+  let fechahoy = new Date();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault();
     console.log("Title:", title);
-    console.log("Author:", author);
-    console.log("Abstract:", abstract);
+        console.log("Abstract:", abstract);
     console.log("Supervisor:", supervisor);
     console.log("Committee Members:", committeeMembers);
     console.log("Submission Date:", submissionDate);
@@ -38,28 +38,14 @@ const ThesisRegistrationForm = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-[#000000] mb-2" htmlFor="author">
-              Descripcion:
-            </label>
-            <input
-              className="border rounded p-2 w-full"
-              type="text"
-              id="author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
             <label className="block text-[#000000] mb-2" htmlFor="submissionDate">
               Fecha:
             </label>
-            <input
-              className="border rounded p-2 w-full"
-              type="date"
-              id="submissionDate"
-              value={submissionDate}
-              onChange={(e) => setSubmissionDate(e.target.value)}
-            />
+            <div>
+              {
+                shortFormatDate(formatAsISODate(fechahoy))
+              }
+            </div>
           </div>
           <p className="text-2xl font-bold pb-5">Registro de Comite</p>
           <div className="mb-4">
