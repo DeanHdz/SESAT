@@ -1,8 +1,6 @@
 import AddComment from "@/app/components/AddComment"
 import Drawer from "../../components/Drawer"
-import AssignmentHeader from "../components/AssignmentHeader"
 import AdvancesList from "../components/AdvancesList"
-import AssignmentData from "../components/AssignmentData"
 
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
 import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.endpoint"
@@ -88,6 +86,7 @@ export default async function Home({
   let error = false;
   let periodo = await fetchLatestPeriod("").catch();
   let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, "").catch(() => { return undefined });
+  let evaluacion_realizada = asignacion.calificacion && asignacion.id_acta_evaluacion && asignacion.id_formato_evaluacion;
 
   let tesisInfo: TesisInfo | undefined = undefined;
   let comments = undefined;
@@ -123,31 +122,47 @@ export default async function Home({
               <div className="flex flex-col w-full">
                 {typeof tesisInfo !== 'undefined' && (
                   <>
-                    <div className="w-full flex flex-row mb-10">
+                    <div className="w-full flex flex-col lg:flex-row mb-10 px-8 lg:px-0">
                       <label className="text-3xl font-bold">
                         {asignacion.titulo}
                       </label>
-                      <div className="ml-auto flex items-center">
+                      <div className="ml-auto flex items-center mt-3 lg:mt-0">
                         {asignacion.estado_entrega === 0 ? (
                           <>
-                            <span className="font-SESAT text-black/40"> No entregado</span>
+                            <div className="flex flex-row">
+                              <span className="font-SESAT text-black/40"> No entregado</span>
+                              <div className="w-[20px] ml-3 text-dark-blue-10">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewBox="0 0 16 16" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5c-1.736 0-3.369 0.676-4.596 1.904s-1.904 2.86-1.904 4.596c0 1.736 0.676 3.369 1.904 4.596s2.86 1.904 4.596 1.904c1.736 0 3.369-0.676 4.596-1.904s1.904-2.86 1.904-4.596c0-1.736-0.676-3.369-1.904-4.596s-2.86-1.904-4.596-1.904zM8 0v0c4.418 0 8 3.582 8 8s-3.582 8-8 8c-4.418 0-8-3.582-8-8s3.582-8 8-8zM7 11h2v2h-2zM7 3h2v6h-2z"></path></svg>
+                              </div>
+                            </div>
                           </>
                         ) : (
                           <>
-                            <span className="font-SESAT text-black/40"> Entregado</span>
+                            <div className="flex flex-row">
+                              {asignacion.estado_entrega === 1 && (
+                                <>
+                                  <span className="font-SESAT text-black/40">
+                                    {evaluacion_realizada ? 'Revisado' : 'Entregado'}
+                                  </span>
+                                  <div className="w-[20px] ml-3 text-dark-blue-10">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm5 16H7v-2h10v2zm-6.7-4L7 10.7l1.4-1.4 1.9 1.9 5.3-5.3L17 7.3 10.3 14z"></path></svg>
+                                  </div>
+                                </>
+                              )}
+                            </div>
                           </>
                         )}
                       </div>
                     </div>
-                    <div className="w-full flex flex-row">
-                      <div className="w-1/2 flex flex-col pr-16">
+                    <div className="w-full flex flex-col lg:flex-row">
+                      <div className="w-full lg:w-1/2 flex flex-col px-8 lg:pr-16">
                         <span className="font-SESAT text-lg mb-6">Instrucciones</span>
                         <span className="mb-6 block">
                           {asignacion.descripcion}
                         </span>
                       </div>
 
-                      <div className='flex flex-col w-1/2 pt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
+                      <div className='w-full lg:w-1/2 flex flex-col pt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
 
                         <label className="flex text-2xl font-bold">
                           Información general
@@ -161,7 +176,7 @@ export default async function Home({
                             Título de la tesis:
                           </label>
 
-                          <label className="pl-4 mb-2">
+                          <label className="mb-2">
                             {tesisInfo.titulo}
                           </label>
 
@@ -169,7 +184,7 @@ export default async function Home({
                             Avance:
                           </label>
 
-                          <label className="pl-4 mb-2">
+                          <label className="mb-2">
                             {asignacion.num_avance}
                           </label>
 
@@ -177,7 +192,7 @@ export default async function Home({
                             Fecha límite de entrega:
                           </label>
 
-                          <label className="pl-4 mb-2">
+                          <label className="mb-2">
                             {`${shortFormatDate(periodo.fecha_cierre)}    ${getFormattedHours(new Date(periodo.fecha_cierre))}`}
                           </label>
 
@@ -185,7 +200,7 @@ export default async function Home({
                             Fecha de presentación:
                           </label>
 
-                          <label className="pl-4 mb-2">
+                          <label className="mb-2">
                             {asignacion.fecha_presentacion ? (
                               <span>{shortFormatDate(asignacion.fecha_presentacion)}</span>
                             ) : (
@@ -198,11 +213,11 @@ export default async function Home({
                       </div>
                     </div>
 
-                    {asignacion.calificacion && (
-                      <Results calificacion={asignacion.calificacion} id_acta_evaluacion={asignacion.id_acta_evaluacion} id_formato_evaluacion={asignacion.id_formato_evaluacion}/>
+                    {evaluacion_realizada && (
+                      <Results calificacion={asignacion.calificacion} id_acta_evaluacion={asignacion.id_acta_evaluacion} id_formato_evaluacion={asignacion.id_formato_evaluacion} />
                     )}
-                    <PDFUploadForm fecha_cierre={periodo.fecha_cierre} asignacion={asignacion} />
-                                                        
+                    <PDFUploadForm server_time={periodo.server_time} fecha_cierre={periodo.fecha_cierre} asignacion={asignacion} />
+
 
                   </>
                 )}

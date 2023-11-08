@@ -15,12 +15,15 @@ export function formatAsISODate(dateValue: Date) {
 //Regresa dd/MMM/yyyy
 export function shortFormatDate(dateString: string): string {
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
+    const parts = dateString.split('T')[0].split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // Los meses en JavaScript empiezan en 0
+    const day = parseInt(parts[2], 10);
+    const date = new Date(year, month, day);
+    const formattedDay = date.getDate().toString().padStart(2, '0');
+    const formattedMonth = months[date.getMonth()];
 
-    return `${day.toString().padStart(2, '0')}/${month}/${year}`;
+    return `${formattedDay}/${formattedMonth}/${year}`;
 }
 //Regresa HH:MM AM/PM
 export function getFormattedHours(date: any): string {
@@ -59,7 +62,7 @@ Si la fecha de cierre 'anterior' está entre Agosto-Diciembre del año extraido,
 //prevEndDate       newStartDate
 export function esPeriodoValido(anterior: Date, nuevo: Date): boolean {
     const añoAnterior = anterior.getFullYear();
-    const mesAnterior = anterior.getMonth(); 
+    const mesAnterior = anterior.getMonth();
     const añoNuevo = nuevo.getFullYear();
     const mesNuevo = nuevo.getMonth();
     //PENDING REVIEW
@@ -83,15 +86,26 @@ export function esPeriodoValido(anterior: Date, nuevo: Date): boolean {
 }
 
 
-export function isPeriodActive(endDate: string): boolean {  
+export function isPeriodActive(endDate: string): boolean {
 
     let fechaCierrePeriodo = new Date(endDate);
     let fechaActual = new Date();
-  
+
     let result = false;
     if (fechaActual > fechaCierrePeriodo) {
-  
-      result = true;
+
+        result = true;
     }
     return result;
-  }
+}
+
+//Recibe una fecha en formato dd/MMM/YYYY, por ejemplo 02/Feb/2023, Devuelve el objeto Date Correspondiente
+export function dateStringToDate(dateString: string): Date {    
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const parts = dateString.split('/');
+    const day = parseInt(parts[0], 10);
+    const month = months.indexOf(parts[1]);
+    const year = parseInt(parts[2], 10);
+
+    return new Date(year, month, day);
+}

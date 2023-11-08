@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { TesisInfo } from "../[idAsignacion]/page";
-import { Asignacion } from "../../../../../../types/ISESAT";
-import { formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
+import { ActaEvalForm, Asignacion, UpdateActaEvaluacion } from "../../../../../../types/ISESAT";
+import { dateStringToDate, formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
 import "flatpickr/dist/themes/dark.css";
 import Flatpickr from "react-flatpickr";
 import autosize from "autosize";
-import { fetchActaEvaluacion, postActaEvaluacion } from "../../../../../../utils/acta-evaluacion.endpoint";
+import { fetchActaEvaluacion, fetchDocumentData, postActaEvaluacion } from "../../../../../../utils/acta-evaluacion.endpoint";
 import PDFViewer from "./PDFViewer";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import Cookies from 'js-cookie';
 import { postNotificacion } from "../../../../../../utils/notification.endpoint";
+import { useRouter } from "next/navigation";
 
 const ActFormModal = ({
   tesisInfo, asignacion
@@ -23,6 +24,7 @@ const ActFormModal = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generatedPDF, setPDF] = useState<undefined | Array<number>>(undefined);
+  const [editMode, setEditMode] = useState(false);
   const [fechaEval, setFechaEval] = useState(new Date());
   const [porcentajeAv, setPrcAvance] = useState(30);
   const [comentarios, setComentarios] = useState("");
@@ -34,27 +36,62 @@ const ActFormModal = ({
   const [fechaToefl, setFechaToefl] = useState(new Date());
   const [puntajeToefl, setPuntajeToefl] = useState("");
   const [proxToefl, setProxToefl] = useState(new Date());
-  const [observaciones, setObservaciones] = useState("");
+  const [observaciones, setObservaciones] = useState(""); 
+  const [msg, setMsg] = useState("");
+
+  let condicionFinalizacion = tesisInfo.id_grado_estudio === 2 && asignacion.num_avance === 6 || asignacion.num_avance === 7;
+
+  const [marcarFinalizada, setMarcarFinalizada] = useState('');
 
   const openActFormModal = () => {
     document.body.classList.add('modal-open');
     setIsOpen(true);
 
     if (asignacion.calificacion && asignacion.id_acta_evaluacion !== null) {
+      setMsg("Obteniendo Documento PDF...")
       setIsSubmitting(true);
       fetchPDFActaEvaluacion(asignacion.id_acta_evaluacion);
     }
   };
 
-  async function fetchPDFActaEvaluacion(idActa: number) {    
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMarcarFinalizada(event.target.value);
+  };
+
+  async function fetchPDFActaEvaluacion(idActa: number) {
     const res = await fetchActaEvaluacion(idActa, token);
     setPDF(res.documento_rellenado.data);
     setIsSubmitting(false);
   }
 
+  async function fetchDocumentDataToEdit(idActa: number) {
+    const res: ActaEvalForm = await fetchDocumentData(idActa, token);
+    setFechaEval(dateStringToDate(res.fecha_eval));
+    setPrcAvance(parseInt(res.total_avance));
+    setComentarios(res.comentarios);
+    setDocAvance(res.cal_doc.toString());
+    setExposicion(res.cal_expo.toString());
+    setDominioTema(res.cal_dom.toString());
+    setGradoAvance(res.grado_avance.toString());
+    setPromedio(res.promedio.toString());
+    setFechaToefl(dateStringToDate(res.fecha_toefl));
+    setPuntajeToefl(res.puntaje_toefl.toString());
+    setProxToefl(dateStringToDate(res.prox_toefl));
+    setObservaciones(res.observaciones);    
+  }
+
   const closeActFormModal = () => {
     document.body.classList.remove('modal-open');
     setIsOpen(false);
+  };
+
+  const editActForm = async () => {
+    setMsg("Recuperando los datos del documento...");
+    setIsSubmitting(true);
+    setEditMode(true);    
+    setPDF(undefined);
+    await fetchDocumentDataToEdit(asignacion.id_acta_evaluacion);
+    setIsSubmitting(false);
   };
 
   useEffect(() => {
@@ -66,10 +103,14 @@ const ActFormModal = ({
     e.preventDefault();
     try {
       setIsSubmitting(true);
+      setMsg("Generando Documento PDF...")
       const res = await postActaEvaluacion(
         asignacion.id_asignacion,
         {
-          fecha_eval: formatAsISODate(fechaEval),
+          id_asignacion: asignacion.id_asignacion,
+          id_acta_evaluacion: asignacion.id_acta_evaluacion,
+          grado_estudio: tesisInfo.id_grado_estudio === 1 ? 'Maestría' : 'Doctorado',
+          fecha_eval: shortFormatDate(formatAsISODate(fechaEval)),
           ap_pat: tesisInfo.apellido_paterno,
           ap_mat: tesisInfo.apellido_materno,
           nombre: tesisInfo.nombre,
@@ -86,9 +127,9 @@ const ActFormModal = ({
           cal_dom: parseInt(dominioTema),
           grado_avance: parseInt(gradoAvance),
           promedio: parseInt(promedio),
-          fecha_toefl: formatAsISODate(fechaToefl),
+          fecha_toefl: shortFormatDate(formatAsISODate(fechaToefl)),
           puntaje_toefl: parseInt(puntajeToefl),
-          prox_toefl: formatAsISODate(proxToefl),
+          prox_toefl: shortFormatDate(formatAsISODate(proxToefl)),
           observaciones: observaciones
         },
         token
@@ -100,7 +141,9 @@ const ActFormModal = ({
         fecha_expedicion: formatAsISODate(new Date())
       }, token)
       setPDF(res.documento_rellenado.data);
+      asignacion.id_acta_evaluacion = res.id_acta_evaluacion;
       setIsSubmitting(false);
+
     }
     catch (err) {
       console.log(err);
@@ -121,10 +164,18 @@ const ActFormModal = ({
       {
         isOpen && (
           <div className='w-screen h-screen bg-black/40 z-50 fixed top-0 right-0 flex justify-center pt-2 overflow-hidden'>
-            <div className={` w-full lg:w-11/12 lg:mx-auto p-2 pb-16 lg:pb-2 border-0 rounded-t-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up lg:max-w-[1400px]`}>
+            <div className={`w-full lg:w-11/12 lg:mx-auto p-2 border-0 rounded-t-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50 animate-slide-up lg:max-w-[1400px] h-full`}>
 
               {/**Close button */}
               <div className="w-full flex flex-row h-fit items-center">
+                {generatedPDF && (
+                  <button className={`w-[24px] flex flex-row active:opacity-40 text-black/60 hover:text-dark-blue-10`} onClick={editActForm}>
+                    <div className="w-[24px] flex items-center">
+                      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M21 15.243v5.765a.993.993 0 0 1-.993.992H3.993A1 1 0 0 1 3 20.993V9h6a1 1 0 0 0 1-1V2h10.002c.551 0 .998.455.998.992v3.765l-8.999 9-.006 4.238 4.246.006L21 15.243zm.778-6.435l1.414 1.414L15.414 18l-1.416-.002.002-1.412 7.778-7.778zM3 7l5-4.997V7H3z"></path></g></svg>
+                    </div>
+                    <span className="ml-1">Editar</span>
+                  </button>
+                )}
                 <button className={`ml-auto w-[24px] active:opacity-40`} onClick={closeActFormModal}>
                   <svg stroke="#dd4d4d" fill="#dd4d4d" strokeWidth="0" viewBox="0 0 1024 1024" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm165.4 618.2l-66-.3L512 563.4l-99.3 118.4-66.1.3c-4.4 0-8-3.5-8-8 0-1.9.7-3.7 1.9-5.2l130.1-155L340.5 359a8.32 8.32 0 0 1-1.9-5.2c0-4.4 3.6-8 8-8l66.1.3L512 464.6l99.3-118.4 66-.3c4.4 0 8 3.5 8 8 0 1.9-.7 3.7-1.9 5.2L553.5 514l130 155c1.2 1.5 1.9 3.3 1.9 5.2 0 4.4-3.6 8-8 8z"></path></svg>
                 </button>
@@ -133,7 +184,7 @@ const ActFormModal = ({
 
               {isSubmitting ? (
                 <div>
-                  <ProcessingAnim title="Obteniendo Documento PDF..." />
+                  <ProcessingAnim title={msg} />
                 </div>
               ) : (
                 <>
@@ -143,21 +194,20 @@ const ActFormModal = ({
                     </>
                   ) : (
                     <>
-                      {/**Title bar */}
-                      <div className='w-11/12 lg:w-5/6 mx-auto flex flex-col lg:flex-row pr-3 mb-3'>
-                        <div className='font-SESAT text-4xl mr-auto mb-3 lg:mb-0'>
-                          Acta de evaluación de avance de tesis
-                        </div>
-                        <button type="submit" onClick={handleSubmit} className="primary__btn">
-                          Guardar
-                        </button>
-                      </div>
+                      <form action="submit" onSubmit={handleSubmit} className="w-full h-full overflow-y-hidden">
+                        {/**Title bar */}
 
-                      {/**Content */}
-                      <div className='w-full flex flex-col overflow-y-scroll'>
-                        {/*<ActForm />*/}
-                        <form /*onSubmit={handleSubmit}*/>
-                          <div className="flex flex-row w-11/12 lg:w-5/6 m-auto mt-6 mb-0 h-fit p-0">
+                        <div className='w-11/12 lg:w-5/6 mx-auto mb-3 bg-white flex flex-col lg:flex-row'>
+                          <div className='font-SESAT text-4xl mr-auto mb-3 lg:mb-0'>
+                            Acta de evaluación de avance de tesis
+                          </div>
+                          <button type="submit" className="primary__btn mr-3">
+                            Guardar
+                          </button>
+                        </div>
+                        {/**Content */}
+                        <div className='h-fit max-h-[80vh] w-full flex flex-col overflow-y-scroll pb-48 lg:pb-20'>
+                          <div className="flex flex-row w-11/12 lg:w-5/6 m-auto mt-10 mb-0 h-fit p-0">
                             <div className="flex flex-row w-full lg:justify-end items-center sm:mb-10">
                               <label className="block mr-4 text-lg font-bold">
                                 Fecha de evaluación:
@@ -250,11 +300,13 @@ const ActFormModal = ({
                               <label className="mb-3 block text-lg font-bold">
                                 Comentarios y sugerencias
                               </label>
+                              <p className="text-black/30 font-SESAT">{comentarios.length}/600</p>
                               <textarea
-                                className="textarea h-48 w-full px-6 lg:px-10 gray__border text-base mb-10 "
+                                className="textarea h-36 w-full px-6 lg:px-10 gray__border text-base mb-10 "
                                 placeholder="Escriba sus sugerencias o comentarios"
                                 value={comentarios}
                                 required
+                                maxLength={600}
                                 onChange={
                                   (e) => {
                                     autosize(e.currentTarget);
@@ -273,7 +325,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="%"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={100}
                                       value={documentoAvance}
                                       required
                                       onChange={
@@ -291,7 +344,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="%"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={100}
                                       value={exposicion}
                                       required
                                       onChange={
@@ -309,7 +363,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="%"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={100}
                                       value={dominioTema}
                                       required
                                       onChange={
@@ -327,7 +382,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="%"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={100}
                                       value={gradoAvance}
                                       required
                                       onChange={
@@ -349,6 +405,35 @@ const ActFormModal = ({
                                   </div>
                                 </div>
                               </div>
+                              {condicionFinalizacion && (
+                                <>
+                                  <label className="mt-10 mb-3 block text-lg font-bold">Avance de tesis {asignacion.num_avance}</label>
+                                  <div className="flex flex-col py-6 px-6 bg-light-blue-10 rounded border border-solid border-light-gray-22 mb-10">
+                                    <label className="mb-3 block text-lg font-bold">
+                                      Con base en el avance entregado, ¿El alumno ha concluido su tesis?
+                                    </label>
+                                    <div className="flex flex-row items-center mb-3">
+                                      <div className="flex flex-row items-center mr-16">
+                                        <label className="mr-3 block text-lg font-bold">
+                                          Sí
+                                        </label>
+                                        <input type="radio" name="radio-2" className="radio radio-primary" value="Si" checked={marcarFinalizada === 'Si'} onChange={handleRadioChange} />
+                                      </div>
+
+                                      <div className="flex flex-row items-center">
+                                        <label className="mr-3 block text-lg font-bold">
+                                          No
+                                        </label>
+                                        <input type="radio" name="radio-2" className="radio radio-primary" onChange={handleRadioChange} value="No" checked={marcarFinalizada === 'No'} />
+                                      </div>
+                                    </div>
+
+                                    <label className="mb-3 block text-lg">
+                                      *En caso de indicar que no, el alumno deberá entregar un avance de tesis al sistema SESAT el próximo periodo
+                                    </label>
+                                  </div>
+                                </>
+                              )}
                               <label className="mt-10 mb-3 block text-lg font-bold">Acerca del examen TOEFL</label>
                               <div className="flex flex-col  w-full m-auto bg-light-blue-10 rounded py-6 px-6 border border-light-gray-22 border-solid">
                                 <div className="flex flex-col lg:flex-row justify-normal">
@@ -379,7 +464,8 @@ const ActFormModal = ({
                                       className="py-2 px-3 shadow appearance-none gray__border w-[80px] mb-10"
                                       type="number"
                                       placeholder="pts"
-                                      pattern="^(100|[1-9][0-9]?|0)$"
+                                      min={0}
+                                      max={677}
                                       value={puntajeToefl}
                                       required
                                       onChange={
@@ -415,11 +501,13 @@ const ActFormModal = ({
                               <label className="mb-3 mt-10 block text-lg font-bold">
                                 Observaciones y compromisos
                               </label>
+                              <p className="text-black/30 font-SESAT">{observaciones.length}/110</p>
                               <textarea
                                 className="textarea h-20 lg:h-12 w-full px-6 lg:px-10 gray__border text-base mb-10"
                                 placeholder="Escriba sus observaciones y compromisos para el alumno"
                                 value={observaciones}
                                 required
+                                maxLength={110}
                                 onChange={
                                   (e) => {
                                     autosize(e.currentTarget);
@@ -429,8 +517,8 @@ const ActFormModal = ({
                               ></textarea>
                             </div>
                           </div>
-                        </form>
-                      </div>
+                        </div>
+                      </form>
                     </>
                   )}
                 </>

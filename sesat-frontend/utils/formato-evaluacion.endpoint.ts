@@ -54,3 +54,30 @@ export async function fetchFormatoEvaluacion(
   return result;
 
 }
+
+export async function fetchFormatData( 
+  idFormato: number,   
+  token: string,
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/formato-evaluacion/document-data/${idFormato}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store' as RequestCache    
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){    
+    throw(new Error('Error posting data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}

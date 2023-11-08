@@ -10,6 +10,7 @@ import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 import { decode } from "base64-arraybuffer";
 import { PDFDocument } from "pdf-lib";
 import { shortFormatDate } from "src/utils/utils";
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class FormatoEvaluacionService {
@@ -38,8 +39,37 @@ export class FormatoEvaluacionService {
     });
   }
 
-  async createActaAndfillDocument(idAsignacion: number, fillActa: FilledFormat) {
-    var createActa: CreateFormatoEvaluacionDto;
+  async findDocumentData(id: number) {
+
+    var document = await this.formatoEvaluacionRepository.findOne({
+      where: { id_formato_evaluacion: id },
+    });
+
+    var buffer = document.documento_rellenado;
+
+    //Ver en formato UTF-8, no lo reconoce por default 
+    var base64 = new TextDecoder().decode(buffer);
+
+    //Decodificar de base64, crea Buffer para PDF-LIB
+    var uint8Array = new Uint8Array(decode(base64));
+
+    try {
+      var pdfDoc = await PDFDocument.load(uint8Array);
+      var form = pdfDoc.getForm();
+
+      const response = {
+        titulo_reporte: form.getTextField('titulo_reporte').getText(),
+        fecha_limite: form.getTextField('fecha_limite').getText()
+      }
+
+      return response;
+    } catch (error) {
+      throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+  }
+
+  async createActaAndfillDocument(idAsignacion: number, fillFormat: FilledFormat) {    
     //obtener formato de la BD para rellenarlo, el resultado 
     //por default se carga en un ArrayBuffer aunque sea un string       
     var emptyFormat = await this.formatoVacioRepository.findOne({ where: { id_formato_vacio: 2 } });
@@ -77,32 +107,33 @@ export class FormatoEvaluacionService {
       */
 
       //Nombres de las variables de los campos del PDF (FOR DEBUG)
-      const fieldNames = pdfDoc
+      /*const fieldNames = pdfDoc
         .getForm()
         .getFields()
         .map((f) => f.getName());
 
       logger.log('PDF Fields: ', fieldNames);
       logger.log('ID: ', idAsignacion);
+      */
       //Editar campos del PDF
-      
+
       let comite_members = "";
-      fillActa.comite.map((elem) => {
+      fillFormat.comite.map((elem) => {
         comite_members += `${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno}, `
       })
-      comite_members = comite_members.substring(0, comite_members.length-2)
+      comite_members = comite_members.substring(0, comite_members.length - 2)
 
       var form = pdfDoc.getForm();
 
-      form.getTextField('titulo_reporte').setText(fillActa.titulo_reporte);
-      form.getTextField('grado').setText(fillActa.grado);
-      form.getTextField('estudiante').setText(fillActa.estudiante);
-      form.getTextField('asesor').setText(fillActa.asesor);
-      form.getTextField('coasesor').setText(fillActa.coasesor);
+      form.getTextField('titulo_reporte').setText(fillFormat.titulo_reporte);
+      form.getTextField('grado').setText(fillFormat.grado);
+      form.getTextField('estudiante').setText(fillFormat.estudiante);
+      form.getTextField('asesor').setText(fillFormat.asesor);
+      form.getTextField('coasesor').setText(fillFormat.coasesor);
       form.getTextField('comite').setText(comite_members);
-      form.getTextField('titulo').setText(fillActa.titulo_tesis);
-      form.getTextField('fecha_comienzo').setText(shortFormatDate(fillActa.fecha_comienzo));
-      form.getTextField('fecha_limite').setText(shortFormatDate(fillActa.fecha_limite));              
+      form.getTextField('titulo').setText(fillFormat.titulo_tesis);
+      form.getTextField('fecha_comienzo').setText(shortFormatDate(fillFormat.fecha_comienzo));
+      form.getTextField('fecha_limite').setText(shortFormatDate(fillFormat.fecha_limite));
 
       form.getTextField('titulo_reporte').enableReadOnly();
       form.getTextField('grado').enableReadOnly();
@@ -113,34 +144,41 @@ export class FormatoEvaluacionService {
       form.getTextField('titulo').enableReadOnly();
       form.getTextField('fecha_comienzo').enableReadOnly();
       form.getTextField('fecha_limite').enableReadOnly();
-      
 
-      
-      
+
+
+
 
 
       //Codificar datos binarios a base64                
       base64 = await pdfDoc.saveAsBase64();
 
       //Crear DTO 
-      createActa = new CreateFormatoEvaluacionDto(Buffer.from(base64), 1);
+      var updateFormato = new UpdateFormatoEvaluacionDto();
+      if(typeof fillFormat.id_formato_evaluacion === 'number'){
+        updateFormato.id_formato_evaluacion = fillFormat.id_formato_evaluacion;
+      }
+      updateFormato.id_formato_vacio = 2;
+      updateFormato.documento_rellenado = Buffer.from(base64);
+
+      let result = await this.formatoEvaluacionRepository.save(updateFormato);
+
+      const asignacion = await this.asignacionRepository.findOne({ where: { id_asignacion: idAsignacion } });
+      const newAsignacion = {
+        ...asignacion,
+        id_formato_evaluacion: result.id_formato_evaluacion
+      }
+      await this.asignacionRepository.save(newAsignacion);
+      return result;
 
     } catch (error) {
-      logger.log(error);
+      throw new HttpException('Ocurrió un error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //Pendientes
     //Actualizar calificacion en tabla asignacion
 
-    let result = await this.formatoEvaluacionRepository.save(createActa);
 
-    const asignacion = await this.asignacionRepository.findOne({ where: { id_asignacion: idAsignacion } });
-    const newAsignacion = {
-      ...asignacion,
-      id_formato_evaluacion: result.id_formato_evaluacion
-    }
-    await this.asignacionRepository.save(newAsignacion);
-    return result;
 
   }
 

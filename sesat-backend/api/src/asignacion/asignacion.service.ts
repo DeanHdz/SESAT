@@ -884,6 +884,12 @@ export class AsignacionService {
     return this.asignacionRepository.save(updateAsignacionDto);
   }
 
+  //Actualiza el documento de avance entregado por el alumno, realiza la validacion de fecha
+  turnInThesisAdvance(updateAsignacionDto: UpdateAsignacionDto) {
+    
+    return this.asignacionRepository.save(updateAsignacionDto);
+  }
+
   remove(id: number) {
     return this.asignacionRepository.delete(id);
   }

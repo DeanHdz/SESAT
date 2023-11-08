@@ -126,7 +126,6 @@ const PDFViewer = ({
         return (
             <div className='w-full flex flex-col rounded py-1 h-fit'>
 
-
                 {/**Document Toolbar */}
                 <div className='text-[#5f5f5f] px-3 flex items-center w-full border border-solid border-slate-300/80 h-[50px] bg-[#eeeeee]'>
                     {/**Zoom In */}

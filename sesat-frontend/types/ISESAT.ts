@@ -311,6 +311,7 @@ export interface FormatoEvaluacion {
 }
 
 export interface FormatoEvaluacionFilled {
+  id_formato_evaluacion: null | number;
   titulo_reporte: string;
   grado: string;
   estudiante: string;
@@ -493,6 +494,9 @@ export interface UploadPDF {
 //Debe contener todos los datos del formulario del acta
 //por ahora solo lo basico para pruebas
 export interface ActaEvalForm {
+  id_asignacion: number;
+  id_acta_evaluacion: number | null;
+  grado_estudio: string;
   fecha_eval: string;
   ap_pat: string;
   ap_mat: string;
