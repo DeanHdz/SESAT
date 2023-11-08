@@ -96,7 +96,8 @@ export async function fetchTesisCompletadasMdFullTimePaginated(token: string, pa
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-    },  
+    },
+    next: { revalidate: 3600 }
   };
   const response = await fetch(url, options);
   if(!response.ok){
@@ -114,7 +115,8 @@ export async function getTesisCompletadasMdFullTimeByName(token: string, query: 
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-    },  
+    },
+    next: { revalidate: 3600 }
   };
   const response = await fetch(url, options);
   if(!response.ok){
@@ -206,7 +208,7 @@ export async function fetchTesisCompletadasMaestriaTiempoComp(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    cache: 'no-store' as RequestCache,
+    next: { revalidate: 3600 }
     
   };
   const response = await fetch(url, options);

@@ -8,6 +8,7 @@ import ProcessingAnim from "@/app/components/ProcessingAnim";
 import PDFViewer from "@/app/components/PDFViewer";
 import NotFound from "../../../not-found";
 import { fetchDocumentByID } from "../../../../../../../utils/asignacion.endpoint";
+import Cookies from "js-cookie";
 
 type AsesorProps = {
   nombre: string,
@@ -28,6 +29,8 @@ export default function Page({
 }: {
   params: { thesisId: string }
 }) {
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : ""
   const { thesisId } = params
 
   const [pdf, setPdf] = useState<undefined | Uint8Array>(undefined)
@@ -39,15 +42,15 @@ export default function Page({
     async function fetchDATA() {
       try {
 
-        await fetchOneTesis(thesisId, "").then((result) => {
+        await fetchOneTesis(thesisId, token).then((result) => {
           setDatosTesis(result)
         })
 
-        await fetchAsesorByIDTesis(thesisId, "").then((result) => {
+        await fetchAsesorByIDTesis(thesisId, token).then((result) => {
           setAsesor(result)
         })
 
-        await fetchDocumentByID(thesisId, "").then((res: pdfProps) => {
+        await fetchDocumentByID(thesisId, token).then((res: pdfProps) => {
 
           const buffer = Uint8Array.from(res.documento.data)
 

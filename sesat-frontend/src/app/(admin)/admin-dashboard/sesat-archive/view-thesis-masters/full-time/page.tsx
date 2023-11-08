@@ -7,12 +7,15 @@ import { fetchTesisCompletadasMaestriaTiempoComp } from "../../../../../../../ut
 import Search from "../../../components/Search";
 import clsx from "clsx";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const page =
     typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
   const limit =
@@ -21,7 +24,7 @@ export default async function Home({
     typeof searchParams.search === "string" ? searchParams.search : undefined;
 
     if (search) {
-      const tesisListData: Promise<InactiveTesisProps[]> = getTesisCompletadasMdFullTimeByName("[token]", search);
+      const tesisListData: Promise<InactiveTesisProps[]> = getTesisCompletadasMdFullTimeByName(token, search);
       const tesisList = await tesisListData;
       const isDataEmpty = !Array.isArray(tesisList) || tesisList.length < 1 || !tesisList; //?
       return (
@@ -46,11 +49,11 @@ export default async function Home({
         </>
       );
     } else {
-      const tesisListData: Promise<InactiveTesisProps[]> = fetchTesisCompletadasMdFullTimePaginated("[token]", page, limit);
+      const tesisListData: Promise<InactiveTesisProps[]> = fetchTesisCompletadasMdFullTimePaginated(token, page, limit);
       const tesisList = await tesisListData;
       const isDataEmpty = !Array.isArray(tesisList) || tesisList.length < 1 || !tesisList; //?
   
-      const totalTesisListData: Promise<InactiveTesisProps[]> = fetchTesisCompletadasMaestriaTiempoComp("[token]");
+      const totalTesisListData: Promise<InactiveTesisProps[]> = fetchTesisCompletadasMaestriaTiempoComp(token);
       const totalTesisList = await totalTesisListData;
       
       const totalCount: number = totalTesisList?.length ?? 0;
@@ -76,7 +79,7 @@ export default async function Home({
             )}
           </div>
           <div className="mt-2 w-full flex justify-end">
-            {!search ? (
+            {!search && !isDataEmpty? (
               <>
                 <Link
                   href={{
