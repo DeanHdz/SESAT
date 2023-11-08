@@ -4,6 +4,11 @@ import { useState } from "react";
 import { postComment } from "../../../utils/comentario.endpoint";
 import { useRouter } from "next/navigation";
 import { formatAsISODate } from "../../../utils/utils";
+import { postNotificacion } from "../../../utils/notification.endpoint";
+import { fetchOneByIdAsignacion } from "../../../utils/asignacion.endpoint";
+import { Asignacion, Comite, Tesis } from "../../../types/ISESAT";
+import { fetchTesisByID } from "../../../utils/tesis.endpoint";
+import { fetchComiteByIDTesis } from "../../../utils/comite.endpoint";
 
 
 const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsuario: number }) => {
@@ -13,6 +18,9 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
   const router = useRouter();
 
   async function handleSubmit(e: any) {
+    const asignacion: Asignacion = await fetchOneByIdAsignacion(id_asignacion, "");
+    const tesis: Tesis = await fetchTesisByID(asignacion.id_tesis, "")
+
     e.preventDefault();
     try {
       await postComment(
@@ -24,6 +32,19 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
         },
         ""
       );
+
+      const comite: Comite[] = await fetchComiteByIDTesis(tesis.id_tesis, "");
+      const comite_ids = comite.map((miembro) => miembro.id_usuario);
+      const notificados = [...comite_ids, tesis.id_usuario];
+      
+      notificados.forEach(async (id) => {
+        idUsuario != id && await postNotificacion({
+          id_usuario: id,
+          titulo: "Nuevo Comentario",
+          descripcion: `Ha recibido un nuevo comentario en la asignacion ${asignacion.titulo}`,
+          fecha_expedicion: formatAsISODate(new Date())
+        }, "");
+      });
       setComment("");
       router.refresh();
 

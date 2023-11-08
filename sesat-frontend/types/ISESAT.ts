@@ -230,36 +230,33 @@ export interface InactiveTesisProps {
 
 export interface Tesis {
   id_tesis: number;
-  clave_alumno: number;
+  id_usuario: number;
   alumno: Usuario;
   titulo: string;
   fecharegistro: Date;
-  generacion: string;
-  registrada: boolean;
+  generacion: number;
   ultimo_avance: number;
-  estado_activo: boolean;
+  estado_finalizacion: boolean;
   asignaciones_tesis: AsignacionTesis[];
 }
 
 export interface CreateTesis {
-  clave_alumno: number;
+  id_usuario: number;
   titulo: string | null;
   fecharegistro: Date | null;
-  generacion: string | null;
-  registrada: boolean;
-  ultimo_avance: number | null; //0 is lacking registry
-  estado_activo: boolean;
+  generacion: number | null;
+  ultimo_avance: number | null;
+  estado_finalizacion: boolean;
 }
 
 export interface UpdateTesis {
   id_tesis: number;
-  clave_alumno: number;
+  id_usuario: number;
   titulo: string;
   fecharegistro: Date;
   generacion: string | undefined;
-  registrada: boolean;
   ultimo_avance: number;
-  estado_activo: boolean;
+  estado_finalizacion: boolean;
 }
 
 /*------------------ COMITE INTERFACE ------------------*/

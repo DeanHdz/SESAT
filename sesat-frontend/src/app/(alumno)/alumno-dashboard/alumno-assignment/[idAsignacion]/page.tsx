@@ -7,13 +7,15 @@ import AssignmentData from "../components/AssignmentData"
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
 import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.endpoint"
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint"
-import { Asignacion } from "../../../../../../types/ISESAT"
+import { Asignacion, LoggedUser } from "../../../../../../types/ISESAT"
 import { fetchOneByIdAsignacion } from "../../../../../../utils/asignacion.endpoint"
 import NotFound from "@/app/(admin)/admin-dashboard/not-found"
 import { getFormattedHours, shortFormatDate } from "../../../../../../utils/utils"
 import PDFUploadForm from "../components/PDFUploadForm"
 import CommentSection from "@/app/(asesor)/asesor-dashboard/asesor-assignment/components/CommentSection"
 import Results from "../components/Results"
+import { LoginEndpoint } from "../../../../../../utils/login.endpoint"
+import { cookies } from "next/headers"
 
 export type TesisInfo = {
   programa_nombre_programa: string;
@@ -78,6 +80,10 @@ export default async function Home({
 }: {
   params: { idAsignacion: string }
 }) {
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+
   let { idAsignacion } = params;
   let error = false;
   let periodo = await fetchLatestPeriod("").catch();
@@ -206,9 +212,8 @@ export default async function Home({
             <div className="lg:hidden w-full">
               <AdvancesList history={history} />
             </div>
-            {/**El id de usuario debe obtenerse de la cookie */}
-            <CommentSection commentsArray={comments} currentUserID={230443} />
-            <AddComment id_asignacion={asignacion.id_asignacion} idUsuario={230443} />
+            <CommentSection commentsArray={comments} currentUserID={user.id_usuario} />
+            <AddComment id_asignacion={asignacion.id_asignacion} idUsuario={user.id_usuario} />
 
           </div>
         </>

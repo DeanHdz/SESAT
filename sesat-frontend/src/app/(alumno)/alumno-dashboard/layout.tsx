@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import AlumnoNavbar from "./components/AlumnoNavbar";
 import { UsuarioEndpoint } from "../../../../utils/usuario.endpoint";
 import { LoggedUser, Usuario } from "../../../../types/ISESAT";
-import Cookies from "js-cookie";
 import { LoginEndpoint } from "../../../../utils/login.endpoint";
 import { cookies } from "next/headers";
 

@@ -5,7 +5,7 @@ import AdvancesList from "../components/AdvancesList"
 import AssignmentData from "../components/AssignmentData"
 import ReviewFormats from "../components/ReviewFormats"
 import CommentSection from "../components/CommentSection"
-import { AsignacionReview } from "../../../../../../types/ISESAT"
+import { AsignacionReview, LoggedUser } from "../../../../../../types/ISESAT"
 import { shortFormatDate } from "../../../../../../utils/utils"
 import { fetchOneToBeReviewed } from "../../../../../../utils/asignacion.endpoint";
 import PDFPreview from "../components/PDFPreview"
@@ -14,6 +14,8 @@ import { fetchConversationByIdAsignacion } from "../../../../../../utils/comenta
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint"
 import NotFound from "@/app/(admin)/admin-dashboard/not-found"
 import Drawer from "../../components/Drawer"
+import { cookies } from "next/headers"
+import { LoginEndpoint } from "../../../../../../utils/login.endpoint"
 
 async function fetchAndSortComments(idAsignacion: number, token: string) {
   let comments = await fetchConversationByIdAsignacion(idAsignacion, token);
@@ -38,8 +40,8 @@ export type Avance = {
   modalidad: string;
 };
 
-async function fetchHistoryByIdTesis(idTesis: number): Promise<Array<number>> {
-  let history: Avance[] = await fetchTesisHistory(idTesis, "");
+async function fetchHistoryByIdTesis(idTesis: number, token: string): Promise<Array<number>> {
+  let history: Avance[] = await fetchTesisHistory(idTesis, token);
   let avancesEntregados = new Array();
   if (history.length > 0) {
     history.sort((a, b) => a.id_asignacion - b.id_asignacion);
@@ -77,19 +79,23 @@ export default async function Home({
 }: {
   params: { idAsignacion: string }
 }) {
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+
   let { idAsignacion } = params;
   let error = false;
-  let periodo = await fetchLatestPeriod("").catch();
-  let asignacion: AsignacionReview = await fetchOneToBeReviewed(333333, parseInt(idAsignacion), "").catch(() => { return undefined });
+  let periodo = await fetchLatestPeriod(token).catch();
+  let asignacion: AsignacionReview = await fetchOneToBeReviewed(user.id_usuario, parseInt(idAsignacion), token).catch(() => { return undefined });
 
   let tesisInfo: TesisInfo | undefined = undefined;
   let comments = undefined;
   let history = undefined;
 
   if (periodo && asignacion && periodo.id_periodo === asignacion.id_periodo) {
-    tesisInfo = await fetchOneTesis(asignacion.id_tesis.toString(), "").catch(() => { return undefined });
-    comments = await fetchAndSortComments(asignacion.id_asignacion, '').catch(() => { return undefined });
-    history = await fetchHistoryByIdTesis(asignacion.id_tesis).catch(() => { return undefined });
+    tesisInfo = await fetchOneTesis(asignacion.id_tesis.toString(), token).catch(() => { return undefined });
+    comments = await fetchAndSortComments(asignacion.id_asignacion, token).catch(() => { return undefined });
+    history = await fetchHistoryByIdTesis(asignacion.id_tesis, token).catch(() => { return undefined });
   } else {
     error = true;
   }
@@ -135,9 +141,8 @@ export default async function Home({
             <div className="lg:hidden w-full">
               <AdvancesList history={history} />
             </div>
-            {/**El id de usuario debe obtenerse de la cookie */}
-            <CommentSection commentsArray={comments} currentUserID={333333} />
-            <AddComment id_asignacion={asignacion.id_asignacion} idUsuario={333333} />
+            <CommentSection commentsArray={comments} currentUserID={user.id_usuario} />
+            <AddComment id_asignacion={asignacion.id_asignacion} idUsuario={user.id_usuario} />
 
           </div>
         </>
