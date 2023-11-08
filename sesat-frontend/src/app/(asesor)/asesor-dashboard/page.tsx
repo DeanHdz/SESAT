@@ -5,6 +5,10 @@ import CommentCard from "./components/CommentCard";
 import CompletedAssignments from './components/CompletedAssignments'
 import NotificacionSection from "./components/NotificationSection";
 import Drawer from "./components/Drawer";
+import { cookies } from "next/headers";
+import { Evento, LoggedUser } from "../../../../types/ISESAT";
+import { LoginEndpoint } from "../../../../utils/login.endpoint";
+import { EventoEndpoint } from "../../../../utils/evento.endpoint";
 
 type AsignacionProps = {
   num_avance: number;
@@ -21,6 +25,14 @@ type AsignacionProps = {
 }
 
 export default async function Home() {
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+
+  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("", user.id_usuario);
+  const eventos = await eventosData;
+  
+  
   let asesorID = 333333;
   let idFuncion = 1;
   let periodo = await fetchLatestPeriod("").catch();
@@ -47,7 +59,7 @@ export default async function Home() {
               <p className="text-2xl font-bold text-black/40">Calendario de Actividades</p>
             </div>
             <div className="mt-2 w-full">
-              <Calendar />
+              <Calendar eventos={eventos} token={token}/>
             </div>
           </div>
           <div className="w-full p-2 lg:w-1/3 mt-10 lg:mt-0">
