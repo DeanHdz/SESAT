@@ -8,6 +8,7 @@ import { fetchComiteMembers } from "../../../../../../utils/comite.endpoint";
 import { fetchFormatData, fetchFormatoEvaluacion, postFormatoEvaluacion } from "../../../../../../utils/formato-evaluacion.endpoint";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import PDFViewer from "./PDFViewer";
+import Cookies from "js-cookie";
 
 type ComiteMember = {
     nombre: string;
@@ -21,7 +22,8 @@ const ReportFormModal = ({
 }: {
     tesisInfo: TesisInfo, asignacion: Asignacion
 }) => {
-
+    const cookie = Cookies.get("SESATsession");
+    const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [fechaLimite, setFechaLimite] = useState(new Date());
     const [tituloReporte, settituloReporte] = useState("");
@@ -44,13 +46,13 @@ const ReportFormModal = ({
     };
 
     async function fetchReporteEvaluacion(idReporte: number) {
-        const res = await fetchFormatoEvaluacion(idReporte, "");
+        const res = await fetchFormatoEvaluacion(idReporte, token);
         setPDF(res.documento_rellenado.data);
         setIsSubmitting(false);
     }
 
     async function fetchComite() {
-        const res: ComiteMember[] = await fetchComiteMembers(asignacion.id_tesis, "").catch(() => { return null });
+        const res: ComiteMember[] = await fetchComiteMembers(asignacion.id_tesis, token).catch(() => { return null });
         if (res) {
             setComite(res);
             setasesor(res.find(usuario => usuario.nombre_funcion === 'Asesor'));
@@ -64,7 +66,7 @@ const ReportFormModal = ({
     };
 
     async function fetchDocumentDataToEdit(idFormato: number) {
-        const res = await fetchFormatData(idFormato, "");
+        const res = await fetchFormatData(idFormato, token);
         setFechaLimite(dateStringToDate(res.fecha_limite));
         settituloReporte(res.titulo_reporte);            
       }
@@ -99,7 +101,7 @@ const ReportFormModal = ({
                 fecha_comienzo: tesisInfo.fecha_registro,
                 fecha_limite: shortFormatDate(formatAsISODate(fechaLimite)),
             },
-            ""
+            token
         );
         setPDF(res.documento_rellenado.data);
         asignacion.id_formato_evaluacion = res.id_formato_evaluacion;

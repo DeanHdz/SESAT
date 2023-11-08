@@ -9,17 +9,19 @@ import { fetchOneByIdAsignacion } from "../../../utils/asignacion.endpoint";
 import { Asignacion, Comite, Tesis } from "../../../types/ISESAT";
 import { fetchTesisByID } from "../../../utils/tesis.endpoint";
 import { fetchComiteByIDTesis } from "../../../utils/comite.endpoint";
-
+import Cookies from "js-cookie";
+import revalidator from "../(admin)/admin-dashboard/actions";
 
 const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsuario: number }) => {
-
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : ""
 
   const [comment, setComment] = useState("");
   const router = useRouter();
 
   async function handleSubmit(e: any) {
-    const asignacion: Asignacion = await fetchOneByIdAsignacion(id_asignacion, "");
-    const tesis: Tesis = await fetchTesisByID(asignacion.id_tesis, "")
+    const asignacion: Asignacion = await fetchOneByIdAsignacion(id_asignacion, token);
+    const tesis: Tesis = await fetchTesisByID(asignacion.id_tesis, token)
 
     e.preventDefault();
     try {
@@ -33,7 +35,7 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
         ""
       );
 
-      const comite: Comite[] = await fetchComiteByIDTesis(tesis.id_tesis, "");
+      const comite: Comite[] = await fetchComiteByIDTesis(tesis.id_tesis, token);
       const comite_ids = comite.map((miembro) => miembro.id_usuario);
       const notificados = [...comite_ids, tesis.id_usuario];
       
@@ -43,9 +45,10 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
           titulo: "Nuevo Comentario",
           descripcion: `Ha recibido un nuevo comentario en la asignacion ${asignacion.titulo}`,
           fecha_expedicion: formatAsISODate(new Date())
-        }, "");
+        }, token);
       });
       setComment("");
+      revalidator("CommentList");
       router.refresh();
 
     } catch (err) {

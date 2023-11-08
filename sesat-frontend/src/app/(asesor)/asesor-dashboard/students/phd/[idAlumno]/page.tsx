@@ -6,6 +6,9 @@ import ThesisInfo from "../../../../../components/ThesisInfo";
 import { fetchValidateRole } from "../../../../../../../utils/comite.endpoint";
 import { fetchFullTesisHistory } from "../../../../../../../utils/tesis.endpoint";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
+import { LoginEndpoint } from "../../../../../../../utils/login.endpoint";
+import { cookies } from "next/headers";
+import { LoggedUser } from "../../../../../../../types/ISESAT";
 
 type RoleProps = {
   nombre_funcion: string;
@@ -31,12 +34,16 @@ export default async function Home({
 }: {
   params: { idAlumno: string }
 }) {
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+
   let { idAlumno } = params;
-  let role: RoleProps = await fetchValidateRole(333333, +idAlumno, "").catch(() => { return null });
+  let role: RoleProps = await fetchValidateRole(user.id_usuario, +idAlumno, token).catch(() => { return null });
   let fullHistory: undefined | ThesisFullHistory[] = undefined;
 
   if (role && role.id_tesis) {
-    fullHistory = await fetchFullTesisHistory(+idAlumno, "").catch(() => { return null });
+    fullHistory = await fetchFullTesisHistory(+idAlumno, token).catch(() => { return null });
   }
   return (
     <div className="flex mb-40">

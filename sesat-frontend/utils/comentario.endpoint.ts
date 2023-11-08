@@ -12,7 +12,7 @@ export async function fetchConversationByIdAsignacion(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    cache: 'no-store' as RequestCache,
+    next: { tags: ["CommentList"] }
   };
   const response = await fetch(url, options);
 
