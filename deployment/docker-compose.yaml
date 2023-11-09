@@ -22,14 +22,14 @@ services:
     ports:
       - '3005:3005'
       
-  # frontend:
-  #   container_name: sesat_frontend
-  #   build:
-  #     context: ./../sesat-frontend
-  #   environment:
-  #     - NEXT_PUBLIC_SESAT_API_URL=${$NEXT_PUBLIC_SESAT_API_URL}
-  #   ports:
-  #     - '3000:3000'
+  frontend:
+    container_name: sesat_frontend
+    build:
+      context: ./../sesat-frontend
+    environment:
+      - NEXT_PUBLIC_SESAT_API_URL=${NEXT_PUBLIC_SESAT_API_URL}
+    ports:
+      - '3000:3000'
 
   postgres-db:
     container_name: sesat_db

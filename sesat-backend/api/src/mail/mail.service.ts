@@ -29,19 +29,17 @@ export class MailService {
     });
   }
 
-  async assignmentGraded() {
-    const url = `example.com/auth/`;
-
+  async assignmentGraded(asignacion: Asignacion, usuario: Usuario) {
     await this.mailerService.sendMail({
-      to: "jesusgerardo.1315@hotmail.com", //HARD QUITAR IDIOTA
-      // from: '"Support Team" <support@example.com>', // override default from
+      to: "jesusgerardo.1315@hotmail.com",
       subject: "Se ha calificado su asignación",
-      template: "./transactional",
+      template: "./gradedAssignment",
       context: {
-        name: "Equisde", //HARD QUITAR IDIOTA
-        url,
+        name: usuario.nombre,
+        assignment: asignacion.titulo,
       },
     });
+    return true;
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_6AM)

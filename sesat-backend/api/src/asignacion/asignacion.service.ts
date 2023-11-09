@@ -62,7 +62,7 @@ export class AsignacionService {
             id_tesis: elem.id_tesis,
           };
 
-          let newAssignment = await this.asignacionRepository.save(
+          const newAssignment = await this.asignacionRepository.save(
             newAsignacionDto
           );
 
@@ -128,7 +128,31 @@ export class AsignacionService {
             ...createAsignacionDto,
             id_tesis: elem.id_tesis,
           };
-          await this.asignacionRepository.save(newAsignacionDto);
+          
+          const newAssignment = await this.asignacionRepository.save(newAsignacionDto);
+
+          let tesis = await this.tesisRepository.findOne({
+            where: { id_tesis: elem.id_tesis },
+            relations: ["alumno"],
+          });
+
+          let comite = await this.comiteService.findPerTesis(elem.id_tesis);
+
+          comite.forEach((member) => {
+            this.notificacionService.create({
+              id_usuario: member.id_usuario,
+              titulo: "Se ha creado una Asignacion",
+              descripcion: `La asignacion ${newAssignment.titulo} ha sido creada para el alumno ${tesis.alumno.nombre} ${tesis.alumno.apellido_paterno} ${tesis.alumno.apellido_materno}`,
+              fecha_expedicion: new Date(),
+            });
+          });
+          this.notificacionService.create({
+            id_usuario: tesis.alumno.id_usuario,
+            titulo: "Se ha creado una Asignacion",
+            descripcion: `La asignacion ${newAssignment.titulo} ha sido creada`,
+            fecha_expedicion: new Date(),
+          });
+          this.mailService.newAssignment(newAssignment, tesis.alumno);
         });
 
         await Promise.all(promises);

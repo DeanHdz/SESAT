@@ -8,6 +8,9 @@ import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import { fetchFullTesisHistory } from "../../../../../utils/tesis.endpoint";
 import { fetchComiteMembers, fetchValidateRole } from "../../../../../utils/comite.endpoint";
 import ThesisInfo from "@/app/components/ThesisInfo";
+import { cookies } from "next/headers";
+import { LoggedUser } from "../../../../../types/ISESAT";
+import { LoginEndpoint } from "../../../../../utils/login.endpoint";
 
 export type ThesisFullHistory = {
   nombre_programa: string;
@@ -32,11 +35,15 @@ type ComiteMember = {
 
 export default async function Home() {
 
-  let fullHistory: undefined | ThesisFullHistory[] = await fetchFullTesisHistory(230443, "").catch(() => { return null });
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+
+  let fullHistory: undefined | ThesisFullHistory[] = await fetchFullTesisHistory(user.id_usuario, token).catch(() => { return null });
 
   let comite: undefined | ComiteMember[];
   if (fullHistory && Array.isArray(fullHistory)) {
-    comite = await fetchComiteMembers(fullHistory[0].id_tesis, "").catch(() => { return null });
+    comite = await fetchComiteMembers(fullHistory[0].id_tesis, token).catch(() => { return null });
   }
 
   return (

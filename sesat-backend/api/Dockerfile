@@ -2,7 +2,7 @@ FROM node:alpine as builder
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
 
 ARG CACHEBUST=1
 RUN npm install

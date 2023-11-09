@@ -10,6 +10,7 @@ import { AsignacionModule } from "src/asignacion/asignacion.module";
 import { TesisModule } from "src/tesis/tesis.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
+import { MailController } from './mail.controller';
 
 @Global()
 @Module({
@@ -46,5 +47,6 @@ import { Asignacion } from "src/asignacion/entities/asignacion.entity";
   ],
   providers: [MailService],
   exports: [MailService],
+  controllers: [MailController],
 })
 export class MailModule {}

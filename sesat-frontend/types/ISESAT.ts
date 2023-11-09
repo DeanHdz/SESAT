@@ -623,7 +623,7 @@ export interface CreateEvento {
 }
 
 /*------------------ EXTERNAL USER INTERFACE ------------------*/
-  //In this context, external as in received from the external service
+//In this context, external as in received from the external service
 export interface ExternalUser {
   nombre: string;
   apellidos: string;
@@ -655,12 +655,12 @@ export interface ExternalAsesor {
 }
 
 export interface CreateForeignAsesor {
-  nombre: string,
-  apellido_materno: string | null,
-  apellido_paterno: string,
-  telefono: number,
-  correo: string,
-  organizacion: string, 
+  nombre: string;
+  apellido_materno: string | null;
+  apellido_paterno: string;
+  telefono: number;
+  correo: string;
+  organizacion: string;
 }
 
 export interface ExternalAsesor {
@@ -677,11 +677,16 @@ export interface CreateExternalAsesor {
 }
 
 export interface CreateEventByType {
-  users: Usuario[] | null,
-  type: number,
-  id: number,
-  id_creador: number,
-  title: string,
-  start: Date,
-  end: Date | null,
+  users: Usuario[] | null;
+  type: number;
+  id: number;
+  id_creador: number;
+  title: string;
+  start: Date;
+  end: Date | null;
+}
+
+export interface GradedMailDto {
+  usuario: Usuario;
+  asignacion: Asignacion;
 }
