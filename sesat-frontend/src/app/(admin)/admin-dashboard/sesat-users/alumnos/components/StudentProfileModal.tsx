@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Tesis, Usuario } from "../../../../../../../types/ISESAT";
+import { RetrievedCommittee, Tesis, Usuario } from "../../../../../../../types/ISESAT";
 import Cookies from "js-cookie";
 import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import revalidator from "../../../actions";
 import { useRouter } from "next/navigation";
 import { findTesisPerStudent } from "../../../../../../../utils/tesis.endpoint";
+import { retrieveCommittee } from "../../../../../../../utils/comite.endpoint";
 
 const StudentProfileModal = ({ user }: { user: Usuario }) => {
   const cookie = Cookies.get("SESATsession");
@@ -317,7 +318,7 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
               </p>
             </div>
           </div>
-          <div className="bg-gray-100 px-4 rounded-lg">
+          <div className="bg-gray-100 px-4 py-1 rounded-lg">
             <p className="font-semibold text-dark-blue-10 text-base">Status</p>
             <p className="italic">
               {user.datos_alumno && user.datos_alumno.estado_activo
@@ -368,23 +369,47 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     useState<boolean>(false);
 
   const [tesis, setTesis] = useState<Tesis>()
+  const [comite, setComite] = useState<RetrievedCommittee>();
 
   useEffect(() => {
     const getTesis = async () => {
-      const tesisData = await findTesisPerStudent(token, user.id_usuario)
+      const tesisData = await findTesisPerStudent(token, user.id_usuario);
       return tesisData;
     }
 
-    const fetchData = async () => {
-      if (showCommitteeSection) {
-        const retrievedTesis = await getTesis();
-        setTesis(retrievedTesis);
+    const fetchData = async ()  => {
+      if(showCommitteeSection){
+        const tesisData = await getTesis();
+        setTesis(tesisData);
       }
-    };
+    }
 
     fetchData();
 
   },[showCommitteeSection])
+
+  useEffect(() => {
+
+    console.log("tesis:")
+    console.log(tesis)
+
+    const getCommittee = async() => {
+      const committeeData = await retrieveCommittee(token, tesis ? tesis.id_tesis : 0);
+      return committeeData;
+    }
+
+    const fetchData = async ()  => {
+      if(tesis){
+        const committeeData = await getCommittee();
+        setComite(committeeData);
+      }
+    }
+
+    fetchData();
+
+  }, [tesis])
+
+
   
   const committeeSection = ( 
     <div className="mt-2 px-2 max-h-[500px] overflow-y-auto">
@@ -393,23 +418,77 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       </p>
       {tesis && tesis.fecha_registro != null? (
         <div className="w-full">
-          <p className="font-semibold text-dark-blue-10 text-base">
+          <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
             Tesis
           </p>
           <div className="w-full border border-gray-200 p-2">
             <p className="italic">{tesis.titulo}</p>
           </div>
-          <p className="font-semibold text-dark-blue-10 text-base">
+          <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
             Comite
           </p>
-          <div className="w-full border border-gray-200 p-2">
-            <div>
-              <p className="font-semibold text-dark-blue-10 text-[14px]">
-                Asesor
-              </p>
-              <p className="italic">Nombre de Asesor Extremadamente Largo jsjsjs</p>
+          {comite && tesis.alumno && tesis.alumno.datos_alumno && tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
+            <div className="w-full border border-gray-200 p-2 mb-2">
+              <div>
+                <p className="font-semibold text-dark-blue-10 text-[14px] mb-1">
+                  Asesor
+                </p>
+                <p className="italic">
+                  {comite.asesor ? comite.asesor.id_usuario : "No se ha definido el Asesor"}
+                  <span className="ml-2 border-l border-gray-200 px-3">
+                    {comite.asesor ? `${comite.asesor.nombre} ${comite.asesor.apellido_paterno} ${comite.asesor.apellido_materno}` : ""}
+                  </span>
+                </p>
+                <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                  Co-asesor
+                </p>
+                <p className="italic">
+                  {comite.coasesor ? comite.coasesor.id_usuario : "No se ha definido el Asesor"}
+                  <span className="ml-2 border-l border-gray-200 px-3">
+                    {comite.coasesor ? `${comite.coasesor.nombre} ${comite.coasesor.apellido_paterno} ${comite.coasesor.apellido_materno}` : ""}
+                  </span>
+                </p>
+                <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                  Sinodal
+                </p>
+                <p className="italic">
+                  {comite.sinodal1 ? comite.sinodal1.id_usuario : "No se ha definido el Asesor"}
+                  <span className="ml-2 border-l border-gray-200 px-3">
+                    {comite.sinodal1 ? `${comite.sinodal1.nombre} ${comite.sinodal1.apellido_paterno} ${comite.sinodal1.apellido_materno}` : ""}
+                  </span>
+                </p>
+                <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                  Sinodal
+                </p>
+                <p className="italic">
+                  {comite.sinodal2 ? comite.sinodal2.id_usuario : "No se ha definido el Asesor"}
+                  <span className="ml-2 border-l border-gray-200 px-3">
+                    {comite.sinodal2 ? `${comite.sinodal2.nombre} ${comite.sinodal2.apellido_paterno} ${comite.sinodal2.apellido_materno}` : ""}
+                  </span>
+                </p>
+                <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                  Suplente
+                </p>
+                <p className="italic">
+                  {comite.suplente ? comite.suplente.id_usuario : "No se ha definido el Asesor"}
+                  <span className="ml-2 border-l border-gray-200 px-3">
+                    {comite.suplente ? `${comite.suplente.nombre} ${comite.suplente.apellido_paterno} ${comite.suplente.apellido_materno}` : ""}
+                  </span>
+                </p>
+                <div className="w-full flex justify-end px-4">
+                  <button
+                    className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                    onClick={() => {
+                    }}
+                  >
+                   Modificar Comité
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+            ) : (
+              "Datos Inconsistentes"
+            ) }
         </div>
       ) : (
         <div className="w-full">

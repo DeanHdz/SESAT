@@ -21,6 +21,12 @@ export class ComiteController {
     return this.comiteService.retrieveCommittee(+id);
   }
 
+  @Get("/retrieve/member/:id/:role")
+  async retrieveCommitteeMemberByRole(@Param("role") role: string, @Param("id") id: string)
+  {
+    return this.comiteService.retrieveCommitteeMemberByRole(+role, +id);
+  }
+
   @Post()
   create(@Body() CreateComiteDto: CreateComiteDto) {
     return this.comiteService.create(CreateComiteDto);

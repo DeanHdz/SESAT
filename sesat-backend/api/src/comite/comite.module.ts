@@ -4,7 +4,6 @@ import { ComiteService } from './comite.service';
 import { ComiteController } from './comite.controller';
 import { Comite } from './entities/comite.entity';
 import { Asignacion } from 'src/asignacion/entities/asignacion.entity';
-import { UsuarioModule } from 'src/usuario/usuario.module';
 import { TesisModule } from 'src/tesis/tesis.module';
 
 @Module({

@@ -32,29 +32,27 @@ export class ComiteService {
     const suplente: Comite[] = await this.retrieveCommitteeMemberByRole(4, id_tesis);
     const tesis: Tesis = await this.tesisService.findOne(id_tesis);
 
-    // 1: Maestria 2: Doctorado
-    console.log(tesis.alumno.datos_alumno.id_grado_estudio)
     switch(tesis.alumno.datos_alumno.id_grado_estudio)
     {
       case 1:
         const retrievedCommitteeDTOMasters: RetrievedCommitteeDTO = {
-          asesor: asesor[0].asesor ? asesor[0].asesor : null,
-          coasesor: coasesor[0].asesor ? coasesor[0].asesor : null,
-          sinodal1: sinodales[0].asesor ? sinodales[0].asesor : null,
-          sinodal2: sinodales[1].asesor ? sinodales[1].asesor : null,
-          suplente: suplente[0].asesor ? suplente[0].asesor : null
-        }
+          asesor: asesor && asesor[0] && asesor[0].asesor ? asesor[0].asesor : null,
+          coasesor: coasesor && coasesor[0] && coasesor[0].asesor ? coasesor[0].asesor : null,
+          sinodal1: sinodales && sinodales[0] && sinodales[0].asesor ? sinodales[0].asesor : null,
+          sinodal2: sinodales && sinodales[1] && sinodales[1].asesor ? sinodales[1].asesor : null,
+          suplente: suplente && suplente[0] && suplente[0].asesor ? suplente[0].asesor : null,
+        };
         return retrievedCommitteeDTOMasters;
         break;
       case 2:
         const retrievedCommitteeDTOPhd: RetrievedCommitteeDTO = {
-          asesor: asesor[0].asesor ? asesor[0].asesor : null,
-          coasesor: coasesor[0].asesor ? coasesor[0].asesor : null,
-          sinodal1: sinodales[0].asesor ? sinodales[0].asesor : null,
-          sinodal2: sinodales[1].asesor ? sinodales[1].asesor : null,
-          sinodal3: sinodales[2].asesor ? sinodales[2].asesor : null,
-          sinodal4: sinodales[3].asesor ? sinodales[3].asesor : null,
-          suplente: suplente[0].asesor ? suplente[0].asesor : null
+          asesor: asesor && asesor[0] && asesor[0].asesor ? asesor[0].asesor : null,
+          coasesor: coasesor && coasesor[0] && coasesor[0].asesor ? coasesor[0].asesor : null,
+          sinodal1: sinodales && sinodales[0] && sinodales[0].asesor ? sinodales[0].asesor : null,
+          sinodal2: sinodales && sinodales[1] && sinodales[1].asesor ? sinodales[1].asesor : null,
+          sinodal3: sinodales && sinodales[2] && sinodales[2].asesor ? sinodales[2].asesor : null,
+          sinodal4: sinodales && sinodales[3] && sinodales[3].asesor ? sinodales[3].asesor : null,
+          suplente: suplente && suplente[0] && suplente[0].asesor ? suplente[0].asesor : null,
         }
         return retrievedCommitteeDTOPhd;
         break;
@@ -68,7 +66,7 @@ export class ComiteService {
     return await this.comiteRepository.find({ where: {
       id_tesis: id_tesis,
       id_funcion: role
-    }})
+    }, relations: ["asesor"]})
   }
 
   create(CreateComiteDto: CreateComiteDto) {

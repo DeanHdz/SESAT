@@ -505,7 +505,7 @@ export class TesisService {
   }
 
   async findTesisPerStudent(id_usuario: number) {
-    const tesisList: Tesis[] = await this.tesisRepository.find({ where: { id_usuario: id_usuario } });
+    const tesisList: Tesis[] = await this.tesisRepository.find({ where: { id_usuario: id_usuario }, relations: ["alumno"] });
 
     const filteredTesisList: Tesis[] = tesisList.filter(
       (tesis) => ( tesis.estado_finalizacion === false)
