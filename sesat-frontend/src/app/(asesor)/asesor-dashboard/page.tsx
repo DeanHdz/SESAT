@@ -29,14 +29,14 @@ export default async function Home() {
   const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
 
-  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("", user.id_usuario);
+  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos(token, user.id_usuario);
   const eventos = await eventosData;
   
   
-  let asesorID = 333333;
+  let asesorID = user.id_usuario;
   let idFuncion = 1;
-  let periodo = await fetchLatestPeriod("").catch();
-  let asignaciones: AsignacionProps[] = await fetchAvancesEntregados(periodo.id_periodo, asesorID.toString(), idFuncion.toString(), "")
+  let periodo = await fetchLatestPeriod(token).catch();
+  let asignaciones: AsignacionProps[] = await fetchAvancesEntregados(periodo.id_periodo, asesorID.toString(), idFuncion.toString(), token)
   return (
     <main className="w-full flex flex-row max-w-[1600px] mx-auto">
 
