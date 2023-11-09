@@ -1,18 +1,20 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PDFViewer from './PDFViewer';
 import { useRouter } from 'next/navigation';
 import AssignmentHeader from './AssignmentHeader';
 import AssignmentData from './AssignmentData';
 import { shortFormatDate } from '../../../../../../utils/utils';
 import CommentSection from './CommentSection';
-import { Asignacion } from '../../../../../../types/ISESAT';
+import { Asignacion, LoggedUser } from '../../../../../../types/ISESAT';
 import { fetchOneTesis } from '../../../../../../utils/tesis.endpoint';
 import { fetchOneByIdAsignacion } from '../../../../../../utils/asignacion.endpoint';
 import { fetchConversationByIdAsignacion } from '../../../../../../utils/comentario.endpoint';
 import ProcessingAnim from '@/app/components/ProcessingAnim';
 import { fetchActaEvaluacion } from '../../../../../../utils/acta-evaluacion.endpoint';
 import { fetchFormatoEvaluacion } from '../../../../../../utils/formato-evaluacion.endpoint';
+import Cookies from 'js-cookie';
+import { LoginEndpoint } from '../../../../../../utils/login.endpoint';
 
 async function fetchAndSortComments(idAsignacion: number, token: string) {
     let comments = await fetchConversationByIdAsignacion(idAsignacion, token);
@@ -21,6 +23,11 @@ async function fetchAndSortComments(idAsignacion: number, token: string) {
 }
 
 const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: number }) => {
+    const cookie = Cookies.get("SESATsession");
+    const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : ""
+
+    const [loggedUser, setLoggeduser] = useState<LoggedUser>();
+
     const [showModal, setShowModal] = useState(false);
 
     const [cssDisabled, setCSSDisabled] = useState("")
@@ -35,6 +42,20 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
     const [comments, setcomments] = useState<any>(undefined)
     const [currentPDF, setcurrentPDF] = useState<Array<number> | undefined>()
 
+    useEffect(() => {
+        const getLoggedUser = async () =>
+        {
+            const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+            return user;
+        }
+
+        const fetchData = async () => {
+            const retrievedLoggedUser = await getLoggedUser();
+            setLoggeduser(retrievedLoggedUser);
+        }
+
+        fetchData()
+    },[])
 
 
     function setDefaultState() {
@@ -50,13 +71,13 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
 
     async function fetchActa(idActa: number) {
         setcurrentPDF(undefined);
-        const res = await fetchActaEvaluacion(idActa, "");
+        const res = await fetchActaEvaluacion(idActa, token);
         setcurrentPDF(res.documento_rellenado.data);
     }
 
     async function fetchFormato(idFormato: number) {
         setcurrentPDF(undefined);
-        const res = await fetchFormatoEvaluacion(idFormato, "");
+        const res = await fetchFormatoEvaluacion(idFormato, token);
         setcurrentPDF(res.documento_rellenado.data);
     }
 
@@ -69,14 +90,14 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
         setShowModal(true);
         document.body.classList.add('modal-open');
 
-        const res = await fetchOneByIdAsignacion(idAsignacion, "").catch()
+        const res = await fetchOneByIdAsignacion(idAsignacion, token).catch()
         if (res) {
             await setAsignacion(res)
             setcurrentPDF(res.documento.data);
-            await fetchOneTesis(res.id_tesis.toString(), "").then((res) => {
+            await fetchOneTesis(res.id_tesis.toString(), token).then((res) => {
                 settesisInfo(res)
             }).catch()
-            await fetchAndSortComments(res.id_asignacion, '').then((res) => {
+            await fetchAndSortComments(res.id_asignacion, token).then((res) => {
                 setcomments(res)
             }).catch()
         }
@@ -164,9 +185,7 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
                                             </div>
 
                                         </div>
-                                        {/**El id de usuario debe obtenerse de la cookie */}
-                                        <CommentSection commentsArray={comments} currentUserID={333333} />
-
+                                        <CommentSection commentsArray={comments} currentUserID={loggedUser ? loggedUser.id_usuario : 333333} />
 
                                     </>
                                 ) : (

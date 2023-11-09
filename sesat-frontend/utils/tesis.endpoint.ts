@@ -1,3 +1,26 @@
+export async function findTesisPerStudent(token: string, id: number)
+{
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/per-student/${id}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    next: {revalidate: 0}
+  };
+  const response = await fetch(url, options);
+  if(!response.ok){
+    throw(new Error('Error fetching the data'))
+  }
+  try {
+    const result = await response.json();
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
 export async function fetchTesisByID(id: number, token: string)
 {
   const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/${id}`;
@@ -96,7 +119,8 @@ export async function fetchTesisCompletadasMdFullTimePaginated(token: string, pa
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-    },  
+    },
+    next: { revalidate: 3600 }
   };
   const response = await fetch(url, options);
   if(!response.ok){
@@ -114,7 +138,8 @@ export async function getTesisCompletadasMdFullTimeByName(token: string, query: 
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-    },  
+    },
+    next: { revalidate: 3600 }
   };
   const response = await fetch(url, options);
   if(!response.ok){
@@ -171,7 +196,6 @@ export async function fetchTesisCompletadasPhd(
   return result;
 }
 
-
 export async function fetchTesisCompletadasMaestriaMedTiempo(
   token: string,
 ) {
@@ -206,7 +230,7 @@ export async function fetchTesisCompletadasMaestriaTiempoComp(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    cache: 'no-store' as RequestCache,
+    next: { revalidate: 3600 }
     
   };
   const response = await fetch(url, options);
@@ -218,6 +242,7 @@ export async function fetchTesisCompletadasMaestriaTiempoComp(
   const result = await response.json();
   return result;
 }
+
 //Obtener el numero de estudiantes inscritos en X seminario
 //el parametro numAvance, representa el seminario
 export async function fetchCountAlumnosDoctoradoOfNumAv(  
@@ -303,7 +328,6 @@ export async function updateNumAvanceForEvaluatedStudents(
 
 }
 
-
 //Numero de Alumnos activos de maestria con numero de Avance ':numAvance' y de tiempo completo
 export async function fetchNumAlumnosMaestriaTiempoComp(  
   token: string, 
@@ -330,7 +354,6 @@ export async function fetchNumAlumnosMaestriaTiempoComp(
   return result;
 
 }
-
 
 //Numero de Alumnos activos de maestria con numero de Avance ':numAvance' y de tiempo completo
 export async function fetchNumAlumnosMaestriaMedTiempo(  
@@ -385,7 +408,6 @@ export async function fetchTesisHistory(
   return result;
 
 }
-
 
 export async function fetchFullTesisHistory(  
   idAlumno: number,

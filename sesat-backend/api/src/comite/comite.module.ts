@@ -4,9 +4,11 @@ import { ComiteService } from './comite.service';
 import { ComiteController } from './comite.controller';
 import { Comite } from './entities/comite.entity';
 import { Asignacion } from 'src/asignacion/entities/asignacion.entity';
+import { UsuarioModule } from 'src/usuario/usuario.module';
+import { TesisModule } from 'src/tesis/tesis.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Comite, Asignacion])],
+  imports: [TypeOrmModule.forFeature([Comite, Asignacion]), UsuarioModule, TesisModule],
   controllers: [ComiteController],
   providers: [ComiteService],
   exports: [ComiteService]

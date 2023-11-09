@@ -9,12 +9,15 @@ import PrevAdvance from "@/app/(asesor)/asesor-dashboard/asesor-assignment/compo
 import { fetchTesisHistory } from "../../../utils/tesis.endpoint";
 import { Avance } from "@/app/(asesor)/asesor-dashboard/asesor-assignment/[idAsignacion]/page";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
+import Cookies from "js-cookie";
 
 type TesisProps = {
     tesis: ThesisFullHistory;
 }
 
 const ThesisInfo = (props: TesisProps) => {
+    const cookie = Cookies.get("SESATsession");
+    const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : ""
     const [history, setHistory] = useState<undefined | Array<number>>(undefined);
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +29,7 @@ const ThesisInfo = (props: TesisProps) => {
         setIsLoading(true);
         setIsOpen(!isOpen);
 
-        let history: Avance[] = await fetchTesisHistory(props.tesis.id_tesis, "");
+        let history: Avance[] = await fetchTesisHistory(props.tesis.id_tesis, token);
         let avancesEntregados = new Array();
         if (history.length > 0) {
             let { grado_estudio, modalidad } = history[0];

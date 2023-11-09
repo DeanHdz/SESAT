@@ -1,120 +1,482 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
-import SelectAsesores from "../../../../../components/SelectAsesores";
-import SelectProgramas from "../../../../../components/SelectProgramas";
-import { Programa, Usuario } from "../../../../../../../types/ISESAT";
-
+import { Tesis, Usuario } from "../../../../../../../types/ISESAT";
+import Cookies from "js-cookie";
+import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
+import revalidator from "../../../actions";
+import { useRouter } from "next/navigation";
+import { findTesisPerStudent } from "../../../../../../../utils/tesis.endpoint";
 
 const StudentProfileModal = ({ user }: { user: Usuario }) => {
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  const [activeStatus, setActiveStatus] = useState<boolean>(true); //had to default it
-  const [program, setProgram] = useState<string>("");
+  const [showChangeStatusModal, setShowChangeStatusModal] = useState(false);
+  const [showChangeStatusSuccessModal, setShowChangeStatusSuccessModal] =
+    useState(false);
+  const [showChangeStatusErrorModal, setShowChangeStatusErrorModal] =
+    useState(false);
+  /* Student Info Section */
 
-  const [activeTab0, setActiveTab0] = useState("tab-active");
-  const [activeTab1, setActiveTab1] = useState("");
+  const handleStatusChange = async () => {
+    console.log("idusuario: " + user.id_usuario)
+    const res = await UsuarioEndpoint.changeStatus(token, user.id_usuario);
+    setShowChangeStatusModal(!showChangeStatusModal);
+    if (res != null)
+      setShowChangeStatusSuccessModal(!showChangeStatusSuccessModal);
+    else setShowChangeStatusErrorModal(!showChangeStatusErrorModal);
+  };
 
-
-  const [isChecked, setIsChecked] = useState(false);
-
-  const [asesor, setAsesor] = useState("");
-  const [Asesores, setAsesores] = useState<Usuario[] | undefined>(
-    undefined
+  const changeStatusErrorModal = (
+    <div
+      className="relative z-51"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg
+                    className="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Operación fallida
+                  </h3>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      Ha ocurrido un error, por favor intente nuevamente.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={() => {
+                  setShowChangeStatusErrorModal(!showChangeStatusErrorModal);
+                  revalidator("PaginatedMastersList");
+                  revalidator("PaginatedPhdList");
+                  router.refresh();
+                }}
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 
-  //custom Hook para sacar los datos de los asesores del backend
-  const getAsesoresData = async () => {
-    /*setAsesores(await UsuarioEndpoint.getAsesores(""));*/
-  };
+  const changeStatusModal = (
+    <div
+      className="z-51 relative"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg
+                    className="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Verificar Acción
+                  </h3>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      El status del alumno cambiará a{" "}
+                      <span className="font-bold text-dark-blue-10">
+                        {user.datos_alumno && user.datos_alumno.estado_activo
+                          ? "Inactivo"
+                          : "Activo"}
+                      </span>
+                      .
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
+                className="inline-flex w-full justify-center rounded-md bg-dark-blue-10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto"
+                onClick={handleStatusChange}
+              >
+                Cambiar
+              </button>
+              <button
+                type="button"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={() => {
+                  setShowChangeStatusModal(!showChangeStatusModal);
+                  setShowModal(!showModal);
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
+  const changeStatusSuccessModal = (
+    <div
+      className="relative z-51"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg
+                    className="h-6 w-6 text-green-600"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    width="40"
+                    zoomAndPan="magnify"
+                    viewBox="0 0 30 30.000001"
+                    height="40"
+                    preserveAspectRatio="xMidYMid meet"
+                    version="1.0"
+                  >
+                    <defs>
+                      <clipPath id="id1">
+                        <path
+                          d="M 2.328125 4.222656 L 27.734375 4.222656 L 27.734375 24.542969 L 2.328125 24.542969 Z M 2.328125 4.222656 "
+                          clipRule="nonzero"
+                        />
+                      </clipPath>
+                    </defs>
+                    <g clipPath="url(#id1)">
+                      <path
+                        fill="rgb(0%, 40%, 20%)"
+                        d="M 27.5 7.53125 L 24.464844 4.542969 C 24.15625 4.238281 23.65625 4.238281 23.347656 4.542969 L 11.035156 16.667969 L 6.824219 12.523438 C 6.527344 12.230469 6 12.230469 5.703125 12.523438 L 2.640625 15.539062 C 2.332031 15.84375 2.332031 16.335938 2.640625 16.640625 L 10.445312 24.324219 C 10.59375 24.472656 10.796875 24.554688 11.007812 24.554688 C 11.214844 24.554688 11.417969 24.472656 11.566406 24.324219 L 27.5 8.632812 C 27.648438 8.488281 27.734375 8.289062 27.734375 8.082031 C 27.734375 7.875 27.648438 7.679688 27.5 7.53125 Z M 27.5 7.53125 "
+                        fillOpacity="1"
+                        fillRule="nonzero"
+                      />
+                    </g>
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Operación exitosa
+                  </h3>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      El status del alumno ha sido modificado con éxito.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={() => {
+                  setShowChangeStatusSuccessModal(
+                    !showChangeStatusSuccessModal
+                  );
+                  revalidator("PaginatedMastersList");
+                  revalidator("PaginatedPhdList");
+                  router.refresh();
+                }}
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
-  function setActiveTab(tab: number) {
+  const [showStudentInfoSection, setShowStudentInfoSection] =
+    useState<boolean>(true);
+  const studentInfoSection = (
+    <div className="mt-2 px-2 max-h-[500px] overflow-y-auto">
+      <p className="font-semibold text-dark-blue-10 text-lg">
+        Datos del Alumno
+      </p>
+      <div className="w-full border border-gray-200 p-2">
+        <div className="flex flex-col">
+          <div className="flex gap-2">
+            <div className="w-3/6">
+              <p className="font-semibold text-dark-blue-10 text-base">
+                Clave única
+              </p>
+              <p className="italic">{user.id_usuario}</p>
+            </div>
+            <div className="w-3/6">
+              <p className="font-semibold text-dark-blue-10 text-base">
+                Nombre
+              </p>
+              <p className="italic">
+                {`${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`}
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <div className="w-3/6">
+              <p className="font-semibold text-dark-blue-10 text-base">
+                Programa
+              </p>
+              <p className="italic">
+                {user.datos_alumno && user.datos_alumno.programa
+                  ? user.datos_alumno.programa.nombre_programa
+                  : "Error Obteniendo el Programa"}
+              </p>
+            </div>
+            <div className="w-3/6">
+              <p className="font-semibold text-dark-blue-10 text-base">
+                Grado Estudio
+              </p>
+              <p className="italic">
+                {user.datos_alumno && user.datos_alumno.id_grado_estudio === 1
+                  ? "Maestría"
+                  : "Doctorado"}
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <div className="w-3/6">
+              <p className="font-semibold text-dark-blue-10 text-base">
+                Modalidad
+              </p>
+              <p className="italic">
+                {user.datos_alumno && user.datos_alumno.id_modalidad === 1
+                  ? "Tiempo Completo"
+                  : "Medio Tiempo"}
+              </p>
+            </div>
+            <div className="w-3/6">
+              <p className="font-semibold text-dark-blue-10 text-base">
+                Generación
+              </p>
+              <p className="italic">
+                {user.datos_alumno
+                  ? user.datos_alumno.generacion
+                  : "Error Obteniendo la Generación"}
+              </p>
+            </div>
+          </div>
+          <div className="bg-gray-100 px-4 rounded-lg">
+            <p className="font-semibold text-dark-blue-10 text-base">Status</p>
+            <p className="italic">
+              {user.datos_alumno && user.datos_alumno.estado_activo
+                ? "Activo"
+                : "Inactivo"}
+              <span>
+                <button
+                  className="px-2 text-dark-blue-10 text-[11px] font-bold ml-3 hover:shadow"
+                  onClick={() => {
+                    setShowModal(!showModal);
+                    setShowChangeStatusModal(!showChangeStatusModal);
+                  }}
+                >
+                  Cambiar
+                </button>
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <p className="font-semibold text-dark-blue-10 text-lg mt-2">
+        Reestablecer Datos del Alumno
+      </p>
+      <div className="w-full border border-gray-200 p-2">
+        <div className="flex flex-col flex-1">
+          <p className="italic text-[12px] text-black">
+            Esta opción sólo debería usarse en caso de que el alumno cambie de programa o haya terminado el posgrado y esté por entrar a otro.
+            <br />
+            Es un proceso <span className="text-red-600">irreversible.</span>
+          </p>
+          <div className="w-full flex justify-end px-6">
+            <button
+              className="px-2 text-red-600 text-[11px] font-bold hover:shadow"
+              onClick={() => {
+              }}
+            >
+              Reestablecer Datos de Alumno
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  /* Student Info Section */
+
+  /* Committee Section */
+  const [showCommitteeSection, setShowCommitteeSection] =
+    useState<boolean>(false);
+
+  const [tesis, setTesis] = useState<Tesis>()
+
+  useEffect(() => {
+    const getTesis = async () => {
+      const tesisData = await findTesisPerStudent(token, user.id_usuario)
+      return tesisData;
+    }
+
+    const fetchData = async () => {
+      if (showCommitteeSection) {
+        const retrievedTesis = await getTesis();
+        setTesis(retrievedTesis);
+      }
+    };
+
+    fetchData();
+
+  },[showCommitteeSection])
+  
+  const committeeSection = ( 
+    <div className="mt-2 px-2 max-h-[500px] overflow-y-auto">
+      <p className="font-semibold text-dark-blue-10 text-lg">
+        Datos del Alumno
+      </p>
+      {tesis && tesis.fecha_registro != null? (
+        <div className="w-full">
+          <p className="font-semibold text-dark-blue-10 text-base">
+            Tesis
+          </p>
+          <div className="w-full border border-gray-200 p-2">
+            <p className="italic">{tesis.titulo}</p>
+          </div>
+          <p className="font-semibold text-dark-blue-10 text-base">
+            Comite
+          </p>
+          <div className="w-full border border-gray-200 p-2">
+            <div>
+              <p className="font-semibold text-dark-blue-10 text-[14px]">
+                Asesor
+              </p>
+              <p className="italic">Nombre de Asesor Extremadamente Largo jsjsjs</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="w-full">
+          <p className="font-semibold text-dark-blue-10 text-base">
+            Tesis
+          </p>
+          <p className="italic">El alumno aún no ha realizado su registro de Tesis</p>
+        </div>
+      )}
+    </div>
+  )
+  /* Committee Section */
+
+  /* Tabs */
+  const [cssTab0, setCssTab0] = useState("");
+  const [cssTab1, setCssTab1] = useState("");
+  const [tab, setTab] = useState<number>(0);
+
+  const setActiveTab = (tab: number) => {
     switch (tab) {
       case 1:
-        setActiveTab0("tab-active");
-        setActiveTab1("");
+      default:
+        setTab(1);
+        setCssTab0("tab-active");
+        setCssTab1("");
         break;
       case 2:
-        setActiveTab0("");
-        setActiveTab1("tab-active");
+        setTab(2);
+        setCssTab0("");
+        setCssTab1("tab-active");
         break;
-
-    }
-  }
-  useEffect(() => {
-    if (showModal === true) {
-      console.log("useEffect");
-      getAsesoresData();
-    }
-  }, [showModal]);
-
-  const renderSelectAsesores = () => {
-    if (Asesores != undefined) {
-      return <SelectAsesores asesores={Asesores} />;
     }
   };
 
-  const [listaProgramas, setListaProgramas] = useState<
-    Programa[] | undefined
-  >();
-
-  const getListaProgramas = async () => {
-    /*setListaProgramas(await ProgramaEndpoint.getProgramas(""));*/
-  };
-
   useEffect(() => {
-    if (showModal === true) {
-      console.log("useEffect");
-      getListaProgramas();
-    }
-  }, [showModal]);
+    setActiveTab(tab);
+  }, []);
 
-  async function handleSubmit(e: any) {
-    try {
-      e.preventDefault();
-      /*
-      DatosAlumnoEndpoint.putDatosAlumno(
-        {
-          id_datos_alumno: user.id_datos_alumno! ?? 0,
-          grado_estudio: user.datos_alumno?.grado_estudio! ?? "",
-          modalidad: user.datos_alumno?.modalidad! ?? "",
-          estado_activo: activeStatus! ?? user.datos_alumno?.estado_activo,
-          id_programa: parseInt(program)! ?? user.datos_alumno?.id_programa,
-          generacion: user.datos_alumno?.generacion! ?? "",
-        },
-        ""
-      );
-      */
-      {/**
-      TesisEndpoint.getTesisPerStudent(user.clave, "").then((tesis) => {
-        if (tesis) {
-          console.log("Tesis" + tesis);
-          ComiteEndpoint.getPerTesis(tesis.id_tesis, "").then((comite) => {
-            if (comite) {
-              comite.forEach((c) => {
-                if (c.id_tesis == tesis.id_tesis && c.funcion.id_funcion === 1) {
-                  ComiteEndpoint.putComite(
-                    {
-                      id_comite: c.id_comite,
-                      clave_asesor: parseInt(asesor)! ?? c.clave_asesor,
-                      id_tesis: c.id_tesis,
-                      id_funcion: c.id_funcion,
-                    },
-                    ""
-                  );
-                }
-              });
-            }
-          });
-        }
-      });
-       */}
-
-    } catch (err) {
-      console.log(err);
-    }
-    setShowModal(false);
-  }
+  const Tabs = (
+    <div className="tabs mt-4 px-2">
+      <button
+        className={`text-bold text-dark-blue-10 text-lg tab tab-lifted ${cssTab0}`}
+        onClick={() => {
+          setActiveTab(1);
+          if (!showStudentInfoSection) {
+            setShowStudentInfoSection(!showStudentInfoSection);
+            setShowCommitteeSection(!showCommitteeSection);
+          }
+        }}
+      >
+        Actualizar Datos del Alumno
+      </button>
+      <button
+        className={`text-bold text-dark-blue-10 text-lg tab tab-lifted ${cssTab1}`}
+        onClick={() => {
+          setActiveTab(2);
+          if (!showCommitteeSection) {
+            setShowStudentInfoSection(!showStudentInfoSection);
+            setShowCommitteeSection(!showCommitteeSection);
+          }
+        }}
+      >
+        Modificar Comité del Alumno
+      </button>
+    </div>
+  );
+  /* Tabs */
 
   return (
     <>
@@ -125,235 +487,36 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       >
         Modificar
       </button>
+      {showChangeStatusModal ? <>{changeStatusModal}</> : ""}
+      {showChangeStatusSuccessModal ? <>{changeStatusSuccessModal}</> : ""}
+      {showChangeStatusErrorModal ? <>{changeStatusErrorModal}</> : ""}
       {showModal ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-[600px] my-6 mx-auto max-w-3xl">
-              {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-
-                {/*header*/}
-                <div className="flex items-start justify-between p-5 ">
-                  <h3 className="text-2xl font-semibold">Editar datos del Alumno</h3>
+          <div className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative max-w-[600px] my-6 mx-auto">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white p-2 outline-none focus:outline-none">
+                <div className="flex items-start justify-between px-5 py-2 border-b-2 border-gray-300">
+                  <h3 className="text-2xl font-semibold text-dark-blue-10">
+                    Editar datos del Alumno
+                  </h3>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className="p-1 ml-auto bg-transparent border-0 hover:text-black text-gray-300 float-right leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
                   >
-                    X
+                    Cerrar
                   </button>
                 </div>
-
-                <div className="tabs w-full px-6 flex justify-center">
-                  <a className={`tab tab-lifted ${activeTab0}`} onClick={() => { setActiveTab(1) }}>Datos generales</a>
-                  <a className={`tab tab-lifted ${activeTab1}`} onClick={() => { setActiveTab(2) }}>Comité de evaluación</a>
-                </div>
-
-                {activeTab0 === 'tab-active' && (
-                  <form className="" onSubmit={handleSubmit}>
-                    {/*body*/}
-                    <div className="relative p-6 flex-auto">
-                      <div className="form-control w-full max-w-xs">
-                        <label className="my-3 block text-lg font-bold">
-                          Programa de posgrado
-                        </label>
-
-                        <select
-                          required
-                          className="select-bordered gray__border text-sm"
-                          onChange={(e) => {
-                            setProgram(e.target.value);
-                          }}
-                        >
-                          <option disabled selected>
-                            Actualizar programa
-                          </option>
-                          {listaProgramas ? (
-                            <SelectProgramas programas={listaProgramas} />
-                          ) : (
-                            ""
-                          )}
-                        </select>
-                      </div>
-                      <div className="form-control w-full max-w-xs">
-                        <label className="label">
-                          <span className=" my-3 block text-lg font-bold">
-                            Estado Activo
-                          </span>
-                        </label>
-                        <select
-                          required
-                          className="select-bordered gray__border text-sm"
-                          onChange={(e) => {
-                            if (e.target.value == "0") setActiveStatus(false);
-                            else if (e.target.value == "1") {
-                              setActiveStatus(true);
-                            }
-                          }}
-                        >
-                          <option disabled selected>
-                            Actualizar estado activo
-                          </option>
-                          <option value={"0"}>Inactivo</option>
-                          <option value={"1"}>Activo</option>
-                        </select>
-                      </div>
-
-                    </div>
-                    {/*footer*/}
-                    <div className="flex items-center justify-end px-6 py-2">
-                      <button
-                        className="secondary__btn mr-3 "
-                        type="button"
-                        onClick={() => setShowModal(false)}
-                      >
-                        Descartar
-                      </button>
-                      <button
-                        className="primary__btn"
-                        type="submit"
-                      >
-                        Guardar Cambios
-                      </button>
-                    </div>
-                  </form>
-                )}
-                {activeTab1 === 'tab-active' && (
-                  <form onSubmit={handleSubmit}>
-                    {/*body*/}
-                    <div className="relative px-6 flex-auto">
-                      <div className="form-control w-full max-w-xs">
-
-                        <label className="my-3 block text-lg font-bold">
-                          Asesor de tesis
-                        </label>
-
-                        <select
-                          required
-                          className="select-bordered gray__border text-sm"
-                          onChange={(e) => {
-                            setProgram(e.target.value);
-                          }}
-                        >
-                          <option disabled selected>
-                            Actualizar asesor
-                          </option>
-                          {listaProgramas ? (
-                            <SelectProgramas programas={listaProgramas} />
-                          ) : (
-                            ""
-                          )}
-                        </select>
-                      </div>
-                      <div className="form-control w-full max-w-xs">
-
-                        <label className=" my-2 block text-lg font-bold">
-                          Integrante 2
-                        </label>
-
-                        <select
-                          required
-                          className="select-bordered gray__border text-sm"
-                          onChange={(e) => {
-                            if (e.target.value == "0") setActiveStatus(false);
-                            else if (e.target.value == "1") {
-                              setActiveStatus(true);
-                            }
-                          }}
-                        >
-                          <option disabled selected>
-                            Actualizar
-                          </option>
-                          <option value={"0"}>Inactivo</option>
-                          <option value={"1"}>Activo</option>
-                        </select>
-                      </div>
-
-                      <div className="form-control w-full max-w-xs">
-                        <label className="my-3 block text-lg font-bold">
-                          Integrante 3
-                        </label>
-                        <select
-                          className="select-bordered gray__border text-sm"
-                          required
-                          onChange={(e) => {
-                            setAsesor(e.target.value);
-                          }}
-                        >
-                          <option disabled selected>
-                            Actualizar
-                          </option>
-                          {
-                            renderSelectAsesores() //display las opciones de asesores de manera condicional
-                          }
-                        </select>
-                      </div>
-                      <div className="form-control w-full max-w-xs">
-                        <label className="my-3 block text-lg font-bold">
-                          Integrante 4
-                        </label>
-                        <select
-                          className="select-bordered gray__border text-sm"
-                          required
-                          onChange={(e) => {
-                            setAsesor(e.target.value);
-                          }}
-                        >
-                          <option disabled selected>
-                            Actualizar
-                          </option>
-                          {
-                            renderSelectAsesores() //display las opciones de asesores de manera condicional
-                          }
-                        </select>
-                      </div>
-
-                      <div className="form-control w-full max-w-xs">
-                        <label className="my-3 block text-lg font-bold">
-                          Integrante 5
-                        </label>
-                        <select
-                          className="select-bordered gray__border text-sm"
-                          required
-                          onChange={(e) => {
-                            setAsesor(e.target.value);
-                          }}
-                        >
-                          <option disabled selected>
-                            Actualizar
-                          </option>
-                          {
-                            renderSelectAsesores() //display las opciones de asesores de manera condicional
-                          }
-                        </select>
-                      </div>
-
-                    </div>
-
-                    {/*footer*/}
-                    <div className="flex items-center justify-end px-6 py-2">
-                      <button
-                        className="secondary__btn mr-3 "
-                        type="button"
-                        onClick={() => setShowModal(false)}
-                      >
-                        Descartar
-                      </button>
-                      <button
-                        className="primary__btn"
-                        type="submit"
-                      >
-                        Guardar Cambios
-                      </button>
-                    </div>
-                  </form>
-                )}
-
+                {Tabs}
+                {showStudentInfoSection ? studentInfoSection : ""}
+                {showCommitteeSection ? committeeSection : ""}
               </div>
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
-      ) : null}
+      ) : (
+        ""
+      )}
     </>
   );
 };

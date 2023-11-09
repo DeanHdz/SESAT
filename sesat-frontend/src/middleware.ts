@@ -7,7 +7,6 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   console.log("In middleware")
   if (token != undefined) {
-    
     const role: any = await getRoleSS(token?.value.substring(1, token?.value.length - 1));
 
     if (request.nextUrl.pathname.startsWith("/admin-dashboard")) {

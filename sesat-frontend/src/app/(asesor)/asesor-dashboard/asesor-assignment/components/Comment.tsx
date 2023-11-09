@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
 import { deleteComment } from "../../../../../../utils/comentario.endpoint";
 import { shortFormatDate } from "../../../../../../utils/utils"
-import React from "react"
+import Cookies from "js-cookie";
+import revalidator from "../../actions";
 
 export interface CommentProps {
   userName: string,
@@ -12,6 +13,8 @@ export interface CommentProps {
 }
 
 const Comment = (props: CommentProps) => {  
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : ""
 
   const router = useRouter();
 
@@ -21,7 +24,8 @@ const Comment = (props: CommentProps) => {
     div.blur();
     try {
       
-      await deleteComment(props.comment_id, "");      
+      await deleteComment(props.comment_id, token);
+      revalidator("CommentList");
       router.refresh();
 
     } catch (err) {
@@ -44,8 +48,10 @@ const Comment = (props: CommentProps) => {
               {props.userName}
               <time className="text-xs opacity-50 ml-3">{shortFormatDate(props.date)}</time>
             </div>
-            <div className="chat-bubble bg-slate-300 text-black/50 mb-4">
-              {props.body}
+            <div className="chat-bubble bg-slate-300 text-black/50 mb-4 max-h-[300px]">
+              <div className="max-w-full max-h-[300px] break-all">
+                {props.body}
+              </div>
             </div>
           </>
         ) : (
@@ -77,7 +83,9 @@ const Comment = (props: CommentProps) => {
               </div>
 
               <div className="chat-bubble bg-slate-300 text-black/50">
-                {props.body}
+                <div className="max-w-full max-h-[300px] break-all">
+                  {props.body}
+                </div>
               </div>
             </div>
           </>

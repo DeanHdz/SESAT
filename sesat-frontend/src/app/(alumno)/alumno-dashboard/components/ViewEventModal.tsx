@@ -6,6 +6,7 @@ import { EventoEndpoint } from "../../../../../utils/evento.endpoint";
 import { getFormattedHours } from "../../../../../utils/utils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const ViewEventModal = ({
   eventTitle,
@@ -16,6 +17,8 @@ const ViewEventModal = ({
   startDate: Date;
   endDate: Date | null;
 }) => {
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const months = [
     "Ene",
     "Feb",
@@ -49,14 +52,14 @@ const ViewEventModal = ({
   useEffect(() => {
     const getParticipants = async () => {
       const participantesData = await EventoEndpoint.getParticipants(
-        "[Token]",
+        token,
         eventTitle
       );
       return participantesData;
     };
     const getRelatedEvents = async () => {
       const eventosData = await EventoEndpoint.getEventosByTitle(
-        "",
+        token,
         eventTitle
       );
       return eventosData;
@@ -84,7 +87,7 @@ const ViewEventModal = ({
 
   const handleDeletion = async () => {
     const eventosData = await EventoEndpoint.deleteEventosByTitle(
-      "",
+      token,
       eventTitle
     );
     if (eventosData != null) {

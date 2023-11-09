@@ -504,8 +504,17 @@ export class TesisService {
     return this.tesisRepository.findOne({ where: { id_tesis: id }, relations: ['alumno'] });
   }
 
-  findTesisPerStudent(id_usuario: number) {
-    return this.tesisRepository.findOne({ where: { id_usuario: id_usuario } });
+  async findTesisPerStudent(id_usuario: number) {
+    const tesisList: Tesis[] = await this.tesisRepository.find({ where: { id_usuario: id_usuario } });
+
+    const filteredTesisList: Tesis[] = tesisList.filter(
+      (tesis) => ( tesis.estado_finalizacion === false)
+    );
+
+    if(filteredTesisList.length > 0)
+      return filteredTesisList[0];
+    else
+      return null;
   }
 
   update(updateTesisDto: UpdateTesisDto) {

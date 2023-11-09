@@ -32,6 +32,7 @@ import { UpdateVariablesSistemaDto } from "src/variables-sistema/dto/update-vari
 import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
 import { EventoService } from "src/evento/evento.service";
 import { Evento } from "src/evento/entities/evento.entity";
+import { UpdateDatosAlumnoDto } from "src/datos-alumno/dto/update-datos-alumno.dto";
 
 @Injectable()
 export class UsuarioService {
@@ -47,6 +48,41 @@ export class UsuarioService {
     private readonly variablesSistemaService: VariablesSistemaService,
     private readonly httpService: HttpService
   ) {}
+
+  async changeStatus(id: number)
+  {
+    const user: Usuario = await this.usuarioRepository.findOne({where: {id_usuario: id}});
+    const userDatosAlumno : DatosAlumno = await this.datosAlumnoService.findOne(user.id_datos_alumno);
+    let updateDatosAlumnoDto: UpdateDatosAlumnoDto;
+    
+    switch(userDatosAlumno.estado_activo)
+    {
+      case true:
+        updateDatosAlumnoDto = {
+          id_datos_alumno: userDatosAlumno.id_datos_alumno,
+          id_grado_estudio: userDatosAlumno.id_grado_estudio,
+          id_modalidad: userDatosAlumno.id_modalidad,
+          id_programa: userDatosAlumno.id_programa,
+          generacion: userDatosAlumno.generacion,
+          estado_activo: false,
+          avance_previo: userDatosAlumno.avance_previo,
+        }
+        return await this.datosAlumnoService.update(updateDatosAlumnoDto);
+        break;
+      case false:
+        updateDatosAlumnoDto = {
+          id_datos_alumno: userDatosAlumno.id_datos_alumno,
+          id_grado_estudio: userDatosAlumno.id_grado_estudio,
+          id_modalidad: userDatosAlumno.id_modalidad,
+          id_programa: userDatosAlumno.id_programa,
+          generacion: userDatosAlumno.generacion,
+          estado_activo: true,
+          avance_previo: userDatosAlumno.avance_previo,
+        }
+        return await this.datosAlumnoService.update(updateDatosAlumnoDto);
+        break;
+    }
+  }
 
   async findById(id: number)
   {
@@ -270,6 +306,7 @@ export class UsuarioService {
     const alumnosMaestriaQuery = this.usuarioRepository
       .createQueryBuilder('usuario')
       .innerJoinAndSelect('usuario.datos_alumno', 'datos_alumno')
+      .innerJoinAndSelect('datos_alumno.programa', 'programa')
       .where('usuario.id_rol = :id_rol', { id_rol: 3 })
       .andWhere('datos_alumno.id_grado_estudio = :id_grado_estudio', { id_grado_estudio: 1 });
 
@@ -317,6 +354,7 @@ export class UsuarioService {
     const alumnosPhdQuery = this.usuarioRepository
       .createQueryBuilder('usuario')
       .innerJoinAndSelect('usuario.datos_alumno', 'datos_alumno')
+      .innerJoinAndSelect('datos_alumno.programa', 'programa')
       .where('usuario.id_rol = :id_rol', { id_rol: 3 })
       .andWhere('datos_alumno.id_grado_estudio = :id_grado_estudio', { id_grado_estudio: 2 });
 

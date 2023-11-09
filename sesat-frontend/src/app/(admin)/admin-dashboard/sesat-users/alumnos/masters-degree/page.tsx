@@ -3,16 +3,17 @@ import { Usuario } from "../../../../../../../types/ISESAT";
 import { PaginatedUser } from "../../../../../../../types/IPaginate";
 import StudentProfileModal from "../components/StudentProfileModal";
 import Link from "next/link";
-
 import clsx from "clsx";
 import Search from "../../../components/Search";
+import { cookies } from "next/headers";
 
 export default async function SearchMastersStudents({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const page =
     typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
   const limit =
@@ -24,7 +25,7 @@ export default async function SearchMastersStudents({
   {
     if (!isNaN(Number(search))) {
       const usuariosByIdData: Promise<Usuario[]> =
-        UsuarioEndpoint.getAlumnosMaestriaById("[token]", parseInt(search));
+        UsuarioEndpoint.getAlumnosMaestriaById(token, parseInt(search));
       const usersByID = await usuariosByIdData;
       return (
         <>
@@ -65,7 +66,7 @@ export default async function SearchMastersStudents({
       )
     } else {
       const usuariosByNameData: Promise<Usuario[]> =
-        UsuarioEndpoint.getAlumnosMaestriaByName("[token]", search);
+        UsuarioEndpoint.getAlumnosMaestriaByName(token, search);
       const usersByName = await usuariosByNameData;
       return (
         <>
@@ -108,7 +109,7 @@ export default async function SearchMastersStudents({
   }
   else {
     const usuariosData: Promise<PaginatedUser> =
-      UsuarioEndpoint.getAlumnosMaestriaPaginated("[token]", page, limit);
+      UsuarioEndpoint.getAlumnosMaestriaPaginated(token, page, limit);
     const users = await usuariosData;
     return (
       <>
