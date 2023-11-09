@@ -9,7 +9,6 @@ import { Funcion } from "src/funcion/entities/funcion.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
-import { UsuarioService } from "src/usuario/usuario.service";
 import { RetrievedCommitteeDTO } from "./dto/retrieved-committee.dto";
 import { TesisService } from "src/tesis/tesis.service";
 
@@ -21,7 +20,6 @@ export class ComiteService {
 
     @InjectRepository(Asignacion)
     private readonly asignacionRepository: Repository<Asignacion>,
-    private readonly usuarioService: UsuarioService,
     private readonly tesisService: TesisService 
   ) { }
 

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ComiteService } from './comite.service';
 import { ComiteController } from './comite.controller';
@@ -8,7 +8,7 @@ import { UsuarioModule } from 'src/usuario/usuario.module';
 import { TesisModule } from 'src/tesis/tesis.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Comite, Asignacion]), UsuarioModule, TesisModule],
+  imports: [TypeOrmModule.forFeature([Comite, Asignacion]), TesisModule],
   controllers: [ComiteController],
   providers: [ComiteService],
   exports: [ComiteService]
