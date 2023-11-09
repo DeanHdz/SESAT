@@ -15,6 +15,12 @@ import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
 export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
   
+  @Get("/status/:id")
+  async chageStatus(@Param("id") id: string)
+  {
+    return await this.usuarioService.changeStatus(+id);
+  }
+
   @Get('/id/:id')
   async getById(@Param("id") id: string)
   {

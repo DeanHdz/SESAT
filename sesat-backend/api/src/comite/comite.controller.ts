@@ -15,6 +15,12 @@ import { UpdateComiteDto } from "./dto/update-comite.dto";
 export class ComiteController {
   constructor(private readonly comiteService: ComiteService) {}
 
+  @Get("/retrieve/:id")
+  async retrieveCommittee(@Param("id") id: string)
+  {
+    return this.comiteService.retrieveCommittee(+id);
+  }
+
   @Post()
   create(@Body() CreateComiteDto: CreateComiteDto) {
     return this.comiteService.create(CreateComiteDto);

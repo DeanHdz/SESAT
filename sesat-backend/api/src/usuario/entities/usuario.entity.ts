@@ -43,7 +43,7 @@ export class Usuario {
   @JoinColumn({ name: "id_rol" })
   rol: Rol;
 
-  @OneToOne(() => DatosAlumno, { eager: false })
+  @OneToOne(() => DatosAlumno, { eager: true })
   @JoinColumn({ name: "id_datos_alumno" })
   datos_alumno: DatosAlumno;
 

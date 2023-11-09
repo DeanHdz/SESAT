@@ -31,10 +31,10 @@ export class DatosAlumno {
   @Column()
   avance_previo: boolean;
 
-  /*@OneToOne(() => Programa, { eager: true })
+  @OneToOne(() => Programa, { eager: true })
   @JoinColumn({ name: "id_programa" })
   programa: Programa;
-  */
+  
   /*@OneToOne(() => GradoEstudio, { eager: true })
   @JoinColumn({ name: "id_grado_estudio" })
   grado_estudio: GradoEstudio;*/

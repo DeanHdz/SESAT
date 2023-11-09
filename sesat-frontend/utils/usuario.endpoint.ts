@@ -3,6 +3,30 @@ import { CreateForeignAsesor } from "../types/ISESAT";
 
 export namespace UsuarioEndpoint {
 
+  export async function changeStatus(
+    token: string,
+    id: number,
+  ) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/status/${id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
+    }
+  }
+  
   export async function postExternalAsesor(
     token: string,
     data: CreateExternalAsesor
@@ -222,7 +246,6 @@ export namespace UsuarioEndpoint {
     }
   }
 
-  //revalidate tag when creating student user
   export async function getAlumnosMaestria(token: string) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/alumnos-maestria`;
     const options = {

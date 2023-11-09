@@ -8,8 +8,10 @@ import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Funcion } from "src/funcion/entities/funcion.entity";
 import { Tesis } from "src/tesis/entities/tesis.entity";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
-import { group } from "console";
 import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
+import { UsuarioService } from "src/usuario/usuario.service";
+import { RetrievedCommitteeDTO } from "./dto/retrieved-committee.dto";
+import { TesisService } from "src/tesis/tesis.service";
 
 @Injectable()
 export class ComiteService {
@@ -19,7 +21,57 @@ export class ComiteService {
 
     @InjectRepository(Asignacion)
     private readonly asignacionRepository: Repository<Asignacion>,
+    private readonly usuarioService: UsuarioService,
+    private readonly tesisService: TesisService 
   ) { }
+
+  async retrieveCommittee(id_tesis: number)
+  {
+    // 1: Asesor 2: Co-asesor 3: Sinodal 4: Suplente
+    const asesor: Comite[] = await this.retrieveCommitteeMemberByRole(1, id_tesis);
+    const coasesor: Comite[] = await this.retrieveCommitteeMemberByRole(2, id_tesis);
+    const sinodales: Comite[] = await this.retrieveCommitteeMemberByRole(3, id_tesis);
+    const suplente: Comite[] = await this.retrieveCommitteeMemberByRole(4, id_tesis);
+    const tesis: Tesis = await this.tesisService.findOne(id_tesis);
+
+    // 1: Maestria 2: Doctorado
+    console.log(tesis.alumno.datos_alumno.id_grado_estudio)
+    switch(tesis.alumno.datos_alumno.id_grado_estudio)
+    {
+      case 1:
+        const retrievedCommitteeDTOMasters: RetrievedCommitteeDTO = {
+          asesor: asesor[0].asesor ? asesor[0].asesor : null,
+          coasesor: coasesor[0].asesor ? coasesor[0].asesor : null,
+          sinodal1: sinodales[0].asesor ? sinodales[0].asesor : null,
+          sinodal2: sinodales[1].asesor ? sinodales[1].asesor : null,
+          suplente: suplente[0].asesor ? suplente[0].asesor : null
+        }
+        return retrievedCommitteeDTOMasters;
+        break;
+      case 2:
+        const retrievedCommitteeDTOPhd: RetrievedCommitteeDTO = {
+          asesor: asesor[0].asesor ? asesor[0].asesor : null,
+          coasesor: coasesor[0].asesor ? coasesor[0].asesor : null,
+          sinodal1: sinodales[0].asesor ? sinodales[0].asesor : null,
+          sinodal2: sinodales[1].asesor ? sinodales[1].asesor : null,
+          sinodal3: sinodales[2].asesor ? sinodales[2].asesor : null,
+          sinodal4: sinodales[3].asesor ? sinodales[3].asesor : null,
+          suplente: suplente[0].asesor ? suplente[0].asesor : null
+        }
+        return retrievedCommitteeDTOPhd;
+        break;
+    }
+
+  }
+
+  async retrieveCommitteeMemberByRole(role: number, id_tesis: number)
+  {
+    // 1: Asesor 2: Co-asesor 3: Sinodal 4: Suplente
+    return await this.comiteRepository.find({ where: {
+      id_tesis: id_tesis,
+      id_funcion: role
+    }})
+  }
 
   create(CreateComiteDto: CreateComiteDto) {
     return this.comiteRepository.save(CreateComiteDto);

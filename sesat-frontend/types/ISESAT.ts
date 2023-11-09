@@ -41,19 +41,17 @@ export interface UpdateUsuario {
 
 export interface Funcion {
   id_funcion: number;
-  nombre: string;
+  nombre_funcion: string;
 }
 
 export interface CreateFuncion {
-  nombre: string;
+  nombre_funcion: string;
 }
 
 export interface UpdateFuncion {
   id_funcion: number;
-  nombre: string;
+  nombre_funcion: string;
 }
-
-/*------------------ USUARIO INTERFACE ------------------*/
 
 /*------------------ DATOS ALUMNO INTERFACE ------------------*/
 
@@ -64,6 +62,8 @@ export interface DatosAlumno {
   id_grado_estudio: number;
   generacion: number;
   estado_activo: boolean;
+  avance_previo: boolean;
+  programa?: Programa;
 }
 
 export interface CreateDatosAlumno {
@@ -72,6 +72,7 @@ export interface CreateDatosAlumno {
   id_grado_estudio: number;
   generacion: number;
   estado_activo: boolean;
+  avance_previo: boolean;
 }
 
 export interface UpdateDatosAlumno {
@@ -81,12 +82,13 @@ export interface UpdateDatosAlumno {
   id_grado_estudio: number;
   generacion: number;
   estado_activo: boolean;
+  avance_previo: boolean;
 }
 
 /*------------------ DATOS ASESOR EXTERNO INTERFACE ------------------*/
 
 export interface DatosAsesorExterno {
-  id_datos_asesorexterno: number;
+  id_datos_asesor_externo: number;
   telefono: string;
   institucion: string;
 }
@@ -97,7 +99,7 @@ export interface CreateDatosAsesorExterno {
 }
 
 export interface UpdateDatosAsesorExterno {
-  id_datos_asesorexterno: number;
+  id_datos_asesor_externo: number;
   telefono: string;
   institucion: string;
 }
@@ -199,22 +201,6 @@ export interface UpdateAsignacionTesis {
   id_tesis: number;
 }
 
-/*------------------ PROGRAMA INTERFACE ------------------*/
-
-export interface Programa {
-  id_programa: number;
-  nombreprograma: string;
-}
-
-export interface CreatePrograma {
-  nombreprograma: string;
-}
-
-export interface UpdatePrograma {
-  id_programa: number;
-  nombreprograma: string;
-}
-
 /*------------------ TESIS INTERFACE ------------------*/
 
 export interface InactiveTesisProps {
@@ -233,17 +219,17 @@ export interface Tesis {
   id_usuario: number;
   alumno: Usuario;
   titulo: string;
-  fecharegistro: Date;
+  fecha_registro: Date | null;
   generacion: number;
   ultimo_avance: number;
   estado_finalizacion: boolean;
-  asignaciones_tesis: AsignacionTesis[];
+  asignaciones: AsignacionTesis[];
 }
 
 export interface CreateTesis {
   id_usuario: number;
   titulo: string | null;
-  fecharegistro: Date | null;
+  fecha_registro: Date | null;
   generacion: number | null;
   ultimo_avance: number | null;
   estado_finalizacion: boolean;
@@ -253,7 +239,7 @@ export interface UpdateTesis {
   id_tesis: number;
   id_usuario: number;
   titulo: string;
-  fecharegistro: Date;
+  fecha_registro: Date;
   generacion: string | undefined;
   ultimo_avance: number;
   estado_finalizacion: boolean;
@@ -266,6 +252,8 @@ export interface Comite {
   id_usuario: number;
   id_tesis: number;
   id_funcion: number;
+  asesor: Usuario;
+  funcion: Funcion;
 }
 
 export interface CreateComite {
@@ -455,32 +443,6 @@ export interface UpdateNotificacion {
   titulo: string;
   descripcion: string;
   fecha_expedicion: string;
-}
-
-/*------------------ DATOS ALUMNO INTERFACE ------------------*/
-
-export interface DatosAlumno {
-  id_datos_alumno: number;
-  grado_estudio: string;
-  modalidad: string;
-  estado_activo: boolean;
-  id_programa: number;
-  programa: Programa | null; //Probablemente de problemas
-}
-
-export interface CreateDatosAlumno {
-  grado_estudio: string;
-  modalidad: string;
-  estado_activo: boolean;
-  id_programa: number;
-}
-
-export interface UpdateDatosAlumno {
-  id_datos_alumno: number;
-  grado_estudio: string;
-  modalidad: string;
-  estado_activo: boolean;
-  id_programa: number;
 }
 
 /*------------------ UPLOAD PDF INTERFACE ------------------*/
@@ -684,4 +646,14 @@ export interface CreateEventByType {
   title: string,
   start: Date,
   end: Date | null,
+}
+
+export interface RetrievedCommittee {
+  asesor: Usuario | null,
+  coasesor?: Usuario | null,
+  sinodal1: Usuario | null,
+  sinodal2: Usuario | null,
+  sinodal3?: Usuario | null,
+  sinodal4?: Usuario | null,
+  suplente: Usuario | null,
 }

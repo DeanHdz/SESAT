@@ -5,8 +5,11 @@ import { CreateExternalUser } from "../../../../../../../../types/ISESAT";
 import { UsuarioEndpoint } from "../../../../../../../../utils/usuario.endpoint";
 import { useRouter } from 'next/navigation';
 import revalidator from "@/app/(admin)/admin-dashboard/actions";
+import Cookies from "js-cookie";
 
 export default function AddUserForm({ user, id }: { user: ExternalUser, id: number }) {
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const router = useRouter();
   let modalidad = "Indeterminado";
   switch (user.dedicacion) {
@@ -86,7 +89,7 @@ export default function AddUserForm({ user, id }: { user: ExternalUser, id: numb
       skipToAvance: selectedOption != "" ? parseInt(selectedOption) : null,
     }
 
-    const res = await UsuarioEndpoint.postExternalStudent("[Token]", data);
+    const res = await UsuarioEndpoint.postExternalStudent(token, data);
     setShowModal(!showModal);
     if(res != null)
       setShowSuccessModal(!showSuccessModal);
