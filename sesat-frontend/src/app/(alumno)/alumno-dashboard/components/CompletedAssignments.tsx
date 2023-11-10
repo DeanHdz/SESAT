@@ -6,7 +6,10 @@ type AsignacionProps = {
   id_asignacion: number,
   num_avance: number,
   titulo: string,
-  fecha_entrega: string
+  fecha_entrega: string,
+  fecha_cierre: string,
+  fecha_cierre_opc: string,
+  id_grado_estudio: number
 }
 
 
@@ -23,7 +26,7 @@ const CompletedAssignments = ({ asignaciones }: { asignaciones: AsignacionProps[
             <tr className="text-dark-blue-20">
               <th>Num. de Avance</th>
               <th>Titulo</th>
-              <th>Fecha limite de entrega</th>
+              <th>Fecha límite de entrega</th>
               <th></th>
             </tr>
           </thead>
@@ -35,11 +38,16 @@ const CompletedAssignments = ({ asignaciones }: { asignaciones: AsignacionProps[
                 >
                   <td>{alumno.num_avance}</td>
                   <td>{alumno.titulo}</td>
-                  <td>{alumno.fecha_entrega ? (
-                    <>shortFormatDate(alumno.fecha_entrega)</>
-                  ) : (
-                    <span>No entregado</span>
-                  )}
+                  <td>
+                    {alumno.id_grado_estudio === 2 && alumno.num_avance === 5 ? (
+                      <span>{shortFormatDate(alumno.fecha_cierre_opc)}</span>
+                    ) : (
+                      <>
+                      { (
+                        <span>{shortFormatDate(alumno.fecha_cierre)}</span>
+                      )}
+                      </>
+                    )}
                   </td>
                   <td>
                     <div>

@@ -12,8 +12,8 @@ export function formatAsISODate(dateValue: Date) {
     return date;
 }
 
-//Regresa dd/MMM/yyyy
-export function shortFormatDate(dateString: string): string {
+//Regresa dd/MMM/yyyy SIN hacer conversión a fecha y hora local(Solo se usa en PDFs)
+export function shortFormatDateWithoutConversion(dateString: string): string {
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
     const parts = dateString.split('T')[0].split('-');
     const year = parseInt(parts[0], 10);
@@ -24,6 +24,15 @@ export function shortFormatDate(dateString: string): string {
     const formattedMonth = months[date.getMonth()];
 
     return `${formattedDay}/${formattedMonth}/${year}`;
+}
+//Regresa dd/MMM/yyyy en fecha y hora local
+export function shortFormatDate(dateString: string): string {
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day.toString().padStart(2, '0')}/${month}/${year}`;
 }
 //Regresa HH:MM AM/PM
 export function getFormattedHours(date: any): string {

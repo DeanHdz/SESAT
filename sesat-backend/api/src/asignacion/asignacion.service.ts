@@ -11,6 +11,9 @@ import { Tesis } from "src/tesis/entities/tesis.entity";
 import { Modalidad } from "src/modalidad/entities/modalidad.entity";
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Comite } from "src/comite/entities/comite.entity";
+import { Periodo } from "src/periodo/entities/periodo.entity";
+import { type } from "os";
+import { formatAsISODate } from "src/utils/utils";
 
 @Injectable()
 export class AsignacionService {
@@ -138,8 +141,18 @@ export class AsignacionService {
     return resp;
   }
 
+  
   //Regresar asignaciones en base al periodo e ID de usuario
   async findAsignacionesByPeriodAndAlumno(idPeriodo: number, idAlumno: number) {
+    type ResultProps ={
+      id_asignacion:number,
+      num_avance:number,
+      titulo:string,
+      fecha_entrega:string,
+      fecha_cierre:string,
+      fecha_cierre_opc:string,
+      id_grado_estudio:string
+    }
 
     const resp = await this.asignacionRepository.createQueryBuilder('a')
       .select([
@@ -147,15 +160,24 @@ export class AsignacionService {
         "a.num_avance AS num_avance",
         "a.titulo AS titulo",
         "a.fecha_entrega AS fecha_entrega",
+        "p.fecha_cierre AS fecha_cierre",
+        "p.fecha_cierre_opc AS fecha_cierre_opc",
+        "da.id_grado_estudio AS id_grado_estudio"
       ])
 
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")
+      .innerJoin(Periodo, "p", "p.id_periodo = a.id_periodo")
 
       .where("a.id_periodo = :id_periodo", { id_periodo: idPeriodo })
       .andWhere("u.id_usuario = :idUser", { idUser: idAlumno })
 
-      .getRawMany()
+      .getRawMany<ResultProps>();
+
+      const result = {
+        fecha_cierre: formatAsISODate(new Date(resp[0].fecha_cierre))
+      }
 
     return resp;
   }

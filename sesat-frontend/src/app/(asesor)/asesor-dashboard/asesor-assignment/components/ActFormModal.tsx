@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TesisInfo } from "../[idAsignacion]/page";
 import { ActaEvalForm, Asignacion, UpdateActaEvaluacion } from "../../../../../../types/ISESAT";
-import { dateStringToDate, formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
+import { dateStringToDate, formatAsISODate, shortFormatDate, shortFormatDateWithoutConversion } from "../../../../../../utils/utils";
 import "flatpickr/dist/themes/dark.css";
 import Flatpickr from "react-flatpickr";
 import autosize from "autosize";
@@ -105,7 +105,7 @@ const ActFormModal = ({
           id_asignacion: asignacion.id_asignacion,
           id_acta_evaluacion: asignacion.id_acta_evaluacion,
           grado_estudio: tesisInfo.id_grado_estudio === 1 ? 'Maestría' : 'Doctorado',
-          fecha_eval: shortFormatDate(formatAsISODate(fechaEval)),
+          fecha_eval: shortFormatDateWithoutConversion(formatAsISODate(fechaEval)),
           ap_pat: tesisInfo.apellido_paterno,
           ap_mat: tesisInfo.apellido_materno,
           nombre: tesisInfo.nombre,
@@ -122,9 +122,9 @@ const ActFormModal = ({
           cal_dom: parseInt(dominioTema),
           grado_avance: parseInt(gradoAvance),
           promedio: parseInt(promedio),
-          fecha_toefl: shortFormatDate(formatAsISODate(fechaToefl)),
+          fecha_toefl: shortFormatDateWithoutConversion(formatAsISODate(fechaToefl)),
           puntaje_toefl: parseInt(puntajeToefl),
-          prox_toefl: shortFormatDate(formatAsISODate(proxToefl)),
+          prox_toefl: shortFormatDateWithoutConversion(formatAsISODate(proxToefl)),
           observaciones: observaciones
         },
         ""

@@ -14,7 +14,10 @@ type AsignacionProps = {
   id_asignacion: number,
   num_avance: number,
   titulo: string,
-  fecha_entrega: string
+  fecha_entrega: string,
+  fecha_cierre: string,
+  fecha_cierre_opc: string,
+  id_grado_estudio: number
 }
 
 export default async function Home() {
