@@ -29,7 +29,7 @@ export default async function Home() {
   const eventos = await eventosData;
 
   let alumnoID = user.id_usuario;
-  let periodo = await fetchLatestPeriod("").catch();
+  let periodo = await fetchLatestPeriod(token).catch();
   let asignaciones: AsignacionProps[] = await findAsignacionesByPeriodAndAlumno(periodo.id_periodo, alumnoID, token);
   let contactos: Usuario[] = await findContactsByIdTesis(6, token);
 

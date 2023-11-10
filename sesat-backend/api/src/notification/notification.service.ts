@@ -35,7 +35,7 @@ export class NotificacionService {
   findByUser(id: number) {
     return this.notificacionRepository.find({
       where: { id_usuario: id },
-      order: { fecha_expedicion: "ASC" },
+      order: { fecha_expedicion: "DESC" },
       take: 5,
     });
   }
@@ -51,14 +51,19 @@ export class NotificacionService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async notifyClosedAssignment() {
     const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const previousOneDay = new Date(currentDate);
+    previousOneDay.setDate(previousOneDay.getDate() - 1);
     const periodo = await this.periodoService.findLatestPeriod();
+    periodo.fecha_cierre.setHours(0, 0, 0, 0);
+    periodo.fecha_cierre_opc.setHours(0, 0, 0, 0);
     const asignaciones = await this.asignacionRepository.find({
       where: { id_periodo: periodo.id_periodo },
       relations: ["tesis"],
     });
     asignaciones.map((asignacion) => {
       if (asignacion.tipo == 1) {
-        currentDate > periodo.fecha_cierre &&
+        previousOneDay.toISOString() == periodo.fecha_cierre.toISOString() &&
           this.create({
             id_usuario: asignacion.tesis.id_usuario,
             titulo: "Asignación Cerrada",
@@ -66,7 +71,8 @@ export class NotificacionService {
             fecha_expedicion: new Date(),
           });
       } else if (asignacion.tipo == 2) {
-        currentDate > periodo.fecha_cierre_opc &&
+        previousOneDay.toISOString() ==
+          periodo.fecha_cierre_opc.toISOString() &&
           this.create({
             id_usuario: asignacion.tesis.id_usuario,
             titulo: "Asignación Cerrada",

@@ -39,8 +39,8 @@ async function fetchAndSortComments(idAsignacion: number, token: string) {
   return comments;
 }
 
-async function fetchHistoryByIdTesis(idTesis: number): Promise<Array<number>> {
-  let history: Avance[] = await fetchTesisHistory(idTesis, "");
+async function fetchHistoryByIdTesis(idTesis: number, token: string): Promise<Array<number>> {
+  let history: Avance[] = await fetchTesisHistory(idTesis, token);
   let avancesEntregados = new Array();
   if (history.length > 0) {
     history.sort((a, b) => a.id_asignacion - b.id_asignacion);
@@ -85,7 +85,7 @@ export default async function Home({
   let { idAsignacion } = params;
   let error = false;
   let periodo = await fetchLatestPeriod("").catch();
-  let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, "").catch(() => { return undefined });
+  let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, token).catch(() => { return undefined });
   let evaluacion_realizada = asignacion.calificacion && asignacion.id_acta_evaluacion && asignacion.id_formato_evaluacion;
 
   let tesisInfo: TesisInfo | undefined = undefined;
@@ -93,9 +93,9 @@ export default async function Home({
   let history = undefined;
 
   if (periodo && asignacion && periodo.id_periodo === asignacion.id_periodo) {
-    tesisInfo = await fetchOneTesis(asignacion.id_tesis.toString(), "").catch(() => { return undefined });
-    comments = await fetchAndSortComments(asignacion.id_asignacion, '').catch(() => { return undefined });
-    history = await fetchHistoryByIdTesis(asignacion.id_tesis).catch(() => { return undefined });
+    tesisInfo = await fetchOneTesis(asignacion.id_tesis.toString(), token).catch(() => { return undefined });
+    comments = await fetchAndSortComments(asignacion.id_asignacion, token).catch(() => { return undefined });
+    history = await fetchHistoryByIdTesis(asignacion.id_tesis, token).catch(() => { return undefined });
   } else {
     error = true;
   }

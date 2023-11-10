@@ -130,7 +130,6 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
               token
             );
             let user: LoggedUser = await LoginEndpoint.getUserInfo(token);
-            console.log(user);
             comite.forEach(async (member) => {
               await postNotificacion(
                 {

@@ -7,13 +7,12 @@ import { useRouter } from 'next/navigation';
 import PDFViewer from '@/app/(asesor)/asesor-dashboard/asesor-assignment/components/PDFViewer';
 import { fetchActaEvaluacion } from '../../../../../../utils/acta-evaluacion.endpoint';
 import { fetchFormatoEvaluacion } from '../../../../../../utils/formato-evaluacion.endpoint';
-
-
-
-
+import Cookies from 'js-cookie'
 
 
 const AlumnoPDFModal = ({ id_document, docType }: { id_document: number, docType: number }) => {
+    const cookie = Cookies.get("SESATsession");
+    const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
     const [showModal, setShowModal] = useState(false);
 
@@ -26,13 +25,13 @@ const AlumnoPDFModal = ({ id_document, docType }: { id_document: number, docType
     const router = useRouter()
 
     async function fetchPDFActaEvaluacion(idActa: number) {
-        const res = await fetchActaEvaluacion(idActa, "");
+        const res = await fetchActaEvaluacion(idActa, token);
         setPDF(res.documento_rellenado.data);
         setIsSubmitting(false);
     }
 
     async function fetchReporteEvaluacion(idReporte: number) {
-        const res = await fetchFormatoEvaluacion(idReporte, "");
+        const res = await fetchFormatoEvaluacion(idReporte, token);
         setPDF(res.documento_rellenado.data);
         setIsSubmitting(false);
     }
