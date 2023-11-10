@@ -8,6 +8,7 @@ import { useDebounce } from "use-debounce";
 import { CreateEventByType, Usuario } from "../../../types/ISESAT";
 import { UsuarioEndpoint } from "../../../utils/usuario.endpoint";
 import revalidator from "../(admin)/admin-dashboard/actions";
+import Cookies from "js-cookie";
 
 const AddEventModal = ({
   startDate,
@@ -50,6 +51,8 @@ const AddEventModal = ({
   const [end, setEndDate] = useState<Date | undefined>(endDate);
   const [changeDate, setChangeDate] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean | undefined>(false);
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   useEffect(() => {
     setStartDate(
@@ -155,13 +158,13 @@ const AddEventModal = ({
       switch (op) {
         case 1: //find by Id
           const usuarioByIdData: Promise<Usuario[]> =
-            UsuarioEndpoint.getUserById(query ? parseInt(query) : 0, "[token]");
+            UsuarioEndpoint.getUserById(query ? parseInt(query) : 0, token);
           const fetchedUsuarioById = await usuarioByIdData;
           if (fetchedUsuarioById != null) setUsuario(fetchedUsuarioById);
           break;
         case 2: //Find by Name
           const usuarioByNameData: Promise<Usuario[]> =
-            UsuarioEndpoint.getUserByName("[token]", query ? query : "");
+            UsuarioEndpoint.getUserByName(token, query ? query : "");
           const fetchedUsuarioByName = await usuarioByNameData;
           if (fetchedUsuarioByName != null) setUsuario(fetchedUsuarioByName);
           break;

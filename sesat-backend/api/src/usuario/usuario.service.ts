@@ -49,6 +49,26 @@ export class UsuarioService {
     private readonly httpService: HttpService
   ) {}
 
+  async findAsesorById(id: number)
+  {
+    const usuarios: Usuario[] = await this.usuarioRepository.find({
+      where: { id_usuario: id, id_rol: 2 },
+    });
+    return usuarios;
+  }
+
+  async findAsesorByName(name: string)
+  {
+    const usuarios: Usuario[] = await this.usuarioRepository.find({
+      where: {id_rol: 2}
+    });
+    return usuarios.filter(
+      (usuario) => ( `${usuario.nombre} ${usuario.apellido_paterno} ${usuario.apellido_materno}`)
+        .toLowerCase()
+        .includes(name.toLowerCase())
+    );
+  }
+
   async changeStatus(id: number)
   {
     const user: Usuario = await this.usuarioRepository.findOne({where: {id_usuario: id}});

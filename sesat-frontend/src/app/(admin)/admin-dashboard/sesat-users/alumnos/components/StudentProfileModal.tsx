@@ -1,13 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { RetrievedCommittee, Tesis, Usuario } from "../../../../../../../types/ISESAT";
+import {
+  RetrievedCommittee,
+  Tesis,
+  Usuario,
+} from "../../../../../../../types/ISESAT";
 import Cookies from "js-cookie";
 import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import revalidator from "../../../actions";
 import { useRouter } from "next/navigation";
 import { findTesisPerStudent } from "../../../../../../../utils/tesis.endpoint";
 import { retrieveCommittee } from "../../../../../../../utils/comite.endpoint";
+import { useDebounce } from "use-debounce";
 
 const StudentProfileModal = ({ user }: { user: Usuario }) => {
   const cookie = Cookies.get("SESATsession");
@@ -19,10 +24,13 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     useState(false);
   const [showChangeStatusErrorModal, setShowChangeStatusErrorModal] =
     useState(false);
+
+  const [modifyCommittee, setModifyCommittee] = useState<boolean>();
+
   /* Student Info Section */
 
   const handleStatusChange = async () => {
-    console.log("idusuario: " + user.id_usuario)
+    console.log("idusuario: " + user.id_usuario);
     const res = await UsuarioEndpoint.changeStatus(token, user.id_usuario);
     setShowChangeStatusModal(!showChangeStatusModal);
     if (res != null)
@@ -345,15 +353,15 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       <div className="w-full border border-gray-200 p-2">
         <div className="flex flex-col flex-1">
           <p className="italic text-[12px] text-black">
-            Esta opción sólo debería usarse en caso de que el alumno cambie de programa o haya terminado el posgrado y esté por entrar a otro.
+            Esta opción sólo debería usarse en caso de que el alumno cambie de
+            programa o haya terminado el posgrado y esté por entrar a otro.
             <br />
             Es un proceso <span className="text-red-600">irreversible.</span>
           </p>
           <div className="w-full flex justify-end px-6">
             <button
               className="px-2 text-red-600 text-[11px] font-bold hover:shadow"
-              onClick={() => {
-              }}
+              onClick={() => {}}
             >
               Reestablecer Datos de Alumno
             </button>
@@ -368,55 +376,129 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
   const [showCommitteeSection, setShowCommitteeSection] =
     useState<boolean>(false);
 
-  const [tesis, setTesis] = useState<Tesis>()
+  const [tesis, setTesis] = useState<Tesis>();
   const [comite, setComite] = useState<RetrievedCommittee>();
 
   useEffect(() => {
     const getTesis = async () => {
       const tesisData = await findTesisPerStudent(token, user.id_usuario);
       return tesisData;
-    }
+    };
 
-    const fetchData = async ()  => {
-      if(showCommitteeSection){
+    const fetchData = async () => {
+      if (showCommitteeSection) {
         const tesisData = await getTesis();
         setTesis(tesisData);
       }
-    }
+    };
 
     fetchData();
-
-  },[showCommitteeSection])
+  }, [showCommitteeSection]);
 
   useEffect(() => {
+    console.log("tesis:");
+    console.log(tesis);
 
-    console.log("tesis:")
-    console.log(tesis)
-
-    const getCommittee = async() => {
-      const committeeData = await retrieveCommittee(token, tesis ? tesis.id_tesis : 0);
+    const getCommittee = async () => {
+      const committeeData = await retrieveCommittee(
+        token,
+        tesis ? tesis.id_tesis : 0
+      );
       return committeeData;
-    }
+    };
 
-    const fetchData = async ()  => {
-      if(tesis){
+    const fetchData = async () => {
+      if (tesis) {
         const committeeData = await getCommittee();
         setComite(committeeData);
       }
-    }
+    };
 
     fetchData();
+  }, [tesis]);
 
-  }, [tesis])
+  /* Search */
+  const [text, setText] = useState<string | null>(null);
+  const [query] = useDebounce(text, 750);
+  const [retrievedAsesor, setRetrievedAsesor] = useState<Usuario[] | null>();
 
+  useEffect(() => {
+    const getUsuario = async (op: number) => {
+      switch (op) {
+        case 1: //find by Id
+          const usuarioByIdData: Promise<Usuario[]> =
+            UsuarioEndpoint.getUserById(query ? parseInt(query) : 0, token);
+          const fetchedUsuarioById = await usuarioByIdData;
+          if (fetchedUsuarioById != null) 
+            setRetrievedAsesor(fetchedUsuarioById);
+          break;
+        case 2: //Find by Name
+          const usuarioByNameData: Promise<Usuario[]> =
+            UsuarioEndpoint.getUserByName(token, query ? query : "");
+          const fetchedUsuarioByName = await usuarioByNameData;
+          if (fetchedUsuarioByName != null)
+            setRetrievedAsesor(fetchedUsuarioByName);
+          break;
+      }
+    };
+    if (query != null && query != "") {
+      if (!isNaN(Number(query))) {
+        //is Nan Shit
+        getUsuario(1);
+      } else {
+        getUsuario(2);
+      }
+    }
+  }, [query]); //,router
 
-  
-  const committeeSection = ( 
+  /*const removeUser = (userId: number) => {
+    // Find the index of the user with the specified ID
+    const userIndex = participants.findIndex(
+      (user: Usuario) => user.id_usuario === userId
+    );
+
+    if (userIndex !== -1) {
+      // Create a new array without the user at the found index
+      setParticipants((prevUsers) => [
+        ...prevUsers.slice(0, userIndex),
+        ...prevUsers.slice(userIndex + 1),
+      ]);
+    }
+  };*/
+
+  const searchBar = (
+    <div className="mb-2 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
+      <input
+        type="search"
+        placeholder="Nombre o Clave/RPE"
+        className="rounded-full border-b border-light-gray-22 border-solid px-6"
+        onChange={(e) => {
+          setText(e.target.value);
+        }}
+      />
+      <div className="flex items-center ml-2">
+        <svg
+          stroke="#d5d3dd"
+          fill="#d5d3dd"
+          strokeWidth="0"
+          viewBox="0 0 24 24"
+          height="24px"
+          width="24px"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M19.023,16.977c-0.513-0.488-1.004-0.997-1.367-1.384c-0.372-0.378-0.596-0.653-0.596-0.653l-2.8-1.337 C15.34,12.37,16,10.763,16,9c0-3.859-3.14-7-7-7S2,5.141,2,9s3.14,7,7,7c1.763,0,3.37-0.66,4.603-1.739l1.337,2.8 c0,0,0.275,0.224,0.653,0.596c0.387,0.363,0.896,0.854,1.384,1.367c0.494,0.506,0.988,1.012,1.358,1.392 c0.362,0.388,0.604,0.646,0.604,0.646l2.121-2.121c0,0-0.258-0.242-0.646-0.604C20.035,17.965,19.529,17.471,19.023,16.977z M9,14 c-2.757,0-5-2.243-5-5s2.243-5,5-5s5,2.243,5,5S11.757,14,9,14z"></path>
+        </svg>
+      </div>
+    </div>
+  );
+  /* Search */
+
+  const committeeSection = (
     <div className="mt-2 px-2 max-h-[500px] overflow-y-auto">
       <p className="font-semibold text-dark-blue-10 text-lg">
         Datos del Alumno
       </p>
-      {tesis && tesis.fecha_registro != null? (
+      {tesis && tesis.fecha_registro != null ? (
         <div className="w-full">
           <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
             Tesis
@@ -424,82 +506,127 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
           <div className="w-full border border-gray-200 p-2">
             <p className="italic">{tesis.titulo}</p>
           </div>
-          <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
-            Comite
-          </p>
-          {comite && tesis.alumno && tesis.alumno.datos_alumno && tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
-            <div className="w-full border border-gray-200 p-2 mb-2">
-              <div>
-                <p className="font-semibold text-dark-blue-10 text-[14px] mb-1">
-                  Asesor
-                </p>
-                <p className="italic">
-                  {comite.asesor ? comite.asesor.id_usuario : "No se ha definido el Asesor"}
-                  <span className="ml-2 border-l border-gray-200 px-3">
-                    {comite.asesor ? `${comite.asesor.nombre} ${comite.asesor.apellido_paterno} ${comite.asesor.apellido_materno}` : ""}
-                  </span>
-                </p>
-                <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
-                  Co-asesor
-                </p>
-                <p className="italic">
-                  {comite.coasesor ? comite.coasesor.id_usuario : "No se ha definido el Asesor"}
-                  <span className="ml-2 border-l border-gray-200 px-3">
-                    {comite.coasesor ? `${comite.coasesor.nombre} ${comite.coasesor.apellido_paterno} ${comite.coasesor.apellido_materno}` : ""}
-                  </span>
-                </p>
-                <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
-                  Sinodal
-                </p>
-                <p className="italic">
-                  {comite.sinodal1 ? comite.sinodal1.id_usuario : "No se ha definido el Asesor"}
-                  <span className="ml-2 border-l border-gray-200 px-3">
-                    {comite.sinodal1 ? `${comite.sinodal1.nombre} ${comite.sinodal1.apellido_paterno} ${comite.sinodal1.apellido_materno}` : ""}
-                  </span>
-                </p>
-                <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
-                  Sinodal
-                </p>
-                <p className="italic">
-                  {comite.sinodal2 ? comite.sinodal2.id_usuario : "No se ha definido el Asesor"}
-                  <span className="ml-2 border-l border-gray-200 px-3">
-                    {comite.sinodal2 ? `${comite.sinodal2.nombre} ${comite.sinodal2.apellido_paterno} ${comite.sinodal2.apellido_materno}` : ""}
-                  </span>
-                </p>
-                <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
-                  Suplente
-                </p>
-                <p className="italic">
-                  {comite.suplente ? comite.suplente.id_usuario : "No se ha definido el Asesor"}
-                  <span className="ml-2 border-l border-gray-200 px-3">
-                    {comite.suplente ? `${comite.suplente.nombre} ${comite.suplente.apellido_paterno} ${comite.suplente.apellido_materno}` : ""}
-                  </span>
-                </p>
-                <div className="w-full flex justify-end px-4">
-                  <button
-                    className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
-                    onClick={() => {
-                    }}
-                  >
-                   Modificar Comité
-                  </button>
-                </div>
+          {modifyCommittee ? (
+            <>
+              <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
+                Asesor
+              </p>
+              <div className="w-full border border-gray-200 p-2 mb-2">
+
               </div>
-            </div>
-            ) : (
-              "Datos Inconsistentes"
-            ) }
+              <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
+                Comite
+              </p>
+              <div className="w-full border border-gray-200 p-2 mb-2">
+
+              </div>
+            </>
+          ) : (
+            <>
+              {comite &&
+              tesis.alumno &&
+              tesis.alumno.datos_alumno &&
+              tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
+                <>
+                <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
+                  Comite
+                </p>
+                <div className="w-full border border-gray-200 p-2 mb-2">
+                  <div>
+                    <p className="font-semibold text-dark-blue-10 text-[14px] mb-1">
+                      Asesor
+                    </p>
+                    <p className="italic">
+                      {comite.asesor
+                        ? comite.asesor.id_usuario
+                        : "No se ha definido el Asesor"}
+                      <span className="ml-2 border-l border-gray-200 px-3">
+                        {comite.asesor
+                          ? `${comite.asesor.nombre} ${comite.asesor.apellido_paterno} ${comite.asesor.apellido_materno}`
+                          : ""}
+                      </span>
+                    </p>
+                    <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                      Co-asesor
+                    </p>
+                    <p className="italic">
+                      {comite.coasesor
+                        ? comite.coasesor.id_usuario
+                        : "No se ha definido el Asesor"}
+                      <span className="ml-2 border-l border-gray-200 px-3">
+                        {comite.coasesor
+                          ? `${comite.coasesor.nombre} ${comite.coasesor.apellido_paterno} ${comite.coasesor.apellido_materno}`
+                          : ""}
+                      </span>
+                    </p>
+                    <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                      Sinodal
+                    </p>
+                    <p className="italic">
+                      {comite.sinodal1
+                        ? comite.sinodal1.id_usuario
+                        : "No se ha definido el Asesor"}
+                      <span className="ml-2 border-l border-gray-200 px-3">
+                        {comite.sinodal1
+                          ? `${comite.sinodal1.nombre} ${comite.sinodal1.apellido_paterno} ${comite.sinodal1.apellido_materno}`
+                          : ""}
+                      </span>
+                    </p>
+                    <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                      Sinodal
+                    </p>
+                    <p className="italic">
+                      {comite.sinodal2
+                        ? comite.sinodal2.id_usuario
+                        : "No se ha definido el Asesor"}
+                      <span className="ml-2 border-l border-gray-200 px-3">
+                        {comite.sinodal2
+                          ? `${comite.sinodal2.nombre} ${comite.sinodal2.apellido_paterno} ${comite.sinodal2.apellido_materno}`
+                          : ""}
+                      </span>
+                    </p>
+                    <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                      Suplente
+                    </p>
+                    <p className="italic">
+                      {comite.suplente
+                        ? comite.suplente.id_usuario
+                        : "No se ha definido el Asesor"}
+                      <span className="ml-2 border-l border-gray-200 px-3">
+                        {comite.suplente
+                          ? `${comite.suplente.nombre} ${comite.suplente.apellido_paterno} ${comite.suplente.apellido_materno}`
+                          : ""}
+                      </span>
+                    </p>
+                    <div className="w-full flex justify-end px-4">
+                      <button
+                        className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          setModifyCommittee(!modifyCommittee);
+                        }}
+                      >
+                        Modificar Comité
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                </>
+              ) : (
+                "Datos Inconsistentes"
+              )}
+            </>
+          )}
         </div>
       ) : (
         <div className="w-full">
-          <p className="font-semibold text-dark-blue-10 text-base">
-            Tesis
+          <p className="font-semibold text-dark-blue-10 text-base">Tesis</p>
+          <p className="italic">
+            El alumno aún no ha realizado su registro de Tesis
           </p>
-          <p className="italic">El alumno aún no ha realizado su registro de Tesis</p>
         </div>
       )}
     </div>
-  )
+  );
   /* Committee Section */
 
   /* Tabs */
