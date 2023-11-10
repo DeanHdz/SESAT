@@ -15,7 +15,7 @@ const AdvancesList = ({ history }: { history: Array<number> | undefined }) => {
         {history && (
           history.map((elem, i) => (
             elem !== 0 ? (
-              <li className="step step-primary">
+              <li className="step step-primary hidden">
                 <PrevAdvance idAsignacion={elem} avance={i + 1} />
               </li>
             ) : (

@@ -3,7 +3,7 @@ import "flatpickr/dist/themes/dark.css";
 import Flatpickr from "react-flatpickr";
 import { TesisInfo } from "../[idAsignacion]/page";
 import { Asignacion } from "../../../../../../types/ISESAT";
-import { dateStringToDate, formatAsISODate, shortFormatDate } from "../../../../../../utils/utils";
+import { dateStringToDate, formatAsISODate, shortFormatDate, shortFormatDateWithoutConversion } from "../../../../../../utils/utils";
 import { fetchComiteMembers } from "../../../../../../utils/comite.endpoint";
 import { fetchFormatData, fetchFormatoEvaluacion, postFormatoEvaluacion } from "../../../../../../utils/formato-evaluacion.endpoint";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
@@ -99,7 +99,7 @@ const ReportFormModal = ({
                 comite: comite!,
                 titulo_tesis: tesisInfo.titulo,
                 fecha_comienzo: tesisInfo.fecha_registro,
-                fecha_limite: shortFormatDate(formatAsISODate(fechaLimite)),
+                fecha_limite: shortFormatDateWithoutConversion(formatAsISODate(fechaLimite)),
             },
             token
         );

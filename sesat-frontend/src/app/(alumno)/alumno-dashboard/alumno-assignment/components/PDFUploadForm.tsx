@@ -152,8 +152,9 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
           setCssError("")
         }
       } else {
-        setmsg("La fecha de entrega ha vencido")
-        setCssError("")
+        router.refresh();
+        setmsg("La fecha de entrega ha vencido, no puedes realizar cambios")
+        setCssError("")        
       }
 
       //alert("El archivo PDF se ha subido.");
