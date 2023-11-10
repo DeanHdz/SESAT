@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json ./
 
-ARG CACHEBUST=1
+#ARG CACHEBUST=1
 RUN npm install
 
 COPY . .
@@ -19,7 +19,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-ARG CACHEBUST=1
+#ARG CACHEBUST=1
 RUN npm install --only=production
 
 COPY . .

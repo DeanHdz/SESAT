@@ -94,11 +94,11 @@ export default async function Home() {
   //fetch de la tabla periodo, revisar que exista al menos un periodo y si es el caso
   //obtener el ultimo creado, comparar la fecha de ciere con la actual para revisar que no este concluido
   let periodo: PeriodoProps = await fetchLatestPeriod("").catch(() => {return null})
-  const periodoConcluido = isPeriodActive(periodo.fecha_cierre);
+  const periodoConcluido = isPeriodActive(periodo?.fecha_cierre);
 
   let statusMidTime = new Array(), statusFullTime = new Array()
   if (!periodoConcluido) {
-    await fetchAsignacionesDataMastersDegree(periodo.id_periodo, statusFullTime, statusMidTime)
+    await fetchAsignacionesDataMastersDegree(periodo?.id_periodo, statusFullTime, statusMidTime)
   }
 
 

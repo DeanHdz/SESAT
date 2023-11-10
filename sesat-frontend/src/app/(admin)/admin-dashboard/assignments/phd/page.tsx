@@ -79,8 +79,8 @@ async function fetchStatusPeriodo(): Promise<boolean> {
 
 export default async function Home() {
   const periodo: PeriodoProps = await fetchLatestPeriod("").catch(() => { return null })
-  const statusArray = await fetchAsignacionesData(periodo.id_periodo).catch(() => { return null }) 
-  const periodoConcluido = isPeriodActive(periodo.fecha_cierre)
+  const statusArray = await fetchAsignacionesData(periodo?.id_periodo).catch(() => { return null }) 
+  const periodoConcluido = isPeriodActive(periodo?.fecha_cierre)
 
 
   return (
