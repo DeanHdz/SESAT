@@ -20,10 +20,11 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
   const router = useRouter();
 
   async function handleSubmit(e: any) {
+    e.preventDefault();
     const asignacion: Asignacion = await fetchOneByIdAsignacion(id_asignacion, token);
     const tesis: Tesis = await fetchTesisByID(asignacion.id_tesis, token)
 
-    e.preventDefault();
+    
     try {
       await postComment(
         {
@@ -34,6 +35,7 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
         },
         ""
       );
+      router.refresh();
 
       const comite: Comite[] = await fetchComiteByIDTesis(tesis.id_tesis, token);
       const comite_ids = comite.map((miembro) => miembro.id_usuario);
@@ -49,7 +51,7 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
       });
       setComment("");
       revalidator("CommentList");
-      router.refresh();
+      
 
     } catch (err) {
       console.log(err);

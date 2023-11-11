@@ -78,14 +78,14 @@ export default async function Home({
 }: {
   params: { idAsignacion: string }
 }) {
+  let error = false;
   const cookie = cookies().get("SESATsession")?.value;
   const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
-  const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token).catch(() => {error = true;});
 
-  let { idAsignacion } = params;
-  let error = false;
-  let periodo = await fetchLatestPeriod("").catch();
-  let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, token).catch(() => { return undefined });
+  let { idAsignacion } = params;  
+  let periodo = await fetchLatestPeriod("").catch(() => {error = true;});
+  let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, token).catch(() => {error = true;});
   let evaluacion_realizada = asignacion.calificacion && asignacion.id_acta_evaluacion && asignacion.id_formato_evaluacion;
 
   let tesisInfo: TesisInfo | undefined = undefined;

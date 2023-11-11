@@ -5,7 +5,7 @@ import { EventoEndpoint } from "../../../../utils/evento.endpoint";
 import AlertPeriod from "./components/AlertPeriod";
 
 export default async function Home() {
-  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("", 100001); //hard admin id
+  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("", 100001).catch(); //hard admin id
   const eventos = await eventosData;
   return (
     <main className="flex flex-col w-full" >
