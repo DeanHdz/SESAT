@@ -662,3 +662,15 @@ export interface RetrievedCommittee {
   sinodal4?: Usuario | null,
   suplente: Usuario | null,
 }
+
+export interface CreateRetrievedCommitteeDTO {
+  id_tesis: number,
+  id_usuario: number,
+  asesor: Usuario | null,
+  coasesor?: Usuario | null,
+  sinodal1: Usuario | null,
+  sinodal2: Usuario | null,
+  sinodal3?: Usuario | null,
+  sinodal4?: Usuario | null,
+  suplente: Usuario | null,
+}

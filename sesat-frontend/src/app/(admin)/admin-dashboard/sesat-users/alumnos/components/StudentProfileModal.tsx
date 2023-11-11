@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import {
+  CreateRetrievedCommitteeDTO,
   RetrievedCommittee,
   Tesis,
   Usuario,
@@ -11,7 +12,7 @@ import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import revalidator from "../../../actions";
 import { useRouter } from "next/navigation";
 import { findTesisPerStudent } from "../../../../../../../utils/tesis.endpoint";
-import { retrieveCommittee } from "../../../../../../../utils/comite.endpoint";
+import { postUpdateCommitteeWithRetrieved, retrieveCommittee } from "../../../../../../../utils/comite.endpoint";
 import { useDebounce } from "use-debounce";
 
 const StudentProfileModal = ({ user }: { user: Usuario }) => {
@@ -24,6 +25,7 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     useState(false);
   const [showChangeStatusErrorModal, setShowChangeStatusErrorModal] =
     useState(false);
+  const [showChangeCommitteeSuccessModal, setShowChangeCommitteeSuccessModal] = useState(false);
 
   const [modifyCommittee, setModifyCommittee] = useState<boolean>();
 
@@ -259,6 +261,7 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
 
   const [showStudentInfoSection, setShowStudentInfoSection] =
     useState<boolean>(true);
+
   const studentInfoSection = (
     <div className="mt-2 px-2 max-h-[500px] overflow-y-auto">
       <p className="font-semibold text-dark-blue-10 text-lg">
@@ -417,27 +420,291 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     fetchData();
   }, [tesis]);
 
-  /* Search */
+  
   const [text, setText] = useState<string | null>(null);
   const [query] = useDebounce(text, 750);
   const [retrievedAsesor, setRetrievedAsesor] = useState<Usuario[] | null>();
+  const [transitionalAsesor, setTransitionalAsesor] =
+    useState<Usuario | null>();
+  const [transitionalCoasesor, setTransitionalCoasesor] =
+    useState<Usuario | null>();
+  const [transitionalSinodal1, setTransitionalSinodal1] =
+    useState<Usuario | null>();
+  const [transitionalSinodal2, setTransitionalSinodal2] =
+    useState<Usuario | null>();
+  const [transitionalSinodal3, setTransitionalSinodal3] =
+    useState<Usuario | null>();
+  const [transitionalSinodal4, setTransitionalSinodal4] =
+    useState<Usuario | null>();
+  const [transitionalSuplent, setTransitionalSuplent] =
+    useState<Usuario | null>();
+
+  const [selectedAsesorIndex, setSelectedAsesorIndex] = useState<number | null>(
+    null
+  );
+
+  const [asesorSpoof, setAsesorSpoof] = useState<Usuario | null>(null)
+
+  const [sinodalAmount, setSinodalAmount] = useState<number>(0)
+
+  const handleTransitionalAsesor = () => {
+    if (retrievedAsesor != null && selectedAsesorIndex != null) {
+      setTransitionalAsesor(retrievedAsesor[selectedAsesorIndex]);
+      setSelectedAsesorIndex(null);
+      setRetrievedAsesor(null);
+    }
+  };
+
+  const handleTransitionalCoasesor = () => {
+    if (retrievedAsesor != null && selectedAsesorIndex != null) {
+      setTransitionalCoasesor(retrievedAsesor[selectedAsesorIndex]);
+      setSelectedAsesorIndex(null);
+      setRetrievedAsesor(null);
+    }
+  };
+
+  const handleTransitionalSuplent = () => {
+    if (retrievedAsesor != null && selectedAsesorIndex != null) {
+      setTransitionalSuplent(retrievedAsesor[selectedAsesorIndex]);
+      setSelectedAsesorIndex(null);
+      setRetrievedAsesor(null);
+    }
+  };
+
+  const handleTransitionalSinodalMasters = () => {
+    if (retrievedAsesor != null && selectedAsesorIndex != null) {
+      if(transitionalSinodal1 == null)
+      {
+        setTransitionalSinodal1(retrievedAsesor[selectedAsesorIndex]);
+        
+      }
+      else if(transitionalSinodal2 == null){
+        setTransitionalSinodal2(retrievedAsesor[selectedAsesorIndex]);
+      }
+      setSelectedAsesorIndex(null);
+      setRetrievedAsesor(null);
+    }
+    setSinodalAmount(sinodalAmount + 1);
+  }
+
+  const handleTransitionalSinodalPhd = () => {
+    switch(sinodalAmount)
+    {
+      case 0:
+        if (retrievedAsesor != null && selectedAsesorIndex != null) {
+          setTransitionalSinodal1(retrievedAsesor[selectedAsesorIndex]);
+          setSelectedAsesorIndex(null);
+          setRetrievedAsesor(null);
+        }
+        break;
+      case 1:
+        if (retrievedAsesor != null && selectedAsesorIndex != null) {
+          setTransitionalSinodal2(retrievedAsesor[selectedAsesorIndex]);
+          setSelectedAsesorIndex(null);
+          setRetrievedAsesor(null);
+        }
+        break;
+        case 2:
+          if (retrievedAsesor != null && selectedAsesorIndex != null) {
+            setTransitionalSinodal3(retrievedAsesor[selectedAsesorIndex]);
+            setSelectedAsesorIndex(null);
+            setRetrievedAsesor(null);
+          }
+          break;
+        case 3:
+          if (retrievedAsesor != null && selectedAsesorIndex != null) {
+            setTransitionalSinodal4(retrievedAsesor[selectedAsesorIndex]);
+            setSelectedAsesorIndex(null);
+            setRetrievedAsesor(null);
+          }
+          break;
+    }
+    setSinodalAmount(sinodalAmount + 1);
+  }
+
+  const changeCommitteeSuccessModal = (
+    <div
+      className="relative z-51"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg
+                    className="h-6 w-6 text-green-600"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    width="40"
+                    zoomAndPan="magnify"
+                    viewBox="0 0 30 30.000001"
+                    height="40"
+                    preserveAspectRatio="xMidYMid meet"
+                    version="1.0"
+                  >
+                    <defs>
+                      <clipPath id="id1">
+                        <path
+                          d="M 2.328125 4.222656 L 27.734375 4.222656 L 27.734375 24.542969 L 2.328125 24.542969 Z M 2.328125 4.222656 "
+                          clipRule="nonzero"
+                        />
+                      </clipPath>
+                    </defs>
+                    <g clipPath="url(#id1)">
+                      <path
+                        fill="rgb(0%, 40%, 20%)"
+                        d="M 27.5 7.53125 L 24.464844 4.542969 C 24.15625 4.238281 23.65625 4.238281 23.347656 4.542969 L 11.035156 16.667969 L 6.824219 12.523438 C 6.527344 12.230469 6 12.230469 5.703125 12.523438 L 2.640625 15.539062 C 2.332031 15.84375 2.332031 16.335938 2.640625 16.640625 L 10.445312 24.324219 C 10.59375 24.472656 10.796875 24.554688 11.007812 24.554688 C 11.214844 24.554688 11.417969 24.472656 11.566406 24.324219 L 27.5 8.632812 C 27.648438 8.488281 27.734375 8.289062 27.734375 8.082031 C 27.734375 7.875 27.648438 7.679688 27.5 7.53125 Z M 27.5 7.53125 "
+                        fillOpacity="1"
+                        fillRule="nonzero"
+                      />
+                    </g>
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Operación exitosa
+                  </h3>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      El comité del alumno ha sido modificado con éxito.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={() => {
+                  setShowChangeCommitteeSuccessModal(
+                    !showChangeCommitteeSuccessModal
+                  );
+                  revalidator("PaginatedMastersList");
+                  revalidator("PaginatedPhdList");
+                  if(user.datos_alumno && user.datos_alumno.id_grado_estudio == 1)
+                    router.push("/admin-dashboard/sesat-users/alumnos/masters-degree");
+                  else
+                    router.push("/admin-dashboard/sesat-users/alumnos/phd");
+                }}
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  
+  const handleCommitteeChange = async (op: number) => {
+    switch(op)
+    {
+      case 1:
+        const newMastersCommittee : CreateRetrievedCommitteeDTO = {
+          id_usuario: user.id_usuario,
+          id_tesis: tesis && tesis.id_tesis ? tesis.id_tesis : 0,
+          asesor: transitionalAsesor ? transitionalAsesor : user,
+          coasesor: transitionalCoasesor,
+          sinodal1: transitionalSinodal1 ? transitionalSinodal1 : user,
+          sinodal2: transitionalSinodal2 ? transitionalSinodal2 : user,
+          suplente: transitionalSuplent ? transitionalSuplent: user
+        }
+        const res = await postUpdateCommitteeWithRetrieved(token, newMastersCommittee);
+        if(res != null)
+        {
+          setShowModal(!showModal);
+          setShowChangeCommitteeSuccessModal(!showChangeCommitteeSuccessModal);
+        }else{
+          setShowModal(!showModal);
+          setShowChangeStatusErrorModal(!showChangeStatusErrorModal);
+        }
+        break;
+      case 2:
+        const newPhdCommittee : CreateRetrievedCommitteeDTO = {
+          id_usuario: user.id_usuario,
+          id_tesis: tesis && tesis.id_tesis ? tesis.id_tesis : 0,
+          asesor: transitionalAsesor ? transitionalAsesor : user,
+          coasesor: transitionalCoasesor,
+          sinodal1: transitionalSinodal1 ? transitionalSinodal1 : user,
+          sinodal2: transitionalSinodal2 ? transitionalSinodal2 : user,
+          sinodal3: transitionalSinodal3 ? transitionalSinodal3 : user,
+          sinodal4: transitionalSinodal4 ? transitionalSinodal4 : user,
+          suplente: transitionalSuplent ? transitionalSuplent: user
+        }
+        const res2 = await postUpdateCommitteeWithRetrieved(token, newPhdCommittee);
+        if(res2 != null)
+        {
+          setShowModal(!showModal);
+          setShowChangeCommitteeSuccessModal(!showChangeCommitteeSuccessModal);
+        }else{
+          setShowModal(!showModal);
+          setShowChangeStatusErrorModal(!showChangeStatusErrorModal);
+        }
+        break;
+    }
+  }
 
   useEffect(() => {
     const getUsuario = async (op: number) => {
       switch (op) {
         case 1: //find by Id
           const usuarioByIdData: Promise<Usuario[]> =
-            UsuarioEndpoint.getUserById(query ? parseInt(query) : 0, token);
+            UsuarioEndpoint.getAsesoresById(token, query ? parseInt(query) : 0);
           const fetchedUsuarioById = await usuarioByIdData;
-          if (fetchedUsuarioById != null) 
-            setRetrievedAsesor(fetchedUsuarioById);
+          if (fetchedUsuarioById != null) {
+            const fetchedUsuarioById2 = fetchedUsuarioById.filter(
+              (usuario) =>
+                (!transitionalAsesor ||
+                  usuario.id_usuario !== transitionalAsesor.id_usuario) &&
+                (!transitionalCoasesor ||
+                  usuario.id_usuario !== transitionalCoasesor.id_usuario) &&
+                (!transitionalSinodal1 ||
+                  usuario.id_usuario !== transitionalSinodal1.id_usuario) &&
+                (!transitionalSinodal2 ||
+                  usuario.id_usuario !== transitionalSinodal2.id_usuario) &&
+                (!transitionalSinodal3 ||
+                  usuario.id_usuario !== transitionalSinodal3.id_usuario) &&
+                (!transitionalSinodal4 ||
+                  usuario.id_usuario !== transitionalSinodal4.id_usuario) &&
+                (!transitionalSuplent ||
+                  usuario.id_usuario !== transitionalSuplent.id_usuario)
+            );
+            setRetrievedAsesor(fetchedUsuarioById2);
+          }
           break;
         case 2: //Find by Name
           const usuarioByNameData: Promise<Usuario[]> =
-            UsuarioEndpoint.getUserByName(token, query ? query : "");
+            UsuarioEndpoint.getAsesoresByName(token, query ? query : "");
           const fetchedUsuarioByName = await usuarioByNameData;
-          if (fetchedUsuarioByName != null)
-            setRetrievedAsesor(fetchedUsuarioByName);
+          if (fetchedUsuarioByName != null) {
+            const fetchedUsuarioByName2 = fetchedUsuarioByName.filter(
+              (usuario) =>
+                (!transitionalAsesor ||
+                  usuario.id_usuario !== transitionalAsesor.id_usuario) &&
+                (!transitionalCoasesor ||
+                  usuario.id_usuario !== transitionalCoasesor.id_usuario) &&
+                (!transitionalSinodal1 ||
+                  usuario.id_usuario !== transitionalSinodal1.id_usuario) &&
+                (!transitionalSinodal2 ||
+                  usuario.id_usuario !== transitionalSinodal2.id_usuario) &&
+                (!transitionalSinodal3 ||
+                  usuario.id_usuario !== transitionalSinodal3.id_usuario) &&
+                (!transitionalSinodal4 ||
+                  usuario.id_usuario !== transitionalSinodal4.id_usuario) &&
+                (!transitionalSuplent ||
+                  usuario.id_usuario !== transitionalSuplent.id_usuario)
+            );
+            setRetrievedAsesor(fetchedUsuarioByName2);
+          }
           break;
       }
     };
@@ -445,8 +712,10 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       if (!isNaN(Number(query))) {
         //is Nan Shit
         getUsuario(1);
+        setSelectedAsesorIndex(null);
       } else {
         getUsuario(2);
+        setSelectedAsesorIndex(null);
       }
     }
   }, [query]); //,router
@@ -512,104 +781,505 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                 Asesor
               </p>
               <div className="w-full border border-gray-200 p-2 mb-2">
+                {searchBar}
+                {retrievedAsesor
+                  ? retrievedAsesor.map((asesor, i) => (
+                      <div key={i}>
+                        <p className="font-semibold text-dark-blue-10 text-[12px] px-2 my-2">
+                          Datos del Asesor
+                        </p>
+                        <p className="italic w-full flex justify-start">
+                          {asesor.id_usuario
+                            ? asesor.id_usuario
+                            : "No se ha definido el Asesor"}
+                          <span className="ml-2 border-l border-gray-200 px-3">
+                            {asesor
+                              ? `${asesor.nombre} ${asesor.apellido_paterno} ${asesor.apellido_materno}`
+                              : ""}
+                          </span>
+                          <button
+                            className="ml-2 px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                            onClick={() => {
+                              setSelectedAsesorIndex(i);
+                              setAsesorSpoof(asesor);
+                            }}
+                          >
+                            Seleccionar
+                          </button>
+                        </p>
+                      </div>
+                    ))
+                  : ""}
+                {selectedAsesorIndex != null ? (
+                  <>
+                    <p className="font-semibold text-dark-blue-10 text-[12px] px-2 mt-2">
+                      Establecer como
+                    </p>
+                    {asesorSpoof ? (
+                      <p className="italic w-full flex justify-center">
+                      {asesorSpoof.id_usuario
+                        ? asesorSpoof.id_usuario
+                        : "No se ha definido el Asesor"}
+                      <span className="ml-2 border-l border-gray-200 px-3">
+                        {asesorSpoof
+                          ? `${asesorSpoof.nombre} ${asesorSpoof.apellido_paterno} ${asesorSpoof.apellido_materno}`
+                          : ""}
+                      </span>                   
+                    </p>
+                    ) : (
+                      ""
+                    )}
+                    <div className="w-full flex justify-center px-4 mt-2">
+                      {transitionalAsesor ? (
+                        <button
+                          className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
+                          disabled
+                        >
+                          Asesor
+                        </button>
+                      ) : (
+                        <button
+                          className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                          onClick={() => {
+                            handleTransitionalAsesor();
+                          }}
+                        >
+                          Asesor
+                        </button>
+                      )}
+                      {transitionalCoasesor ? (
+                        <button
+                          className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
+                          disabled
+                        >
+                          Asesor
+                        </button>
+                      ) : (
+                        <button
+                        className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          handleTransitionalCoasesor();
+                        }}
+                      >
+                        Co-asesor
+                      </button>
+                      )}
+                      
+                      {tesis.alumno && tesis.alumno.datos_alumno && tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
+                       <>
+                        {sinodalAmount < 2 ? (
+                          <button
+                            className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                            onClick={() => {handleTransitionalSinodalMasters();}}
+                          >
+                            Sinodal
+                          </button>
+                        ) : (
+                          <button
+                            className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
+                            disabled
+                          >
+                            Sinodal
+                          </button>
+                        )}
+                       </>
+                      ) : (
+                        <>
+                          {sinodalAmount < 4 ? (
+                          <button
+                            className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                            onClick={() => {handleTransitionalSinodalPhd();}}
+                          >
+                            Sinodal
+                          </button>
+                        ) : (
+                          <button
+                            className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
+                            disabled
+                          >
+                            Sinodal
+                          </button>
+                        )}
+                        </>
+                      )}
 
+                      {transitionalSuplent ? (
+                        <button
+                          className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
+                          disabled
+                        >
+                          Suplente
+                        </button>
+                      ) : (
+                        <button
+                        className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          handleTransitionalSuplent();
+                        }}
+                      >
+                        Suplente
+                      </button>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
               </div>
               <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
                 Comite
               </p>
               <div className="w-full border border-gray-200 p-2 mb-2">
-
+                <div>
+                  <p className="font-semibold text-dark-blue-10 text-[14px] mb-1">
+                    Asesor
+                  </p>
+                  <p className="italic">
+                    {transitionalAsesor
+                      ? transitionalAsesor.id_usuario
+                      : "No se ha definido el Asesor"}
+                    <span className="ml-2 border-l border-gray-200 px-3">
+                      {transitionalAsesor
+                        ? `${transitionalAsesor.nombre} ${transitionalAsesor.apellido_paterno} ${transitionalAsesor.apellido_materno}`
+                        : "Obligatorio"}
+                    </span>
+                    {transitionalAsesor ? (
+                      <button
+                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          setTransitionalAsesor(null);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                  </p>
+                  <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                    Co-asesor
+                  </p>
+                  <p className="italic">
+                    {transitionalCoasesor
+                      ? transitionalCoasesor.id_usuario
+                      : "No se ha definido el Asesor"}
+                    <span className="ml-2 border-l border-gray-200 px-3">
+                      {transitionalCoasesor
+                        ? `${transitionalCoasesor.nombre} ${transitionalCoasesor.apellido_paterno} ${transitionalCoasesor.apellido_materno}`
+                        : "Opcional"}
+                    </span>
+                    {transitionalCoasesor ? (
+                      <button
+                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          setTransitionalCoasesor(null);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                  </p>
+                  <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                    Sinodal
+                  </p>
+                  <p className="italic">
+                    {transitionalSinodal1
+                      ? transitionalSinodal1.id_usuario
+                      : "No se ha definido el Asesor"}
+                    <span className="ml-2 border-l border-gray-200 px-3">
+                      {transitionalSinodal1
+                        ? `${transitionalSinodal1.nombre} ${transitionalSinodal1.apellido_paterno} ${transitionalSinodal1.apellido_materno}`
+                        : "Obligatorio"}
+                    </span>
+                    {transitionalSinodal1 ? (
+                      <button
+                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          setTransitionalSinodal1(null);
+                          setSinodalAmount(sinodalAmount - 1);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                  </p>
+                  <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                    Sinodal
+                  </p>
+                  <p className="italic">
+                    {transitionalSinodal2
+                      ? transitionalSinodal2.id_usuario
+                      : "No se ha definido el Asesor"}
+                    <span className="ml-2 border-l border-gray-200 px-3">
+                      {transitionalSinodal2
+                        ? `${transitionalSinodal2.nombre} ${transitionalSinodal2.apellido_paterno} ${transitionalSinodal2.apellido_materno}`
+                        : "Obligatorio"}
+                    </span>
+                    {transitionalSinodal2 ? (
+                      <button
+                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          setTransitionalSinodal2(null);
+                          setSinodalAmount(sinodalAmount - 1);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                  </p>
+                  {tesis &&
+                  tesis.alumno &&
+                  tesis.alumno.datos_alumno &&
+                  tesis.alumno.datos_alumno.id_grado_estudio == 2 ? (
+                    <>
+                      <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                        Sinodal
+                      </p>
+                      <p className="italic">
+                        {transitionalSinodal3
+                          ? transitionalSinodal3.id_usuario
+                          : "No se ha definido el Asesor"}
+                        <span className="ml-2 border-l border-gray-200 px-3">
+                          {transitionalSinodal3
+                            ? `${transitionalSinodal3.nombre} ${transitionalSinodal3.apellido_paterno} ${transitionalSinodal3.apellido_materno}`
+                            : "Obligatiorio"}
+                        </span>
+                        {transitionalSinodal3 ? (
+                      <button
+                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          setTransitionalSinodal3(null);
+                          setSinodalAmount(sinodalAmount - 1);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                      </p>
+                      <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                        Sinodal
+                      </p>
+                      <p className="italic">
+                        {transitionalSinodal4
+                          ? transitionalSinodal4.id_usuario
+                          : "No se ha definido el Asesor"}
+                        <span className="ml-2 border-l border-gray-200 px-3">
+                          {transitionalSinodal4
+                            ? `${transitionalSinodal4.nombre} ${transitionalSinodal4.apellido_paterno} ${transitionalSinodal4.apellido_materno}`
+                            : "Obligatiorio"}
+                        </span>
+                        {transitionalSinodal4 ? (
+                      <button
+                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          setTransitionalSinodal4(null);
+                          setSinodalAmount(sinodalAmount - 1);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                      </p>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                    Suplente
+                  </p>
+                  <p className="italic">
+                    {transitionalSuplent
+                      ? transitionalSuplent.id_usuario
+                      : "No se ha definido el Asesor"}
+                    <span className="ml-2 border-l border-gray-200 px-3">
+                      {transitionalSuplent
+                        ? `${transitionalSuplent.nombre} ${transitionalSuplent.apellido_paterno} ${transitionalSuplent.apellido_materno}`
+                        : "Obligatiorio"}
+                    </span>
+                    {transitionalSuplent ? (
+                      <button
+                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                        onClick={() => {
+                          setTransitionalSuplent(null);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                  </p>
+                  <div className="w-full flex justify-end px-4 mt-2">
+                    <button
+                      className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                      onClick={() => {
+                        setModifyCommittee(!modifyCommittee);
+                      }}
+                    >
+                      Ver Comité Previo
+                    </button>
+                    {tesis &&
+                      tesis.alumno &&
+                      tesis.alumno.datos_alumno &&
+                      tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
+                        <>
+                        {transitionalAsesor != null  && transitionalSinodal1 != null && transitionalSinodal2 != null && transitionalSuplent != null ? (
+                          <button
+                            className="px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                            onClick={() => { handleCommitteeChange(1) }}
+                          >
+                            Actualizar Comité
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        </>
+                      ) : (
+                        <>
+                        {transitionalAsesor != null  && transitionalSinodal1 != null && transitionalSinodal2 != null && transitionalSinodal3 != null && transitionalSinodal4 != null && transitionalSuplent != null ? (
+                          <button
+                            className="px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                            onClick={() => { handleCommitteeChange(2) }}
+                          >
+                            Actualizar Comité
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        </>
+                      )}                 
+                  </div>
+                </div>
               </div>
             </>
           ) : (
             <>
-              {comite &&
-              tesis.alumno &&
-              tesis.alumno.datos_alumno &&
-              tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
+              {comite && tesis.alumno && tesis.alumno.datos_alumno ? (
                 <>
-                <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
-                  Comite
-                </p>
-                <div className="w-full border border-gray-200 p-2 mb-2">
-                  <div>
-                    <p className="font-semibold text-dark-blue-10 text-[14px] mb-1">
-                      Asesor
-                    </p>
-                    <p className="italic">
-                      {comite.asesor
-                        ? comite.asesor.id_usuario
-                        : "No se ha definido el Asesor"}
-                      <span className="ml-2 border-l border-gray-200 px-3">
+                  <p className="font-semibold text-dark-blue-10 text-base px-2 mt-2">
+                    Comite
+                  </p>
+                  <div className="w-full border border-gray-200 p-2 mb-2">
+                    <div>
+                      <p className="font-semibold text-dark-blue-10 text-[14px] mb-1">
+                        Asesor
+                      </p>
+                      <p className="italic">
                         {comite.asesor
-                          ? `${comite.asesor.nombre} ${comite.asesor.apellido_paterno} ${comite.asesor.apellido_materno}`
-                          : ""}
-                      </span>
-                    </p>
-                    <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
-                      Co-asesor
-                    </p>
-                    <p className="italic">
-                      {comite.coasesor
-                        ? comite.coasesor.id_usuario
-                        : "No se ha definido el Asesor"}
-                      <span className="ml-2 border-l border-gray-200 px-3">
+                          ? comite.asesor.id_usuario
+                          : "No se ha definido el Asesor"}
+                        <span className="ml-2 border-l border-gray-200 px-3">
+                          {comite.asesor
+                            ? `${comite.asesor.nombre} ${comite.asesor.apellido_paterno} ${comite.asesor.apellido_materno}`
+                            : ""}
+                        </span>
+                      </p>
+                      <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                        Co-asesor
+                      </p>
+                      <p className="italic">
                         {comite.coasesor
-                          ? `${comite.coasesor.nombre} ${comite.coasesor.apellido_paterno} ${comite.coasesor.apellido_materno}`
-                          : ""}
-                      </span>
-                    </p>
-                    <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
-                      Sinodal
-                    </p>
-                    <p className="italic">
-                      {comite.sinodal1
-                        ? comite.sinodal1.id_usuario
-                        : "No se ha definido el Asesor"}
-                      <span className="ml-2 border-l border-gray-200 px-3">
+                          ? comite.coasesor.id_usuario
+                          : "No se ha definido el Asesor"}
+                        <span className="ml-2 border-l border-gray-200 px-3">
+                          {comite.coasesor
+                            ? `${comite.coasesor.nombre} ${comite.coasesor.apellido_paterno} ${comite.coasesor.apellido_materno}`
+                            : ""}
+                        </span>
+                      </p>
+                      <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                        Sinodal
+                      </p>
+                      <p className="italic">
                         {comite.sinodal1
-                          ? `${comite.sinodal1.nombre} ${comite.sinodal1.apellido_paterno} ${comite.sinodal1.apellido_materno}`
-                          : ""}
-                      </span>
-                    </p>
-                    <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
-                      Sinodal
-                    </p>
-                    <p className="italic">
-                      {comite.sinodal2
-                        ? comite.sinodal2.id_usuario
-                        : "No se ha definido el Asesor"}
-                      <span className="ml-2 border-l border-gray-200 px-3">
+                          ? comite.sinodal1.id_usuario
+                          : "No se ha definido el Asesor"}
+                        <span className="ml-2 border-l border-gray-200 px-3">
+                          {comite.sinodal1
+                            ? `${comite.sinodal1.nombre} ${comite.sinodal1.apellido_paterno} ${comite.sinodal1.apellido_materno}`
+                            : ""}
+                        </span>
+                      </p>
+                      <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                        Sinodal
+                      </p>
+                      <p className="italic">
                         {comite.sinodal2
-                          ? `${comite.sinodal2.nombre} ${comite.sinodal2.apellido_paterno} ${comite.sinodal2.apellido_materno}`
-                          : ""}
-                      </span>
-                    </p>
-                    <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
-                      Suplente
-                    </p>
-                    <p className="italic">
-                      {comite.suplente
-                        ? comite.suplente.id_usuario
-                        : "No se ha definido el Asesor"}
-                      <span className="ml-2 border-l border-gray-200 px-3">
+                          ? comite.sinodal2.id_usuario
+                          : "No se ha definido el Asesor"}
+                        <span className="ml-2 border-l border-gray-200 px-3">
+                          {comite.sinodal2
+                            ? `${comite.sinodal2.nombre} ${comite.sinodal2.apellido_paterno} ${comite.sinodal2.apellido_materno}`
+                            : ""}
+                        </span>
+                      </p>
+                      {tesis.alumno.datos_alumno.id_grado_estudio == 2 ? (
+                        <>
+                          <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                            Sinodal
+                          </p>
+                          <p className="italic">
+                            {comite.sinodal3
+                              ? comite.sinodal3.id_usuario
+                              : "No se ha definido el Asesor"}
+                            <span className="ml-2 border-l border-gray-200 px-3">
+                              {comite.sinodal3
+                                ? `${comite.sinodal3.nombre} ${comite.sinodal3.apellido_paterno} ${comite.sinodal3.apellido_materno}`
+                                : ""}
+                            </span>
+                          </p>
+                          <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                            Sinodal
+                          </p>
+                          <p className="italic">
+                            {comite.sinodal4
+                              ? comite.sinodal4.id_usuario
+                              : "No se ha definido el Asesor"}
+                            <span className="ml-2 border-l border-gray-200 px-3">
+                              {comite.sinodal4
+                                ? `${comite.sinodal4.nombre} ${comite.sinodal4.apellido_paterno} ${comite.sinodal4.apellido_materno}`
+                                : ""}
+                            </span>
+                          </p>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                      <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
+                        Suplente
+                      </p>
+                      <p className="italic">
                         {comite.suplente
-                          ? `${comite.suplente.nombre} ${comite.suplente.apellido_paterno} ${comite.suplente.apellido_materno}`
-                          : ""}
-                      </span>
-                    </p>
-                    <div className="w-full flex justify-end px-4">
-                      <button
-                        className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
-                        onClick={() => {
-                          setModifyCommittee(!modifyCommittee);
-                        }}
-                      >
-                        Modificar Comité
-                      </button>
+                          ? comite.suplente.id_usuario
+                          : "No se ha definido el Asesor"}
+                        <span className="ml-2 border-l border-gray-200 px-3">
+                          {comite.suplente
+                            ? `${comite.suplente.nombre} ${comite.suplente.apellido_paterno} ${comite.suplente.apellido_materno}`
+                            : ""}
+                        </span>
+                      </p>
+                      <div className="w-full flex justify-end px-4">
+                        <button
+                          className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                          onClick={() => {
+                            setModifyCommittee(!modifyCommittee);
+                          }}
+                        >
+                          Modificar Comité
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
                 </>
               ) : (
                 "Datos Inconsistentes"
@@ -696,6 +1366,7 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       {showChangeStatusModal ? <>{changeStatusModal}</> : ""}
       {showChangeStatusSuccessModal ? <>{changeStatusSuccessModal}</> : ""}
       {showChangeStatusErrorModal ? <>{changeStatusErrorModal}</> : ""}
+      {showChangeCommitteeSuccessModal ? <>{changeCommitteeSuccessModal}</> : ""}
       {showModal ? (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none">

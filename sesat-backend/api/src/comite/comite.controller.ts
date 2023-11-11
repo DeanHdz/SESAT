@@ -10,11 +10,17 @@ import {
 import { ComiteService } from "./comite.service";
 import { CreateComiteDto } from "./dto/create-comite.dto";
 import { UpdateComiteDto } from "./dto/update-comite.dto";
+import { CreateRetrievedCommitteeDTO } from "./dto/create-retrieved-committee.dto";
 
 @Controller("comite")
 export class ComiteController {
   constructor(private readonly comiteService: ComiteService) {}
 
+  @Post("/retrieve/update")
+  updateCommitteeWithRetrieved(@Body() createRetrievedCommitteeDTO: CreateRetrievedCommitteeDTO) {
+    return this.comiteService.updateCommitteeWithRetrieved(createRetrievedCommitteeDTO);
+  }
+  
   @Get("/retrieve/:id")
   async retrieveCommittee(@Param("id") id: string)
   {
