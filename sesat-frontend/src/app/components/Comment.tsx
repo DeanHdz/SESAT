@@ -1,8 +1,8 @@
 import { useRouter } from "next/navigation";
-import { deleteComment } from "../../../../../utils/comentario.endpoint";
-import { shortFormatDate } from "../../../../../utils/utils"
+import { deleteComment } from "../../../utils/comentario.endpoint";
+import { shortFormatDate } from "../../../utils/utils"
 import Cookies from "js-cookie";
-import revalidator from "../actions";
+import revalidator from "../(asesor)/asesor-dashboard/actions";
 
 export interface CommentProps {
   userName: string,

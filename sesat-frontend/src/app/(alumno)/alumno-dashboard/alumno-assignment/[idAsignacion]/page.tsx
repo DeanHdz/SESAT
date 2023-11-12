@@ -1,6 +1,6 @@
 import AddComment from "@/app/components/AddComment"
 import Drawer from "../../components/Drawer"
-import AdvancesList from "../../components/AdvancesList"
+import AdvancesList from "../../../../components/AdvancesList"
 
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
 import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.endpoint"
@@ -10,7 +10,7 @@ import { fetchOneByIdAsignacion } from "../../../../../../utils/asignacion.endpo
 import NotFound from "@/app/(admin)/admin-dashboard/not-found"
 import { getFormattedHours, shortFormatDate } from "../../../../../../utils/utils"
 import PDFUploadForm from "../../components/PDFUploadForm"
-import CommentSection from "@/app/(asesor)/asesor-dashboard/components/CommentSection"
+import CommentSection from "@/app/components/CommentSection"
 import Results from "../../components/Results"
 import { LoginEndpoint } from "../../../../../../utils/login.endpoint"
 import { cookies } from "next/headers"

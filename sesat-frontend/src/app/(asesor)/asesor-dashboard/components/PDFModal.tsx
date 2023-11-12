@@ -1,13 +1,7 @@
 "use client";
 import React, { useState } from 'react'
-
-import ProcessingAnim from '@/app/components/ProcessingAnim';
-
 import { useRouter } from 'next/navigation';
 import PDFViewer from './PDFViewer';
-
-
-
 
 const PDFModal = ({ pdfdocument }: { pdfdocument: Array<number> }) => {
 

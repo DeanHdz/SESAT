@@ -77,13 +77,12 @@ export default function AlumnoNavbar(props: AlumnoNavbarProps) {
         <img width={350} src="/images/uaslp_sesat.png" alt="Sesat logo" />
       </div>
 
-
-
       <div className="w-3/12 px-3 flex flex-row justify-end items-center">
         <div className="w-fit px-3 flex flex-row items-center justify-center ">
           <div className="w-[20px] h-[20px] mr-3 tooltip" data-tip={props.user && `${props.user.nombre} ${props.user.apellido_paterno} ${props.user.apellido_materno}`}>
             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
           </div>
+
           <h1 className="hidden lg:flex font-SESAT text-[10px] lg:text-sm">
             {props.user ? (
               `${props.user.nombre} ${props.user.apellido_paterno} ${props.user.apellido_materno}`
@@ -91,6 +90,7 @@ export default function AlumnoNavbar(props: AlumnoNavbarProps) {
               "Usuario no definido"
             )}
           </h1>
+          
         </div>
         <EndSessionIcon />
       </div>

@@ -24,7 +24,7 @@ export default async function Home() {
   return (
     <main className="w-full flex">
 
-      <div className="hidden lg:flex lg:w-3/12 flex-col">
+      <div className="hidden lg:flex lg:w-3/12 flex-col pr-10">
         <Drawer />
       </div>
 

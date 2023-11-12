@@ -1,20 +1,20 @@
 "use client";
 import React, { useEffect, useState } from 'react'
-import PDFViewer from './PDFViewer';
+import PDFViewer from '../(asesor)/asesor-dashboard/components/PDFViewer';
 import { useRouter } from 'next/navigation';
 import AssignmentHeader from './AssignmentHeader';
 import AssignmentData from './AssignmentData';
-import { shortFormatDate } from '../../../../../utils/utils';
+import { shortFormatDate } from '../../../utils/utils';
 import CommentSection from './CommentSection';
-import { Asignacion, LoggedUser } from '../../../../../types/ISESAT';
-import { fetchOneTesis } from '../../../../../utils/tesis.endpoint';
-import { fetchOneByIdAsignacion } from '../../../../../utils/asignacion.endpoint';
-import { fetchConversationByIdAsignacion } from '../../../../../utils/comentario.endpoint';
+import { Asignacion, LoggedUser } from '../../../types/ISESAT';
+import { fetchOneTesis } from '../../../utils/tesis.endpoint';
+import { fetchOneByIdAsignacion } from '../../../utils/asignacion.endpoint';
+import { fetchConversationByIdAsignacion } from '../../../utils/comentario.endpoint';
 import ProcessingAnim from '@/app/components/ProcessingAnim';
-import { fetchActaEvaluacion } from '../../../../../utils/acta-evaluacion.endpoint';
-import { fetchFormatoEvaluacion } from '../../../../../utils/formato-evaluacion.endpoint';
+import { fetchActaEvaluacion } from '../../../utils/acta-evaluacion.endpoint';
+import { fetchFormatoEvaluacion } from '../../../utils/formato-evaluacion.endpoint';
 import Cookies from 'js-cookie';
-import { LoginEndpoint } from '../../../../../utils/login.endpoint';
+import { LoginEndpoint } from '../../../utils/login.endpoint';
 
 async function fetchAndSortComments(idAsignacion: number, token: string) {
     let comments = await fetchConversationByIdAsignacion(idAsignacion, token);

@@ -1,8 +1,6 @@
 import Drawer from './components/Drawer';
 import Calendar from './components/Calendar';
 import CompletedAssignments from './components/CompletedAssignments'
-import NotificacionSection from "./components/NotificationSection";
-import ContactoAsesor from "./components/Contacts";
 
 import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
 import { findAsignacionesByPeriodAndAlumno } from '../../../../utils/asignacion.endpoint';
@@ -12,6 +10,7 @@ import { findContactsByIdTesis } from '../../../../utils/comite.endpoint';
 import { LoginEndpoint } from '../../../../utils/login.endpoint';
 import { cookies } from 'next/headers';
 import { EventoEndpoint } from '../../../../utils/evento.endpoint';
+import NotificacionSection from '@/app/components/NotificationSection';
 
 type AsignacionProps = {
   id_asignacion: number,
@@ -53,18 +52,20 @@ export default async function Home() {
         </div>
 
         <div className="flex flex-col lg:flex-row w-full justify-center">
-          <div className="w-full  pr-0 lg:pr-4  lg:w-2/3">
 
-            <div className="w-full">
-              <div className='bg-white gray__border p-6'>
+          <div className="w-full pr-0 lg:pr-4 lg:w-2/3">
+            <div className="w-full h-fit">
+              <div className='bg-white gray__border p-6 h-fit'>
                 <div className="w-full flex mb-6">
                   <p className="text-xl font-SESAT">Calendario de Actividades</p>
                 </div>
                 <Calendar eventos={eventos} />
               </div>
+              
               <Contacts contacts={contactos} />
-            </div>
+            </div>            
           </div>
+
           <div className="w-full mt-4 lg:w-1/3 lg:mt-0">
             <NotificacionSection />
           </div>

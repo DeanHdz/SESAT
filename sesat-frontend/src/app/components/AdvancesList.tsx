@@ -1,4 +1,4 @@
-import PrevAdvance from "@/app/(asesor)/asesor-dashboard/components/PrevAdvance";
+import PrevAdvance from "@/app/components/PrevAdvance";
 import React from "react";
 
 

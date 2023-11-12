@@ -1,12 +1,12 @@
 import AddComment from "@/app/components/AddComment"
-import AssignmentHeader from "../../components/AssignmentHeader"
-import AssignmentData from "../../components/AssignmentData"
+import AssignmentHeader from "../../../../components/AssignmentHeader"
+import AssignmentData from "../../../../components/AssignmentData"
 import ReviewFormats from "../../components/ReviewFormats"
-import CommentSection from "../../components/CommentSection"
+import CommentSection from "../../../../components/CommentSection"
 import { AsignacionReview, LoggedUser } from "../../../../../../types/ISESAT"
 import { shortFormatDate } from "../../../../../../utils/utils"
 import { fetchOneToBeReviewed } from "../../../../../../utils/asignacion.endpoint";
-import PDFPreview from "../../components/PDFPreview"
+import PDFPreview from "../../../../components/PDFPreview"
 import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.endpoint"
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint"
@@ -14,7 +14,7 @@ import NotFound from "@/app/(admin)/admin-dashboard/not-found"
 import Drawer from "../../components/Drawer"
 import { cookies } from "next/headers"
 import { LoginEndpoint } from "../../../../../../utils/login.endpoint"
-import AdvancesList from "@/app/(alumno)/alumno-dashboard/components/AdvancesList"
+import AdvancesList from "@/app/components/AdvancesList"
 
 async function fetchAndSortComments(idAsignacion: number, token: string) {
   let comments = await fetchConversationByIdAsignacion(idAsignacion, token);
@@ -108,7 +108,7 @@ export default async function Home({
 
   return (
     <div className="flex w-full">
-      <div className="hidden lg:flex lg:w-3/12 flex-col">
+      <div className="hidden lg:flex lg:w-3/12 flex-col pr-10">
         <Drawer />
         {error === false && (
           <AdvancesList history={history} />

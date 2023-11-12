@@ -1,9 +1,9 @@
 
 import { TitleBar } from "@/app/components/TitleBar";
 import { fetchLatestPeriod } from "../../../../../../../utils/periodo.endpoint";
-import GenInfoPhd from "./components/GenInfoPhd";
+import GenInfoPhd from "../../../components/GenInfoPhd";
 import { fetchCountAlumnosDoctoradoOfNumAv } from "../../../../../../../utils/tesis.endpoint";
-import AssingmentCardInfo from "./components/AssingmentCardInfo";
+import AssingmentCardInfo from "../../../components/AssingmentCardInfo";
 import { fetchNumAsignacionesEntregadasDoctorado, fetchNumAsignacionesPendientesDoctorado } from "../../../../../../../utils/asignacion.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "../../../not-found";

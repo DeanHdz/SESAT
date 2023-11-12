@@ -12,7 +12,7 @@ const AssignmentHeader = (props: AssignmentHeaderProps) => {
                 {props.titulo}
             </label>
             <div className='bg-light-gray-10 gray__border'>
-                <div className='border-b font-SESAT'>
+                <div className='border-b font-SESAT text-center'>
                     <span>Instrucciones/Descripción</span>
                 </div>
                 <div className='px-4 py-2 bg-white rounded-b-xl text-left'>

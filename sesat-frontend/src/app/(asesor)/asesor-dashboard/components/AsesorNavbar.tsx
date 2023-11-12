@@ -100,17 +100,24 @@ export default async function AsesorNavbar() {
       <div className="w-6/12 flex justify-center">
         <img width={350} src="/images/uaslp_sesat.png" alt="Sesat logo" />
       </div>
+      <div className="w-3/12 px-3 flex flex-row justify-end items-center">
+        <div className="w-fit px-3 flex flex-row items-center justify-center">
+          <div className="w-[20px] h-[20px] mr-3 tooltip" data-tip={user && `${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`}>
+            <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+          </div>
 
-      <div className="w-5/12 px-3 flex flex-row items-center justify-center mx-auto">
-        <div className="w-[20px] h-[20px] mr-3">
-          <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+          <h1 className="hidden lg:flex font-SESAT text-[10px] lg:text-sm">
+            {user ? (
+              `${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`
+            ) : (
+              "Usuario no definido"
+            )}
+          </h1>
+
         </div>
-        <h1 className="font-SESAT text-[10px] lg:text-sm">{`${user.nombre} ${user.apellido_paterno} ${user.apellido_materno}`}</h1>
-      </div>
-
-      <div className="w-1/12 px-3 flex justify-end">
         <EndSessionIcon />
       </div>
+
     </div>
   );
 }

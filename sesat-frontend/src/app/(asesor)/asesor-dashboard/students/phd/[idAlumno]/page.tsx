@@ -1,7 +1,5 @@
 import Drawer from "../../../components/Drawer";
-import AssignmentPath from "../../../components/AssignmentPath";
 import StudentProfile from "../../../../../components/StudentProfile";
-import ThesisHistory from "./components/ThesisHistory";
 import ThesisInfo from "../../../../../components/ThesisInfo";
 import { fetchValidateRole } from "../../../../../../../utils/comite.endpoint";
 import { fetchFullTesisHistory } from "../../../../../../../utils/tesis.endpoint";
@@ -47,7 +45,7 @@ export default async function Home({
   }
   return (
     <div className="flex mb-40">
-      <div className="hidden lg:flex lg:w-3/12 flex-col">
+      <div className="hidden lg:flex lg:w-3/12 flex-col pr-10">
         <Drawer />
       </div>
 

@@ -1,5 +1,4 @@
-import { Asignacion } from '../../../../../types/ISESAT';
-import AssignmentPath from './AssignmentPath';
+import AssignmentPath from '@/app/components/AssignmentPath';
 import { shortFormatDate } from '../../../../../utils/utils';
 
 type AsignacionProps = {
@@ -17,7 +16,7 @@ type AsignacionProps = {
 const CompletedAssignments = ({ asignaciones }: { asignaciones: AsignacionProps[] }) => {
   return (
     <div className="bg-[#ffffff] gray__border w-full p-6 overflow-x-scroll lg:overflow-hidden">
-      <div className="w-full p-2">
+      <div className="w-full py-2">
         <p className="text-xl font-SESAT">Avances de tesis</p>
       </div>
       <table className="table table-zebra">
@@ -50,7 +49,7 @@ const CompletedAssignments = ({ asignaciones }: { asignaciones: AsignacionProps[
                 </td>
                 <td>
                   <div>
-                    <AssignmentPath idAsignacion={alumno.id_asignacion} />
+                    <AssignmentPath baseUrl='alumno-dashboard/alumno-assignment' idAsignacion={alumno.id_asignacion} />
                   </div>
                 </td>
               </tr>

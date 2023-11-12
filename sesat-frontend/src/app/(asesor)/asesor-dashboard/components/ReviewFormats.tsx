@@ -1,11 +1,11 @@
 'use client'
-import React, { useState } from 'react';
+import React from 'react';
 import PDFModal from './PDFModal';
 
 
 import ActFormModal from './ActFormModal';
 import ReportFormModal from './ReportFormModal';
-import { Asignacion, AsignacionReview } from '../../../../../types/ISESAT';
+import { AsignacionReview } from '../../../../../types/ISESAT';
 import { TesisInfo } from '../asesor-assignment/[idAsignacion]/page';
 
 

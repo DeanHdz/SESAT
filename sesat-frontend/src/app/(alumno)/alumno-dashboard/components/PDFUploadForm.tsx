@@ -4,7 +4,7 @@ import { encode } from "base64-arraybuffer";
 import { Asignacion, Comite, LoggedUser } from "../../../../../types/ISESAT";
 import { updateAsignacion } from "../../../../../utils/asignacion.endpoint";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
-import PDFPreview from "@/app/(asesor)/asesor-dashboard/components/PDFPreview";
+import PDFPreview from "@/app/components/PDFPreview";
 import PDFModal from "@/app/(asesor)/asesor-dashboard/components/PDFModal";
 import {
   formatAsISODate,

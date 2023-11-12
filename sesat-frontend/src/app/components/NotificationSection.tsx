@@ -1,10 +1,10 @@
 import React from 'react';
+import CommentCard from "./CommentCard";
 import { cookies } from 'next/headers';
-import { LoggedUser, Notificacion } from '../../../../../types/ISESAT';
-import { LoginEndpoint } from '../../../../../utils/login.endpoint';
-import { findNotificationsByUser } from '../../../../../utils/notification.endpoint';
-import { shortFormatDate } from '../../../../../utils/utils';
-import CommentCard from '@/app/(asesor)/asesor-dashboard/components/CommentCard';
+import { LoggedUser, Notificacion } from '../../../types/ISESAT';
+import { LoginEndpoint } from '../../../utils/login.endpoint';
+import { findNotificationsByUser } from '../../../utils/notification.endpoint';
+import { shortFormatDate } from '../../../utils/utils';
 
 const NotificacionSection = async () => {
   const cookie = cookies().get("SESATsession")?.value;

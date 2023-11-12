@@ -1,6 +1,4 @@
-import { fetchLatestPeriod } from "../../../../../../../../utils/periodo.endpoint";
-import { fetchCountAlumnosDoctoradoOfNumAv } from "../../../../../../../../utils/tesis.endpoint";
-import { getFormattedHours, shortFormatDate } from "../../../../../../../../utils/utils";
+import { getFormattedHours, shortFormatDate } from "../../../../../utils/utils";
 
 
 
