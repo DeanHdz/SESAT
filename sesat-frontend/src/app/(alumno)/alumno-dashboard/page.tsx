@@ -5,7 +5,7 @@ import NotificacionSection from "./components/NotificationSection";
 import ContactoAsesor from "./components/Contacts";
 
 import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
-import {findAsignacionesByPeriodAndAlumno } from '../../../../utils/asignacion.endpoint';
+import { findAsignacionesByPeriodAndAlumno } from '../../../../utils/asignacion.endpoint';
 import { Evento, LoggedUser, Usuario } from '../../../../types/ISESAT';
 import Contacts from './components/Contacts';
 import { findContactsByIdTesis } from '../../../../utils/comite.endpoint';
@@ -39,48 +39,39 @@ export default async function Home() {
   return (
     <main className="w-full flex">
 
-    <div className="hidden lg:flex lg:w-3/12">
+      <div className="hidden lg:flex lg:w-3/12 pr-10">
         <Drawer />
-    </div>
-
-    <div className="w-full lg:w-9/12">
-      <div className="w-full flex justify-center mt-6 mb-6 pt-2 p-2 border-b border-light-gray-22 border-solid ">
-        <p className="text-3xl font-bold">Tablero</p>
       </div>
 
-      <div className="w-full flex justify-center pt-2 pb-2">
-        <CompletedAssignments asignaciones={asignaciones}/>
-      </div>
-
-      <div className="hidden lg:flex w-full justify-center pt-2 pb-2">
-        <div className="w-full p-2 lg:w-2/3">
-          <div className="w-full flex justify-center">
-            <p className="text-2xl font-bold">Calendario de Actividades</p>
-          </div>
-          <div className="mt-2 w-full">
-            <Calendar eventos={eventos}/>
-            <Contacts contacts={contactos}/>
-          </div>
+      <div className="w-full lg:w-9/12 bg-light-gray-10 rounded-xl p-6">
+        <div className="w-full flex justify-start mb-6">
+          <p className="text-3xl font-bold">Inicio</p>
         </div>
-        <div className="w-full p-2 lg:w-1/3">
-          <NotificacionSection />
-        </div>
-      </div>
 
-      <div className="lg:hidden w-full justify-center pt-2 pb-2">
-        <div className="w-full p-2 lg:w-2/3">
-          <div className="w-full flex justify-center pt-10">
-            <p className="text-2xl font-bold">Calendario de Actividades</p>
+        <div className="w-full flex justify-center mb-4">
+          <CompletedAssignments asignaciones={asignaciones} />
+        </div>
+
+        <div className="flex flex-col lg:flex-row w-full justify-center">
+          <div className="w-full  pr-0 lg:pr-4  lg:w-2/3">
+
+            <div className="w-full">
+              <div className='bg-white gray__border p-6'>
+                <div className="w-full flex mb-6">
+                  <p className="text-xl font-SESAT">Calendario de Actividades</p>
+                </div>
+                <Calendar eventos={eventos} />
+              </div>
+              <Contacts contacts={contactos} />
+            </div>
           </div>
-          <div className="mt-2 w-full">
-            <Calendar eventos={eventos}/>
+          <div className="w-full mt-4 lg:w-1/3 lg:mt-0">
             <NotificacionSection />
-            <Contacts contacts={contactos}/>
           </div>
         </div>
+
       </div>
-    </div>
-    
+
     </main>
   );
 }

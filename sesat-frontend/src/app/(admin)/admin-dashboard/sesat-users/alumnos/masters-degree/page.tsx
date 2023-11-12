@@ -1,7 +1,7 @@
 import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import { Usuario } from "../../../../../../../types/ISESAT";
 import { PaginatedUser } from "../../../../../../../types/IPaginate";
-import StudentProfileModal from "../components/StudentProfileModal";
+import StudentProfileModal from "../../../components/StudentProfileModal";
 import Link from "next/link";
 import clsx from "clsx";
 import Search from "../../../components/Search";

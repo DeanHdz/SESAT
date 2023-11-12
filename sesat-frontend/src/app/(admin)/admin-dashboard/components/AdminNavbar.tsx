@@ -1,5 +1,5 @@
 import Link from "next/link";
-import EndSessionIcon from "./EndSessionIcon";
+import EndSessionIcon from "../../../components/EndSessionIcon";
 
 export default function AdminNavbar() {
   

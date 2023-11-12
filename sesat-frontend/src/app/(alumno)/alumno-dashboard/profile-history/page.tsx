@@ -1,12 +1,8 @@
 import Drawer from "../components/Drawer";
-import AssignmentPath from "../components/AssignmentPath";
 import StudentProfile from "../../../components/StudentProfile";
-import ThesisHistory from "./components/ThesisHistory";
-import ThesisTitle from "./components/ThesisTitle";
-import Link from "next/link";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import { fetchFullTesisHistory } from "../../../../../utils/tesis.endpoint";
-import { fetchComiteMembers, fetchValidateRole } from "../../../../../utils/comite.endpoint";
+import { fetchComiteMembers } from "../../../../../utils/comite.endpoint";
 import ThesisInfo from "@/app/components/ThesisInfo";
 import { cookies } from "next/headers";
 import { LoggedUser } from "../../../../../types/ISESAT";
@@ -49,7 +45,9 @@ export default async function Home() {
   return (
     <div className="flex">
       <div className="hidden lg:flex lg:w-3/12 flex-col">
+        <div className="pr-10">
         <Drawer />
+        </div>
         {/*<ThesisHistory />*/}
       </div>
 

@@ -1,4 +1,4 @@
-import Tabs from "./components/Tabs";
+import Tabs from "../../components/Tabs";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

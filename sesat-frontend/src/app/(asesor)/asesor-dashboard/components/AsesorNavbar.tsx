@@ -1,5 +1,5 @@
 import Link from "next/link";
-import EndSessionIcon from "./EndSessionIcon";
+import EndSessionIcon from "@/app/components/EndSessionIcon";
 import { cookies } from "next/headers";
 import { LoggedUser } from "../../../../../types/ISESAT";
 import { LoginEndpoint } from "../../../../../utils/login.endpoint";

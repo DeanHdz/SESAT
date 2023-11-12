@@ -1,11 +1,9 @@
 
 "use client";
-import AssignmentPath from "@/app/(asesor)/asesor-dashboard/components/AssignmentPath";
 import React, { useState } from "react";
 import { ThesisFullHistory } from "../(asesor)/asesor-dashboard/students/masters-degree/[idAlumno]/page";
 import { shortFormatDate } from "../../../utils/utils";
-import AdvancesList from "@/app/(asesor)/asesor-dashboard/asesor-assignment/components/AdvancesList";
-import PrevAdvance from "@/app/(asesor)/asesor-dashboard/asesor-assignment/components/PrevAdvance";
+import PrevAdvance from "@/app/(asesor)/asesor-dashboard/components/PrevAdvance";
 import { fetchTesisHistory } from "../../../utils/tesis.endpoint";
 import { Avance } from "@/app/(asesor)/asesor-dashboard/asesor-assignment/[idAsignacion]/page";
 import ProcessingAnim from "@/app/components/ProcessingAnim";

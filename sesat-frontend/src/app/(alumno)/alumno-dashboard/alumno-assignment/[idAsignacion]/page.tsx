@@ -1,6 +1,6 @@
 import AddComment from "@/app/components/AddComment"
 import Drawer from "../../components/Drawer"
-import AdvancesList from "../components/AdvancesList"
+import AdvancesList from "../../components/AdvancesList"
 
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
 import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.endpoint"
@@ -9,9 +9,9 @@ import { Asignacion, LoggedUser } from "../../../../../../types/ISESAT"
 import { fetchOneByIdAsignacion } from "../../../../../../utils/asignacion.endpoint"
 import NotFound from "@/app/(admin)/admin-dashboard/not-found"
 import { getFormattedHours, shortFormatDate } from "../../../../../../utils/utils"
-import PDFUploadForm from "../components/PDFUploadForm"
-import CommentSection from "@/app/(asesor)/asesor-dashboard/asesor-assignment/components/CommentSection"
-import Results from "../components/Results"
+import PDFUploadForm from "../../components/PDFUploadForm"
+import CommentSection from "@/app/(asesor)/asesor-dashboard/components/CommentSection"
+import Results from "../../components/Results"
 import { LoginEndpoint } from "../../../../../../utils/login.endpoint"
 import { cookies } from "next/headers"
 
@@ -81,11 +81,11 @@ export default async function Home({
   let error = false;
   const cookie = cookies().get("SESATsession")?.value;
   const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
-  const user: LoggedUser = await LoginEndpoint.getUserInfo(token).catch(() => {error = true;});
+  const user: LoggedUser = await LoginEndpoint.getUserInfo(token).catch(() => { error = true; });
 
-  let { idAsignacion } = params;  
-  let periodo = await fetchLatestPeriod("").catch(() => {error = true;});
-  let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, token).catch(() => {error = true;});
+  let { idAsignacion } = params;
+  let periodo = await fetchLatestPeriod("").catch(() => { error = true; });
+  let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, token).catch(() => { error = true; });
   let evaluacion_realizada = asignacion.calificacion && asignacion.id_acta_evaluacion && asignacion.id_formato_evaluacion;
 
   let tesisInfo: TesisInfo | undefined = undefined;
@@ -106,7 +106,7 @@ export default async function Home({
   return (
     <div className="flex">
 
-      <div className="hidden lg:flex lg:w-3/12 flex-col">
+      <div className="hidden lg:flex lg:w-3/12 flex-col pr-10">
         <Drawer />
         {error === false && (
           <AdvancesList history={history} />
@@ -162,7 +162,7 @@ export default async function Home({
                         </span>
                       </div>
 
-                      <div className='w-full lg:w-1/2 flex flex-col pt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
+                      <div className='w-full lg:w-1/2 flex flex-col pt-5 mb-5 bg-light-blue-10 rounded-xl px-8 py-4 h-fit'>
 
                         <label className="flex text-2xl font-bold">
                           Información general

@@ -66,7 +66,7 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
           value={comment}
           required={true}
           maxLength={400}
-          className="h-12 w-full px-3 gray__border text-base"
+          className="h-12 w-full px-3 gray__border !rounded-md text-base"
           placeholder="Escriba un comentario"
           onChange={(e) => {
             autosize(e.currentTarget);
