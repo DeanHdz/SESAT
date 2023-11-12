@@ -186,6 +186,13 @@ export class AsignacionService {
     });
   }
 
+  findActiveByTesis(id_tesis: number) {
+    return this.asignacionRepository.find({
+      where: { id_tesis: id_tesis, estado_entrega: 0 },
+      relations: ["periodo"],
+    });
+  }
+
   /**
    * Una asignacion que coincida con el id
    * @param id

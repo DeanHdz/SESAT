@@ -3,9 +3,12 @@ import HomeCard from "./components/HomeCard";
 import { Evento } from "../../../../types/ISESAT";
 import { EventoEndpoint } from "../../../../utils/evento.endpoint";
 import AlertPeriod from "./components/AlertPeriod";
+import { cookies } from "next/headers";
 
 export default async function Home() {
-  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos("", 100001); //hard admin id
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos(token, 100001); //hard admin id
   const eventos = await eventosData;
   return (
     <main className="flex flex-col w-full" >

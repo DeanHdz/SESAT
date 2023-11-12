@@ -3,7 +3,7 @@ import { UsuarioService } from "./usuario.service";
 import { CreateUsuarioDto } from "./dto/create-usuario.dto";
 import { UpdateUsuarioDto } from "./dto/update-usuario.dto";
 import { CreateFromExternalDto } from "./dto/create-usuario-external.dto";
-import { Put } from "@nestjs/common/decorators";
+import { Put, Req } from "@nestjs/common/decorators";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
 import { Usuario } from "./entities/usuario.entity";
@@ -15,6 +15,12 @@ import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
 export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
   
+  @Get('/external/student/reset/:id')
+  async resetStudentFromExternalStudent(@Param("id") id: string) {
+
+    return await this.usuarioService.resetStudentFromExternalStudent(+id);
+  }
+
   @Get("/status/:id")
   async chageStatus(@Param("id") id: string)
   {

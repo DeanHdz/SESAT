@@ -43,7 +43,6 @@ export class TesisService {
       .andWhere('usuario.id_datos_alumno = datos_alumno.id_datos_alumno')
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance BETWEEN :min AND :max', { min: 6, max: 8 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Doctorado' })
       .skip((page - 1) * limit)
       .take(limit)
@@ -72,7 +71,6 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance BETWEEN :min AND :max', { min: 6, max: 8 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Doctorado' })
       .getRawMany()
 
@@ -108,7 +106,6 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 7 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Medio Tiempo' })
       .skip((page - 1) * limit)
@@ -140,7 +137,6 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 7 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Medio Tiempo' })
       .getRawMany()
@@ -176,7 +172,6 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 4 })//revisar
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Tiempo Completo' })
       .skip((page - 1) * limit)
@@ -208,7 +203,6 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 4 })//revisar
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Tiempo Completo' })
       .getRawMany()
@@ -268,7 +262,6 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 7 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Medio Tiempo' })
       .getRawMany()     // fetch raw results, which will give us data from all the tables.
@@ -300,7 +293,6 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance = :ultimo_avance', { ultimo_avance: 4 })//revisar
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Maestría' })
       .andWhere('modalidad.nombre_modalidad = :nombre_modalidad', { nombre_modalidad: 'Tiempo Completo' })
       .getRawMany()     // fetch raw results, which will give us data from all the tables.
@@ -330,7 +322,6 @@ export class TesisService {
       .andWhere('datos_alumno.id_grado_estudio = ge.id_grado_estudio')
 
       .andWhere('tesis.estado_finalizacion = :estado_finalizacion', { estado_finalizacion: true })
-      .andWhere('tesis.ultimo_avance BETWEEN :min AND :max', { min: 6, max: 8 })
       .andWhere('ge.nombre_grado_estudio = :gradoEstudio', { gradoEstudio: 'Doctorado' })
       .getRawMany()     // fetch raw results, which will give us data from all the tables.
     //otherwise it won't return anything
