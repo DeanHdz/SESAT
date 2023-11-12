@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors:{
-        "light-blue-10": "#f7f8fa",
-        "light-blue-15": "#eef2f6",
+        "light-blue-10": "#eff5fb",
+        "light-blue-15": "#e2f0fc",
         "dark-blue-20": "#3D4451",
         "dark-blue-10": "#03396c",           
         "light-gray-22": "#d5d3dd",
-        "light-gray-10": "#F2F2F2"
+        "light-gray-10": "#eef2f6"
       },
       fontFamily: {
         SESAT: ["SESAT", "semibold"],
@@ -43,12 +43,21 @@ const config: Config = {
           {
             light: {
               ...require("daisyui/src/theming/themes")["[data-theme=light]"],                     
-              primary: "#31325c",
-              secondary: "#31325c",
-              accent: "#31325c",
+              primary: "#004a8c",
+              secondary: "#3c648d",
+              accent: "#04274d",
+              'base-content': '#28274e', 
             },
+            
           },          
         ],          
   },
 }
 export default config
+
+/**dark: {
+              ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
+              primary: "#31325c",
+              secondary: "#31325c",
+              accent: "#31325c",
+            }, */

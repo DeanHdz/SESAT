@@ -435,7 +435,8 @@ export class TesisService {
       .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
       .innerJoin(Modalidad, "mod", "da.id_modalidad = mod.id_modalidad")
       .select([
-        "a.id_asignacion as id_asignacion",
+        "a.id_asignacion AS id_asignacion",
+        "a.num_avance AS num_avance",
         "ge.nombre_grado_estudio AS grado_estudio",
         "mod.nombre_modalidad AS modalidad"      
       ])      

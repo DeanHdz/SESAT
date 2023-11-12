@@ -68,7 +68,7 @@ export default async function Home() {
             </label>
           </div>
 
-          <div className="w-full px-8 py-10 mt-4 mb-4 bg-light-blue-10 bg-opacity-50 gray__border !rounded-[15px] flex flex-col lg:flex-row">
+          <div className="w-full px-8 py-10 mt-4 mb-4 bg-white  gray__border !rounded-[15px] flex flex-col lg:flex-row">
             <table className="table table-zebra">
               <thead>
                 <tr className="text-dark-blue-20">                  

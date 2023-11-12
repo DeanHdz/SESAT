@@ -42,7 +42,7 @@ export default async function Home() {
         <Drawer />
       </div>
 
-      <div className="w-full lg:w-9/12 bg-light-gray-10 rounded-xl p-6">
+      <div className="w-full lg:w-9/12 bg-light-blue-10 rounded-xl p-6">
         <div className="w-full flex justify-start mb-6">
           <p className="text-3xl font-bold">Inicio</p>
         </div>

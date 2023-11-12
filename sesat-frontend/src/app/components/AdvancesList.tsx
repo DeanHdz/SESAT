@@ -1,8 +1,16 @@
 import PrevAdvance from "@/app/components/PrevAdvance";
 import React from "react";
+import { Avance } from "../(alumno)/alumno-dashboard/alumno-assignment/[idAsignacion]/page";
+
+export type HistoryProps = {
+  id_asignacion: number;
+  nombre_modalidad: string;
+  num_avance: number;
+  grado_estudio: string;
+}
 
 
-const AdvancesList = ({ history }: { history: Array<number> | undefined }) => {
+const AdvancesList = ({ history }: { history: Array<Avance> | undefined }) => {
 
   return (
 
@@ -12,19 +20,29 @@ const AdvancesList = ({ history }: { history: Array<number> | undefined }) => {
       </label>
 
       <ul className=" w-full overflow-x-scroll no-scrollbar lg:overflow-x-hidden steps steps-horizontal lg:steps-vertical">
+
         {history && (
           history.map((elem, i) => (
-            elem !== 0 ? (
-              <li className="step step-primary hidden">
-                <PrevAdvance idAsignacion={elem} avance={i + 1} />
+            elem.id_asignacion > 0 ? (
+              <li data-content={i + 1} className="step step-primary hidden">
+                <PrevAdvance idAsignacion={elem.id_asignacion} avance={elem.num_avance} />
               </li>
             ) : (
-              <li className="step">
-                {`Avance ${i + 1}`}
-              </li>
+              <>
+                {elem.id_asignacion === -1 ? (
+                  <li data-content={''} className="step text-black/40 !text-left">
+                    {`Cambio de modalidad a ${elem.modalidad}`}
+                  </li>
+                ) : (
+                  <li data-content={elem.num_avance} className="step">
+                    {`Avance ${elem.num_avance}`}
+                  </li>
+                )}
+              </>
             )
           ))
         )}
+
       </ul>
 
     </div>
