@@ -74,7 +74,7 @@ export class UsuarioService {
       id_usuario: user.id_usuario,
       generacion: user.datos_alumno.generacion,
       estado_finalizacion: false,
-      ultimo_avance: 1, // -> will be changed later after assignment creation 
+      ultimo_avance: skipToAvance, // -> will be changed later after assignment creation ???
       titulo: null,
       fecha_registro: null
     }
@@ -105,8 +105,29 @@ export class UsuarioService {
       await this.asignacionService.update(asignacionUpdateDto);
     }
 
-    //!! UNFINISHED
-    //for(let i = 0; i < )
+    for(let i = 0; i < skipToAvance ; i++)
+    {
+      let today = new Date();
+      //let asignacionCreateDto: CreateAsignacionDto = {
+        /*id_asignacion: assignmentList[i].id_asignacion,
+        id_formato_evaluacion: assignmentList[i].id_formato_evaluacion,
+        id_acta_evaluacion: assignmentList[i].id_acta_evaluacion,
+        id_tesis: oldTesis.id_tesis,
+        id_modalidad: user.datos_alumno.id_modalidad,
+        id_periodo: assignmentList[i].id_periodo,
+        num_avance: assignmentList[i].num_avance,
+        titulo: "[Closed]" + assignmentList[i].titulo,
+        descripcion: assignmentList[i].descripcion,
+        fecha_entrega: today.toISOString(),
+        estado_entrega: 1,
+        calificacion: assignmentList[i].calificacion,
+        documento: assignmentList[i].documento,
+        retroalimentacion: assignmentList[i].retroalimentacion,
+        tipo: assignmentList[i].tipo,
+        fecha_presentacion: assignmentList[i].fecha_presentacion*/
+      //}
+      //await this.asignacionService.update(asignacionUpdateDto);
+    }
 
 
     // update datos alumno
@@ -138,6 +159,8 @@ export class UsuarioService {
         await this.datosAlumnoService.update(datosAlumnoDataMT);
         break;
     }
+
+    //CreateNewComite
 
   }
 
