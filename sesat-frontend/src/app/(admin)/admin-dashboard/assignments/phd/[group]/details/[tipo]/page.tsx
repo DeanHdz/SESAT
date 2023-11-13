@@ -78,7 +78,7 @@ export default function CreateAssignment({
       return false;
     }
 
-    if (tipo === '2' && group !== '4') {
+    if (tipo === '2' && group !== '5') {
       return false;
     }
 
@@ -211,14 +211,14 @@ export default function CreateAssignment({
       tipo: parseInt(tipo),
       fecha_presentacion: null,
     }, "").then((res) => {
-
-      if (res) {
+      console.log(res);
+      if (res.status.ok) {
         setIsSubmitting(false);
         setmsg("Los datos se actualizaron correctamente")
         setCssOk("")
         setcssHide("hidden")
         setEditMode(false)
-      }
+      }    
     }).catch(() => {
       setmsg("Algo salió mal")
       setCssError("")
@@ -235,7 +235,7 @@ export default function CreateAssignment({
     if (description != null && description.trim().length > 0) {
 
       {/**Caso doctorado evaluacion de medio termino */ }
-      if (group === '4' && tipo === '2') {
+      if (group === '5' && tipo === '2') {
         if (periodo && isDateWithinGlobalPeriod(new Date(periodo.fecha_apertura), new Date(periodo.fecha_cierre), start, end)) {
           if (start && end && start > end) {
             setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
@@ -327,7 +327,7 @@ export default function CreateAssignment({
                   <span>Fecha</span>
                   <div className='tooltip tooltip-left w-[24px] h-[24px] ml-auto rounded-full flex items-center justify-center hover:bg-light-gray-22'
                     data-tip={
-                      group === '4' && tipo === '2' ? (
+                      group === '5' && tipo === '2' ? (
                         'Solo aplica para alumnos de doctorado que están cursando seminario de tesis 4, el periodo de publicación/cierre debe estar dentro del periodo global') : (
                         'Esta fecha se establece/modifica en la página de inicio')
                     }>
@@ -343,7 +343,7 @@ export default function CreateAssignment({
                   </div>
                 </div>
                 <div className="w-full h-fit p-6">
-                  {editMode && group === '4' && tipo === '2' ? (
+                  {editMode && group === '5' && tipo === '2' ? (
                     <>
                       <div className="flex flex-col w-full ">
                         {/**Publicacion */}
@@ -455,7 +455,7 @@ export default function CreateAssignment({
                             <div className="mr-2">
                               <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>
                             </div>
-                            {group === '4' && tipo === '2' ? (
+                            {group === '5' && tipo === '2' ? (
                               <p>{shortFormatDate(periodo.fecha_apertura_opc)}</p>
                             ) : (
                               <p>{shortFormatDate(periodo.fecha_apertura)}</p>
@@ -466,7 +466,7 @@ export default function CreateAssignment({
                             <div className="mr-2">
                               <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z"></path></svg>
                             </div>
-                            {group === '4' && tipo === '2' ? (
+                            {group === '5' && tipo === '2' ? (
                               <p>{getFormattedHours(new Date(periodo.fecha_apertura_opc))}</p>
                             ) : (
                               <p>{getFormattedHours(new Date(periodo.fecha_apertura))}</p>
@@ -488,7 +488,7 @@ export default function CreateAssignment({
                             <div className="mr-2">
                               <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>
                             </div>
-                            {group === '4' && tipo === '2' ? (
+                            {group === '5' && tipo === '2' ? (
                               <p>{shortFormatDate(periodo.fecha_cierre_opc)}</p>
                             ) : (
                               <p>{shortFormatDate(periodo.fecha_cierre)}</p>
@@ -499,7 +499,7 @@ export default function CreateAssignment({
                             <div className="mr-2">
                               <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z"></path></svg>
                             </div>
-                            {group === '4' && tipo === '2' ? (
+                            {group === '5' && tipo === '2' ? (
                               <p>{getFormattedHours(new Date(periodo.fecha_cierre_opc))}</p>
                             ) : (
                               <p>{getFormattedHours(new Date(periodo.fecha_cierre))}</p>

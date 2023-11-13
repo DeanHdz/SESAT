@@ -38,16 +38,16 @@ export default function CreateAssignment({
 
 
   let index = parseInt(group) - 1;
-  let captionA = group === '4' && tipo === '2' ? ' - Evaluación de Inicio de Semestre' : '';
-  let captionB = group === '4' && tipo === '1' ? ' - Evaluación de Fin de Semestre' : '';
+  let captionA = group === '5' && tipo === '2' ? ' - Evaluación de Inicio de Semestre' : '';
+  let captionB = group === '5' && tipo === '1' ? ' - Evaluación de Fin de Semestre' : '';
   let oneWeekAhead = new Date();
   oneWeekAhead.setDate(oneWeekAhead.getDate() + 7);
   const title = names.at(index) + captionA + captionB;
   const [periodo, setPeriodo] = useState<undefined | PeriodoProps>(undefined)
   const [numPendientes, setnumPendientes] = useState<undefined | number>(undefined)
   const [description, setDescription] = useState<null | string>(null);
-  const [start, setStartDate] = useState<Date>(new Date())                //Para avance 4 doc
-  const [end, setEndDate] = useState<Date>(oneWeekAhead)                  //Para avance 4 doc
+  const [start, setStartDate] = useState<Date>(new Date())                //Para avance 5 doctorado
+  const [end, setEndDate] = useState<Date>(oneWeekAhead)                  //Para avance 5 doctorado
   const [error, setError] = useState(null);
   const [updateError, setUpdateError] = useState(false);
   const [cssDisabled, setCSSDisabled] = useState("")
@@ -81,8 +81,8 @@ export default function CreateAssignment({
           periodo.concluido = isPeriodActive(res.fecha_cierre)
         }
 
-        if (!["1", "2"].includes(tipo) || tipo === '2' && group !== '4') {
-          setnumPendientes(0);  //tipo 2 restringido a avance 4
+        if (!["1", "2"].includes(tipo) || tipo === '2' && group !== '5') {
+          setnumPendientes(0);  //tipo 2 restringido a avance 5
         } else {
           await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, "").then((result) => {
 
@@ -190,7 +190,7 @@ export default function CreateAssignment({
     if (description != null && description.trim().length > 0) {
 
       {/**Caso doctorado evaluacion de medio termino */ }
-      if (group === '4' && tipo === '2') {
+      if (group === '5' && tipo === '2') {
         if (start && end && start > end) {
           setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
           setCssError("")
@@ -254,7 +254,7 @@ export default function CreateAssignment({
                     <span>Fecha</span>
                     <div className='tooltip tooltip-left w-[24px] h-[24px] ml-auto rounded-full flex items-center justify-center hover:bg-light-gray-22'
                       data-tip={
-                        group === '4' && tipo === '2' ?
+                        group === '5' && tipo === '2' ?
                           'Esta fecha solo aplica para alumnos de cuarto semestre de doctorado'
                           : 'Esta fecha se establece/modifica en la página de inicio'
                       }>
@@ -273,7 +273,7 @@ export default function CreateAssignment({
                   <div className="w-full h-fit p-6">
 
                     {/**Fecha de entrega para medio termino */}
-                    {group === '4' && tipo === '2' ? (
+                    {group === '5' && tipo === '2' ? (
                       <>
                         <div className="flex flex-col w-full ">
                           {/**Publicacion */}

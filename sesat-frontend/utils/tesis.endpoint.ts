@@ -1,3 +1,5 @@
+import { UpdateTesis } from "../types/ISESAT";
+
 export async function findTesisPerStudent(token: string, id: number)
 {
   const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis/per-student/${id}`;
@@ -314,6 +316,33 @@ export async function updateNumAvanceForEvaluatedStudents(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },    
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+
+  const result = await response.json();
+
+
+  return result;
+
+}
+
+export async function updateThesisTitle(
+   tesisDto: UpdateTesis, 
+  token: string, 
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis}`;
+ 
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },    
+    body: JSON.stringify(tesisDto),
   };
   const response = await fetch(url, options);
 

@@ -15,6 +15,7 @@ import Drawer from "../../components/Drawer"
 import { cookies } from "next/headers"
 import { LoginEndpoint } from "../../../../../../utils/login.endpoint"
 import AdvancesList from "@/app/components/AdvancesList"
+import UpdateThesisTitleModal from "../../components/UpdateThesisTitleModal"
 
 async function fetchAndSortComments(idAsignacion: number, token: string) {
   let comments = await fetchConversationByIdAsignacion(idAsignacion, token);
@@ -163,7 +164,7 @@ export default async function Home({
                 <PDFPreview buffer={asignacion.documento.data} />
               </div>
 
-            </div>
+            </div>            
             <div className="lg:hidden w-full">
               <AdvancesList history={history} />
             </div>
