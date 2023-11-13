@@ -35,6 +35,9 @@ import { Evento } from "src/evento/entities/evento.entity";
 import { UpdateDatosAlumnoDto } from "src/datos-alumno/dto/update-datos-alumno.dto";
 import { UpdateTesisDto } from "src/tesis/dto/update-tesis.dto";
 import { UpdateAsignacionDto } from "src/asignacion/dto/update-asignacion.dto";
+import { ComiteService } from "src/comite/comite.service";
+import { RetrievedCommitteeDTO } from "src/comite/dto/retrieved-committee.dto";
+import { CreateComiteDto } from "src/comite/dto/create-comite.dto";
 
 @Injectable()
 export class UsuarioService {
@@ -48,20 +51,53 @@ export class UsuarioService {
     private readonly asignacionService: AsignacionService,
     private readonly datosAsesorexternoService: DatosAsesorexternoService,
     private readonly variablesSistemaService: VariablesSistemaService,
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
+    private readonly comiteService: ComiteService
   ) {}
 
   async changeDedication(id_usuario: number, skipToAvance: number)
   {
     console.log("id_usuario: " + id_usuario + " skipToAvance: " + skipToAvance);
     const user: Usuario = await this.usuarioRepository.findOne({where: {id_usuario: id_usuario}});
+    let newModalidad = 0;
+     // update datos alumno
+    // 1: tiempo completo, 2: medio tiempo
+    switch(user.datos_alumno.id_modalidad)
+    {
+      case 1:
+        const datosAlumnoDataTC: UpdateDatosAlumnoDto = {
+          id_datos_alumno: user.datos_alumno.id_datos_alumno,
+          id_modalidad: 2,
+          id_programa: user.datos_alumno.id_programa,
+          id_grado_estudio: user.datos_alumno.id_grado_estudio,
+          generacion: user.datos_alumno.generacion,
+          estado_activo: true, //always defaults to true, admin has to turn off manually
+          avance_previo: false, //can leave as false, skips theses registry
+        }
+        newModalidad = 2;
+        await this.datosAlumnoService.update(datosAlumnoDataTC);
+        break;
+      case 2:
+        const datosAlumnoDataMT: UpdateDatosAlumnoDto = {
+          id_datos_alumno: user.datos_alumno.id_datos_alumno,
+          id_modalidad: 1,
+          id_programa: user.datos_alumno.id_programa,
+          id_grado_estudio: user.datos_alumno.id_grado_estudio,
+          generacion: user.datos_alumno.generacion,
+          estado_activo: true, //always defaults to true, admin has to turn off manually
+          avance_previo: false, //can leave as false, skips theses registry
+        }
+        newModalidad = 1;
+        await this.datosAlumnoService.update(datosAlumnoDataMT);
+        break;
+    }
 
     //finalize theses
     const oldTesis: Tesis = await this.tesisService.findTesisPerStudent(user.id_usuario);
     const oldTesisUpdateDTO: UpdateTesisDto = {
       id_tesis: oldTesis.id_tesis,
       id_usuario: oldTesis.id_usuario,
-      titulo: "[Deprecated]" + oldTesis.titulo,
+      titulo: "[Deprecated] " + oldTesis.titulo,
       fecha_registro: oldTesis.fecha_registro,
       generacion: oldTesis.generacion,
       ultimo_avance: oldTesis.ultimo_avance,
@@ -72,11 +108,11 @@ export class UsuarioService {
     //create new theses
     const newTesisData: CreateTesisDto = {
       id_usuario: user.id_usuario,
+      titulo: oldTesis.titulo,
       generacion: user.datos_alumno.generacion,
       estado_finalizacion: false,
       ultimo_avance: skipToAvance, // -> will be changed later after assignment creation ???
-      titulo: null,
-      fecha_registro: null
+      fecha_registro: oldTesis.fecha_registro,
     }
     const newTesis = await this.tesisService.create(newTesisData);
     // close previous open assignments
@@ -92,7 +128,7 @@ export class UsuarioService {
         id_modalidad: user.datos_alumno.id_modalidad,
         id_periodo: assignmentList[i].id_periodo,
         num_avance: assignmentList[i].num_avance,
-        titulo: "[Closed]" + assignmentList[i].titulo,
+        titulo: "[Closed] " + assignmentList[i].titulo,
         descripcion: assignmentList[i].descripcion,
         fecha_entrega: today.toISOString(),
         estado_entrega: 1,
@@ -105,63 +141,79 @@ export class UsuarioService {
       await this.asignacionService.update(asignacionUpdateDto);
     }
 
+    //make placeholder assignments (?remove)
     for(let i = 0; i < skipToAvance ; i++)
     {
       let today = new Date();
-      //let asignacionCreateDto: CreateAsignacionDto = {
-        /*id_asignacion: assignmentList[i].id_asignacion,
-        id_formato_evaluacion: assignmentList[i].id_formato_evaluacion,
-        id_acta_evaluacion: assignmentList[i].id_acta_evaluacion,
-        id_tesis: oldTesis.id_tesis,
-        id_modalidad: user.datos_alumno.id_modalidad,
-        id_periodo: assignmentList[i].id_periodo,
-        num_avance: assignmentList[i].num_avance,
-        titulo: "[Closed]" + assignmentList[i].titulo,
-        descripcion: assignmentList[i].descripcion,
+      let asignacionCreateDto: CreateAsignacionDto = {
+        id_formato_evaluacion: null,
+        id_acta_evaluacion: null,
+        id_tesis: newTesis.id_tesis,
+        id_modalidad: newModalidad,
+        id_periodo: 1,
+        num_avance: i+1,
+        titulo: "Asignación Creada por el Sistema",
+        descripcion: "Esta asignación se ha creado para acomodar al alumno en el sistema, favor de ignorar.",
         fecha_entrega: today.toISOString(),
         estado_entrega: 1,
-        calificacion: assignmentList[i].calificacion,
-        documento: assignmentList[i].documento,
-        retroalimentacion: assignmentList[i].retroalimentacion,
-        tipo: assignmentList[i].tipo,
-        fecha_presentacion: assignmentList[i].fecha_presentacion*/
-      //}
-      //await this.asignacionService.update(asignacionUpdateDto);
-    }
-
-
-    // update datos alumno
-    // 1: tiempo completo, 2: medio tiempo
-    switch(user.datos_alumno.id_modalidad)
-    {
-      case 1:
-        const datosAlumnoDataTC: UpdateDatosAlumnoDto = {
-          id_datos_alumno: user.datos_alumno.id_datos_alumno,
-          id_modalidad: 2,
-          id_programa: user.datos_alumno.id_programa,
-          id_grado_estudio: user.datos_alumno.id_grado_estudio,
-          generacion: user.datos_alumno.generacion,
-          estado_activo: true, //always defaults to true, admin has to turn off manually
-          avance_previo: false, //can leave as false, skips theses registry
-        }
-        await this.datosAlumnoService.update(datosAlumnoDataTC);
-        break;
-      case 2:
-        const datosAlumnoDataMT: UpdateDatosAlumnoDto = {
-          id_datos_alumno: user.datos_alumno.id_datos_alumno,
-          id_modalidad: 1,
-          id_programa: user.datos_alumno.id_programa,
-          id_grado_estudio: user.datos_alumno.id_grado_estudio,
-          generacion: user.datos_alumno.generacion,
-          estado_activo: true, //always defaults to true, admin has to turn off manually
-          avance_previo: false, //can leave as false, skips theses registry
-        }
-        await this.datosAlumnoService.update(datosAlumnoDataMT);
-        break;
+        calificacion: null,
+        documento: null,
+        retroalimentacion: null,
+        tipo: 1,
+        fecha_presentacion: null
+      }
+      await this.asignacionService.create(asignacionCreateDto);
     }
 
     //CreateNewComite
+    const members: RetrievedCommitteeDTO = await this.comiteService.retrieveCommittee(oldTesis.id_tesis);
+    if(members.asesor)
+    {
+      const asesor : CreateComiteDto = {
+        id_usuario: members.asesor.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 1,
+      }
+      await this.comiteService.create(asesor);
+    }
+    if(members.coasesor)
+    {
+      const coasesor : CreateComiteDto = {
+        id_usuario: members.coasesor.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 2,
+      }
+      await this.comiteService.create(coasesor);
+    }
+    if(members.sinodal1)
+    {
+      const sinodal1 : CreateComiteDto = {
+        id_usuario: members.sinodal1.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 3,
+      }
+      await this.comiteService.create(sinodal1);
+    }
+    if(members.sinodal2)
+    {
+      const sinodal2 : CreateComiteDto = {
+        id_usuario: members.sinodal2.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 3,
+      }
+      await this.comiteService.create(sinodal2);
+    }
+    if(members.suplente)
+    {
+      const suplente : CreateComiteDto = {
+        id_usuario: members.suplente.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 4,
+      }
+      await this.comiteService.create(suplente);
+    }
 
+    return await this.usuarioRepository.findOne({where: {id_usuario: id_usuario}});
   }
 
   async resetStudentFromExternalStudent(id_usuario: number)
