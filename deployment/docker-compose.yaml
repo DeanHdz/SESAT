@@ -19,8 +19,8 @@ services:
       - MAIL_USER=${MAIL_USER}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - MAIL_FROM=${MAIL_FROM}
-    ports:
-      - '3005:3005'
+    # ports:
+    #   - '3005:3005'
     restart: always
       
   frontend:
@@ -29,12 +29,23 @@ services:
       context: ./../sesat-frontend
       args:
         - NEXT_PUBLIC_SESAT_API_URL=${NEXT_PUBLIC_SESAT_API_URL}
-        - NGINX_CONF=${NGINX_CONF}
-    ports:
-      - '3000:80'
+    # ports:
+    #   - '3000:3000'
     extra_hosts:
       - host.docker.internal:host-gateway
     depends_on:
+      - backend
+    restart: always
+
+  nginx:
+    build:
+      context: ./
+      args:
+        - NGINX_CONF=${NGINX_CONF}
+    ports:
+      - "3030:80"
+    depends_on:
+      - frontend
       - backend
     restart: always
 

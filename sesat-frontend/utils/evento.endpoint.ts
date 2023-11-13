@@ -83,6 +83,7 @@ export namespace EventoEndpoint {
   
   export async function getEventos(token: string, id: number) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/user/${id}`;
+    console.log(url)
     const options = {
       method: "GET",
       headers: {
