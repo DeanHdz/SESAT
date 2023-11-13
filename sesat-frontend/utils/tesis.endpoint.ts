@@ -334,7 +334,7 @@ export async function updateThesisTitle(
    tesisDto: UpdateTesis, 
   token: string, 
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/tesis`;
  
   const options = {
     method: 'PUT',

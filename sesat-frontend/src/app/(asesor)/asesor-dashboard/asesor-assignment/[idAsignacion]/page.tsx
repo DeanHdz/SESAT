@@ -3,7 +3,7 @@ import AssignmentHeader from "../../../../components/AssignmentHeader"
 import AssignmentData from "../../../../components/AssignmentData"
 import ReviewFormats from "../../components/ReviewFormats"
 import CommentSection from "../../../../components/CommentSection"
-import { AsignacionReview, Avance, LoggedUser } from "../../../../../../types/ISESAT"
+import { AsignacionReview, Avance, LoggedUser, TesisInfo } from "../../../../../../types/ISESAT"
 import { shortFormatDate } from "../../../../../../utils/utils"
 import { fetchOneToBeReviewed } from "../../../../../../utils/asignacion.endpoint";
 import PDFPreview from "../../../../components/PDFPreview"
@@ -15,24 +15,13 @@ import Drawer from "../../components/Drawer"
 import { cookies } from "next/headers"
 import { LoginEndpoint } from "../../../../../../utils/login.endpoint"
 import AdvancesList from "@/app/components/AdvancesList"
-import UpdateThesisTitleModal from "../../components/UpdateThesisTitleModal"
+
 
 async function fetchAndSortComments(idAsignacion: number, token: string) {
   let comments = await fetchConversationByIdAsignacion(idAsignacion, token);
   comments.sort((a: any, b: any) => a.id_comentario - b.id_comentario);
   return comments;
 }
-export type TesisInfo = {
-  programa_nombre_programa: string;
-  titulo: string;
-  fecha_registro: string;
-  id_tesis: number;
-  id_usuario: number;
-  nombre: string;
-  apellido_paterno: string;
-  apellido_materno: string;
-  id_grado_estudio: number;
-};
 
 
 async function fetchHistoryByIdTesis(idTesis: number, idModalidadActual: number, numAvanceActual: number, token: string): Promise<Array<Avance>> {
@@ -111,13 +100,14 @@ export default async function Home({
   const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
 
   let { idAsignacion } = params;
-  let error = false;
+  let error = false;  
   let periodo = await fetchLatestPeriod(token).catch();
   let asignacion: AsignacionReview = await fetchOneToBeReviewed(user.id_usuario, parseInt(idAsignacion), token).catch(() => { return undefined });
 
   let tesisInfo: TesisInfo | undefined = undefined;
   let comments = undefined;
   let history = undefined;
+  let enableEditMode = asignacion.id_funcion === 1 ? true : false; 
 
   if (periodo && asignacion && periodo.id_periodo === asignacion.id_periodo) {
     tesisInfo = await fetchOneTesis(asignacion.id_tesis.toString(), token).catch(() => { return undefined });
@@ -153,7 +143,7 @@ export default async function Home({
               <div className="flex flex-col w-full lg:w-2/5 lg:m-2">
                 {typeof tesisInfo !== 'undefined' && (
                   <>
-                    <AssignmentData nombreTesis={tesisInfo.titulo} autor={`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno} `} numAvance={asignacion.num_avance} fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} fechaPresentacion={asignacion.fecha_presentacion} />
+                    <AssignmentData idGradoEstudio={tesisInfo.id_grado_estudio} editMode={enableEditMode} idTesis={tesisInfo.id_tesis} nombreTesis={tesisInfo.titulo} autor={`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno} `} numAvance={asignacion.num_avance} fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} fechaPresentacion={asignacion.fecha_presentacion} token={token}/>
                     {/*<AssignmentProperties fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} calificacion={10}/> */} {/* (Dean) Calificacion era en base 10 o 100?*/}
                     <ReviewFormats tesisInfo={tesisInfo!} asignacion={asignacion} />                    
                   </>

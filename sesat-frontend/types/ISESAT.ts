@@ -697,3 +697,15 @@ export type Avance = {
   grado_estudio: string;
   modalidad: string;
 };
+
+export type TesisInfo = {
+  programa_nombre_programa: string;
+  titulo: string;
+  fecha_registro: string;
+  id_tesis: number;
+  id_usuario: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  id_grado_estudio: number;
+};

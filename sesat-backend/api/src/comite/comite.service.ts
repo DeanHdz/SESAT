@@ -297,12 +297,11 @@ export class ComiteService {
   //EDO 0 -> No entregado
   //EDO 1 -> Entregado
   // EDO 2 -> Vencido
-  async findAsignacionesAsesorados(idPeriodo: number, idAsesor: number, idFuncion: number) {
+  async findAsignacionesAsesorados(idPeriodo: number, idAsesor: number) {
     const subquery = this.comiteRepository
       .createQueryBuilder("c")
       .select("c.id_tesis")
-      .where("c.id_usuario = :id_usuario", { id_usuario: idAsesor })
-      .andWhere("c.id_funcion = :id_funcion", { id_funcion: idFuncion });
+      .where("c.id_usuario = :id_usuario", { id_usuario: idAsesor })      
 
     const resp = await this.asignacionRepository
       .createQueryBuilder("a")

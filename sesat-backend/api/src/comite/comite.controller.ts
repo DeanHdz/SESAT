@@ -64,9 +64,9 @@ export class ComiteController {
   }
 
     /*##########################ASESOR#####################################################*/
-  @Get('asesor/turned-in/:idPeriodo/:idAsesor/:idFuncion')
-  findAsignacionesEntregadas(@Param('idPeriodo') idPeriodo: string, @Param('idAsesor') idAsesor: string, @Param('idFuncion') idFuncion: string) {
-    return this.comiteService.findAsignacionesAsesorados(+idPeriodo, +idAsesor, +idFuncion);
+  @Get('asesor/turned-in/:idPeriodo/:idAsesor')
+  findAsignacionesEntregadas(@Param('idPeriodo') idPeriodo: string, @Param('idAsesor') idAsesor: string) {
+    return this.comiteService.findAsignacionesAsesorados(+idPeriodo, +idAsesor);
   }
 
   @Get('members/:idTesis')

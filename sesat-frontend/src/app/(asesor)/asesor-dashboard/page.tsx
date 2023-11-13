@@ -33,9 +33,8 @@ export default async function Home() {
 
 
   let asesorID = user.id_usuario;
-  let idFuncion = 1;
   let periodo = await fetchLatestPeriod(token).catch();
-  let asignaciones: AsignacionProps[] = await fetchAvancesEntregados(periodo.id_periodo, asesorID.toString(), idFuncion.toString(), token)
+  let asignaciones: AsignacionProps[] = await fetchAvancesEntregados(periodo.id_periodo, asesorID, token);
   return (
     <main className="w-full flex flex-row mx-auto">
 

@@ -5,8 +5,7 @@ import PDFModal from './PDFModal';
 
 import ActFormModal from './ActFormModal';
 import ReportFormModal from './ReportFormModal';
-import { AsignacionReview } from '../../../../../types/ISESAT';
-import { TesisInfo } from '../asesor-assignment/[idAsignacion]/page';
+import { AsignacionReview, TesisInfo } from '../../../../../types/ISESAT';
 
 
 export interface ReviewFormatsProps {
