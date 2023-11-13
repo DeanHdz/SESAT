@@ -23,7 +23,7 @@ const AdvancesList = ({ history }: { history: Array<Avance> | undefined }) => {
             ) : (
               <>
                 {elem.id_asignacion === -1 ? (
-                  <li data-content={''} className="step text-black/40 !text-left">
+                  <li data-content={''} className="step text-black/40 lg:!text-left">
                     {`Cambio de modalidad a ${elem.modalidad}`}
                   </li>
                 ) : (

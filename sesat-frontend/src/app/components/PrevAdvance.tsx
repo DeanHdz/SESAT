@@ -6,7 +6,7 @@ import AssignmentHeader from './AssignmentHeader';
 import AssignmentData from './AssignmentData';
 import { shortFormatDate } from '../../../utils/utils';
 import CommentSection from './CommentSection';
-import { Asignacion, LoggedUser } from '../../../types/ISESAT';
+import { Asignacion, LoggedUser, TesisInfo } from '../../../types/ISESAT';
 import { fetchOneTesis } from '../../../utils/tesis.endpoint';
 import { fetchOneByIdAsignacion } from '../../../utils/asignacion.endpoint';
 import { fetchConversationByIdAsignacion } from '../../../utils/comentario.endpoint';
@@ -37,7 +37,7 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
     const router = useRouter()
 
     const [asignacion, setAsignacion] = useState<Asignacion | undefined>(undefined)
-    const [tesisInfo, settesisInfo] = useState<any>(undefined)
+    const [tesisInfo, settesisInfo] = useState<TesisInfo | undefined>(undefined)
 
     const [comments, setcomments] = useState<any>(undefined)
     const [currentPDF, setcurrentPDF] = useState<Array<number> | undefined>()
@@ -135,7 +135,7 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
                                         <div className="flex flex-col lg:flex-row">
 
                                             <div className="flex flex-col w-full lg:w-3/12 lg:m-2">
-                                                <AssignmentData nombreTesis={tesisInfo.titulo} autor={`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno} `} numAvance={asignacion.num_avance} fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} fechaPresentacion={asignacion.fecha_presentacion} />
+                                                <AssignmentData idGradoEstudio={tesisInfo.id_grado_estudio} token={token} idTesis={tesisInfo.id_tesis} nombreTesis={tesisInfo.titulo} autor={`${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno} `} numAvance={asignacion.num_avance} fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} fechaPresentacion={asignacion.fecha_presentacion} editMode={false} />
                                                 {/*<AssignmentProperties fechaEntrega={shortFormatDate(asignacion.fecha_entrega)} calificacion={10}/> */}
 
                                                 <div className='flex flex-col w-full pt-5 mt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>

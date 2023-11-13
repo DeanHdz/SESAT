@@ -40,7 +40,6 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
         document.body.classList.add("modal-open");
     }
 
-
     async function handleSubmit(event: any) {
         event.preventDefault();
         if (start && end && start > end) {
@@ -80,6 +79,7 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
         }
 
     }
+
     return (
         <>
             <button className="btn btn-sm px-10 mx-auto" type='button' onClick={openUpdatePeriodModal}>

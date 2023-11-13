@@ -102,12 +102,11 @@ export async function fetchAsesorByIDTesis(
 }
 
 export async function fetchAvancesEntregados(
-  idPeriodo: string,
-  idAsesor: string,
-  idFuncion: string,
+  idPeriodo: number,
+  idAsesor: number,
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/asesor/turned-in/${idPeriodo}/${idAsesor}/${idFuncion}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/asesor/turned-in/${idPeriodo}/${idAsesor}`;
 
   const options = {
     method: 'GET',

@@ -32,7 +32,7 @@ const GenInfoPhd = ({ endDateGlobal, endDateOpc, count, numAvance }: { endDateGl
                 </div>
 
                 {/**Fecha limite de entrega para la 1er evaluacion (4to avance) */}
-                {numAvance === '4' && endDateOpc && (
+                {numAvance === '5' && endDateOpc && (
                     <div className="flex flex-col mt-3 lg:mt-0 lg:ml-16 ">
                         <label className="mb-3 block text-md font-semibold">
                             Evaluación de Inicio
@@ -63,7 +63,7 @@ const GenInfoPhd = ({ endDateGlobal, endDateOpc, count, numAvance }: { endDateGl
                 {/**General [Fecha de cierre] */}
                 <div className="flex flex-col mt-3 lg:mt-0 lg:ml-16 ">
                     <label className="mb-3 block text-md font-semibold">
-                        {numAvance === '4' ? (
+                        {numAvance === '5' ? (
                             <>
                                 <span>Evaluación final</span>
                             </>

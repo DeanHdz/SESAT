@@ -3,9 +3,9 @@ import Drawer from "../../components/Drawer"
 import AdvancesList from "../../../../components/AdvancesList"
 
 import { fetchConversationByIdAsignacion } from "../../../../../../utils/comentario.endpoint"
-import { fetchOneTesis, fetchTesisHistory } from "../../../../../../utils/tesis.endpoint"
+import { fetchOneTesis } from "../../../../../../utils/tesis.endpoint"
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint"
-import { Asignacion, Avance, LoggedUser } from "../../../../../../types/ISESAT"
+import { Asignacion, Avance, LoggedUser, TesisInfo } from "../../../../../../types/ISESAT"
 import { fetchOneByIdAsignacion } from "../../../../../../utils/asignacion.endpoint"
 import NotFound from "@/app/(admin)/admin-dashboard/not-found"
 import { fetchHistoryByIdTesis, getFormattedHours, shortFormatDate } from "../../../../../../utils/utils"
@@ -14,18 +14,6 @@ import CommentSection from "@/app/components/CommentSection"
 import Results from "../../components/Results"
 import { LoginEndpoint } from "../../../../../../utils/login.endpoint"
 import { cookies } from "next/headers"
-
-export type TesisInfo = {
-  programa_nombre_programa: string;
-  titulo: string;
-  fecha_registro: string;
-  id_tesis: number;
-  id_usuario: number;
-  nombre: string;
-  apellido_paterno: string;
-  apellido_materno: string;
-  id_grado_estudio: number;
-};
 
 async function fetchAndSortComments(idAsignacion: number, token: string) {
   let comments = await fetchConversationByIdAsignacion(idAsignacion, token);

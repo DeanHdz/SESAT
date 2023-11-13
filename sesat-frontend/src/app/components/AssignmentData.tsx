@@ -1,24 +1,35 @@
 import React from 'react'
 import { shortFormatDate } from '../../../utils/utils';
+import UpdateThesisTitleModal from '../(asesor)/asesor-dashboard/components/UpdateThesisTitleModal';
 
-export interface AssignmentDataProps{
+export interface AssignmentDataProps {
+    idTesis: number;
     nombreTesis: string;
     autor: string;
     numAvance: number;
-    fechaEntrega: string;    
-    fechaPresentacion: string;  
+    fechaEntrega: string;
+    fechaPresentacion: string;
+    token: string;
+    editMode: boolean;
+    idGradoEstudio: number;
 }
 
-const AssignmentData = ( props: AssignmentDataProps) =>{
-    return(
+const AssignmentData = (props: AssignmentDataProps) => {
+
+    return (
         <div className='flex flex-col w-full pt-5 mb-5 bg-light-blue-10 rounded px-8 py-4 h-fit'>
-            
-            <label className="flex text-2xl font-bold">
-                Datos
-            </label>
+
+            <div className='flex flex-row items-center'>
+                <label className="flex text-2xl font-bold mr-auto">
+                    Datos
+                </label>
+                {props.editMode && (
+                    <UpdateThesisTitleModal idTesis={props.idTesis} titulo={props.nombreTesis} token={props.token} />
+                )}
+            </div>
 
             <div className='w-full m-2 border border-solid border-gray-200'></div>
-            
+
             <div className='w-full flex flex-col'>
 
                 <label className="font-SESAT mb-2">
@@ -47,7 +58,7 @@ const AssignmentData = ( props: AssignmentDataProps) =>{
                 </label>
                 <label className="pl-4 mb-2">
                     {props.fechaEntrega}
-                </label>  
+                </label>
 
                 <label className="font-SESAT mb-2">
                     Fecha de presentación:
@@ -55,10 +66,10 @@ const AssignmentData = ( props: AssignmentDataProps) =>{
                 <label className="pl-4 mb-2">
                     {props.fechaPresentacion ? (
                         <span>{shortFormatDate(props.fechaPresentacion)}</span>
-                    ):(
+                    ) : (
                         <span>{'Sin definir'}</span>
                     )}
-                </label>               
+                </label>
 
             </div>
 
