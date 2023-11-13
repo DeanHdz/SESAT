@@ -424,9 +424,10 @@ export class TesisService {
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
       .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
-      .innerJoin(Modalidad, "mod", "da.id_modalidad = mod.id_modalidad")
+      .innerJoin(Modalidad, "mod", "mod.id_modalidad = a.id_modalidad")
       .select([
-        "a.id_asignacion as id_asignacion",
+        "a.id_asignacion AS id_asignacion",
+        "a.num_avance AS num_avance",
         "ge.nombre_grado_estudio AS grado_estudio",
         "mod.nombre_modalidad AS modalidad"      
       ])      
@@ -444,13 +445,15 @@ export class TesisService {
       
       
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
-      .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")      
+      .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")     
       .innerJoin(Programa, "p", "p.id_programa = da.id_programa")      
       .select([
         "t.id_tesis AS id_tesis",
         "t.titulo AS titulo",
+        "t.ultimo_avance AS avance",
         "t.estado_finalizacion AS estado_finalizacion",
         "t.fecha_registro AS fecha_registro",
+        "da.id_modalidad AS id_modalidad",
         "da.id_grado_estudio AS grado",
         "u.nombre AS nombre",
         "u.apellido_paterno AS apellido_paterno",

@@ -1,9 +1,9 @@
 import Link from "next/link";
-const cssMenu = "navbar rounded duration-200 px-6 hover:bg-slate-500 py-8 flex-col";
+const cssMenu = "navbar rounded-xl duration-200 px-6 hover:bg-slate-500 py-8 flex-col";
 
 export default function Drawer() {
   return (
-    <div className="w-10/12 bg-dark-blue-10 mr-auto h-fit gray__border p-2">
+    <div className="w-full bg-dark-blue-10 h-fit gray__border p-2">
       <ul className="menu p-0  text-white font-light">
         <Link href="/alumno-dashboard" className={`${cssMenu}`}>
           <div className="w-[20px]">

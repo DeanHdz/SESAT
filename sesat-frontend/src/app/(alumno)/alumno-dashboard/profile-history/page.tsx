@@ -1,30 +1,12 @@
 import Drawer from "../components/Drawer";
-import AssignmentPath from "../components/AssignmentPath";
 import StudentProfile from "../../../components/StudentProfile";
-import ThesisHistory from "./components/ThesisHistory";
-import ThesisTitle from "./components/ThesisTitle";
-import Link from "next/link";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import { fetchFullTesisHistory } from "../../../../../utils/tesis.endpoint";
-import { fetchComiteMembers, fetchValidateRole } from "../../../../../utils/comite.endpoint";
+import { fetchComiteMembers } from "../../../../../utils/comite.endpoint";
 import ThesisInfo from "@/app/components/ThesisInfo";
 import { cookies } from "next/headers";
-import { LoggedUser } from "../../../../../types/ISESAT";
+import { LoggedUser, ThesisFullHistory } from "../../../../../types/ISESAT";
 import { LoginEndpoint } from "../../../../../utils/login.endpoint";
-
-export type ThesisFullHistory = {
-  nombre_programa: string;
-  id_tesis: number;
-  titulo: string;
-  grado: number;
-  fecha_registro: string;
-  nombre: string;
-  apellido_paterno: string;
-  apellido_materno: string;
-  correo: string;
-  estado_finalizacion: boolean;
-  estado_activo: boolean;
-}
 
 type ComiteMember = {
   nombre: string;
@@ -49,7 +31,9 @@ export default async function Home() {
   return (
     <div className="flex">
       <div className="hidden lg:flex lg:w-3/12 flex-col">
+        <div className="pr-10">
         <Drawer />
+        </div>
         {/*<ThesisHistory />*/}
       </div>
 
@@ -70,7 +54,7 @@ export default async function Home() {
             </label>
           </div>
 
-          <div className="w-full px-8 py-10 mt-4 mb-4 bg-light-blue-10 bg-opacity-50 gray__border !rounded-[15px] flex flex-col lg:flex-row">
+          <div className="w-full px-8 py-10 mt-4 mb-4 bg-white  gray__border !rounded-[15px] flex flex-col lg:flex-row">
             <table className="table table-zebra">
               <thead>
                 <tr className="text-dark-blue-20">                  

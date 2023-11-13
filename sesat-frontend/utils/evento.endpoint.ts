@@ -62,7 +62,7 @@ export namespace EventoEndpoint {
     const result = await response.json();
     return result;
   }
-  
+
   export async function postEventByType(createEvento: CreateEventByType, token: string) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/typed`;
     const options = {
@@ -80,7 +80,7 @@ export namespace EventoEndpoint {
     const result = await response.json();
     return result;
   }
-  
+
   export async function getEventos(token: string, id: number) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/user/${id}`;
     const options = {
@@ -93,12 +93,16 @@ export namespace EventoEndpoint {
         tags: ["Eventos"],
       },
     };
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      throw new Error("Error fetching the data");
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error("Error fetching the data");
+      }
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return undefined;
     }
-    const result = await response.json();
-    return result;
   }
 
   export async function postEvento(createEvento: CreateEvento, token: string) {

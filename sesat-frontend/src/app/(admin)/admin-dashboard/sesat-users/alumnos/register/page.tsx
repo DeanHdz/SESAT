@@ -3,7 +3,7 @@ import Search from "../../../components/Search";
 import { ExternalUser } from "../../../../../../../types/ISESAT";
 import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
-import AddUserForm from "./components/AddUserForm";
+import AddUserForm from "../../../components/AddUserForm";
 import { cookies } from "next/headers";
 
 export default async function SearchMastersStudents({

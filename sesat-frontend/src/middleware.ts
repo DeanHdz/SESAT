@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   if (token != undefined) {
     const role: any = await getRoleSS(token?.value.substring(1, token?.value.length - 1));
 
-    if (request.nextUrl.pathname.startsWith("/admin-dashboard")) {
+    if (role && request.nextUrl.pathname.startsWith("/admin-dashboard")) {
       if (role.rol != "Administrador") {
         switch (role.rol) {
           case "Alumno":
@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
         url.pathname = "/";
         return NextResponse.redirect(url);
       }
-    } else if (request.nextUrl.pathname.startsWith("/asesor-dashboard")) {
+    } else if (role && request.nextUrl.pathname.startsWith("/asesor-dashboard")) {
       if (role.rol != "Asesor") {
         switch (role.rol) {
           case "Alumno":
@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
         url.pathname = "/";
         return NextResponse.redirect(url);
       }
-    } else if (request.nextUrl.pathname.startsWith("/alumno-dashboard")) {
+    } else if (role && request.nextUrl.pathname.startsWith("/alumno-dashboard")) {
       if (role.rol != "Alumno") {
         switch (role.rol) {
           case "Asesor":

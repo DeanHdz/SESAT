@@ -43,12 +43,18 @@ export namespace LoginEndpoint {
       },
       next: { tags: ["UserRole"] },
     };
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      throw new Error("Error fetching the data");
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error("Error fetching the data");
+      }
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return undefined;
     }
-    const result = await response.json();
-    return result;
+    
+    
   }
 
   export async function getUserInfo(token: string): Promise<any | undefined> {

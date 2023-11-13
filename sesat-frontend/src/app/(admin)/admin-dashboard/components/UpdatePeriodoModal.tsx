@@ -26,12 +26,18 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
 
     function setDefaultState() {
         setShowModal(false)
+        document.body.classList.remove("modal-open");
         setCssError("hidden")
         setCSSDisabled("")
         setCssOk("hidden")
         setcssHide("")//oculta boton crear
         router.refresh();//on test
 
+    }
+
+    function openUpdatePeriodModal(){
+        setShowModal(true);
+        document.body.classList.add("modal-open");
     }
 
 
@@ -73,19 +79,10 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
             }
         }
 
-
-
-        //hacer un post request a la tabla periodo
-        //esperar una respuesta
-        //mientras se espera
-
-        //mostrar animacion de espera en el boton
-        //inhabilitar los componentes del modal
-
     }
     return (
         <>
-            <button className="btn btn-sm px-10 mx-auto" type='button' onClick={() => setShowModal(true)}>
+            <button className="btn btn-sm px-10 mx-auto" type='button' onClick={openUpdatePeriodModal}>
                 {extender ? (
                     <>Extender Periodo</>
                 ) : (
@@ -96,7 +93,7 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
                 <>
 
                     <div className='w-screen h-screen bg-black/20 z-50 fixed top-0 right-0 flex justify-center pt-[100px] overflow-hidden'>
-                        <div className="fixed w-11/12 lg:w-[600px] lg:mx-auto p-6 border-0 rounded-lg shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50">
+                        <div className="fixed w-11/12 lg:w-[600px] lg:mx-auto p-6 border-0 rounded-xl shadow-lg  flex flex-col bg-white outline-none focus:outline-none z-50">
                             {/*header*/}
                             <div className="w-full flex flex-row h-fit items-center">
                                 <h3 className="font-bold text-lg">

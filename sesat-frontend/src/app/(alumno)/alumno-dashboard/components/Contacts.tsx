@@ -8,9 +8,9 @@ interface ContactsProps{
 
 const Contacts = (props: ContactsProps) => {
   return (
-    <div className="w-full pb-5 justify-center">
-      <div className="w-full pb-5 pt-5 justify-center">
-        <p className="text-2xl font-bold">Contactos</p>
+    <div className="w-full mt-4 p-6 justify-center bg-white gray__border">
+      <div className="w-full mb-5">
+        <p className="text-xl font-SESAT">Contactos</p>
       </div>
 
       {props.contacts?.map((contact, i) => (

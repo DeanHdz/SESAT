@@ -674,3 +674,26 @@ export interface CreateRetrievedCommitteeDTO {
   sinodal4?: Usuario | null,
   suplente: Usuario | null,
 }
+
+export type ThesisFullHistory = {
+  nombre_programa: string;
+  id_tesis: number;
+  titulo: string;
+  avance: number;
+  id_modalidad: number;
+  grado: number;
+  fecha_registro: string;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  correo: string;
+  estado_finalizacion: boolean;
+  estado_activo: boolean;
+}
+
+export type Avance = {
+  id_asignacion: number;
+  num_avance: number;
+  grado_estudio: string;
+  modalidad: string;
+};
