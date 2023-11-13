@@ -15,6 +15,11 @@ import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
 export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
   
+  @Get('/dedication/:id/:skip')
+  async changeDedication(@Param("id") id: string, @Param("skip") skip: string) {
+    return await this.usuarioService.changeDedication(+id, +skip);
+  }
+
   @Get('/external/student/reset/:id')
   async resetStudentFromExternalStudent(@Param("id") id: string) {
 

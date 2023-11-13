@@ -12,7 +12,10 @@ import { UsuarioEndpoint } from "../../../../../../../utils/usuario.endpoint";
 import revalidator from "../../../actions";
 import { useRouter } from "next/navigation";
 import { findTesisPerStudent } from "../../../../../../../utils/tesis.endpoint";
-import { postUpdateCommitteeWithRetrieved, retrieveCommittee } from "../../../../../../../utils/comite.endpoint";
+import {
+  postUpdateCommitteeWithRetrieved,
+  retrieveCommittee,
+} from "../../../../../../../utils/comite.endpoint";
 import { useDebounce } from "use-debounce";
 
 const StudentProfileModal = ({ user }: { user: Usuario }) => {
@@ -25,11 +28,18 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     useState(false);
   const [showChangeStatusErrorModal, setShowChangeStatusErrorModal] =
     useState(false);
-  const [showChangeCommitteeSuccessModal, setShowChangeCommitteeSuccessModal] = useState(false);
+  const [showChangeCommitteeSuccessModal, setShowChangeCommitteeSuccessModal] =
+    useState(false);
   const [modifyCommittee, setModifyCommittee] = useState<boolean>();
 
-  const [showRevalidateStudentModal, setShowRevalidateStudentModal] = useState<boolean>(false);
-  const [showRevalidateStudentSuccessModal, setShowRevalidateStudentSuccessModal] = useState<boolean>(false);
+  const [showRevalidateStudentModal, setShowRevalidateStudentModal] =
+    useState<boolean>(false);
+  const [
+    showRevalidateStudentSuccessModal,
+    setShowRevalidateStudentSuccessModal,
+  ] = useState<boolean>(false);
+  const [showDedicationModal, setShowDedicationModal] = useState<boolean>(false);
+  const [showDedicationSuccessModal, setShowDedicationSuccessModal] = useState<boolean>(false);
   /* Student Info Section */
 
   const handleStatusChange = async () => {
@@ -40,6 +50,50 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       setShowChangeStatusSuccessModal(!showChangeStatusSuccessModal);
     else setShowChangeStatusErrorModal(!showChangeStatusErrorModal);
   };
+
+  let avances: string[] = [];
+  if (user.datos_alumno && user.datos_alumno.id_grado_estudio === 1) {
+    switch (user.datos_alumno.id_modalidad) {
+      case 1:
+        avances.push("Seminario de Investigación");
+        avances.push("Avance 1");
+        avances.push("Seminario de Tesis I (20% de Avance)");
+        avances.push("Avance 3");
+        avances.push("Seminario de Tesis II (50% de Avance)");
+        avances.push("Avance 5");
+        avances.push("Seminario de Tesis III (90% de Avance)");
+        break;
+      case 2:
+        avances.push("Seminario de Investigación");
+        avances.push("Seminario de Tesis I (20% de Avance)");
+        avances.push("Seminario de Tesis II (50% de Avance)");
+        avances.push("Seminario de Tesis III (90% de Avance)");
+        break;
+    }
+  }
+
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const options = (
+    <select
+      className="w-5/6 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-[14px]"
+      placeholder="Seleccione un avance"
+      value={selectedOption}
+      onChange={handleSelectChange}
+    >
+      <option value="" className="text-gray-500">
+        Seleccione una opción
+      </option>
+      {avances.map((avance, i) => (
+        <option key={i + 1} value={i + 1} className="text-gray-800">
+          {avance}
+        </option>
+      ))}
+    </select>
+  );
 
   const changeStatusErrorModal = (
     <div
@@ -264,17 +318,18 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     useState<boolean>(true);
 
   const handleResetStudentSubmit = async () => {
-    const res = await UsuarioEndpoint.postResetExternalStudent(token, user.id_usuario);
-    if (res != null)
-    {
+    const res = await UsuarioEndpoint.postResetExternalStudent(
+      token,
+      user.id_usuario
+    );
+    if (res != null) {
       setShowRevalidateStudentModal(!showRevalidateStudentModal);
       setShowRevalidateStudentSuccessModal(!showRevalidateStudentSuccessModal);
-    }
-    else{
+    } else {
       setShowRevalidateStudentModal(!showRevalidateStudentModal);
       setShowChangeStatusErrorModal(!showChangeStatusErrorModal);
     }
-  }
+  };
 
   const revalidateStudentSuccessModal = (
     <div
@@ -356,59 +411,169 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     </div>
   );
 
-    const revalidateStudentModal = (
-      <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-              <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                    </svg>
-                  </div>
-                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Verificar Acción</h3>
-                    <div className="mt-2">
-                      <div className="text-sm text-gray-500">
-                        Cuidado, los datos del alumno serán <span className="font-bold text-red-600">reestablecidos</span>.
-                        <br />
-                        <span className="px-4">Su tesis será establecida como <span className="font-bold text-red-600">completada</span> si no lo está.</span>
-                        <br />
-                        <p className="px-4">Sus asignaciones activas serán establecidas como <span className="font-bold text-red-600">completadas</span> si no lo están.</p>                  
-                      </div>
+  const revalidateStudentModal = (
+    <div
+      className="relative z-10"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg
+                    className="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Verificar Acción
+                  </h3>
+                  <div className="mt-2">
+                    <div className="text-sm text-gray-500">
+                      Cuidado, los datos del alumno serán{" "}
+                      <span className="font-bold text-red-600">
+                        reestablecidos
+                      </span>
+                      .
+                      <br />
+                      <span className="px-4">
+                        Su tesis será establecida como{" "}
+                        <span className="font-bold text-red-600">
+                          completada
+                        </span>{" "}
+                        si no lo está.
+                      </span>
+                      <br />
+                      <p className="px-4">
+                        Sus asignaciones activas serán establecidas como{" "}
+                        <span className="font-bold text-red-600">
+                          completadas
+                        </span>{" "}
+                        si no lo están.
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button 
-                  type="button" 
-                  className="inline-flex w-full justify-center rounded-md bg-dark-blue-10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto"
-                  onClick={
-                    handleResetStudentSubmit
-                  }
-                >
-                  Confirmar
-                </button>
-                <button 
-                  type="button" 
-                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                  onClick={() => {
-                    setShowModal(!showModal);
-                    setShowRevalidateStudentModal(!showRevalidateStudentModal);
-                  }}
-                >
-                  Cancelar
-                </button>
-              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
+                className="inline-flex w-full justify-center rounded-md bg-dark-blue-10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto"
+                onClick={handleResetStudentSubmit}
+              >
+                Confirmar
+              </button>
+              <button
+                type="button"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={() => {
+                  setShowModal(!showModal);
+                  setShowRevalidateStudentModal(!showRevalidateStudentModal);
+                }}
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
+
+  const handleDedicationChange = async () => {
+    const res = await UsuarioEndpoint.changeDedication(token,user.id_usuario,parseInt(selectedOption));
+  } 
+
+  const dedicationModal = (
+    <div
+      className="z-51 relative"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg
+                    className="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3
+                    className="text-base font-semibold leading-6 text-gray-900"
+                    id="modal-title"
+                  >
+                    Verificar Acción
+                  </h3>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      El alumno cambiará de modalidad, el avance previo de su tesis será <span className="text-red-600">archivado</span>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
+                className="inline-flex w-full justify-center rounded-md bg-dark-blue-10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto"
+                onClick={handleDedicationChange}
+              >
+                Confirmar
+              </button>
+              <button
+                type="button"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={() => {
+                  setShowDedicationModal(!showDedicationModal);
+                  setShowModal(!showModal);
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+
 
   const studentInfoSection = (
     <div className="mt-2 px-2 max-h-[500px] overflow-y-auto">
@@ -498,6 +663,54 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
           </div>
         </div>
       </div>
+      {user.datos_alumno && user.datos_alumno.id_grado_estudio == 1 ? (
+        <>
+        <p className="font-semibold text-dark-blue-10 text-lg mt-2">
+          Cambiar Modalidad del Alumno
+        </p>
+        <div className="w-full border border-gray-200 py-2 px-4">
+          <div className="flex">
+            <div className="w-9/12">
+              Seleccionar avance
+              <br />
+              <span className="text-[12px]">
+                Seleccione el{" "}
+                <span className="text-red-600">avance previo</span> al que el
+                alumno comenzará
+              </span>
+              {options}
+            </div>
+            <div className="flex flex-col justify-center align-middle items-center">
+              <p className="text-sm">Nueva Modalidad</p>
+              {user.datos_alumno.id_modalidad === 1 ? (
+                <span className="font-semibold text-dark-blue-10 text-sm italic">
+                  Medio Tiempo
+                </span>
+              ) : (
+                <span className="font-semibold text-dark-blue-10 text-sm italic">
+                  Tiempo Completo
+                </span>
+              )}
+            </div>
+          </div>
+          {selectedOption !== "" && (
+            <div className="flex justify-end w-full pt-2 px-4">
+              <button
+                className="px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                onClick={() => {
+                  setShowModal(!showModal);
+                  setShowDedicationModal(!showDedicationModal);
+                }}
+              >
+                Cambiar Modalidad del Alumno
+              </button>
+            </div>
+          )}
+        </div>
+      </>
+      ) : (
+        ""
+      )}
       <p className="font-semibold text-dark-blue-10 text-lg mt-2">
         Reestablecer Datos del Alumno
       </p>
@@ -570,7 +783,7 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
 
     fetchData();
   }, [tesis]);
-  
+
   const [text, setText] = useState<string | null>(null);
   const [query] = useDebounce(text, 750);
   const [retrievedAsesor, setRetrievedAsesor] = useState<Usuario[] | null>();
@@ -593,9 +806,9 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     null
   );
 
-  const [asesorSpoof, setAsesorSpoof] = useState<Usuario | null>(null)
+  const [asesorSpoof, setAsesorSpoof] = useState<Usuario | null>(null);
 
-  const [sinodalAmount, setSinodalAmount] = useState<number>(0)
+  const [sinodalAmount, setSinodalAmount] = useState<number>(0);
 
   const handleTransitionalAsesor = () => {
     if (retrievedAsesor != null && selectedAsesorIndex != null) {
@@ -623,23 +836,19 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
 
   const handleTransitionalSinodalMasters = () => {
     if (retrievedAsesor != null && selectedAsesorIndex != null) {
-      if(transitionalSinodal1 == null)
-      {
+      if (transitionalSinodal1 == null) {
         setTransitionalSinodal1(retrievedAsesor[selectedAsesorIndex]);
-        
-      }
-      else if(transitionalSinodal2 == null){
+      } else if (transitionalSinodal2 == null) {
         setTransitionalSinodal2(retrievedAsesor[selectedAsesorIndex]);
       }
       setSelectedAsesorIndex(null);
       setRetrievedAsesor(null);
     }
     setSinodalAmount(sinodalAmount + 1);
-  }
+  };
 
   const handleTransitionalSinodalPhd = () => {
-    switch(sinodalAmount)
-    {
+    switch (sinodalAmount) {
       case 0:
         if (retrievedAsesor != null && selectedAsesorIndex != null) {
           setTransitionalSinodal1(retrievedAsesor[selectedAsesorIndex]);
@@ -654,23 +863,23 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
           setRetrievedAsesor(null);
         }
         break;
-        case 2:
-          if (retrievedAsesor != null && selectedAsesorIndex != null) {
-            setTransitionalSinodal3(retrievedAsesor[selectedAsesorIndex]);
-            setSelectedAsesorIndex(null);
-            setRetrievedAsesor(null);
-          }
-          break;
-        case 3:
-          if (retrievedAsesor != null && selectedAsesorIndex != null) {
-            setTransitionalSinodal4(retrievedAsesor[selectedAsesorIndex]);
-            setSelectedAsesorIndex(null);
-            setRetrievedAsesor(null);
-          }
-          break;
+      case 2:
+        if (retrievedAsesor != null && selectedAsesorIndex != null) {
+          setTransitionalSinodal3(retrievedAsesor[selectedAsesorIndex]);
+          setSelectedAsesorIndex(null);
+          setRetrievedAsesor(null);
+        }
+        break;
+      case 3:
+        if (retrievedAsesor != null && selectedAsesorIndex != null) {
+          setTransitionalSinodal4(retrievedAsesor[selectedAsesorIndex]);
+          setSelectedAsesorIndex(null);
+          setRetrievedAsesor(null);
+        }
+        break;
     }
     setSinodalAmount(sinodalAmount + 1);
-  }
+  };
 
   const changeCommitteeSuccessModal = (
     <div
@@ -740,10 +949,14 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                   );
                   revalidator("PaginatedMastersList");
                   revalidator("PaginatedPhdList");
-                  if(user.datos_alumno && user.datos_alumno.id_grado_estudio == 1)
-                    router.push("/admin-dashboard/sesat-users/alumnos/masters-degree");
-                  else
-                    router.push("/admin-dashboard/sesat-users/alumnos/phd");
+                  if (
+                    user.datos_alumno &&
+                    user.datos_alumno.id_grado_estudio == 1
+                  )
+                    router.push(
+                      "/admin-dashboard/sesat-users/alumnos/masters-degree"
+                    );
+                  else router.push("/admin-dashboard/sesat-users/alumnos/phd");
                 }}
               >
                 Cerrar
@@ -754,32 +967,33 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       </div>
     </div>
   );
-  
+
   const handleCommitteeChange = async (op: number) => {
-    switch(op)
-    {
+    switch (op) {
       case 1:
-        const newMastersCommittee : CreateRetrievedCommitteeDTO = {
+        const newMastersCommittee: CreateRetrievedCommitteeDTO = {
           id_usuario: user.id_usuario,
           id_tesis: tesis && tesis.id_tesis ? tesis.id_tesis : 0,
           asesor: transitionalAsesor ? transitionalAsesor : user,
           coasesor: transitionalCoasesor,
           sinodal1: transitionalSinodal1 ? transitionalSinodal1 : user,
           sinodal2: transitionalSinodal2 ? transitionalSinodal2 : user,
-          suplente: transitionalSuplent ? transitionalSuplent: user
-        }
-        const res = await postUpdateCommitteeWithRetrieved(token, newMastersCommittee);
-        if(res != null)
-        {
+          suplente: transitionalSuplent ? transitionalSuplent : user,
+        };
+        const res = await postUpdateCommitteeWithRetrieved(
+          token,
+          newMastersCommittee
+        );
+        if (res != null) {
           setShowModal(!showModal);
           setShowChangeCommitteeSuccessModal(!showChangeCommitteeSuccessModal);
-        }else{
+        } else {
           setShowModal(!showModal);
           setShowChangeStatusErrorModal(!showChangeStatusErrorModal);
         }
         break;
       case 2:
-        const newPhdCommittee : CreateRetrievedCommitteeDTO = {
+        const newPhdCommittee: CreateRetrievedCommitteeDTO = {
           id_usuario: user.id_usuario,
           id_tesis: tesis && tesis.id_tesis ? tesis.id_tesis : 0,
           asesor: transitionalAsesor ? transitionalAsesor : user,
@@ -788,20 +1002,22 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
           sinodal2: transitionalSinodal2 ? transitionalSinodal2 : user,
           sinodal3: transitionalSinodal3 ? transitionalSinodal3 : user,
           sinodal4: transitionalSinodal4 ? transitionalSinodal4 : user,
-          suplente: transitionalSuplent ? transitionalSuplent: user
-        }
-        const res2 = await postUpdateCommitteeWithRetrieved(token, newPhdCommittee);
-        if(res2 != null)
-        {
+          suplente: transitionalSuplent ? transitionalSuplent : user,
+        };
+        const res2 = await postUpdateCommitteeWithRetrieved(
+          token,
+          newPhdCommittee
+        );
+        if (res2 != null) {
           setShowModal(!showModal);
           setShowChangeCommitteeSuccessModal(!showChangeCommitteeSuccessModal);
-        }else{
+        } else {
           setShowModal(!showModal);
           setShowChangeStatusErrorModal(!showChangeStatusErrorModal);
         }
         break;
     }
-  }
+  };
 
   useEffect(() => {
     const getUsuario = async (op: number) => {
@@ -868,22 +1084,7 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
         setSelectedAsesorIndex(null);
       }
     }
-  }, [query]); //,router
-
-  /*const removeUser = (userId: number) => {
-    // Find the index of the user with the specified ID
-    const userIndex = participants.findIndex(
-      (user: Usuario) => user.id_usuario === userId
-    );
-
-    if (userIndex !== -1) {
-      // Create a new array without the user at the found index
-      setParticipants((prevUsers) => [
-        ...prevUsers.slice(0, userIndex),
-        ...prevUsers.slice(userIndex + 1),
-      ]);
-    }
-  };*/
+  }, [query]);
 
   const searchBar = (
     <div className="mb-2 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
@@ -967,15 +1168,15 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                     </p>
                     {asesorSpoof ? (
                       <p className="italic w-full flex justify-center">
-                      {asesorSpoof.id_usuario
-                        ? asesorSpoof.id_usuario
-                        : "No se ha definido el Asesor"}
-                      <span className="ml-2 border-l border-gray-200 px-3">
-                        {asesorSpoof
-                          ? `${asesorSpoof.nombre} ${asesorSpoof.apellido_paterno} ${asesorSpoof.apellido_materno}`
-                          : ""}
-                      </span>                   
-                    </p>
+                        {asesorSpoof.id_usuario
+                          ? asesorSpoof.id_usuario
+                          : "No se ha definido el Asesor"}
+                        <span className="ml-2 border-l border-gray-200 px-3">
+                          {asesorSpoof
+                            ? `${asesorSpoof.nombre} ${asesorSpoof.apellido_paterno} ${asesorSpoof.apellido_materno}`
+                            : ""}
+                        </span>
+                      </p>
                     ) : (
                       ""
                     )}
@@ -1006,50 +1207,56 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                         </button>
                       ) : (
                         <button
-                        className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
-                        onClick={() => {
-                          handleTransitionalCoasesor();
-                        }}
-                      >
-                        Co-asesor
-                      </button>
+                          className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                          onClick={() => {
+                            handleTransitionalCoasesor();
+                          }}
+                        >
+                          Co-asesor
+                        </button>
                       )}
-                      
-                      {tesis.alumno && tesis.alumno.datos_alumno && tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
-                       <>
-                        {sinodalAmount < 2 ? (
-                          <button
-                            className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
-                            onClick={() => {handleTransitionalSinodalMasters();}}
-                          >
-                            Sinodal
-                          </button>
-                        ) : (
-                          <button
-                            className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
-                            disabled
-                          >
-                            Sinodal
-                          </button>
-                        )}
-                       </>
+
+                      {tesis.alumno &&
+                      tesis.alumno.datos_alumno &&
+                      tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
+                        <>
+                          {sinodalAmount < 2 ? (
+                            <button
+                              className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                              onClick={() => {
+                                handleTransitionalSinodalMasters();
+                              }}
+                            >
+                              Sinodal
+                            </button>
+                          ) : (
+                            <button
+                              className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
+                              disabled
+                            >
+                              Sinodal
+                            </button>
+                          )}
+                        </>
                       ) : (
                         <>
                           {sinodalAmount < 4 ? (
-                          <button
-                            className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
-                            onClick={() => {handleTransitionalSinodalPhd();}}
-                          >
-                            Sinodal
-                          </button>
-                        ) : (
-                          <button
-                            className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
-                            disabled
-                          >
-                            Sinodal
-                          </button>
-                        )}
+                            <button
+                              className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                              onClick={() => {
+                                handleTransitionalSinodalPhd();
+                              }}
+                            >
+                              Sinodal
+                            </button>
+                          ) : (
+                            <button
+                              className="px-2 text-gray-300 text-[11px] font-bold hover:shadow"
+                              disabled
+                            >
+                              Sinodal
+                            </button>
+                          )}
                         </>
                       )}
 
@@ -1062,13 +1269,13 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                         </button>
                       ) : (
                         <button
-                        className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
-                        onClick={() => {
-                          handleTransitionalSuplent();
-                        }}
-                      >
-                        Suplente
-                      </button>
+                          className="px-2 text-dark-blue-10 text-[11px] font-bold hover:shadow"
+                          onClick={() => {
+                            handleTransitionalSuplent();
+                          }}
+                        >
+                          Suplente
+                        </button>
                       )}
                     </div>
                   </>
@@ -1201,18 +1408,18 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                             : "Obligatiorio"}
                         </span>
                         {transitionalSinodal3 ? (
-                      <button
-                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
-                        onClick={() => {
-                          setTransitionalSinodal3(null);
-                          setSinodalAmount(sinodalAmount - 1);
-                        }}
-                      >
-                        Eliminar
-                      </button>
-                    ) : (
-                      ""
-                    )}
+                          <button
+                            className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                            onClick={() => {
+                              setTransitionalSinodal3(null);
+                              setSinodalAmount(sinodalAmount - 1);
+                            }}
+                          >
+                            Eliminar
+                          </button>
+                        ) : (
+                          ""
+                        )}
                       </p>
                       <p className="font-semibold text-dark-blue-10 text-[14px] my-1">
                         Sinodal
@@ -1227,18 +1434,18 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                             : "Obligatiorio"}
                         </span>
                         {transitionalSinodal4 ? (
-                      <button
-                        className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
-                        onClick={() => {
-                          setTransitionalSinodal4(null);
-                          setSinodalAmount(sinodalAmount - 1);
-                        }}
-                      >
-                        Eliminar
-                      </button>
-                    ) : (
-                      ""
-                    )}
+                          <button
+                            className="ml-2 px-2 text-red-600 text-[11px] font-bold hover:shadow"
+                            onClick={() => {
+                              setTransitionalSinodal4(null);
+                              setSinodalAmount(sinodalAmount - 1);
+                            }}
+                          >
+                            Eliminar
+                          </button>
+                        ) : (
+                          ""
+                        )}
                       </p>
                     </>
                   ) : (
@@ -1279,35 +1486,47 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
                       Ver Comité Previo
                     </button>
                     {tesis &&
-                      tesis.alumno &&
-                      tesis.alumno.datos_alumno &&
-                      tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
-                        <>
-                        {transitionalAsesor != null  && transitionalSinodal1 != null && transitionalSinodal2 != null && transitionalSuplent != null ? (
+                    tesis.alumno &&
+                    tesis.alumno.datos_alumno &&
+                    tesis.alumno.datos_alumno.id_grado_estudio == 1 ? (
+                      <>
+                        {transitionalAsesor != null &&
+                        transitionalSinodal1 != null &&
+                        transitionalSinodal2 != null &&
+                        transitionalSuplent != null ? (
                           <button
                             className="px-2 text-red-600 text-[11px] font-bold hover:shadow"
-                            onClick={() => { handleCommitteeChange(1) }}
+                            onClick={() => {
+                              handleCommitteeChange(1);
+                            }}
                           >
                             Actualizar Comité
                           </button>
                         ) : (
                           ""
                         )}
-                        </>
-                      ) : (
-                        <>
-                        {transitionalAsesor != null  && transitionalSinodal1 != null && transitionalSinodal2 != null && transitionalSinodal3 != null && transitionalSinodal4 != null && transitionalSuplent != null ? (
+                      </>
+                    ) : (
+                      <>
+                        {transitionalAsesor != null &&
+                        transitionalSinodal1 != null &&
+                        transitionalSinodal2 != null &&
+                        transitionalSinodal3 != null &&
+                        transitionalSinodal4 != null &&
+                        transitionalSuplent != null ? (
                           <button
                             className="px-2 text-red-600 text-[11px] font-bold hover:shadow"
-                            onClick={() => { handleCommitteeChange(2) }}
+                            onClick={() => {
+                              handleCommitteeChange(2);
+                            }}
                           >
                             Actualizar Comité
                           </button>
                         ) : (
                           ""
                         )}
-                        </>
-                      )}                 
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1513,12 +1732,21 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
       >
         Modificar
       </button>
-      {showRevalidateStudentSuccessModal ? <>{revalidateStudentSuccessModal}</> : ""}
+      {showDedicationModal ? <>{dedicationModal}</> : ""}
+      {showRevalidateStudentSuccessModal ? (
+        <>{revalidateStudentSuccessModal}</>
+      ) : (
+        ""
+      )}
       {showRevalidateStudentModal ? <>{revalidateStudentModal}</> : ""}
       {showChangeStatusModal ? <>{changeStatusModal}</> : ""}
       {showChangeStatusSuccessModal ? <>{changeStatusSuccessModal}</> : ""}
       {showChangeStatusErrorModal ? <>{changeStatusErrorModal}</> : ""}
-      {showChangeCommitteeSuccessModal ? <>{changeCommitteeSuccessModal}</> : ""}
+      {showChangeCommitteeSuccessModal ? (
+        <>{changeCommitteeSuccessModal}</>
+      ) : (
+        ""
+      )}
       {showModal ? (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none">
