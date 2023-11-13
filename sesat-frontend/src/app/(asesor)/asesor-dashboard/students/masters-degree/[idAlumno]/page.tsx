@@ -6,26 +6,14 @@ import { fetchFullTesisHistory } from "../../../../../../../utils/tesis.endpoint
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import { cookies } from "next/headers";
 import { LoginEndpoint } from "../../../../../../../utils/login.endpoint";
-import { LoggedUser } from "../../../../../../../types/ISESAT";
+import { LoggedUser, ThesisFullHistory } from "../../../../../../../types/ISESAT";
 
 type RoleProps = {
   nombre_funcion: string;
   id_tesis: number;
 }
 
-export type ThesisFullHistory = {
-  nombre_programa: string;
-  id_tesis: number;
-  titulo: string;
-  grado: number;
-  fecha_registro: string;
-  nombre: string;
-  apellido_paterno: string;
-  apellido_materno: string;
-  correo: string;
-  estado_finalizacion: boolean;
-  estado_activo: boolean;
-}
+
 
 export default async function Home({
   params,

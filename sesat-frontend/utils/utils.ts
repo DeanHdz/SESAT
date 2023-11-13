@@ -1,6 +1,9 @@
 //date.toISOString() retorna fechas desfasadas por un dia
 //https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off/31732581#31732581
 
+import { Avance } from "../types/ISESAT";
+import { fetchTesisHistory } from "./tesis.endpoint";
+
 //Ejemplo ISO Date: 2020-12-04T06:00:00.000Z
 export function formatAsISODate(dateValue: Date) {
     let day = dateValue.getDate();
@@ -117,4 +120,70 @@ export function dateStringToDate(dateString: string): Date {
     const year = parseInt(parts[2], 10);
 
     return new Date(year, month, day);
+}
+
+export async function fetchHistoryByIdTesis(idTesis: number, idModalidadActual: number, numAvanceActual: number, token: string): Promise<Array<Avance>> {
+
+    let modalidadActual = idModalidadActual === 1 ? 'Tiempo Completo' : 'Medio Tiempo';
+    let totalMaestria1 = 4, totalMaestria2 = 7, totalDoctorado = 9;
+
+    //obtener total del array, ordenar, luego obtener el ultimo elemento
+    let history: Avance[] = await fetchTesisHistory(idTesis, token);
+
+    let avancesEntregados = new Array<Avance>();
+    if (history.length > 0) {
+        history.sort((a, b) => a.id_asignacion - b.id_asignacion);
+
+        let lastElement = history[history.length - 1];
+
+        switch (lastElement.grado_estudio) {
+            case 'Doctorado':
+
+                avancesEntregados = new Array<Avance>(totalDoctorado).fill({ num_avance: 0, grado_estudio: "", id_asignacion: 0, modalidad: '' });
+
+                history.map((item, i) => (
+                    avancesEntregados[i] = item
+                ))
+
+                break;
+
+            default://Maestria
+                let assignmentsLeft = 0;
+
+                if (modalidadActual === 'Tiempo Completo') {
+                    assignmentsLeft = totalMaestria1 - numAvanceActual + 1;//el avance actual tambien esta en el conjunto de los faltantes, por eso es + 1
+                } else {
+                    assignmentsLeft = totalMaestria2 - numAvanceActual + 1;
+                }
+
+                //Revisar cambios de modalidad previos
+                let modalidad = history[0].modalidad;
+
+                for (let index = 0; index < history.length; index++) {
+
+                    const element = history[index];
+
+                    if (element.modalidad !== modalidad) {
+                        modalidad = element.modalidad;
+                        //Avance vacio, se usa como separador entre una modalidad y otra
+                        avancesEntregados.push({ num_avance: -1, grado_estudio: element.grado_estudio, id_asignacion: -1, modalidad: element.modalidad });
+                    }
+
+                    avancesEntregados.push(element);
+                }
+
+                if (lastElement.modalidad !== modalidadActual) {
+                    //Avance vacio, se usa como separador entre una modalidad y otra
+                    avancesEntregados.push({ num_avance: -1, grado_estudio: lastElement.grado_estudio, id_asignacion: -1, modalidad: modalidadActual });
+                }
+                //avances restantes del alumno
+                for (let index = numAvanceActual; index < numAvanceActual + assignmentsLeft; index++) {
+                    avancesEntregados.push({ num_avance: index, grado_estudio: '', id_asignacion: 0, modalidad: '' });
+                }
+                break;
+        }
+    }    
+    console.log(modalidadActual)
+    console.log(avancesEntregados)
+    return avancesEntregados;
 }

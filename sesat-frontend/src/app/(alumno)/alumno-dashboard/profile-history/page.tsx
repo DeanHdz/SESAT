@@ -5,22 +5,8 @@ import { fetchFullTesisHistory } from "../../../../../utils/tesis.endpoint";
 import { fetchComiteMembers } from "../../../../../utils/comite.endpoint";
 import ThesisInfo from "@/app/components/ThesisInfo";
 import { cookies } from "next/headers";
-import { LoggedUser } from "../../../../../types/ISESAT";
+import { LoggedUser, ThesisFullHistory } from "../../../../../types/ISESAT";
 import { LoginEndpoint } from "../../../../../utils/login.endpoint";
-
-export type ThesisFullHistory = {
-  nombre_programa: string;
-  id_tesis: number;
-  titulo: string;
-  grado: number;
-  fecha_registro: string;
-  nombre: string;
-  apellido_paterno: string;
-  apellido_materno: string;
-  correo: string;
-  estado_finalizacion: boolean;
-  estado_activo: boolean;
-}
 
 type ComiteMember = {
   nombre: string;

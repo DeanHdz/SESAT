@@ -1,13 +1,11 @@
 
 "use client";
 import React, { useState } from "react";
-import { ThesisFullHistory } from "../(asesor)/asesor-dashboard/students/masters-degree/[idAlumno]/page";
-import { shortFormatDate } from "../../../utils/utils";
+import { fetchHistoryByIdTesis, shortFormatDate } from "../../../utils/utils";
 import PrevAdvance from "@/app/components/PrevAdvance";
-import { fetchTesisHistory } from "../../../utils/tesis.endpoint";
-import { Avance } from "@/app/(asesor)/asesor-dashboard/asesor-assignment/[idAsignacion]/page";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import Cookies from "js-cookie";
+import { Avance, ThesisFullHistory } from "../../../types/ISESAT";
 
 type TesisProps = {
     tesis: ThesisFullHistory;
@@ -16,56 +14,26 @@ type TesisProps = {
 const ThesisInfo = (props: TesisProps) => {
     const cookie = Cookies.get("SESATsession");
     const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : ""
-    const [history, setHistory] = useState<undefined | Array<number>>(undefined);
+    const [history, setHistory] = useState<undefined | Array<Avance>>(undefined);
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [modalidad, setModalidad] = useState<undefined | string>(undefined)
     const [gradoEstudio, setgradoEstudio] = useState<undefined | string>(undefined)
 
-
-    async function fetchHistoryByIdTesis() {
+    async function fetchThesisHistoryByIdTesis() {
         setIsLoading(true);
         setIsOpen(!isOpen);
+        
+        const res = await fetchHistoryByIdTesis(props.tesis.id_tesis,props.tesis.id_modalidad, props.tesis.avance, token);
+        setHistory(res);
 
-        let history: Avance[] = await fetchTesisHistory(props.tesis.id_tesis, token);
-        let avancesEntregados = new Array();
-        if (history.length > 0) {
-            let { grado_estudio, modalidad } = history[0];
-            history.sort((a, b) => a.id_asignacion - b.id_asignacion);
-            setModalidad(history[0].modalidad);
-            setgradoEstudio(grado_estudio);
-            switch (grado_estudio) {
-                case 'Doctorado':
-
-                    avancesEntregados = new Array(8).fill(0);
-                    history.map((item, i) => (
-                        avancesEntregados[i] = item.id_asignacion
-                    ))
-
-                    break;
-
-                default://Maestria
-                    if (modalidad = 'Tiempo Completo') {
-                        avancesEntregados = new Array(4).fill(0);
-                        history.map((item, i) => (
-                            avancesEntregados[i] = item.id_asignacion
-                        ))
-                    } else {
-                        avancesEntregados = new Array(7).fill(0);
-                        history.map((item, i) => (
-                            avancesEntregados[i] = item.id_asignacion
-                        ))
-                    }
-                    break;
-            }
-            setHistory(avancesEntregados);
-        }
         setIsLoading(false);
     }
+        
 
     return (
         <div className={`collapse ${isOpen ? 'collapse-open' : ''} bg-transparent gray__border py-0`} >
-            <div onClick={fetchHistoryByIdTesis} className={`collapse-title text-xl font-medium px-0 py-0`}>
+            <div onClick={fetchThesisHistoryByIdTesis} className={`collapse-title text-xl font-medium px-0 py-0`}>
                 <div className="w-full flex flex-row p-2 bg-light-blue-10 rounded ">
 
                     <div className="flex w-[50px] text-dark-blue-10 justify-center items-center">
@@ -175,14 +143,22 @@ const ThesisInfo = (props: TesisProps) => {
                                 <>
                                     {history && (
                                         history.map((elem, i) => (
-                                            elem !== 0 ? (
-                                                <li className="step step-primary" key={i}>
-                                                    <PrevAdvance idAsignacion={elem} key={i} avance={i + 1} />
+                                            elem.id_asignacion > 0 ? (
+                                                <li data-content={i + 1} className="step step-primary hidden">
+                                                    <PrevAdvance idAsignacion={elem.id_asignacion} avance={elem.num_avance} />
                                                 </li>
                                             ) : (
-                                                <li className="step" key={i}>
-                                                    {`Avance ${i + 1}`}
-                                                </li>
+                                                <>
+                                                    {elem.id_asignacion === -1 ? (
+                                                        <li data-content={''} className="step text-black/40">
+                                                            {`Cambio de modalidad a ${elem.modalidad}`}
+                                                        </li>
+                                                    ) : (
+                                                        <li data-content={elem.num_avance} className="step">
+                                                            {`Avance ${elem.num_avance}`}
+                                                        </li>
+                                                    )}
+                                                </>
                                             )
                                         ))
                                     )}

@@ -1,13 +1,6 @@
 import PrevAdvance from "@/app/components/PrevAdvance";
 import React from "react";
-import { Avance } from "../(alumno)/alumno-dashboard/alumno-assignment/[idAsignacion]/page";
-
-export type HistoryProps = {
-  id_asignacion: number;
-  nombre_modalidad: string;
-  num_avance: number;
-  grado_estudio: string;
-}
+import { Avance } from "../../../types/ISESAT";
 
 
 const AdvancesList = ({ history }: { history: Array<Avance> | undefined }) => {
