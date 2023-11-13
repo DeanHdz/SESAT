@@ -12,6 +12,7 @@ const nextConfig = {
       bodySizeLimit: '2mb',
     },
   },
+  output: 'standalone',
   webpack: (config) => { 
       config.externals.push({ 
           sharp: 'commonjs sharp', 

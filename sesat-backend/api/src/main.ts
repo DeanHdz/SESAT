@@ -12,6 +12,7 @@ async function bootstrap() {
   //app.use('/send-pdf', json({ limit: '10mb' }));
   app.use(json({ limit: "30mb" }));
   //app.use(helmet());
+  app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(3005);
 }
