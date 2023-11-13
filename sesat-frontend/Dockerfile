@@ -8,7 +8,7 @@ COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN npm ci; 
 
 FROM base AS builder
-WORKDIR /usr/share/nginx/html
+WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG NEXT_PUBLIC_SESAT_API_URL
@@ -16,6 +16,7 @@ ENV NEXT_PUBLIC_SESAT_API_URL=$NEXT_PUBLIC_SESAT_API_URL
 RUN npm run build
 
 FROM nginx:stable-alpine AS runner
+WORKDIR /usr/share/nginx/html
 ARG NGINX_CONF
 ENV NODE_ENV production
 
@@ -62,5 +63,5 @@ EXPOSE 80
 # # ENV PORT 3000
 # # ENV HOSTNAME "0.0.0.0"
 
-# CMD [ "nginx", "-g", "daemon off;" ]
-CMD ["node", "server.js"]
+CMD [ "nginx", "-g", "daemon off;" ]
+# CMD ["node", "server.js"]
