@@ -21,15 +21,22 @@ services:
       - MAIL_FROM=${MAIL_FROM}
     ports:
       - '3005:3005'
+    restart: always
       
   frontend:
     container_name: sesat_frontend
     build:
       context: ./../sesat-frontend
-    environment:
-      - NEXT_PUBLIC_SESAT_API_URL=${NEXT_PUBLIC_SESAT_API_URL}
+      args:
+        - NEXT_PUBLIC_SESAT_API_URL=${NEXT_PUBLIC_SESAT_API_URL}
+        - NGINX_CONF=${NGINX_CONF}
     ports:
-      - '3000:3000'
+      - '3000:80'
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      - backend
+    restart: always
 
   postgres-db:
     container_name: sesat_db
@@ -40,8 +47,10 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
       - 'sesat_master_data:/var/lib/postgresql/data'
+      - './dumps:/docker-entrypoint-initdb.d'
     ports:
       - '${DB_FORWARDED_PORT}:5432'
+    restart: always
 
 volumes:
   sesat_master_data:
