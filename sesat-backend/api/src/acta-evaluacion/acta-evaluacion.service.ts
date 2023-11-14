@@ -115,7 +115,6 @@ export class ActaEvaluacionService {
   }
 
   async createActaAndfillDocument(idAsignacion: number, fillActa: FilledActDto) {
-    var createActa: CreateActaEvaluacionDto;
     //obtener formato de la BD para rellenarlo, el resultado 
     //por default se carga en un ArrayBuffer aunque sea un string      
 
