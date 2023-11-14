@@ -771,6 +771,7 @@ const AddEventModal = ({
       );
     }
     else if(tesisList && selectedTesis !== -1 && btn1Active){
+      console.log("here");
       const EventoDto: AsesorEventDto = {
         id_tesis: tesisList[selectedTesis].id_tesis,
         presentation: true,
@@ -779,6 +780,7 @@ const AddEventModal = ({
         start: start,
         end: end ? end : start
       } 
+      console.log(EventoDto)
       evento = await EventoEndpoint.postAsesorEvent(token, EventoDto)
     }
     else if(tesisList && selectedTesis !== -1)

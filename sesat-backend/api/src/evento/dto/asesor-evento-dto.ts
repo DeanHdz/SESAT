@@ -14,7 +14,7 @@ export class AsesorEventDto {
   
   @IsNotEmpty()
   @IsBoolean()
-  presentacion: boolean
+  presentation: boolean
 
   @IsNotEmpty()
   @IsNumber()
@@ -26,9 +26,9 @@ export class AsesorEventDto {
 
   @IsNotEmpty()
   @IsDateString()
-  start: Date
+  start: string
   
   @IsOptional()
   @IsDateString()
-  end: Date
+  end: string
 }

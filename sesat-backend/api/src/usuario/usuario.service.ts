@@ -148,7 +148,7 @@ export class UsuarioService {
 
     // Deletable
     //make placeholder assignments (?remove)
-    for(let i = 0; i < skipToAvance ; i++)
+    for(let i = 0; i < skipToAvance-1 ; i++)
     {
       let today = new Date();
       let asignacionCreateDto: CreateAsignacionDto = {
@@ -549,7 +549,7 @@ export class UsuarioService {
     const tesis = await this.tesisService.create(tesisData);
 
     let asignacionData: CreateAsignacionDto = null;
-    for(let i = 1; i <= avancePrevio; i++)
+    for(let i = 1; i <= avancePrevio-1; i++)
     {
       asignacionData = {
         id_formato_evaluacion: null,

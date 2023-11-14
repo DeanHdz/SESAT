@@ -25,6 +25,8 @@ export class EventoService {
   ) {}
 
   async postAsesorEvent(asesorEventDto: AsesorEventDto){
+    console.log("in post Asesor")
+    console.log(asesorEventDto)
     const salt = new Date().toISOString();
     const committee: RetrievedCommitteeDTO = await this.comiteService.retrieveCommittee(asesorEventDto.id_tesis);
     const student: Usuario = await this.usuarioService.findStudentByTesisId(asesorEventDto.id_tesis);
@@ -40,8 +42,9 @@ export class EventoService {
         fecha_termino: asesorEventDto.end,
       });
       await this.eventoRepository.save(event);
+      console.log("created for asesor")
     }
-
+    
     if(committee.coasesor)
     {
       const event = this.eventoRepository.create({
@@ -123,7 +126,7 @@ export class EventoService {
     });
     const createdEvent = await this.eventoRepository.save(event);
 
-    if(asesorEventDto.presentacion == true)
+    if(asesorEventDto.presentation === true)
     {
       const assignments: Asignacion[] = await this.asignacionService.findActiveByTesis(asesorEventDto.id_tesis);
       for(let i = 0; i < assignments.length; i++)
@@ -144,7 +147,7 @@ export class EventoService {
           estado_entrega: assignments[i].estado_entrega,
           retroalimentacion: assignments[i].retroalimentacion,
           tipo: assignments[i].tipo,
-          fecha_presentacion: asesorEventDto.start.toISOString(), //does this work?? cunt
+          fecha_presentacion: asesorEventDto.start, //does this work?? cunt
         }
         await this.asignacionService.update(updateAsignacionDto);
       }

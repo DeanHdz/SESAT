@@ -765,8 +765,7 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
               <br />
               <span className="text-[12px]">
                 Seleccione el{" "}
-                <span className="text-red-600">avance previo</span> al que el
-                alumno comenzará
+                <span className="text-red-600">avance</span> en el que el alumno comenzará
               </span>
               {options}
             </div>

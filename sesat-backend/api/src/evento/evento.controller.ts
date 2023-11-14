@@ -19,6 +19,8 @@ export class EventoController {
 
   @Post("/asesorEvent")
   async postAsesorEvent(@Body() asesorEventDto: AsesorEventDto){
+    console.log("in here")
+    console.log(asesorEventDto)
     return await this.eventoService.postAsesorEvent(asesorEventDto);
   }
 
