@@ -12,6 +12,8 @@ import { DatosAlumno } from "src/datos-alumno/entities/datos-alumno.entity";
 import { RetrievedCommitteeDTO } from "./dto/retrieved-committee.dto";
 import { TesisService } from "src/tesis/tesis.service";
 import { CreateRetrievedCommitteeDTO } from "./dto/create-retrieved-committee.dto";
+import { TesisRegistryDTO } from "./dto/tesis-registry.dto";
+import { UpdateTesisDto } from "src/tesis/dto/update-tesis.dto";
 
 @Injectable()
 export class ComiteService {
@@ -27,6 +29,204 @@ export class ComiteService {
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>
   ) { }
+
+  async postTesisRegistry(tesisRegistryDTO: TesisRegistryDTO)
+  {
+    const today = new Date();
+    const asesorSpoof: Comite[] = await this.retrieveCommitteeMemberByRole(1, tesisRegistryDTO.id_tesis);
+    const coasesorSpoof: Comite[] = await this.retrieveCommitteeMemberByRole(2, tesisRegistryDTO.id_tesis);
+    const sinodalesSpoof: Comite[] = await this.retrieveCommitteeMemberByRole(3, tesisRegistryDTO.id_tesis);
+    const suplenteSpoof: Comite[] = await this.retrieveCommitteeMemberByRole(4, tesisRegistryDTO.id_tesis);
+
+    const usuario: Usuario = await this.usuarioRepository.findOne({where: {id_usuario: tesisRegistryDTO.id_usuario}});
+
+    const tesis: Tesis = await this.tesisService.findOne(tesisRegistryDTO.id_tesis);
+    const updateTesisDto: UpdateTesisDto = {
+      id_tesis: tesisRegistryDTO.id_tesis,
+      id_usuario: tesisRegistryDTO.id_usuario,
+      titulo: tesisRegistryDTO.titulo,
+      fecha_registro: today,
+      generacion: tesis.generacion,
+      ultimo_avance: tesis.ultimo_avance,
+      estado_finalizacion: tesis.estado_finalizacion
+    }   
+    const newTesis = await this.tesisService.update(updateTesisDto);
+    //Cumite shit
+    if(asesorSpoof && asesorSpoof[0] && asesorSpoof[0].asesor) //si ya tenia uno, actualizar
+    {
+      const updateCommitteeAsesor: UpdateComiteDto = {
+        id_comite: asesorSpoof[0].id_comite,
+        id_usuario: tesisRegistryDTO.asesor ? tesisRegistryDTO.asesor.id_usuario : 0,
+        id_tesis: tesisRegistryDTO.id_tesis,
+        id_funcion: 1,
+      }
+      this.update(updateCommitteeAsesor);
+    } //sino, crear
+    else{
+      const createCommitteeAsesor: CreateComiteDto = {
+        id_usuario: tesisRegistryDTO.asesor ? tesisRegistryDTO.asesor.id_usuario : 0,
+        id_tesis: tesisRegistryDTO.id_tesis,
+        id_funcion: 1,
+      }
+      this.create(createCommitteeAsesor);
+    } 
+
+    if(coasesorSpoof && coasesorSpoof[0] && coasesorSpoof[0].asesor) //si ya tenia uno, actualizar
+    {
+      const updateCommitteeCoasesor: UpdateComiteDto = {
+        id_comite: coasesorSpoof[0].id_comite,
+        id_usuario: tesisRegistryDTO.coasesor ? tesisRegistryDTO.coasesor.id_usuario : 0,
+        id_tesis: tesisRegistryDTO.id_tesis,
+        id_funcion: 2,
+      }
+      this.update(updateCommitteeCoasesor);
+    } //sino, crear
+    else{
+      const createCommitteeCoasesor: CreateComiteDto = {
+        id_usuario: tesisRegistryDTO.coasesor ? tesisRegistryDTO.coasesor.id_usuario : 0,
+        id_tesis: tesisRegistryDTO.id_tesis,
+        id_funcion: 2,
+      }
+      this.create(createCommitteeCoasesor);
+    }
+
+    if(suplenteSpoof && suplenteSpoof[0] && suplenteSpoof[0].asesor) //si ya tenia uno, actualizar
+    {
+      const updateCommitteeSuplente: UpdateComiteDto = {
+        id_comite: suplenteSpoof[0].id_comite,
+        id_usuario: tesisRegistryDTO.suplente ? tesisRegistryDTO.suplente.id_usuario : 0,
+        id_tesis: tesisRegistryDTO.id_tesis,
+        id_funcion: 4,
+      }
+      this.update(updateCommitteeSuplente);
+    } //sino, crear
+    else{
+      const createCommitteeSuplente: CreateComiteDto = {
+        id_usuario: tesisRegistryDTO.suplente ? tesisRegistryDTO.suplente.id_usuario : 0,
+        id_tesis: tesisRegistryDTO.id_tesis,
+        id_funcion: 4,
+      }
+      this.create(createCommitteeSuplente);
+    }
+
+    if(usuario.datos_alumno.id_grado_estudio == 1)
+    {
+      if(sinodalesSpoof && sinodalesSpoof[0] && sinodalesSpoof[0].asesor) //si ya tenia uno, actualizar
+      {
+        const updateCommitteeSinodal1: UpdateComiteDto = {
+          id_comite: sinodalesSpoof[0].id_comite,
+          id_usuario: tesisRegistryDTO.sinodal1 ? tesisRegistryDTO.sinodal1.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.update(updateCommitteeSinodal1);
+      } //sino, crear
+      else{
+        const createCommitteeSinodal1: CreateComiteDto = {
+          id_usuario: tesisRegistryDTO.sinodal1 ? tesisRegistryDTO.sinodal1.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.create(createCommitteeSinodal1);
+      }
+
+      if(sinodalesSpoof && sinodalesSpoof[1] && sinodalesSpoof[1].asesor) //si ya tenia uno, actualizar
+      {
+        const updateCommitteeSinodal2: UpdateComiteDto = {
+          id_comite: sinodalesSpoof[1].id_comite,
+          id_usuario: tesisRegistryDTO.sinodal2 ? tesisRegistryDTO.sinodal2.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.update(updateCommitteeSinodal2);
+      } //sino, crear
+      else{
+        const createCommitteeSinodal2: CreateComiteDto = {
+          id_usuario: tesisRegistryDTO.sinodal2 ? tesisRegistryDTO.sinodal2.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.create(createCommitteeSinodal2);
+      }
+    }else{
+      if(sinodalesSpoof && sinodalesSpoof[0] && sinodalesSpoof[0].asesor) //si ya tenia uno, actualizar
+      {
+        const updateCommitteeSinodal1: UpdateComiteDto = {
+          id_comite: sinodalesSpoof[0].id_comite,
+          id_usuario: tesisRegistryDTO.sinodal1 ? tesisRegistryDTO.sinodal1.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.update(updateCommitteeSinodal1);
+      } //sino, crear
+      else{
+        const createCommitteeSinodal1: CreateComiteDto = {
+          id_usuario: tesisRegistryDTO.sinodal1 ? tesisRegistryDTO.sinodal1.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.create(createCommitteeSinodal1);
+      }
+
+      if(sinodalesSpoof && sinodalesSpoof[1] && sinodalesSpoof[1].asesor) //si ya tenia uno, actualizar
+      {
+        const updateCommitteeSinodal2: UpdateComiteDto = {
+          id_comite: sinodalesSpoof[1].id_comite,
+          id_usuario: tesisRegistryDTO.sinodal2 ? tesisRegistryDTO.sinodal2.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.update(updateCommitteeSinodal2);
+      } //sino, crear
+      else{
+        const createCommitteeSinodal2: CreateComiteDto = {
+          id_usuario: tesisRegistryDTO.sinodal2 ? tesisRegistryDTO.sinodal2.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.create(createCommitteeSinodal2);
+      }
+
+      if(sinodalesSpoof && sinodalesSpoof[2] && sinodalesSpoof[2].asesor) //si ya tenia uno, actualizar
+      {
+        const updateCommitteeSinodal3: UpdateComiteDto = {
+          id_comite: sinodalesSpoof[2].id_comite,
+          id_usuario: tesisRegistryDTO.sinodal3 ? tesisRegistryDTO.sinodal3.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.update(updateCommitteeSinodal3);
+      } //sino, crear
+      else{
+        const createCommitteeSinodal3: CreateComiteDto = {
+          id_usuario: tesisRegistryDTO.sinodal3 ? tesisRegistryDTO.sinodal3.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.create(createCommitteeSinodal3);
+      }
+
+      if(sinodalesSpoof && sinodalesSpoof[3] && sinodalesSpoof[3].asesor) //si ya tenia uno, actualizar
+      {
+        const updateCommitteeSinodal4: UpdateComiteDto = {
+          id_comite: sinodalesSpoof[3].id_comite,
+          id_usuario: tesisRegistryDTO.sinodal4 ? tesisRegistryDTO.sinodal4.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.update(updateCommitteeSinodal4);
+      } //sino, crear
+      else{
+        const createCommitteeSinodal4: CreateComiteDto = {
+          id_usuario: tesisRegistryDTO.sinodal4 ? tesisRegistryDTO.sinodal4.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 3,
+        }
+        this.create(createCommitteeSinodal4);
+      }
+    }
+    return newTesis;
+  }
 
   async findAsesorTesisList(id_usuario: number)
   {

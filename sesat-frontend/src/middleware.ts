@@ -112,7 +112,6 @@ export const config = {
     '/alumno-dashboard/alumno-assignment',
     '/alumno-dashboard/alumno-assignment/:idAsignacion',
     '/alumno-dashboard/profile-history',
-    '/alumno-dashboard/register',
-    '/alumno-dashboard/register-ext',
+    '/alumno-dashboard/tesis-registry',
   ],
 }
