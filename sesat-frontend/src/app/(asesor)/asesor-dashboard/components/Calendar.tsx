@@ -8,11 +8,11 @@ import { EventClickArg } from "@fullcalendar/core/index.js";
 import { useState } from "react";
 import esLocale from "@fullcalendar/core/locales/es";
 import ViewEventModal from "./ViewEventModal";
-import AddEventModal from "../../../components/AddEventModal";
+import AddEventModal from "./AddEventModal";
 
 export default function Calendar(
   this: any,
-  { eventos, token }: { eventos: Evento[], token: string }
+  { eventos, token, id_usuario }: { eventos: Evento[], token: string, id_usuario: number }
 ) {
   const [showModal, setShowModal] = useState(false);
   const [eventInfo, setEventInfo] = useState(Object);
@@ -125,6 +125,8 @@ export default function Calendar(
         startDate={startDate as Date}
         endDate={endDate as Date}
         isClicked={isClicked}
+        token={token}
+        id_usuario={id_usuario}
       />
 
       {/*Ver el evento */}

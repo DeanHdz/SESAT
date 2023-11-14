@@ -662,3 +662,59 @@ export interface RetrievedCommittee {
   sinodal4?: Usuario | null,
   suplente: Usuario | null,
 }
+
+export interface CreateRetrievedCommitteeDTO {
+  id_tesis: number,
+  id_usuario: number,
+  asesor: Usuario | null,
+  coasesor?: Usuario | null,
+  sinodal1: Usuario | null,
+  sinodal2: Usuario | null,
+  sinodal3?: Usuario | null,
+  sinodal4?: Usuario | null,
+  suplente: Usuario | null,
+}
+
+export interface AsesorEventDto {
+  id_tesis: number,
+  id_usuario: number,
+  presentation: boolean,
+  title: string;
+  start: Date;
+  end: Date | null;
+}
+
+export type ThesisFullHistory = {
+  nombre_programa: string;
+  id_tesis: number;
+  titulo: string;
+  avance: number;
+  id_modalidad: number;
+  grado: number;
+  fecha_registro: string;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  correo: string;
+  estado_finalizacion: boolean;
+  estado_activo: boolean;
+}
+
+export type Avance = {
+  id_asignacion: number;
+  num_avance: number;
+  grado_estudio: string;
+  modalidad: string;
+};
+
+export type TesisInfo = {
+  programa_nombre_programa: string;
+  titulo: string;
+  fecha_registro: string;
+  id_tesis: number;
+  id_usuario: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  id_grado_estudio: number;
+};

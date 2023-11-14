@@ -1,32 +1,16 @@
 import Drawer from "../../../components/Drawer";
-import AssignmentPath from "../../../components/AssignmentPath";
 import StudentProfile from "../../../../../components/StudentProfile";
-import ThesisHistory from "./components/ThesisHistory";
 import ThesisInfo from "../../../../../components/ThesisInfo";
 import { fetchValidateRole } from "../../../../../../../utils/comite.endpoint";
 import { fetchFullTesisHistory } from "../../../../../../../utils/tesis.endpoint";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import { LoginEndpoint } from "../../../../../../../utils/login.endpoint";
 import { cookies } from "next/headers";
-import { LoggedUser } from "../../../../../../../types/ISESAT";
+import { LoggedUser, ThesisFullHistory } from "../../../../../../../types/ISESAT";
 
 type RoleProps = {
   nombre_funcion: string;
   id_tesis: number;
-}
-
-export type ThesisFullHistory = {
-  nombre_programa: string;
-  id_tesis: number;
-  titulo: string;
-  grado: number;
-  fecha_registro: string;
-  nombre: string;
-  apellido_paterno: string;
-  apellido_materno: string;
-  correo: string;
-  estado_finalizacion: boolean;
-  estado_activo: boolean;
 }
 
 export default async function Home({
@@ -47,7 +31,7 @@ export default async function Home({
   }
   return (
     <div className="flex mb-40">
-      <div className="hidden lg:flex lg:w-3/12 flex-col">
+      <div className="hidden lg:flex lg:w-3/12 flex-col pr-10">
         <Drawer />
       </div>
 

@@ -1,3 +1,79 @@
+import { CreateRetrievedCommitteeDTO } from "../types/ISESAT";
+
+export async function getAsesorTesisList(token: string, id: number)
+{
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/thesesList/${id}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    next: { revalidate: 0 }    
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+  try {
+    const result = await response.json();
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function postUpdateCommitteeWithRetrieved(
+  token: string,
+  data: CreateRetrievedCommitteeDTO
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/retrieve/update`;
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  };
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error("Error fetching the data");
+  }
+  try {
+    const result = await response.json();
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function retrieveCommittee(token: string, id: number) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/retrieve/${id}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    next: { revalidate: 0 }    
+  };
+  const response = await fetch(url, options);
+
+  if(!response.ok){
+    throw(new Error('Error fetching data'))
+  }
+  try {
+    const result = await response.json();
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
 export async function fetchComiteByIDTesis(
   id: number,
   token: string,
@@ -51,12 +127,11 @@ export async function fetchAsesorByIDTesis(
 }
 
 export async function fetchAvancesEntregados(
-  idPeriodo: string,
-  idAsesor: string,
-  idFuncion: string,
+  idPeriodo: number,
+  idAsesor: number,
   token: string,
 ) {
-  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/asesor/turned-in/${idPeriodo}/${idAsesor}/${idFuncion}`;
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/asesor/turned-in/${idPeriodo}/${idAsesor}`;
 
   const options = {
     method: 'GET',

@@ -12,6 +12,7 @@ import { AsignacionModule } from "src/asignacion/asignacion.module";
 import { DatosAsesorexternoModule } from "src/datos-asesor-externo/datos-asesor-externo.module";
 import { VariablesSistemaModule } from "src/variables-sistema/variables-sistema.module";
 import { EventoModule } from "src/evento/evento.module";
+import { ComiteModule } from "src/comite/comite.module";
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { EventoModule } from "src/evento/evento.module";
     TesisModule,
     AsignacionModule,
     VariablesSistemaModule,
-    DatosAsesorexternoModule
+    DatosAsesorexternoModule,
+    ComiteModule
   ],
   controllers: [UsuarioController],
   providers: [UsuarioService],

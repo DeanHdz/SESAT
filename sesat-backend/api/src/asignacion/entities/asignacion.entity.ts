@@ -69,7 +69,7 @@ export class Asignacion {
   tipo: number;
 
   @Column()
-  fecha_presentacion: string;
+  fecha_presentacion: string; ///[!] cambie a Date
 
   // @OneToOne(() => FormatoEvaluacion, { eager: true })
   // @JoinColumn({ name: "id_formato_evaluacion" })

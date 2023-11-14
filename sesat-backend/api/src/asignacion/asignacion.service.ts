@@ -16,6 +16,7 @@ import { TesisService } from "src/tesis/tesis.service";
 import { Comite } from "src/comite/entities/comite.entity";
 import { NotificacionService } from "src/notification/notification.service";
 import { ComiteService } from "src/comite/comite.service";
+import { formatAsISODate } from "src/utils/utils";
 
 @Injectable()
 export class AsignacionService {
@@ -185,6 +186,13 @@ export class AsignacionService {
     });
   }
 
+  findActiveByTesis(id_tesis: number) {
+    return this.asignacionRepository.find({
+      where: { id_tesis: id_tesis, estado_entrega: 0 },
+      relations: ["periodo"],
+    });
+  }
+
   /**
    * Una asignacion que coincida con el id
    * @param id
@@ -228,6 +236,7 @@ export class AsignacionService {
     return resp;
   }
 
+  
   //Regresar asignaciones en base al periodo e ID de usuario
   async findAsignacionesByPeriodAndAlumno(idPeriodo: number, idAlumno: number) {
     const resp = await this.asignacionRepository
@@ -237,10 +246,15 @@ export class AsignacionService {
         "a.num_avance AS num_avance",
         "a.titulo AS titulo",
         "a.fecha_entrega AS fecha_entrega",
+        "p.fecha_cierre AS fecha_cierre",
+        "p.fecha_cierre_opc AS fecha_cierre_opc",
+        "da.id_grado_estudio AS id_grado_estudio"
       ])
 
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "u.id_usuario = t.id_usuario")
+      .innerJoin(DatosAlumno, "da", "da.id_datos_alumno = u.id_datos_alumno")
+      .innerJoin(Periodo, "p", "p.id_periodo = a.id_periodo")
 
       .where("a.id_periodo = :id_periodo", { id_periodo: idPeriodo })
       .andWhere("u.id_usuario = :idUser", { idUser: idAlumno })

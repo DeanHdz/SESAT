@@ -33,6 +33,11 @@ import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
 import { EventoService } from "src/evento/evento.service";
 import { Evento } from "src/evento/entities/evento.entity";
 import { UpdateDatosAlumnoDto } from "src/datos-alumno/dto/update-datos-alumno.dto";
+import { UpdateTesisDto } from "src/tesis/dto/update-tesis.dto";
+import { UpdateAsignacionDto } from "src/asignacion/dto/update-asignacion.dto";
+import { ComiteService } from "src/comite/comite.service";
+import { RetrievedCommitteeDTO } from "src/comite/dto/retrieved-committee.dto";
+import { CreateComiteDto } from "src/comite/dto/create-comite.dto";
 
 @Injectable()
 export class UsuarioService {
@@ -46,8 +51,286 @@ export class UsuarioService {
     private readonly asignacionService: AsignacionService,
     private readonly datosAsesorexternoService: DatosAsesorexternoService,
     private readonly variablesSistemaService: VariablesSistemaService,
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
+    private readonly comiteService: ComiteService
   ) {}
+
+  async findStudentByTesisId(id: number)
+  {
+    const tesis = await this.tesisService.findOne(id);
+    return await tesis.alumno;
+  }
+
+  async changeDedication(id_usuario: number, skipToAvance: number)
+  {
+    const user: Usuario = await this.usuarioRepository.findOne({where: {id_usuario: id_usuario}});
+    let newModalidad = 0;
+     // update datos alumno
+    // 1: tiempo completo, 2: medio tiempo
+    switch(user.datos_alumno.id_modalidad)
+    {
+      case 1:
+        const datosAlumnoDataTC: UpdateDatosAlumnoDto = {
+          id_datos_alumno: user.datos_alumno.id_datos_alumno,
+          id_modalidad: 2,
+          id_programa: user.datos_alumno.id_programa,
+          id_grado_estudio: user.datos_alumno.id_grado_estudio,
+          generacion: user.datos_alumno.generacion,
+          estado_activo: true, //always defaults to true, admin has to turn off manually
+          avance_previo: false, //can leave as false, skips theses registry
+        }
+        newModalidad = 2;
+        await this.datosAlumnoService.update(datosAlumnoDataTC);
+        break;
+      case 2:
+        const datosAlumnoDataMT: UpdateDatosAlumnoDto = {
+          id_datos_alumno: user.datos_alumno.id_datos_alumno,
+          id_modalidad: 1,
+          id_programa: user.datos_alumno.id_programa,
+          id_grado_estudio: user.datos_alumno.id_grado_estudio,
+          generacion: user.datos_alumno.generacion,
+          estado_activo: true, //always defaults to true, admin has to turn off manually
+          avance_previo: false, //can leave as false, skips theses registry
+        }
+        newModalidad = 1;
+        await this.datosAlumnoService.update(datosAlumnoDataMT);
+        break;
+    }
+
+    //finalize theses
+    const oldTesis: Tesis = await this.tesisService.findTesisPerStudent(user.id_usuario);
+    const oldTesisUpdateDTO: UpdateTesisDto = {
+      id_tesis: oldTesis.id_tesis,
+      id_usuario: oldTesis.id_usuario,
+      titulo: "[Deprecated] " + oldTesis.titulo,
+      fecha_registro: oldTesis.fecha_registro,
+      generacion: oldTesis.generacion,
+      ultimo_avance: oldTesis.ultimo_avance,
+      estado_finalizacion: true
+    }
+    await this.tesisService.update(oldTesisUpdateDTO);
+
+    //create new theses
+    const newTesisData: CreateTesisDto = {
+      id_usuario: user.id_usuario,
+      titulo: oldTesis.titulo,
+      generacion: user.datos_alumno.generacion,
+      estado_finalizacion: false,
+      ultimo_avance: skipToAvance, // -> will be changed later after assignment creation ???
+      fecha_registro: oldTesis.fecha_registro,
+    }
+    const newTesis = await this.tesisService.create(newTesisData);
+    // close previous open assignments
+    const assignmentList = await this.asignacionService.findActiveByTesis(oldTesis.id_tesis)
+    for(let i = 0; i <= assignmentList.length-1; i++)
+    {
+      let today = new Date();
+      let asignacionUpdateDto: UpdateAsignacionDto = {
+        id_asignacion: assignmentList[i].id_asignacion,
+        id_formato_evaluacion: assignmentList[i].id_formato_evaluacion,
+        id_acta_evaluacion: assignmentList[i].id_acta_evaluacion,
+        id_tesis: oldTesis.id_tesis,
+        id_modalidad: user.datos_alumno.id_modalidad,
+        id_periodo: assignmentList[i].id_periodo,
+        num_avance: assignmentList[i].num_avance,
+        titulo: "[Closed] " + assignmentList[i].titulo,
+        descripcion: assignmentList[i].descripcion,
+        fecha_entrega: today.toISOString(),
+        estado_entrega: 1,
+        calificacion: assignmentList[i].calificacion,
+        documento: assignmentList[i].documento,
+        retroalimentacion: assignmentList[i].retroalimentacion,
+        tipo: assignmentList[i].tipo,
+        fecha_presentacion: assignmentList[i].fecha_presentacion
+      }
+      await this.asignacionService.update(asignacionUpdateDto);
+    }
+
+    // Deletable
+    //make placeholder assignments (?remove)
+    for(let i = 0; i < skipToAvance-1 ; i++)
+    {
+      let today = new Date();
+      let asignacionCreateDto: CreateAsignacionDto = {
+        id_formato_evaluacion: null,
+        id_acta_evaluacion: null,
+        id_tesis: newTesis.id_tesis,
+        id_modalidad: newModalidad,
+        id_periodo: 1,
+        num_avance: i+1,
+        titulo: "Asignación Creada por el Sistema",
+        descripcion: "Esta asignación se ha creado para acomodar al alumno en el sistema, favor de ignorar.",
+        fecha_entrega: today.toISOString(),
+        estado_entrega: 1,
+        calificacion: null,
+        documento: null,
+        retroalimentacion: null,
+        tipo: 1,
+        fecha_presentacion: null
+      }
+      await this.asignacionService.create(asignacionCreateDto);
+    }
+    // Deletable
+
+    //CreateNewComite
+    const members: RetrievedCommitteeDTO = await this.comiteService.retrieveCommittee(oldTesis.id_tesis);
+    if(members.asesor)
+    {
+      const asesor : CreateComiteDto = {
+        id_usuario: members.asesor.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 1,
+      }
+      await this.comiteService.create(asesor);
+    }
+    if(members.coasesor)
+    {
+      const coasesor : CreateComiteDto = {
+        id_usuario: members.coasesor.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 2,
+      }
+      await this.comiteService.create(coasesor);
+    }
+    if(members.sinodal1)
+    {
+      const sinodal1 : CreateComiteDto = {
+        id_usuario: members.sinodal1.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 3,
+      }
+      await this.comiteService.create(sinodal1);
+    }
+    if(members.sinodal2)
+    {
+      const sinodal2 : CreateComiteDto = {
+        id_usuario: members.sinodal2.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 3,
+      }
+      await this.comiteService.create(sinodal2);
+    }
+    if(members.suplente)
+    {
+      const suplente : CreateComiteDto = {
+        id_usuario: members.suplente.id_usuario,
+        id_tesis: newTesis.id_tesis,
+        id_funcion: 4,
+      }
+      await this.comiteService.create(suplente);
+    }
+
+    return await this.usuarioRepository.findOne({where: {id_usuario: id_usuario}});
+  }
+
+  async resetStudentFromExternalStudent(id_usuario: number)
+  {
+    const url = `http://ciep.ing.uaslp.mx/sesat/student.php?id=${id_usuario}`;
+    const user: Usuario = await this.usuarioRepository.findOne({where: {id_usuario: id_usuario}});
+    const data = await lastValueFrom(this.httpService.get(url))
+    const createFromExternal =  data.data[data.data.length-1];
+
+    let modalidad = 0;
+    switch(createFromExternal.dedicacion)
+    {
+      case "MT":
+        modalidad = 2;
+      break;
+      case "TC":
+        modalidad = 1;
+      break;
+    }
+
+    let programa = await this.programaService.findOneByName(createFromExternal.programa);
+    if(!programa)
+    {
+      const programData: CreateProgramaDto = {
+        nombre_programa: createFromExternal.programa
+      }
+      programa = await this.programaService.create(programData);
+    }
+
+    const gradoEstudio = await this.gradoEstudioService.findOneByName(createFromExternal.grado_estudio);
+ 
+    const datosAlumnoData: UpdateDatosAlumnoDto = {
+      id_datos_alumno: user.datos_alumno.id_datos_alumno,
+      id_modalidad: modalidad,
+      id_programa: programa.id_programa,
+      id_grado_estudio: gradoEstudio.id_grado_estudio,
+      generacion: parseInt(createFromExternal.gen),
+      estado_activo: true, //always defaults to true, admin has to turn off manually
+      avance_previo: false,
+    } 
+
+    const datosAlumno = await this.datosAlumnoService.update(datosAlumnoData);
+    const apellidos: string[] = createFromExternal.apellidos.split(" ");
+
+    const updatedUser: UpdateUsuarioDto = {
+      id_usuario: user.id_usuario,
+      id_rol: 3,
+      id_datos_alumno: datosAlumno.id_datos_alumno,
+      id_datos_asesor_externo: null,
+      password: null,
+      nombre: createFromExternal.nombre,
+      apellido_paterno: apellidos[0],
+      apellido_materno: apellidos[1] ? apellidos[1] : "",
+      correo: createFromExternal.email
+    }
+
+    const actualUser = await this.update(updatedUser)
+
+    const oldTesis: Tesis = await this.tesisService.findTesisPerStudent(actualUser.id_usuario);
+    const oldTesisUpdateDTO: UpdateTesisDto = {
+      id_tesis: oldTesis.id_tesis,
+      id_usuario: oldTesis.id_usuario,
+      titulo: "[Deprecated]" + oldTesis.titulo,
+      fecha_registro: oldTesis.fecha_registro,
+      generacion: oldTesis.generacion,
+      ultimo_avance: oldTesis.ultimo_avance,
+      estado_finalizacion: true
+    }
+    await this.tesisService.update(oldTesisUpdateDTO);
+
+    const newTesisData: CreateTesisDto = {
+      id_usuario: user.id_usuario,
+      generacion: datosAlumno.generacion,
+      estado_finalizacion: false,
+      ultimo_avance: 1, ///consultar con alfredo
+      titulo: null,
+      fecha_registro: null
+    }
+    await this.tesisService.create(newTesisData);
+
+    const assignmentList = await this.asignacionService.findActiveByTesis(oldTesis.id_tesis)
+    console.log("assignment list")
+    console.log(assignmentList)
+    for(let i = 0; i <= assignmentList.length-1; i++)
+    {
+      console.log("in for")
+      let today = new Date();
+      let asignacionUpdateDto: UpdateAsignacionDto = {
+        id_asignacion: assignmentList[i].id_asignacion,
+        id_formato_evaluacion: assignmentList[i].id_formato_evaluacion,
+        id_acta_evaluacion: assignmentList[i].id_acta_evaluacion,
+        id_tesis: oldTesis.id_tesis,
+        id_modalidad: user.datos_alumno.id_modalidad,
+        id_periodo: assignmentList[i].id_periodo,
+        num_avance: assignmentList[i].num_avance,
+        titulo: "[Closed]" + assignmentList[i].titulo,
+        descripcion: assignmentList[i].descripcion,
+        fecha_entrega: today.toISOString(),
+        estado_entrega: 1,
+        calificacion: assignmentList[i].calificacion,
+        documento: assignmentList[i].documento,
+        retroalimentacion: assignmentList[i].retroalimentacion,
+        tipo: assignmentList[i].tipo,
+        fecha_presentacion: assignmentList[i].fecha_presentacion
+      }
+      await this.asignacionService.update(asignacionUpdateDto);
+    }
+
+    return actualUser;
+  }
 
   async changeStatus(id: number)
   {
@@ -266,7 +549,7 @@ export class UsuarioService {
     const tesis = await this.tesisService.create(tesisData);
 
     let asignacionData: CreateAsignacionDto = null;
-    for(let i = 1; i <= avancePrevio; i++)
+    for(let i = 1; i <= avancePrevio-1; i++)
     {
       asignacionData = {
         id_formato_evaluacion: null,
@@ -282,7 +565,7 @@ export class UsuarioService {
         documento: null,
         estado_entrega: 1,
         retroalimentacion: null,
-        tipo: i === 5 ? 2 : 1,
+        tipo: i === 5 && gradoEstudio.nombre_grado_estudio === "Doctorado" ? 2 : 1,
         fecha_presentacion: null
       }
       await this.asignacionService.create(asignacionData);
@@ -297,9 +580,11 @@ export class UsuarioService {
     if(data.data.length !== 0){
       const userInSystem = await this.findOne(id);
       if(!userInSystem)
-        return data.data[data.data.length-1];}
+        return data.data[data.data.length-1];
+      }
     else{
-      return null;}
+      return null;
+    }
   }
 
   async paginateMasterStudents(options: IPaginationOptions): Promise<Pagination<Usuario>> {

@@ -1,7 +1,56 @@
-import { CreateExternalAsesor, CreateExternalUser } from "../types/ISESAT";
+import { CreateExternalAsesor, CreateExternalUser, Usuario } from "../types/ISESAT";
 import { CreateForeignAsesor } from "../types/ISESAT";
 
 export namespace UsuarioEndpoint {
+
+  export async function changeDedication(
+    token: string,
+    id_usuario: number,
+    skipToAvance: number
+  ) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/dedication/${id_usuario}/${skipToAvance}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  export async function postResetExternalStudent(
+    token: string,
+    id_usuario: number
+  ) {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/usuario/external/student/reset/${id_usuario}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
+    }
+  }
 
   export async function changeStatus(
     token: string,

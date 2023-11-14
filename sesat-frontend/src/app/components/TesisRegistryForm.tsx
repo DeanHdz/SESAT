@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 
 import SelectAsesores from "./SelectAsesores";
-import SelectProgramas from "./SelectProgramas";
 
 
 import { encode } from "base64-arraybuffer";

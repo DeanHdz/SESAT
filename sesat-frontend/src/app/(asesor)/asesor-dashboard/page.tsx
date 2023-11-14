@@ -1,9 +1,8 @@
 import { fetchAvancesEntregados } from "../../../../utils/comite.endpoint";
 import { fetchLatestPeriod } from "../../../../utils/periodo.endpoint";
 import Calendar from "./components/Calendar";
-import CommentCard from "./components/CommentCard";
 import CompletedAssignments from './components/CompletedAssignments'
-import NotificacionSection from "./components/NotificationSection";
+import NotificacionSection from "../../components/NotificationSection";
 import Drawer from "./components/Drawer";
 import { cookies } from "next/headers";
 import { Evento, LoggedUser } from "../../../../types/ISESAT";
@@ -31,42 +30,45 @@ export default async function Home() {
 
   const eventosData: Promise<Evento[]> = EventoEndpoint.getEventos(token, user.id_usuario);
   const eventos = await eventosData;
-  
-  
-  let asesorID = user.id_usuario;
-  let idFuncion = 1;
-  let periodo = await fetchLatestPeriod(token).catch();
-  let asignaciones: AsignacionProps[] = await fetchAvancesEntregados(periodo.id_periodo, asesorID.toString(), idFuncion.toString(), token)
-  return (
-    <main className="w-full flex flex-row max-w-[1600px] mx-auto">
 
-      <div className="hidden lg:flex lg:w-3/12">
+
+  let asesorID = user.id_usuario;
+  let periodo = await fetchLatestPeriod(token).catch();
+  let asignaciones: AsignacionProps[] = await fetchAvancesEntregados(periodo.id_periodo, asesorID, token);
+  return (
+    <main className="w-full flex flex-row mx-auto">
+
+      <div className="hidden lg:flex lg:w-3/12 pr-10">
         <Drawer />
       </div>
 
-      <div className="w-full lg:w-9/12">
-        <div className="w-full flex justify-center mt-6 mb-6 pt-2 p-2 border-b border-light-gray-22 border-solid ">
-          <p className="text-3xl font-bold">Tablero</p>
+      <div className="w-full lg:w-9/12 bg-light-blue-10 rounded-xl p-6">
+        <div className="w-full flex justify-start mb-6">
+          <p className="text-3xl font-bold">Inicio</p>
         </div>
 
-        <div className="w-full flex justify-center pt-2 pb-2 mb-10">
+        <div className="w-full flex justify-center mb-4">
           <CompletedAssignments asignaciones={asignaciones} />
         </div>
 
-        <div className="flex  flex-col lg:flex-row  w-full justify-center pt-2 pb-2">
-          <div className="w-full p-2 lg:w-2/3">
-            <div className="w-full flex justify-center">
-              <p className="text-2xl font-bold text-black/40">Calendario de Actividades</p>
-            </div>
-            <div className="mt-2 w-full">
-              <Calendar eventos={eventos} token={token}/>
+        <div className="flex flex-col lg:flex-row w-full justify-center">
+
+          <div className="w-full pr-0 lg:pr-4 lg:w-2/3">
+            <div className="w-full h-fit">
+              <div className="bg-white gray__border p-6 h-fit">
+                <div className="w-full flex mb-6">
+                  <p className="text-xl font-SESAT">Calendario de Actividades</p>
+                </div>
+                <Calendar eventos={eventos} token={token} id_usuario={user.id_usuario}/>
+              </div>
+
             </div>
           </div>
-          <div className="w-full p-2 lg:w-1/3 mt-10 lg:mt-0">
+          
+          <div className="w-full mt-4 lg:w-1/3 lg:mt-0">
             <NotificacionSection />
           </div>
         </div>
-        
       </div>
 
     </main>

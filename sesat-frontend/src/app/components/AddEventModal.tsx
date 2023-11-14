@@ -8,6 +8,7 @@ import { useDebounce } from "use-debounce";
 import { CreateEventByType, Usuario } from "../../../types/ISESAT";
 import { UsuarioEndpoint } from "../../../utils/usuario.endpoint";
 import revalidator from "../(admin)/admin-dashboard/actions";
+import Cookies from "js-cookie";
 
 const AddEventModal = ({
   startDate,
@@ -50,6 +51,8 @@ const AddEventModal = ({
   const [end, setEndDate] = useState<Date | undefined>(endDate);
   const [changeDate, setChangeDate] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean | undefined>(false);
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   useEffect(() => {
     setStartDate(
@@ -155,13 +158,13 @@ const AddEventModal = ({
       switch (op) {
         case 1: //find by Id
           const usuarioByIdData: Promise<Usuario[]> =
-            UsuarioEndpoint.getUserById(query ? parseInt(query) : 0, "[token]");
+            UsuarioEndpoint.getUserById(query ? parseInt(query) : 0, token);
           const fetchedUsuarioById = await usuarioByIdData;
           if (fetchedUsuarioById != null) setUsuario(fetchedUsuarioById);
           break;
         case 2: //Find by Name
           const usuarioByNameData: Promise<Usuario[]> =
-            UsuarioEndpoint.getUserByName("[token]", query ? query : "");
+            UsuarioEndpoint.getUserByName(token, query ? query : "");
           const fetchedUsuarioByName = await usuarioByNameData;
           if (fetchedUsuarioByName != null) setUsuario(fetchedUsuarioByName);
           break;
@@ -699,7 +702,7 @@ const AddEventModal = ({
           fecha_inicio: start,
           fecha_termino: end ? end : start,
         },
-        ""
+        token
       );
     } else if (btn1Active == true && btn2Active == false) {
       const createEventoDto: CreateEventByType = {
@@ -711,7 +714,7 @@ const AddEventModal = ({
         start: start,
         end: end ? end : start,
       };
-      evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
+      evento = await EventoEndpoint.postEventByType(createEventoDto, token);
     } else if (btn1Active == false && btn2Active == true) {
       const createEventoDto: CreateEventByType = {
         users: null,
@@ -722,7 +725,7 @@ const AddEventModal = ({
         start: start,
         end: end ? end : start,
       };
-      evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
+      evento = await EventoEndpoint.postEventByType(createEventoDto, token);
     } else if (participants.length > 0) {
       const createEventoDto: CreateEventByType = {
         users: participants,
@@ -733,7 +736,7 @@ const AddEventModal = ({
         start: start,
         end: end ? end : start,
       };
-      evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
+      evento = await EventoEndpoint.postEventByType(createEventoDto, token);
     }
     if (evento != null) {
       revalidator("Eventos");

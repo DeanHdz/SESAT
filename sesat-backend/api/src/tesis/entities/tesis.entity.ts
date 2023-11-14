@@ -23,7 +23,7 @@ export class Tesis {
   @Column()
   id_usuario: number;
 
-  @OneToOne(() => Usuario, { eager: false })
+  @OneToOne(() => Usuario, { eager: true })
   @JoinColumn({ name: "id_usuario" })
   alumno: Usuario;
 
@@ -43,7 +43,7 @@ export class Tesis {
   estado_finalizacion: boolean;
 
   @OneToMany(() => Asignacion, (asignacion) => asignacion.tesis, {
-    eager: true,
+    eager: false,
   })
   asignaciones: Asignacion[];
 }

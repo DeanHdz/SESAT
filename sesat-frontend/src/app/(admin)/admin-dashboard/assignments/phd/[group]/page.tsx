@@ -1,9 +1,9 @@
 
 import { TitleBar } from "@/app/components/TitleBar";
 import { fetchLatestPeriod } from "../../../../../../../utils/periodo.endpoint";
-import GenInfoPhd from "./components/GenInfoPhd";
+import GenInfoPhd from "../../../components/GenInfoPhd";
 import { fetchCountAlumnosDoctoradoOfNumAv } from "../../../../../../../utils/tesis.endpoint";
-import AssingmentCardInfo from "./components/AssingmentCardInfo";
+import AssingmentCardInfo from "../../../components/AssingmentCardInfo";
 import { fetchNumAsignacionesEntregadasDoctorado, fetchNumAsignacionesPendientesDoctorado } from "../../../../../../../utils/asignacion.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "../../../not-found";
@@ -40,8 +40,8 @@ export default async function ViewGroup({
   let totalPendientes2;
   let totalEntregadas2;
 
-  let captionA = group === '4' ? ' - Evaluación Inicial' : '';
-  let captionB = group === '4' ? ' - Evaluación Final' : '';
+  let captionA = group === '5' ? ' - Evaluación Inicial' : '';
+  let captionB = group === '5' ? ' - Evaluación Final' : '';
 
   let hayActivas;
   let hayPendientes;
@@ -61,7 +61,7 @@ export default async function ViewGroup({
     })
 
 
-    if (group === '4') { //Caso 4to semestre, 2 avances
+    if (group === '5') { //Caso 5to semestre, 2 avances
       totalPendientes2 = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "2", "").then((result) => {
         let total = parseInt(result)
         return total
@@ -88,7 +88,7 @@ export default async function ViewGroup({
           <div>
             <TitleBar title={names[index]} />
             <div className="w-full">
-              {group === '4' && (
+              {group === '5' && (
                 <div className="mt-6 px-3 py-2 rounded-md bg-gradient-to-r from-[#03396c] from-100% lg:from-45%  w-full flex flex-col justify-start">
                   <label className="text-white block text-xl font-light">
                     Evaluación de Medio Término

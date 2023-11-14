@@ -1,10 +1,10 @@
 import Link from "next/link";
-import EndSessionIcon from "./EndSessionIcon";
+import EndSessionIcon from "../../../components/EndSessionIcon";
 
 export default function AdminNavbar() {
   
   return (
-    <div className="lg:w-full flex justify-center items-center p-2 bg-light-blue-15 gray__border mb-6 h-[70px]">
+    <div className="lg:w-full flex justify-center items-center p-2 bg-light-blue-10 gray__border mb-6 h-[70px]">
       <div className="dropdown dropdown-bottom px-3 z-50 flex justify-start w-3/12">
         <label
           tabIndex={0}

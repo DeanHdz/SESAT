@@ -1,6 +1,29 @@
-import { CreateEventByType, CreateEvento } from "../types/ISESAT";
+import { AsesorEventDto, CreateEventByType, CreateEvento } from "../types/ISESAT";
 
 export namespace EventoEndpoint {
+
+  export async function postAsesorEvent(token: string, data: AsesorEventDto )
+  {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/asesorEvent`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
+    }
+  }
 
   export async function getParticipants(token: string, title: string) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/participants/${title}`;
@@ -62,7 +85,7 @@ export namespace EventoEndpoint {
     const result = await response.json();
     return result;
   }
-  
+
   export async function postEventByType(createEvento: CreateEventByType, token: string) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/typed`;
     const options = {
@@ -80,7 +103,7 @@ export namespace EventoEndpoint {
     const result = await response.json();
     return result;
   }
-  
+
   export async function getEventos(token: string, id: number) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/user/${id}`;
     console.log(url)
@@ -94,12 +117,16 @@ export namespace EventoEndpoint {
         tags: ["Eventos"],
       },
     };
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      throw new Error("Error fetching the data");
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error("Error fetching the data");
+      }
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return undefined;
     }
-    const result = await response.json();
-    return result;
   }
 
   export async function postEvento(createEvento: CreateEvento, token: string) {

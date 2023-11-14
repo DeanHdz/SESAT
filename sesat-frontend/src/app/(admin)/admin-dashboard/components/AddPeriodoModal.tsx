@@ -28,12 +28,18 @@ const AddPeriodoModal = ({ idPeriodo, previousEndDate, startDate, endDate }: { i
 
     function setDefaultState() {
         setShowModal(false)
+        document.body.classList.remove("modal-open");
         setCssError("hidden")
         setCSSDisabled("")
         setCssOk("hidden")
         setcssHide("")//oculta boton crear
         router.refresh();//on test
 
+    }
+
+    function openAddPeriodModal(){
+        setShowModal(true);
+        document.body.classList.add("modal-open");
     }
 
     async function updateData() {
@@ -107,7 +113,7 @@ const AddPeriodoModal = ({ idPeriodo, previousEndDate, startDate, endDate }: { i
     }
     return (
         <>
-            <button className="btn btn-sm" type='button' onClick={() => setShowModal(true)}>Establecer Periodo</button>
+            <button className="btn btn-sm" type='button' onClick={openAddPeriodModal}>Establecer Periodo</button>
             {showModal ? (
                 <>
 

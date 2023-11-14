@@ -10,15 +10,33 @@ import {
 import { ComiteService } from "./comite.service";
 import { CreateComiteDto } from "./dto/create-comite.dto";
 import { UpdateComiteDto } from "./dto/update-comite.dto";
+import { CreateRetrievedCommitteeDTO } from "./dto/create-retrieved-committee.dto";
 
 @Controller("comite")
 export class ComiteController {
   constructor(private readonly comiteService: ComiteService) {}
 
+  @Get("/thesesList/:id")
+  findAsesorTesisList(@Param("id") id: string)
+  {
+    return this.comiteService.findAsesorTesisList(+id);
+  }
+
+  @Post("/retrieve/update")
+  updateCommitteeWithRetrieved(@Body() createRetrievedCommitteeDTO: CreateRetrievedCommitteeDTO) {
+    return this.comiteService.updateCommitteeWithRetrieved(createRetrievedCommitteeDTO);
+  }
+  
   @Get("/retrieve/:id")
   async retrieveCommittee(@Param("id") id: string)
   {
     return this.comiteService.retrieveCommittee(+id);
+  }
+
+  @Get("/retrieve/member/:id/:role")
+  async retrieveCommitteeMemberByRole(@Param("role") role: string, @Param("id") id: string)
+  {
+    return this.comiteService.retrieveCommitteeMemberByRole(+role, +id);
   }
 
   @Post()
@@ -52,9 +70,9 @@ export class ComiteController {
   }
 
     /*##########################ASESOR#####################################################*/
-  @Get('asesor/turned-in/:idPeriodo/:idAsesor/:idFuncion')
-  findAsignacionesEntregadas(@Param('idPeriodo') idPeriodo: string, @Param('idAsesor') idAsesor: string, @Param('idFuncion') idFuncion: string) {
-    return this.comiteService.findAsignacionesAsesorados(+idPeriodo, +idAsesor, +idFuncion);
+  @Get('asesor/turned-in/:idPeriodo/:idAsesor')
+  findAsignacionesEntregadas(@Param('idPeriodo') idPeriodo: string, @Param('idAsesor') idAsesor: string) {
+    return this.comiteService.findAsignacionesAsesorados(+idPeriodo, +idAsesor);
   }
 
   @Get('members/:idTesis')

@@ -7,8 +7,8 @@ import { fetchLatestPeriod } from "../../../../../../../../utils/periodo.endpoin
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import { fetchCountAlumnosMaestriaOfNumAv } from "../../../../../../../../utils/tesis.endpoint";
 import { fetchNumAsignacionesEntregadasMaestria, fetchNumAsignacionesPendientesMaestria } from "../../../../../../../../utils/asignacion.endpoint";
-import MDAssingmentCardInfo from "../../components/MDAssingmentCardInfo";
-import GenInfoMD from "../../components/GenInfoMD";
+import MDAssingmentCardInfo from "../../../../components/MDAssingmentCardInfo";
+import GenInfoMD from "../../../../components/GenInfoMD";
 
 
 

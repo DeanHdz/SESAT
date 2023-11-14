@@ -5,6 +5,7 @@ import { fetchLatestPeriod } from '../../../../../utils/periodo.endpoint';
 import AddPeriodoModal from './AddPeriodoModal';
 import { comparaFecha, getFormattedHours, shortFormatDate } from '../../../../../utils/utils';
 import UpdatePeriodoModal from './UpdatePeriodoModal';
+import NotFound from '../not-found';
 
 
 type PeriodoProps = {
@@ -42,6 +43,10 @@ async function fetchDATA(): Promise<PeriodoProps> {
 
 export default async function AlertPeriod() {
     const periodo = await fetchDATA();
+
+    if(!periodo){
+        return <NotFound />
+    }
 
     return (
         <>
