@@ -251,7 +251,11 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
                   <span className="font-SESAT">Fecha de entrega</span>
                   <p>{`${shortFormatDate(props.asignacion.fecha_entrega)} ${getFormattedHours(new Date(props.asignacion.fecha_entrega))}`}</p>
                 </div>
-                <PDFModal pdfdocument={props.asignacion.documento.data} />
+                {props.asignacion.documento && props.asignacion.documento.data ? (
+                  <PDFModal pdfdocument={props.asignacion.documento.data} />
+                ) : (
+                  ""
+                )}
               </div>
             )}
           </>

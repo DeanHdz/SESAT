@@ -16,6 +16,12 @@ import { CreateRetrievedCommitteeDTO } from "./dto/create-retrieved-committee.dt
 export class ComiteController {
   constructor(private readonly comiteService: ComiteService) {}
 
+  @Get("/thesesList/:id")
+  findAsesorTesisList(@Param("id") id: string)
+  {
+    return this.comiteService.findAsesorTesisList(+id);
+  }
+
   @Post("/retrieve/update")
   updateCommitteeWithRetrieved(@Body() createRetrievedCommitteeDTO: CreateRetrievedCommitteeDTO) {
     return this.comiteService.updateCommitteeWithRetrieved(createRetrievedCommitteeDTO);

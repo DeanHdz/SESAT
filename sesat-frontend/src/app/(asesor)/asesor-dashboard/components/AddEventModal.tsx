@@ -5,20 +5,23 @@ import Flatpickr from "react-flatpickr";
 import { EventoEndpoint } from "../../../../../utils/evento.endpoint";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
-import { CreateEventByType, Usuario } from "../../../../../types/ISESAT";
+import { AsesorEventDto, CreateEventByType, Tesis, Usuario } from "../../../../../types/ISESAT";
 import { UsuarioEndpoint } from "../../../../../utils/usuario.endpoint";
 import revalidator from "../actions";
+import { getAsesorTesisList } from "../../../../../utils/comite.endpoint";
 
 const AddEventModal = ({
   startDate,
   endDate,
   isClicked,
   token,
+  id_usuario,
 }: {
   startDate: Date;
   endDate: Date;
   isClicked: boolean;
   token: string;
+  id_usuario: number;
 }) => {
   const router = useRouter();
 
@@ -52,6 +55,17 @@ const AddEventModal = ({
   const [end, setEndDate] = useState<Date | undefined>(endDate);
   const [changeDate, setChangeDate] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean | undefined>(false);
+  const [fetchTesis, setFetchTesis] = useState<boolean>(false);
+  const [tesisList, setTesisList] = useState<Tesis[] | null>(null);
+  const [selectedTesis, setSelectedTesis] = useState<number>(-1);
+
+  useEffect(() => {
+    const getTesisList = async () => {
+      const list: Tesis[] = await getAsesorTesisList(token, id_usuario);
+      setTesisList(list);
+    };
+    getTesisList();
+  }, [fetchTesis]);
 
   useEffect(() => {
     setStartDate(
@@ -66,12 +80,6 @@ const AddEventModal = ({
   useEffect(() => {
     setEndDate(endDate);
   }, [endDate]);
-
-  /* console.log(start.toISOString());
-  console.log("-----------------");
-  console.log(end?.toISOString());
-  console.log("-----------------");
-  console.log(new Date().toString()); */
 
   const handleStartDate = (event: any) => {
     let date = event.target.value.split("-");
@@ -230,52 +238,89 @@ const AddEventModal = ({
   const AddSection = (
     <div>
       <div className="w-full">
-        <p className="my-3 italics text-dark-blue-10 font-semibold">
-          Elegir a los participantes por grupo:
-        </p>
         {participants.length === 0 ? (
-          <div className="flex justify-center gap-4 mb-2">
-            <button
-              type="button"
-              className={`${
-                btn1Active
-                  ? "bg-dark-blue-10 text-white border border-white"
-                  : "text-dark-blue-10 border-blue-700 border"
-              } font-bold rounded-lg text-sm text-center px-2 py-2`}
-              onClick={() => {
-                if (!btn1Active) {
-                  const gate = addSectionGate + 1;
-                  setAddSectionGate(gate);
-                } else {
-                  const gate = addSectionGate - 1;
-                  setAddSectionGate(gate);
-                }
-                setBtn1Active(!btn1Active);
-              }}
-            >
-              Todos los Alumnos
-            </button>
-            <button
-              type="button"
-              className={`${
-                btn2Active
-                  ? "bg-dark-blue-10 text-white border border-white"
-                  : "text-dark-blue-10 border-blue-700 border"
-              } font-bold rounded-lg text-sm text-center px-2 py-2`}
-              onClick={() => {
-                if (!btn2Active) {
-                  const gate = addSectionGate + 1;
-                  setAddSectionGate(gate);
-                } else {
-                  const gate = addSectionGate - 1;
-                  setAddSectionGate(gate);
-                }
-                setBtn2Active(!btn2Active);
-              }}
-            >
-              Todos los Asesores
-            </button>
-          </div>
+          <>
+            <p className="my-3 italics text-dark-blue-10 font-semibold">
+              Elegir a los participantes por comité de Tesis:
+            </p>
+            {tesisList ? (
+              <div className="max-h-[200px] overflow-y-auto">
+                {selectedTesis === -1 ? (
+                  tesisList?.map((tesis: Tesis, i: number) => (
+                    <div key={i} className="flex gray__border p-2">
+                      <div className="w-full flex px-2">
+                        <div className="w-5/6">
+                          <span className="text-[12px] text-dark-blue-10 italic">
+                            {tesis.titulo}
+                          </span>
+                          <br />
+                          <span className="px-2 text-[11px] font-semibold">
+                            {tesis.alumno
+                              ? `${tesis.alumno.nombre} ${tesis.alumno.apellido_paterno} ${tesis.alumno.apellido_materno}`
+                              : ""}
+                          </span>
+                        </div>
+                        <div className="w-1/6 h-full flex justify-center align-middle items-center">
+                          <button
+                            className="text-dark-blue-10 font-bold rounded-full border border-dark-blue-10 text-sm text-center p-1"
+                            onClick={() => {
+                              setSelectedTesis(i);
+                              setAddSectionGate(addSectionGate + 1);
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div className="flex gray__border p-2">
+                      <div className="w-full flex px-2">
+                        <div className="w-5/6">
+                          <span className="text-[12px] text-dark-blue-10 italic">
+                            {tesisList[selectedTesis].titulo}
+                          </span>
+                          <br />
+                          <span className="px-2 text-[11px] font-semibold">
+                            {tesisList[selectedTesis].alumno
+                              ? `${tesisList[selectedTesis].alumno.nombre} ${tesisList[selectedTesis].alumno.apellido_paterno} ${tesisList[selectedTesis].alumno.apellido_materno}`
+                              : ""}
+                          </span>
+                        </div>
+                        <div className="w-1/6 h-full flex justify-center align-middle items-center text-[12px] italic text-dark-blue-10">
+                          Seleccionada
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full py-2 flex items-center justify-center align-middle">
+                      <button
+                        type="button"
+                        className={`${
+                          btn1Active
+                            ? "bg-dark-blue-10 text-white border border-white"
+                            : "text-dark-blue-10 border-blue-700 border"
+                        } font-bold rounded-lg text-sm text-center px-2 py-2`}
+                        onClick={() => {
+                          setBtn1Active(!btn1Active);
+                        }}
+                      >
+                        Presentación de Avance
+                      </button>
+                    </div>
+                    {btn1Active ? (
+                      <p className="italics text-[11px] text-dark-blue-10 w-full text-center">El evento establecerá la fecha de presentación para la asignación activa si es posible o actualizará la fecha establecida.</p>
+                    ) : (
+                      ""
+                    )}
+                  </>
+                )}
+              </div>
+            ) : (
+              "No es asesor de ningnua tesis."
+            )}
+          </>
         ) : (
           ""
         )}
@@ -357,22 +402,43 @@ const AddEventModal = ({
   const ListSection = (
     <div className="gray__border p-2">
       <p className="font-semibold">Se asignará a los usuarios seleccionados:</p>
-      {btn1Active ? (
-        <p className="pl-4">
-          + Todos los{" "}
-          <span className="font-bold text-dark-blue-10">Alumnos</span>
-        </p>
+      {tesisList && selectedTesis !== -1 ? (
+        <>
+        <p className="text-[14px]">Alumno y miembros del comité de la Tesis:</p>
+        <div className="flex gray__border p-2">
+        <div className="w-full flex px-2">
+          <div className="w-5/6">
+            <span className="text-[12px] text-dark-blue-10 italic">
+              {tesisList[selectedTesis].titulo}
+            </span>
+            <br />
+            <span className="px-2 text-[11px] font-semibold">
+              {tesisList[selectedTesis].alumno
+                ? `${tesisList[selectedTesis].alumno.nombre} ${tesisList[selectedTesis].alumno.apellido_paterno} ${tesisList[selectedTesis].alumno.apellido_materno}`
+                : ""}
+            </span>
+          </div>
+          <div className="w-1/6 h-full flex justify-center align-middle items-center">
+          <button
+            className="text-dark-blue-10 font-bold rounded-full border border-dark-blue-10 text-sm text-center p-1"
+            onClick={() => {
+              setSelectedTesis(-1);
+              setAddSectionGate(addSectionGate - 1);
+              if(btn1Active)
+              {
+                setBtn1Active(!btn1Active)
+              }
+            }}
+          >
+            -
+          </button>
+          </div>
+        </div>
+      </div>
+      </>
       ) : (
         ""
-      )}
-      {btn2Active ? (
-        <p className="pl-4">
-          + Todos los{" "}
-          <span className="font-bold text-dark-blue-10">Asesores</span>
-        </p>
-      ) : (
-        ""
-      )}
+      )}     
       {participants.length > 0 ? (
         <div className="max-h-[250px] overflow-auto mt-2">
           <table className="table table-zebra">
@@ -695,48 +761,52 @@ const AddEventModal = ({
     ) {
       evento = await EventoEndpoint.postEvento(
         {
-          id_usuario: 100001,
-          id_creador: 100001,
+          id_usuario: id_usuario, //!
+          id_creador: id_usuario, //!
           titulo: title,
           fecha_inicio: start,
           fecha_termino: end ? end : start,
         },
         token
       );
-    } else if (btn1Active == true && btn2Active == false) {
-      const createEventoDto: CreateEventByType = {
-        users: null,
-        type: 1,
-        id: 100001,
-        id_creador: 100001,
+    }
+    else if(tesisList && selectedTesis !== -1 && btn1Active){
+      const EventoDto: AsesorEventDto = {
+        id_tesis: tesisList[selectedTesis].id_tesis,
+        presentation: true,
+        id_usuario: id_usuario,
         title: title,
         start: start,
-        end: end ? end : start,
-      };
-      evento = await EventoEndpoint.postEventByType(createEventoDto, token);
-    } else if (btn1Active == false && btn2Active == true) {
-      const createEventoDto: CreateEventByType = {
-        users: null,
-        type: 2,
-        id: 100001,
-        id_creador: 100001,
+        end: end ? end : start
+      } 
+      evento = await EventoEndpoint.postAsesorEvent(token, EventoDto)
+    }
+    else if(tesisList && selectedTesis !== -1)
+    {
+      const EventoDto: AsesorEventDto = {
+        id_tesis: tesisList[selectedTesis].id_tesis,
+        presentation: false,
+        id_usuario: id_usuario,
         title: title,
         start: start,
-        end: end ? end : start,
-      };
-      evento = await EventoEndpoint.postEventByType(createEventoDto, token);
-    } else if (participants.length > 0) {
+        end: end ? end : start
+      } 
+      evento = await EventoEndpoint.postAsesorEvent(token, EventoDto)
+    }
+    else if (participants.length > 0) {
       const createEventoDto: CreateEventByType = {
         users: participants,
         type: 3,
-        id: 100001,
-        id_creador: 100001,
+        id: id_usuario,
+        id_creador: id_usuario,
         title: title,
         start: start,
         end: end ? end : start,
       };
       evento = await EventoEndpoint.postEventByType(createEventoDto, token);
     }
+    //Rework From Here
+
     if (evento != null) {
       revalidator("Eventos");
       setShowSuccessModal(!showSuccessModal);
@@ -923,6 +993,7 @@ const AddEventModal = ({
               type="button"
               onClick={() => {
                 setShowModal(!showModal);
+                if (!fetchTesis) setFetchTesis(!fetchTesis);
               }}
             >
               Agregar Participantes

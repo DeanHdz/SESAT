@@ -702,7 +702,7 @@ const AddEventModal = ({
           fecha_inicio: start,
           fecha_termino: end ? end : start,
         },
-        ""
+        token
       );
     } else if (btn1Active == true && btn2Active == false) {
       const createEventoDto: CreateEventByType = {
@@ -714,7 +714,7 @@ const AddEventModal = ({
         start: start,
         end: end ? end : start,
       };
-      evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
+      evento = await EventoEndpoint.postEventByType(createEventoDto, token);
     } else if (btn1Active == false && btn2Active == true) {
       const createEventoDto: CreateEventByType = {
         users: null,
@@ -725,7 +725,7 @@ const AddEventModal = ({
         start: start,
         end: end ? end : start,
       };
-      evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
+      evento = await EventoEndpoint.postEventByType(createEventoDto, token);
     } else if (participants.length > 0) {
       const createEventoDto: CreateEventByType = {
         users: participants,
@@ -736,7 +736,7 @@ const AddEventModal = ({
         start: start,
         end: end ? end : start,
       };
-      evento = await EventoEndpoint.postEventByType(createEventoDto, "[token]");
+      evento = await EventoEndpoint.postEventByType(createEventoDto, token);
     }
     if (evento != null) {
       revalidator("Eventos");

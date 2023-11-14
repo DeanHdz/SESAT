@@ -59,7 +59,7 @@ export default async function Home() {
                 <div className="w-full flex mb-6">
                   <p className="text-xl font-SESAT">Calendario de Actividades</p>
                 </div>
-                <Calendar eventos={eventos} token={token} />
+                <Calendar eventos={eventos} token={token} id_usuario={user.id_usuario}/>
               </div>
 
             </div>

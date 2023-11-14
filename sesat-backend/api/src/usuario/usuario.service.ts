@@ -55,9 +55,14 @@ export class UsuarioService {
     private readonly comiteService: ComiteService
   ) {}
 
+  async findStudentByTesisId(id: number)
+  {
+    const tesis = await this.tesisService.findOne(id);
+    return await tesis.alumno;
+  }
+
   async changeDedication(id_usuario: number, skipToAvance: number)
   {
-    console.log("id_usuario: " + id_usuario + " skipToAvance: " + skipToAvance);
     const user: Usuario = await this.usuarioRepository.findOne({where: {id_usuario: id_usuario}});
     let newModalidad = 0;
      // update datos alumno
@@ -141,6 +146,7 @@ export class UsuarioService {
       await this.asignacionService.update(asignacionUpdateDto);
     }
 
+    // Deletable
     //make placeholder assignments (?remove)
     for(let i = 0; i < skipToAvance ; i++)
     {
@@ -164,6 +170,7 @@ export class UsuarioService {
       }
       await this.asignacionService.create(asignacionCreateDto);
     }
+    // Deletable
 
     //CreateNewComite
     const members: RetrievedCommitteeDTO = await this.comiteService.retrieveCommittee(oldTesis.id_tesis);

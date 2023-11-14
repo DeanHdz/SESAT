@@ -25,7 +25,7 @@ export class TesisService {
     private readonly asignacionRepository: Repository<Asignacion>,
 
   ) { }
-
+ //
   async paginatedCompletedPhd(page: number, limit: number) {
     const resp = await this.tesisRepository
       .createQueryBuilder("tesis")
@@ -300,7 +300,6 @@ export class TesisService {
     return resp;
   }
 
-
   /**Tesis de doctorado terminadas(se muestran en el archivo de tesis) */
   async findCompletedPhd() {
     const resp = await this.tesisRepository
@@ -327,7 +326,6 @@ export class TesisService {
     //otherwise it won't return anything
     return resp;
   }
-
 
   /**Encabezados para la lista de tesis del archivo de tesis*/
   async findOneBasicInfo(id: number) {
@@ -375,7 +373,6 @@ export class TesisService {
     return resp;
   }
 
-
   //Devuelve cuantos alumnos de doctorado hay para x numAvance(X seminario)
   async findMDStudentsCountByNumAv(numAvance: number, modalidad: number) {
     let modName = modalidad === 1 ? 'Tiempo Completo' : 'Medio Tiempo';
@@ -395,7 +392,6 @@ export class TesisService {
 
     return resp;
   }
-
 
   async findTesisStatusMastersFullTime() {
     const resp = await this.tesisRepository
@@ -489,8 +485,6 @@ export class TesisService {
 
     return resp;
   }
-
-
 
   //https://typeorm.io/select-query-builder#using-subqueries
 

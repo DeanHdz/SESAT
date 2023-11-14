@@ -11,10 +11,16 @@ import { EventoService } from "./evento.service";
 import { CreateEventoDto } from "./dto/create-evento.dto";
 import { UpdateEventoDto } from "./dto/update-evento.dto";
 import { CreateEventByTypeDto } from "./dto/create-evento-by-type.dto";
+import { AsesorEventDto } from "./dto/asesor-evento-dto";
 
 @Controller("evento")
 export class EventoController {
   constructor(private readonly eventoService: EventoService) {}
+
+  @Post("/asesorEvent")
+  async postAsesorEvent(@Body() asesorEventDto: AsesorEventDto){
+    return await this.eventoService.postAsesorEvent(asesorEventDto);
+  }
 
   @Get("/participants/:title")
   async getParticipants(@Param("title") title: string)

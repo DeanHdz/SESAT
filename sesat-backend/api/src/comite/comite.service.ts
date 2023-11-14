@@ -28,6 +28,18 @@ export class ComiteService {
     private readonly usuarioRepository: Repository<Usuario>
   ) { }
 
+  async findAsesorTesisList(id_usuario: number)
+  {
+    const listOfCommitteeMembership = await this.comiteRepository.find({where: {id_usuario: id_usuario, id_funcion: 1}})
+    const listOfTheses: Tesis[] = [];
+    for(let i = 0; i < listOfCommitteeMembership.length; i++)
+    {
+      listOfTheses.push(await this.tesisService.findOne(listOfCommitteeMembership[i].id_tesis));
+    }
+    
+    return listOfTheses.filter((tesis) => tesis.estado_finalizacion == false)
+  }
+
   async updateCommitteeWithRetrieved(createRetrievedCommitteeDTO: CreateRetrievedCommitteeDTO)
   {
     const asesorSpoof: Comite[] = await this.retrieveCommitteeMemberByRole(1, createRetrievedCommitteeDTO.id_tesis);

@@ -7,14 +7,150 @@ import { Repository } from "typeorm";
 import { CreateEventByTypeDto } from "./dto/create-evento-by-type.dto";
 import { UsuarioService } from "src/usuario/usuario.service";
 import { Usuario } from "src/usuario/entities/usuario.entity";
+import { AsesorEventDto } from "./dto/asesor-evento-dto";
+import { ComiteService } from "src/comite/comite.service";
+import { RetrievedCommitteeDTO } from "src/comite/dto/retrieved-committee.dto";
+import { AsignacionService } from "src/asignacion/asignacion.service";
+import { Asignacion } from "src/asignacion/entities/asignacion.entity";
+import { UpdateAsignacionDto } from "src/asignacion/dto/update-asignacion.dto";
 
 @Injectable()
 export class EventoService {
   constructor(
     @InjectRepository(Evento)
     private eventoRepository: Repository<Evento>,
-    private readonly usuarioService: UsuarioService
+    private readonly usuarioService: UsuarioService,
+    private readonly comiteService: ComiteService,
+    private readonly asignacionService: AsignacionService
   ) {}
+
+  async postAsesorEvent(asesorEventDto: AsesorEventDto){
+    const salt = new Date().toISOString();
+    const committee: RetrievedCommitteeDTO = await this.comiteService.retrieveCommittee(asesorEventDto.id_tesis);
+    const student: Usuario = await this.usuarioService.findStudentByTesisId(asesorEventDto.id_tesis);
+
+    //also creates for owner
+    if(committee.asesor)
+    {
+      const event = this.eventoRepository.create({
+        id_usuario: committee.asesor.id_usuario,
+        id_creador: asesorEventDto.id_usuario,
+        titulo: asesorEventDto.title + "!!" + salt,
+        fecha_inicio: asesorEventDto.start,
+        fecha_termino: asesorEventDto.end,
+      });
+      await this.eventoRepository.save(event);
+    }
+
+    if(committee.coasesor)
+    {
+      const event = this.eventoRepository.create({
+        id_usuario: committee.coasesor.id_usuario,
+        id_creador: asesorEventDto.id_usuario,
+        titulo: asesorEventDto.title + "!!" + salt,
+        fecha_inicio: asesorEventDto.start,
+        fecha_termino: asesorEventDto.end,
+      });
+      await this.eventoRepository.save(event);
+    }
+
+    if(committee.sinodal1)
+    {
+      const event = this.eventoRepository.create({
+        id_usuario: committee.sinodal1.id_usuario,
+        id_creador: asesorEventDto.id_usuario,
+        titulo: asesorEventDto.title + "!!" + salt,
+        fecha_inicio: asesorEventDto.start,
+        fecha_termino: asesorEventDto.end,
+      });
+      await this.eventoRepository.save(event);
+    }
+
+    if(committee.sinodal2)
+    {
+      const event = this.eventoRepository.create({
+        id_usuario: committee.sinodal2.id_usuario,
+        id_creador: asesorEventDto.id_usuario,
+        titulo: asesorEventDto.title + "!!" + salt,
+        fecha_inicio: asesorEventDto.start,
+        fecha_termino: asesorEventDto.end,
+      });
+      await this.eventoRepository.save(event);
+    }
+
+    if(committee.sinodal3)
+    {
+      const event = this.eventoRepository.create({
+        id_usuario: committee.sinodal3.id_usuario,
+        id_creador: asesorEventDto.id_usuario,
+        titulo: asesorEventDto.title + "!!" + salt,
+        fecha_inicio: asesorEventDto.start,
+        fecha_termino: asesorEventDto.end,
+      });
+      await this.eventoRepository.save(event);
+    }
+
+    if(committee.sinodal4)
+    {
+      const event = this.eventoRepository.create({
+        id_usuario: committee.sinodal4.id_usuario,
+        id_creador: asesorEventDto.id_usuario,
+        titulo: asesorEventDto.title + "!!" + salt,
+        fecha_inicio: asesorEventDto.start,
+        fecha_termino: asesorEventDto.end,
+      });
+      await this.eventoRepository.save(event);
+    }
+
+    if(committee.suplente)
+    {
+      const event = this.eventoRepository.create({
+        id_usuario: committee.suplente.id_usuario,
+        id_creador: asesorEventDto.id_usuario,
+        titulo: asesorEventDto.title + "!!" + salt,
+        fecha_inicio: asesorEventDto.start,
+        fecha_termino: asesorEventDto.end,
+      });
+      await this.eventoRepository.save(event);
+    }
+
+    const event = this.eventoRepository.create({
+      id_usuario: student.id_usuario,
+      id_creador: asesorEventDto.id_usuario,
+      titulo: asesorEventDto.title + "!!" + salt,
+      fecha_inicio: asesorEventDto.start,
+      fecha_termino: asesorEventDto.end,
+    });
+    const createdEvent = await this.eventoRepository.save(event);
+
+    if(asesorEventDto.presentacion == true)
+    {
+      const assignments: Asignacion[] = await this.asignacionService.findActiveByTesis(asesorEventDto.id_tesis);
+      for(let i = 0; i < assignments.length; i++)
+      {
+        const updateAsignacionDto: UpdateAsignacionDto = {
+          id_asignacion: assignments[i].id_asignacion,
+          id_formato_evaluacion: assignments[i].id_formato_evaluacion,
+          id_acta_evaluacion: assignments[i].id_acta_evaluacion,
+          id_tesis: assignments[i].id_tesis,
+          id_modalidad: assignments[i].id_modalidad,
+          id_periodo: assignments[i].id_periodo,
+          num_avance: assignments[i].num_avance,
+          titulo: assignments[i].titulo,
+          descripcion: assignments[i].descripcion,
+          fecha_entrega: assignments[i].fecha_entrega,
+          calificacion: assignments[i].calificacion,
+          documento: assignments[i].documento,
+          estado_entrega: assignments[i].estado_entrega,
+          retroalimentacion: assignments[i].retroalimentacion,
+          tipo: assignments[i].tipo,
+          fecha_presentacion: asesorEventDto.start.toISOString(), //does this work?? cunt
+        }
+        await this.asignacionService.update(updateAsignacionDto);
+      }
+    }
+    return createdEvent;
+  }
 
   async getParticipants(title: string)
   {

@@ -675,6 +675,15 @@ export interface CreateRetrievedCommitteeDTO {
   suplente: Usuario | null,
 }
 
+export interface AsesorEventDto {
+  id_tesis: number,
+  id_usuario: number,
+  presentation: boolean,
+  title: string;
+  start: Date;
+  end: Date | null;
+}
+
 export type ThesisFullHistory = {
   nombre_programa: string;
   id_tesis: number;

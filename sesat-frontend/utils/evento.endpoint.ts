@@ -1,6 +1,29 @@
-import { CreateEventByType, CreateEvento } from "../types/ISESAT";
+import { AsesorEventDto, CreateEventByType, CreateEvento } from "../types/ISESAT";
 
 export namespace EventoEndpoint {
+
+  export async function postAsesorEvent(token: string, data: AsesorEventDto )
+  {
+    const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/asesorEvent`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Error fetching the data");
+    }
+    try {
+      const result = await response.json();
+      return result;
+    } catch (e) {
+      return null;
+    }
+  }
 
   export async function getParticipants(token: string, title: string) {
     const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/evento/participants/${title}`;
