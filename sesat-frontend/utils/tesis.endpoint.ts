@@ -330,7 +330,7 @@ export async function updateNumAvanceForEvaluatedStudents(
 
 }
 
-export async function updateThesisTitle(
+export async function updateThesis(
    tesisDto: UpdateTesis, 
   token: string, 
 ) {

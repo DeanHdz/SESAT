@@ -25,7 +25,7 @@ export function shortFormatDateWithoutConversion(dateString: string): string {
     const date = new Date(year, month, day);
     const formattedDay = date.getDate().toString().padStart(2, '0');
     const formattedMonth = months[date.getMonth()];
-
+    
     return `${formattedDay}/${formattedMonth}/${year}`;
 }
 //Regresa dd/MMM/yyyy en fecha y hora local
@@ -118,7 +118,7 @@ export function dateStringToDate(dateString: string): Date {
     const day = parseInt(parts[0], 10);
     const month = months.indexOf(parts[1]);
     const year = parseInt(parts[2], 10);
-
+        
     return new Date(year, month, day);
 }
 

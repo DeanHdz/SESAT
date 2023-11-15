@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { TesisInfo } from "../asesor-assignment/[idAsignacion]/page";
+
 import {
   ActaEvalForm,
   Asignacion,
+  TesisInfo,
+  UpdateTesis,
   Usuario,
 } from "../../../../../types/ISESAT";
 import {
@@ -26,6 +28,7 @@ import { useRouter } from "next/navigation";
 import { gradedAssignmentMail } from "../../../../../utils/mail.endpoint";
 import { UsuarioEndpoint } from "../../../../../utils/usuario.endpoint";
 import PDFViewer from "./PDFViewer";
+import { fetchTesisByID, updateThesis } from "../../../../../utils/tesis.endpoint";
 
 const ActFormModal = ({
   tesisInfo,
@@ -56,9 +59,14 @@ const ActFormModal = ({
   const [observaciones, setObservaciones] = useState("");
   const [msg, setMsg] = useState("");
 
-  let condicionFinalizacion =
+  let posibleFinalizar =
     (tesisInfo.id_grado_estudio === 2 && asignacion.num_avance === 6) ||
     asignacion.num_avance === 7;
+    //grado estudio = 1 maestria 
+  //modalidad tc = 1, mt = 2
+  let condicionFinalizacion = (tesisInfo.id_grado_estudio === 1 && asignacion.id_modalidad === 1 && asignacion.num_avance === 4) || (tesisInfo.id_grado_estudio === 1 && asignacion.id_modalidad === 2 && asignacion.num_avance === 7) || (tesisInfo.id_grado_estudio === 2 && asignacion.num_avance === 8);
+
+  
 
   const [marcarFinalizada, setMarcarFinalizada] = useState("");
 
@@ -85,7 +93,7 @@ const ActFormModal = ({
 
   async function fetchDocumentDataToEdit(idActa: number) {
     const res: ActaEvalForm = await fetchDocumentData(idActa, token);
-    setFechaEval(dateStringToDate(res.fecha_eval));
+    await setFechaEval(dateStringToDate(res.fecha_eval));
     setPrcAvance(parseInt(res.total_avance));
     setComentarios(res.comentarios);
     setDocAvance(res.cal_doc.toString());
@@ -158,10 +166,25 @@ const ActFormModal = ({
         },
         token
       );
+
+      if(res && (condicionFinalizacion || marcarFinalizada === "Si")){
+        const tesis: UpdateTesis = await fetchTesisByID(asignacion.id_tesis, token);
+        if (tesis) {
+          await updateThesis({
+              id_tesis: tesis.id_tesis,
+              id_usuario: tesis.id_usuario,
+              titulo: tesis.titulo,
+              fecha_registro: tesis.fecha_registro,
+              generacion: tesis.generacion,
+              ultimo_avance: tesis.ultimo_avance,
+              estado_finalizacion: true,
+          }, token);          
+      }
+      }
       await postNotificacion(
         {
           id_usuario: tesisInfo.id_usuario,
-          titulo: "Asignacion Calificada",
+          titulo: "Asignación Calificada",
           descripcion: `Su asignación ${asignacion.titulo} ha sido calificada`,
           fecha_expedicion: formatAsISODate(new Date()),
         },
@@ -291,7 +314,7 @@ const ActFormModal = ({
                             <label className="block mr-4 text-lg font-bold">
                               Fecha de evaluación:
                             </label>
-                            {shortFormatDate(formatAsISODate(fechaEval))}
+                            {shortFormatDateWithoutConversion(formatAsISODate(fechaEval))}
                           </div>
                         </div>
                         <div className="flex flex-row  w-11/12 lg:w-5/6 m-auto mb-0 h-fit p-0">
@@ -492,7 +515,7 @@ const ActFormModal = ({
                                 </div>
                               </div>
                             </div>
-                            {condicionFinalizacion && (
+                            {posibleFinalizar && (
                               <>
                                 <label className="mt-10 mb-3 block text-lg font-bold">
                                   Avance de tesis {asignacion.num_avance}

@@ -49,7 +49,7 @@ export default function CreateAssignment({
   const [cssHideBtnEdit, setcssHideBtnEdit] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [cssError, setCssError] = useState("hidden")
-  const [error, setError] = useState<undefined | boolean>(undefined)  
+  const [error, setError] = useState<undefined | boolean>(undefined)
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
   const [editMode, setEditMode] = useState(false)
@@ -87,7 +87,7 @@ export default function CreateAssignment({
 
 
   useEffect(() => {
-    async function fetchDATA() {      
+    async function fetchDATA() {
       await fetchLatestPeriod("").then(async (res) => {
         let fechaCierrePeriodo = new Date(res.fecha_cierre);
         let fechaActual = new Date();
@@ -100,13 +100,13 @@ export default function CreateAssignment({
         await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, "").then((result) => {
 
           let total = parseInt(result)
-  
+
           setnumPendientes(total) //0 -> activa  | >0 -> pendiente
-  
+
         }).catch((error) => {
           setError(true)
           setnumPendientes(-1)
-        }) 
+        })
         //fetch de datos de la asignacion
         await fetchOneInGroupAsignacionDoctorado(res.id_periodo.toString(), group, tipo, "").then((result) => {
           setDescription(result.descripcion)
@@ -123,7 +123,7 @@ export default function CreateAssignment({
       }).catch((error) => {
         setError(true)
         setnumPendientes(-1)
-      })    
+      })
 
       //URL constraints, solo en avance 4 se permite tipo 1 y tipo 2
       if (!evaluateParams(tipo, group)) {
@@ -166,7 +166,7 @@ export default function CreateAssignment({
     if (periodo) {
       setCssError("hidden")
       setIsSubmitting(true)
-      setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
+      setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")      
       await putPeriod(
         {
           id_periodo: periodo.id_periodo,
@@ -176,24 +176,25 @@ export default function CreateAssignment({
           fecha_cierre_opc: formatAsISODate(end),
         },
         ""
-      ).catch(() => {        
+      ).catch(() => {
         setCSSDisabled("")
         setcssHide("hidden")//oculta boton crear
         setIsSubmitting(false)
         setmsg("Algo salió mal")
         setCssError("")
-        return false
-      })
-      return true
-    }
-    return false;
+        return true
+      })      
+      return false
+    }else{
+      return true;
+    }    
   }
 
   async function updateAssignmentForPHD() {
     setIsSubmitting(true);
     setCSSDisabled("opacity-80 pointer-events-none cursor-not-allowed")
-
-    await updateAsignacionesPhdByNumAv({
+    
+    const res = await updateAsignacionesPhdByNumAv({
       id_asignacion: 0, //no importa aqui, se asigna en backend
       id_formato_evaluacion: null,
       id_acta_evaluacion: null,
@@ -210,26 +211,24 @@ export default function CreateAssignment({
       retroalimentacion: null,
       tipo: parseInt(tipo),
       fecha_presentacion: null,
-    }, "").then((res) => {
-      console.log(res);
-      if (res.status.ok) {
-        setIsSubmitting(false);
-        setmsg("Los datos se actualizaron correctamente")
-        setCssOk("")
-        setcssHide("hidden")
-        setEditMode(false)
-      }    
-    }).catch(() => {
+    }, "").catch(() => {
       setmsg("Algo salió mal")
       setCssError("")
       setcssHide("hidden")
+      setIsSubmitting(false);    
+    });
+    
+    if (res) {
       setIsSubmitting(false);
-    })
+      setmsg("Los datos se actualizaron correctamente")
+      setCssOk("")
+      setcssHide("hidden")
+      setEditMode(false)    
+    }    
   }
 
   async function handleSubmit(e: any) {
-
-    e.preventDefault();
+    e.preventDefault();    
     let updateErr = false
     {/**Si la cadena no esta vacia o contiene solo espacios ' ' */ }
     if (description != null && description.trim().length > 0) {
@@ -240,9 +239,8 @@ export default function CreateAssignment({
           if (start && end && start > end) {
             setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
             setCssError("")
-            updateErr = true          
-          } else {
-            updateErr = false
+            updateErr = true
+          } else {            
             updateErr = await updatePeriodForPHD();
           }
         } else {
@@ -250,10 +248,13 @@ export default function CreateAssignment({
           setCssError("")
         }
       }
-
+      
       {/**Si no ocurrio ningun error al guardar el periodo de entrega*/ }
       if (updateErr === false) {
         updateAssignmentForPHD();
+      }else{
+        setmsg("Algo salió mal")
+        setCssError("")
       }
 
     } else {
