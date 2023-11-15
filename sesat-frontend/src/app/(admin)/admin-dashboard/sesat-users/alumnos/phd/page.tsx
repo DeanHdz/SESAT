@@ -6,13 +6,15 @@ import Link from "next/link";
 
 import clsx from "clsx";
 import Search from "../../../components/Search";
+import { cookies } from "next/headers";
 
 export default async function SearchMastersStudents({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const page =
     typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
   const limit =
@@ -24,7 +26,7 @@ export default async function SearchMastersStudents({
   {
     if (!isNaN(Number(search))) {
       const usuariosByIdData: Promise<Usuario[]> =
-        UsuarioEndpoint.getAlumnosPhdById("[token]", parseInt(search));
+        UsuarioEndpoint.getAlumnosPhdById(token, parseInt(search));
       const usersByID = await usuariosByIdData;
       return (
         <>
@@ -65,7 +67,7 @@ export default async function SearchMastersStudents({
       )
     } else {
       const usuariosByNameData: Promise<Usuario[]> =
-        UsuarioEndpoint.getAlumnosPhdByName("[token]", search);
+        UsuarioEndpoint.getAlumnosPhdByName(token, search);
       const usersByName = await usuariosByNameData;
       return (
         <>
@@ -108,7 +110,7 @@ export default async function SearchMastersStudents({
   }
   else {
     const usuariosData: Promise<PaginatedUser> =
-      UsuarioEndpoint.getAlumnosPhdPaginated("[token]", page, limit);
+      UsuarioEndpoint.getAlumnosPhdPaginated(token, page, limit);
     const users = await usuariosData;
     return (
       <>

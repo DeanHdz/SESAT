@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { encode } from "base64-arraybuffer";
 import { FormatosVaciosEndpoint } from "../../../utils/formatos-vacios.endpoint";
+import Cookies from "js-cookie";
 
 export const PDFUploadForm = () => {
   const [fileSelected, setFileSelected] = useState<Blob | undefined>();
   const [idenfificador, setIdentificador] = useState("");
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   //Nota: el archivo seleccionado requiere ser leido para obtener los datos binarios del contenido
   //El hecho de que esté seleccionado solo nos da los metadatos
@@ -30,7 +33,7 @@ export const PDFUploadForm = () => {
               acta_evaluacion: base64String,
               formato_evaluacion: null,
             },
-            ""
+            token
           );                   
         };
       }

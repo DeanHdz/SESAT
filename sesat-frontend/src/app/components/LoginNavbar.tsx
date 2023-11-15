@@ -15,11 +15,7 @@ const LoginNavbar = () =>
       
 
       <div className="navbar-end">
-        <div className="dropdown dropdown-end mr-8">
-          <UserIcon userName="?"/>
-          <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
-            <li><a>Iniciar Sesión</a></li>
-          </ul>
+        <div className="dropdown dropdown-end mr-8">        
         </div>
       </div>
     </div>

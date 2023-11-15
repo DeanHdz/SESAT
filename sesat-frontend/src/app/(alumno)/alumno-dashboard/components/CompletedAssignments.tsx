@@ -11,8 +11,6 @@ type AsignacionProps = {
   id_grado_estudio: number
 }
 
-
-
 const CompletedAssignments = ({ asignaciones }: { asignaciones: AsignacionProps[] }) => {
   return (
     <div className="bg-[#ffffff] gray__border w-full p-6 overflow-x-scroll lg:overflow-hidden">

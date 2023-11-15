@@ -33,7 +33,7 @@ const AddComment = ({ id_asignacion, idUsuario }: { id_asignacion: number, idUsu
           texto: comment,
           fecha_comentario: formatAsISODate(new Date()),
         },
-        ""
+        token
       );
       router.refresh();
 

@@ -21,8 +21,6 @@ async function fetchAndSortComments(idAsignacion: number, token: string) {
   return comments;
 }
 
-
-
 export default async function Home({
   params,
 }: {
@@ -34,7 +32,7 @@ export default async function Home({
   const user: LoggedUser = await LoginEndpoint.getUserInfo(token).catch(() => { error = true; });
 
   let { idAsignacion } = params;
-  let periodo = await fetchLatestPeriod("").catch(() => { error = true; });
+  let periodo = await fetchLatestPeriod(token).catch(() => { error = true; });
   let asignacion: Asignacion = await fetchOneByIdAsignacion(+idAsignacion, token).catch(() => { error = true; });
   let evaluacion_realizada = asignacion.calificacion && asignacion.id_acta_evaluacion && asignacion.id_formato_evaluacion;
 
