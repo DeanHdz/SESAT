@@ -7,10 +7,13 @@ import { postNewPeriod } from '../../../../../utils/periodo.endpoint';
 import { useRouter } from 'next/navigation';
 import { esPeriodoValido, formatAsISODate } from '../../../../../utils/utils';
 import { updateNumAvanceForEvaluatedStudents } from '../../../../../utils/tesis.endpoint';
-
+import Cookies from 'js-cookie';
 
 
 const AddPeriodoModal = ({ idPeriodo, previousEndDate, startDate, endDate }: { idPeriodo: number, previousEndDate: Date, startDate: Date, endDate: Date }) => {
+
+    const cookie = Cookies.get("SESATsession");
+    const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
     const [showModal, setShowModal] = useState(false);
     const [start, setStartDate] = useState<Date>(startDate)
@@ -43,7 +46,7 @@ const AddPeriodoModal = ({ idPeriodo, previousEndDate, startDate, endDate }: { i
     }
 
     async function updateData() {
-        await updateNumAvanceForEvaluatedStudents(idPeriodo, "").catch(() => {
+        await updateNumAvanceForEvaluatedStudents(idPeriodo, token).catch(() => {
             setError(true)
             setCSSDisabled("")
             setcssHide("hidden")
@@ -60,7 +63,7 @@ const AddPeriodoModal = ({ idPeriodo, previousEndDate, startDate, endDate }: { i
                     fecha_apertura_opc: null,
                     fecha_cierre_opc: null,
                 },
-                ""
+                token
             ).then((res) => {
                 if (res) {
                     setcssHide("hidden")//oculta boton crear

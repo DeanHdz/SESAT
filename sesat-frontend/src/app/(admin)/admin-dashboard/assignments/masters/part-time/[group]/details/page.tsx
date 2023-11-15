@@ -11,13 +11,16 @@ import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endp
 import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
-
+import Cookies from 'js-cookie';
 
 export default function CreateAssignment({
   params,
 }: {
   params: { group: string }
 }) {
+
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   let { group } = params
 
@@ -82,7 +85,7 @@ export default function CreateAssignment({
 
   useEffect(() => {
     async function fetchDATA() {
-      await fetchLatestPeriod("").then((res) => {
+      await fetchLatestPeriod(token).then((res) => {
         let fechaCierrePeriodo = new Date(res.fecha_cierre);
         let fechaActual = new Date();
 
@@ -92,7 +95,7 @@ export default function CreateAssignment({
           res.concluido = true;
         }
 
-        fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 2, "").then((result) => {
+        fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 2, token).then((result) => {
 
           let total = parseInt(result)
   
@@ -104,7 +107,7 @@ export default function CreateAssignment({
         })
 
         //fetch de datos de la asignacion    1 --> Tiempo completo
-        fetchOneInGroupAsignacionMaestria(res.id_periodo.toString(), group, "2", "").then((result) => {
+        fetchOneInGroupAsignacionMaestria(res.id_periodo.toString(), group, "2", token).then((result) => {
           setDescription(result.descripcion)
           setTitle(result.titulo)
         }).catch((error) => {
@@ -180,7 +183,7 @@ export default function CreateAssignment({
       retroalimentacion: null,
       tipo: 1, //Tipo siempre es 1 para maestria
       fecha_presentacion: null,
-    }, "").then((res) => {
+    }, token).then((res) => {
 
       if (res) {
         setIsSubmitting(false);

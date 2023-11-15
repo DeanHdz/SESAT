@@ -7,8 +7,7 @@ import AssingmentCardInfo from "../../../components/AssingmentCardInfo";
 import { fetchNumAsignacionesEntregadasDoctorado, fetchNumAsignacionesPendientesDoctorado } from "../../../../../../../utils/asignacion.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "../../../not-found";
-
-
+import Cookies from "js-cookie";
 
 
 export default async function ViewGroup({
@@ -16,6 +15,9 @@ export default async function ViewGroup({
 }: {
   params: { group: string }
 }) {
+
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   const { group } = params
 
@@ -47,27 +49,27 @@ export default async function ViewGroup({
   let hayPendientes;
 
   try {
-    periodo = await fetchLatestPeriod("").catch(() => { return null })
-    alumnos = await fetchCountAlumnosDoctoradoOfNumAv(group, "")
+    periodo = await fetchLatestPeriod(token).catch(() => { return null })
+    alumnos = await fetchCountAlumnosDoctoradoOfNumAv(group, token)
 
-    totalPendientes = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "1", "").then((result) => {
+    totalPendientes = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "1", token).then((result) => {
       let total = parseInt(result)  //total=0 --> activa   || total>0 pendiente
       return total
     })
 
-    totalEntregadas = await fetchNumAsignacionesEntregadasDoctorado(periodo.id_periodo, group, "1", "").then((result) => {
+    totalEntregadas = await fetchNumAsignacionesEntregadasDoctorado(periodo.id_periodo, group, "1", token).then((result) => {
       let total = parseInt(result)
       return total
     })
 
 
     if (group === '5') { //Caso 5to semestre, 2 avances
-      totalPendientes2 = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "2", "").then((result) => {
+      totalPendientes2 = await fetchNumAsignacionesPendientesDoctorado(periodo.id_periodo, group, "2", token).then((result) => {
         let total = parseInt(result)
         return total
       })
 
-      totalEntregadas2 = await fetchNumAsignacionesEntregadasDoctorado(periodo.id_periodo, group, "2", "").then((result) => {
+      totalEntregadas2 = await fetchNumAsignacionesEntregadasDoctorado(periodo.id_periodo, group, "2", token).then((result) => {
         let total = parseInt(result)
         return total
       })

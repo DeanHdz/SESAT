@@ -9,16 +9,16 @@ import { fetchCountAlumnosMaestriaOfNumAv } from "../../../../../../../../utils/
 import { fetchNumAsignacionesEntregadasMaestria, fetchNumAsignacionesPendientesMaestria } from "../../../../../../../../utils/asignacion.endpoint";
 import MDAssingmentCardInfo from "../../../../components/MDAssingmentCardInfo";
 import GenInfoMD from "../../../../components/GenInfoMD";
-
-
-
-
+import Cookies from 'js-cookie';
 
 export default async function ViewGroup({
   params,
 }: {
   params: { group: string }
 }) {
+
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   const { group } = params
 
@@ -45,16 +45,16 @@ export default async function ViewGroup({
   let hayPendientes;
 
   try {
-    periodo = await fetchLatestPeriod("").catch(() => { return null });
-    alumnos = await fetchCountAlumnosMaestriaOfNumAv(group,"2", "").catch(() => { return null });
+    periodo = await fetchLatestPeriod(token).catch(() => { return null });
+    alumnos = await fetchCountAlumnosMaestriaOfNumAv(group,"2", token).catch(() => { return null });
 
-    totalPendientes = await fetchNumAsignacionesPendientesMaestria(periodo.id_periodo, group, 2, "").then((result) => {
+    totalPendientes = await fetchNumAsignacionesPendientesMaestria(periodo.id_periodo, group, 2, token).then((result) => {
       let total = parseInt(result)  //total=0 --> activa   || total>0 pendiente
       return total
     })
 
     //'1'  --> Tiempo completo  2 -->Medio Tiempo
-    totalEntregadas = await fetchNumAsignacionesEntregadasMaestria(periodo.id_periodo, group, "2", "").then((result) => {
+    totalEntregadas = await fetchNumAsignacionesEntregadasMaestria(periodo.id_periodo, group, "2", token).then((result) => {
       let total = parseInt(result)
       return total
     })

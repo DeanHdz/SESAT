@@ -3,8 +3,7 @@ import { fetchGroupStatusMastersDegree } from "../../../../../../utils/asignacio
 import Alert from "../../components/Alert";
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
 import { isPeriodActive } from "../../../../../../utils/utils";
-
-
+import Cookies from "js-cookie";
 
 type AvanceProps = {
   num_avance: number;
@@ -19,11 +18,11 @@ type PeriodoProps = {
 }
 
 
-async function fetchAsignacionesDataMastersDegree(id_periodo: number, fullTimeArray: any[], partTimeArray: any[]) {
+async function fetchAsignacionesDataMastersDegree(id_periodo: number, fullTimeArray: any[], partTimeArray: any[], token: string) {
 
   let alumnos: Array<AvanceProps>
 
-  alumnos = await fetchGroupStatusMastersDegree(id_periodo, "").catch(() => { return null })
+  alumnos = await fetchGroupStatusMastersDegree(id_periodo, token).catch(() => { return null })
   //la consulta devuelve solo los numeros de avance con alumnos>0, se debe completar con ceros los renglones faltantes
   if (alumnos && alumnos.length > 0) {
 
@@ -74,6 +73,9 @@ function getStatus(elem: AvanceProps): number {
 
 export default async function Home() {
 
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+
   const fullTimetitleArray = [
     "Seminario de Investigación",
     "Seminario de Tesis I (20% de avance)",
@@ -93,12 +95,12 @@ export default async function Home() {
 
   //fetch de la tabla periodo, revisar que exista al menos un periodo y si es el caso
   //obtener el ultimo creado, comparar la fecha de ciere con la actual para revisar que no este concluido
-  let periodo: PeriodoProps = await fetchLatestPeriod("").catch(() => {return null})
+  let periodo: PeriodoProps = await fetchLatestPeriod(token).catch(() => {return null})
   const periodoConcluido = isPeriodActive(periodo?.fecha_cierre);
 
   let statusMidTime = new Array(), statusFullTime = new Array()
   if (!periodoConcluido) {
-    await fetchAsignacionesDataMastersDegree(periodo?.id_periodo, statusFullTime, statusMidTime)
+    await fetchAsignacionesDataMastersDegree(periodo?.id_periodo, statusFullTime, statusMidTime, token)
   }
 
 

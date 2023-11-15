@@ -6,6 +6,7 @@ import AddPeriodoModal from './AddPeriodoModal';
 import { comparaFecha, getFormattedHours, shortFormatDate } from '../../../../../utils/utils';
 import UpdatePeriodoModal from './UpdatePeriodoModal';
 import NotFound from '../not-found';
+import Cookies from 'js-cookie';
 
 
 type PeriodoProps = {
@@ -15,10 +16,10 @@ type PeriodoProps = {
     concluido: boolean;
 }
 
-async function fetchDATA(): Promise<PeriodoProps> {
+async function fetchDATA(token: string): Promise<PeriodoProps> {
     let periodo: PeriodoProps;
     try {
-        await fetchLatestPeriod("").then((res) => {
+        await fetchLatestPeriod(token).then((res) => {
             periodo = res;
 
             if (periodo) {
@@ -42,7 +43,10 @@ async function fetchDATA(): Promise<PeriodoProps> {
 }
 
 export default async function AlertPeriod() {
-    const periodo = await fetchDATA();
+    const cookie = Cookies.get("SESATsession");
+    const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+
+    const periodo = await fetchDATA(token);
 
     if(!periodo){
         return <NotFound />

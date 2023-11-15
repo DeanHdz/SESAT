@@ -13,13 +13,16 @@ import { fetchLatestPeriod, putPeriod } from "../../../../../../../../../utils/p
 import { formatAsISODate, getFormattedHours, isDateWithinGlobalPeriod, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
-
+import Cookies from "js-cookie";
 
 export default function CreateAssignment({
   params,
 }: {
   params: { group: string, tipo: string }
 }) {
+
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   let { group, tipo } = params
 
@@ -88,7 +91,7 @@ export default function CreateAssignment({
 
   useEffect(() => {
     async function fetchDATA() {      
-      await fetchLatestPeriod("").then(async (res) => {
+      await fetchLatestPeriod(token).then(async (res) => {
         let fechaCierrePeriodo = new Date(res.fecha_cierre);
         let fechaActual = new Date();
 
@@ -97,7 +100,7 @@ export default function CreateAssignment({
         if (fechaActual > fechaCierrePeriodo) {
           res.concluido = true;
         }
-        await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, "").then((result) => {
+        await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, token).then((result) => {
 
           let total = parseInt(result)
   
@@ -108,7 +111,7 @@ export default function CreateAssignment({
           setnumPendientes(-1)
         }) 
         //fetch de datos de la asignacion
-        await fetchOneInGroupAsignacionDoctorado(res.id_periodo.toString(), group, tipo, "").then((result) => {
+        await fetchOneInGroupAsignacionDoctorado(res.id_periodo.toString(), group, tipo, token).then((result) => {
           setDescription(result.descripcion)
           setTitle(result.titulo)
         }).catch(() => {
@@ -175,7 +178,7 @@ export default function CreateAssignment({
           fecha_apertura_opc: formatAsISODate(start),
           fecha_cierre_opc: formatAsISODate(end),
         },
-        ""
+        token
       ).catch(() => {        
         setCSSDisabled("")
         setcssHide("hidden")//oculta boton crear
@@ -210,7 +213,7 @@ export default function CreateAssignment({
       retroalimentacion: null,
       tipo: parseInt(tipo),
       fecha_presentacion: null,
-    }, "").then((res) => {
+    }, token).then((res) => {
       console.log(res);
       if (res.status.ok) {
         setIsSubmitting(false);

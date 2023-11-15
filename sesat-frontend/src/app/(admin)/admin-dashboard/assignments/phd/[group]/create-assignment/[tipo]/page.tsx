@@ -13,14 +13,16 @@ import { fetchLatestPeriod, putPeriod } from "../../../../../../../../../utils/p
 import { formatAsISODate, getFormattedHours, isPeriodActive, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
-
-
+import Cookies from "js-cookie";
 
 export default function CreateAssignment({
   params,
 }: {
   params: { group: string, tipo: string }
 }) {
+
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   const { group, tipo } = params
 
@@ -74,7 +76,7 @@ export default function CreateAssignment({
   useEffect(() => {
     async function fetchDATA() {
       try {
-        let res = await fetchLatestPeriod("").catch(() => { return null });
+        let res = await fetchLatestPeriod(token).catch(() => { return null });
         setPeriodo(res)
 
         if (periodo) {
@@ -84,7 +86,7 @@ export default function CreateAssignment({
         if (!["1", "2"].includes(tipo) || tipo === '2' && group !== '5') {
           setnumPendientes(0);  //tipo 2 restringido a avance 5
         } else {
-          await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, "").then((result) => {
+          await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, token).then((result) => {
 
             let total = parseInt(result)
 
@@ -132,7 +134,7 @@ export default function CreateAssignment({
           fecha_apertura_opc: formatAsISODate(start),
           fecha_cierre_opc: formatAsISODate(end),
         },
-        ""
+        token
       ).catch((error) => {
         setUpdateError(true)
         setCSSDisabled("")
@@ -166,7 +168,7 @@ export default function CreateAssignment({
         retroalimentacion: null,
         tipo: parseInt(tipo),
         fecha_presentacion: null,
-      }, "").then((res) => {
+      }, token).then((res) => {
 
         if (res && res.statusCode === 200) {
           setIsSubmitting(false);
