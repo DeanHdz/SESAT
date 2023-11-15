@@ -116,11 +116,10 @@ export const config = {
     "/asesor-dashboard/students/phd/:idAlumno",
 
     /* Alumno Dashboard Routes */
-    "/alumno-dashboard",
-    "/alumno-dashboard/alumno-assignment",
-    "/alumno-dashboard/alumno-assignment/:idAsignacion",
-    "/alumno-dashboard/profile-history",
-    "/alumno-dashboard/register",
-    "/alumno-dashboard/register-ext",
+    '/alumno-dashboard',
+    '/alumno-dashboard/alumno-assignment',
+    '/alumno-dashboard/alumno-assignment/:idAsignacion',
+    '/alumno-dashboard/profile-history',
+    '/alumno-dashboard/tesis-registry',
   ],
 };

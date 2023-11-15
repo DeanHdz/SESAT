@@ -1,4 +1,29 @@
-import { CreateRetrievedCommitteeDTO } from "../types/ISESAT";
+import { CreateRetrievedCommitteeDTO, TesisRegistryDTO } from "../types/ISESAT";
+
+export async function postTesisRegistry(
+  token: string,
+  data: TesisRegistryDTO
+) {
+  const url = `${process.env.NEXT_PUBLIC_SESAT_API_URL}/comite/tesisRegistry`;
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  };
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error("Error fetching the data");
+  }
+  try {
+    const result = await response.json();
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
 
 export async function getAsesorTesisList(token: string, id: number)
 {

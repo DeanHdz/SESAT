@@ -718,3 +718,16 @@ export type TesisInfo = {
   apellido_materno: string;
   id_grado_estudio: number;
 };
+
+export interface TesisRegistryDTO {
+  id_tesis: number,
+  id_usuario: number,
+  titulo: string,
+  asesor: Usuario | null,
+  coasesor?: Usuario | null,
+  sinodal1: Usuario | null,
+  sinodal2: Usuario | null,
+  sinodal3?: Usuario | null,
+  sinodal4?: Usuario | null,
+  suplente: Usuario | null,
+}

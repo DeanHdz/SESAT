@@ -11,10 +11,17 @@ import { ComiteService } from "./comite.service";
 import { CreateComiteDto } from "./dto/create-comite.dto";
 import { UpdateComiteDto } from "./dto/update-comite.dto";
 import { CreateRetrievedCommitteeDTO } from "./dto/create-retrieved-committee.dto";
+import { TesisRegistryDTO } from "./dto/tesis-registry.dto";
 
 @Controller("comite")
 export class ComiteController {
   constructor(private readonly comiteService: ComiteService) {}
+
+  @Post("/tesisRegistry")
+  async postTesisRegistry(@Body() tesisRegistryDTO: TesisRegistryDTO)
+  {
+    return await this.comiteService.postTesisRegistry(tesisRegistryDTO);
+  }
 
   @Get("/thesesList/:id")
   findAsesorTesisList(@Param("id") id: string)

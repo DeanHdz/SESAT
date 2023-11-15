@@ -138,13 +138,15 @@ export async function fetchHistoryByIdTesis(idTesis: number, idModalidadActual: 
 
         switch (lastElement.grado_estudio) {
             case 'Doctorado':
-
-                avancesEntregados = new Array<Avance>(totalDoctorado).fill({ num_avance: 0, grado_estudio: "", id_asignacion: 0, modalidad: '' });
-
+                
+                for (let index = 0; index < totalDoctorado; index++) {                                       
+                    avancesEntregados.push({ num_avance: index + 1, grado_estudio: "", id_asignacion: 0, modalidad: '' })
+                }              
+            
                 history.map((item, i) => (
                     avancesEntregados[i] = item
                 ))
-
+                
                 break;
 
             default://Maestria
