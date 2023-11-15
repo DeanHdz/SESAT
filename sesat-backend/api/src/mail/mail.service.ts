@@ -31,7 +31,7 @@ export class MailService {
 
   async assignmentGraded(asignacion: Asignacion, usuario: Usuario) {
     await this.mailerService.sendMail({
-      to: "jesusgerardo.1315@hotmail.com",
+      to: usuario.correo,
       subject: "Se ha calificado su asignación",
       template: "./gradedAssignment",
       context: {

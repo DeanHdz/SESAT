@@ -14,7 +14,7 @@ import { ComentarioModule } from "./comentario/comentario.module";
 import { AuthModule } from "./auth/auth.module";
 import { APP_GUARD, APP_PIPE } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
-import { NotificationModule } from "./notification/notification.module";
+import { NotificacionModule } from "./notification/notification.module";
 import { UsuariosPruebaModule } from "./usuarios_prueba/usuarios_prueba.module";
 import { ComiteModule } from "./comite/comite.module";
 import { DatosAlumnoModule } from "./datos-alumno/datos-alumno.module";
@@ -30,6 +30,7 @@ import { EventoModule } from "./evento/evento.module";
 import { PeriodoModule } from "./periodo/periodo.module";
 import { MailModule } from "./mail/mail.module";
 import { ScheduleModule } from "@nestjs/schedule";
+import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 
 @Module({
   imports: [
@@ -69,7 +70,7 @@ import { ScheduleModule } from "@nestjs/schedule";
     FormatoVacioModule,
     ComentarioModule,
     AuthModule,
-    NotificationModule,
+    NotificacionModule,
     UsuariosPruebaModule,
     ComiteModule,
     DatosAlumnoModule,
