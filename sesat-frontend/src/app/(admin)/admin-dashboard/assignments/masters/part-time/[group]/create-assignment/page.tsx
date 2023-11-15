@@ -32,8 +32,11 @@ export default function CreateAssignment({
 
   const names = [
     "Seminario de Investigación",
+    "Avance 1",
     "Seminario de Tesis I (20% de avance)",
+    "Avance 3",
     "Seminario de Tesis II (50% de avance)",
+    "Avance 5",
     "Seminario de Tesis III (90% de avance)"
   ]
 
