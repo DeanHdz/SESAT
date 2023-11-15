@@ -51,30 +51,6 @@ function getStatus(elem: AvanceProps): number {
   return 1;                                     //activa
 
 }
-/*
-async function fetchStatusPeriodo(): Promise<boolean> {
-  let result;
-  await fetchLatestPeriod("").then((res) => {
-
-    const periodo: PeriodoProps = res;
-
-    if (periodo) {
-      let fechaCierrePeriodo = new Date(periodo.fecha_cierre);
-      let fechaActual = new Date();
-
-      result = false;
-      if (fechaActual > fechaCierrePeriodo) {
-
-        result = true;
-      }
-    } else {
-      result = true;
-    }
-
-  })
-  return result!;
-}*/
-
 
 
 export default async function Home() {
@@ -106,11 +82,8 @@ export default async function Home() {
         ) : (
           <NotFound />
         )}
-
+        
       </div>
-
-
-
     </main >
   )
 }

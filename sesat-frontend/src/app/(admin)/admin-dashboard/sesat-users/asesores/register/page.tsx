@@ -6,8 +6,11 @@ import { useRouter } from "next/navigation";
 import revalidator from "../../../actions";
 import { useDebounce } from 'use-debounce';
 import Search from "../../../components/Search";
+import Cookies from "js-cookie";
 
 export const AsesorRegistryForm = () => {
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const router = useRouter();
   const [userType, setUserType] = useState("");
 
@@ -57,7 +60,7 @@ export const AsesorRegistryForm = () => {
       email: asesor?.email ? asesor.email : ""
     }
 
-    const externalAsesor = await UsuarioEndpoint.postExternalAsesor("[Token]", externalAsesorDto)
+    const externalAsesor = await UsuarioEndpoint.postExternalAsesor(token, externalAsesorDto)
 
     if(externalAsesor != null) {
       setShowSuccessModal(!showSuccessModal); //is success
@@ -77,7 +80,7 @@ export const AsesorRegistryForm = () => {
       organizacion: foreignOrganizacion ? foreignOrganizacion : "", 
     }
 
-    const foreignAsesor = await UsuarioEndpoint.postForeignAsesor("[Token]", foreignAsesorDto)
+    const foreignAsesor = await UsuarioEndpoint.postForeignAsesor(token, foreignAsesorDto)
 
     if(foreignAsesor != null) {
       setShowSuccessModal(!showSuccessModal); //is success
@@ -94,7 +97,7 @@ export const AsesorRegistryForm = () => {
 
   useEffect(() => {
     const getAsesor = async () => {
-      const asesorData: Promise<ExternalAsesor> = UsuarioEndpoint.findExternalAsesor("[token]", parseInt(query));
+      const asesorData: Promise<ExternalAsesor> = UsuarioEndpoint.findExternalAsesor(token, parseInt(query));
       const fetchedAsesor = await asesorData;
       setAsesor(fetchedAsesor);
     }

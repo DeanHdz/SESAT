@@ -4,12 +4,15 @@ import { UsuarioEndpoint } from "../../../../../../utils/usuario.endpoint";
 import { PaginatedUser } from "../../../../../../types/IPaginate";
 import Link from "next/link";
 import clsx from "clsx";
+import { cookies } from "next/headers";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const cookie = cookies().get("SESATsession")?.value;
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const page =
     typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
   const limit =
@@ -21,7 +24,7 @@ export default async function Home({
   {
     if (!isNaN(Number(search))) {
       const usuariosByIdData: Promise<Usuario[]> =
-        UsuarioEndpoint.getAsesoresById("[token]", parseInt(search));
+        UsuarioEndpoint.getAsesoresById(token, parseInt(search));
       const usersByID = await usuariosByIdData;
       return (
         <>
@@ -56,7 +59,7 @@ export default async function Home({
       )
     } else {
       const usuariosByNameData: Promise<Usuario[]> =
-        UsuarioEndpoint.getAsesoresByName("[token]", search);
+        UsuarioEndpoint.getAsesoresByName(token, search);
       const usersByName = await usuariosByNameData;
       return (
         <>
@@ -93,7 +96,7 @@ export default async function Home({
   }
   else {
     const usuariosData: Promise<PaginatedUser> =
-      UsuarioEndpoint.getAsesoresPaginated("[token]", page, limit);
+      UsuarioEndpoint.getAsesoresPaginated(token, page, limit);
     const users = await usuariosData;
     console.log(users)
     return (
