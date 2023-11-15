@@ -9,6 +9,7 @@ import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endp
 import EmptyPage from "@/app/components/EmptyPage";
 import { getFormattedHours, isPeriodActive, shortFormatDate } from "../../../../../../../../../utils/utils";
 import { fetchNumAsignacionesPendientesMaestria, postAsignacionesMastersDgByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
+import Cookies from 'js-cookie';
 
 {/**
 Docs:
@@ -23,6 +24,9 @@ export default function CreateAssignment({
 }: {
   params: { group: string, tipo: string }
 }) {
+
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   const { group } = params
 
@@ -59,12 +63,12 @@ export default function CreateAssignment({
   useEffect(() => {
     async function fetchDATA() {
       try {
-        const res = await fetchLatestPeriod("").catch(() => { return null })
+        const res = await fetchLatestPeriod(token).catch(() => { return null })
         setPeriodo(res)
 
         periodoConcluido = isPeriodActive(res.fecha_cierre)
 
-        await fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 2, "").then((result) => {
+        await fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 2, token).then((result) => {
 
           let total = parseInt(result)
 
@@ -119,7 +123,7 @@ export default function CreateAssignment({
         retroalimentacion: null,
         tipo: 1,                    //El tipo siempre es 1 para maestria
         fecha_presentacion: null,
-      }, "").then((res) => {
+      }, token).then((res) => {
 
         if (res && res.statusCode === 200) {
           setIsSubmitting(false);

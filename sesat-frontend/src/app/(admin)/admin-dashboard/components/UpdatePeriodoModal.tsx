@@ -6,10 +6,11 @@ import ProcessingAnim from '@/app/components/ProcessingAnim';
 import { putPeriod } from '../../../../../utils/periodo.endpoint';
 import { useRouter } from 'next/navigation';
 import { formatAsISODate } from '../../../../../utils/utils';
-
-
+import Cookies from 'js-cookie';
 
 const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPeriodo: number, startDate: Date, endDate: Date, extender: boolean }) => {
+    const cookie = Cookies.get("SESATsession");
+    const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
     const [showModal, setShowModal] = useState(false);
     const [start, setStartDate] = useState<Date>(startDate)
@@ -58,7 +59,7 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
                         fecha_apertura_opc: null,
                         fecha_cierre_opc: null,
                     },
-                    ""
+                    token
                 ).then((res) => {
                     if (res) {
                         setcssHide("hidden")//oculta boton crear

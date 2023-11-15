@@ -4,7 +4,7 @@ import Alert from "../../components/Alert";
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
 import NotFound from "../../not-found";
 import { isPeriodActive } from "../../../../../../utils/utils";
-
+import Cookies from "js-cookie";
 
 type AvanceProps = {
   num_avance: number,
@@ -18,11 +18,11 @@ type PeriodoProps = {
 }
 
 //Cuantos alumnos de doctorado hay para cada numero de avance y cuantas asignaciones estan pendientes
-async function fetchAsignacionesData(id_periodo: number): Promise<AvanceProps[]> {
+async function fetchAsignacionesData(id_periodo: number, token: string): Promise<AvanceProps[]> {
 
   let alumnos: Array<AvanceProps>
 
-  alumnos = await fetchGroupStatusPHD(id_periodo, "").catch(() => { return null })
+  alumnos = await fetchGroupStatusPHD(id_periodo, token).catch(() => { return null })
   //la consulta devuelve solo los numeros de avance con alumnos>0, se debe completar con ceros los renglones faltantes
   if (alumnos && alumnos.length > 0) {
 
@@ -78,8 +78,10 @@ async function fetchStatusPeriodo(): Promise<boolean> {
 
 
 export default async function Home() {
-  const periodo: PeriodoProps = await fetchLatestPeriod("").catch(() => { return null })
-  const statusArray = await fetchAsignacionesData(periodo?.id_periodo).catch(() => { return null }) 
+  const cookie = Cookies.get("SESATsession");
+  const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
+  const periodo: PeriodoProps = await fetchLatestPeriod(token).catch(() => { return null })
+  const statusArray = await fetchAsignacionesData(periodo?.id_periodo, token).catch(() => { return null }) 
   const periodoConcluido = isPeriodActive(periodo?.fecha_cierre)
 
 
