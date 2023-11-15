@@ -5,6 +5,7 @@ import { LoggedUser, Tesis, Usuario } from "../../../../../types/ISESAT";
 import { findTesisPerStudent } from "../../../../../utils/tesis.endpoint";
 import TesisRegistryForm from "../components/TesisRegistryForm";
 import { UsuarioEndpoint } from "../../../../../utils/usuario.endpoint";
+import { redirect } from "next/navigation";
 
 export default async function TesisRegistry() {
   const cookie = cookies().get("SESATsession")?.value;
@@ -13,18 +14,23 @@ export default async function TesisRegistry() {
   const tesis: Tesis = await findTesisPerStudent(token, loggedUser.id_usuario);
   const user: Usuario[] = await UsuarioEndpoint.getUserById(loggedUser.id_usuario, token);
 
-  //redirigir si ya tiene tesis registrada
-  return (
-    <div className="flex">
-      <div className="hidden lg:flex lg:w-3/12 flex-col pr-10">
-        <Drawer />
+  if(tesis.fecha_registro)
+  {
+    redirect('/alumno-dashboard');
+  }
+  else{
+    return (
+      <div className="flex">
+        <div className="hidden lg:flex lg:w-3/12 flex-col pr-10">
+          <Drawer />
+        </div>
+        <div className="w-full lg:w-9/12">
+          <label className="text-3xl font-bold">
+            Registro de Tesis       
+          </label>
+          <TesisRegistryForm user={user[0]} tesis={tesis}/>
+        </div>
       </div>
-      <div className="w-full lg:w-9/12">
-        <label className="text-3xl font-bold">
-          Registro de Tesis       
-        </label>
-        <TesisRegistryForm user={user[0]} tesis={tesis}/>
-      </div>
-    </div>
-  )
+    )
+  }
 }
