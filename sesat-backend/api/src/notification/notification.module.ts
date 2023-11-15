@@ -15,4 +15,4 @@ import { PeriodoModule } from "src/periodo/periodo.module";
   providers: [NotificacionService],
   exports: [NotificacionService],
 })
-export class NotificationModule {}
+export class NotificacionModule {}

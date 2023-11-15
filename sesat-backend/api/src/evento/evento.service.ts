@@ -13,6 +13,7 @@ import { RetrievedCommitteeDTO } from "src/comite/dto/retrieved-committee.dto";
 import { AsignacionService } from "src/asignacion/asignacion.service";
 import { Asignacion } from "src/asignacion/entities/asignacion.entity";
 import { UpdateAsignacionDto } from "src/asignacion/dto/update-asignacion.dto";
+import { NotificacionService } from "src/notification/notification.service";
 
 @Injectable()
 export class EventoService {
@@ -21,19 +22,22 @@ export class EventoService {
     private eventoRepository: Repository<Evento>,
     private readonly usuarioService: UsuarioService,
     private readonly comiteService: ComiteService,
-    private readonly asignacionService: AsignacionService
+    private readonly asignacionService: AsignacionService,
+    private readonly notificacionService: NotificacionService
   ) {}
 
-  async postAsesorEvent(asesorEventDto: AsesorEventDto){
-    console.log("in post Asesor")
-    console.log(asesorEventDto)
+  async postAsesorEvent(asesorEventDto: AsesorEventDto) {
+    console.log("in post Asesor");
+    console.log(asesorEventDto);
     const salt = new Date().toISOString();
-    const committee: RetrievedCommitteeDTO = await this.comiteService.retrieveCommittee(asesorEventDto.id_tesis);
-    const student: Usuario = await this.usuarioService.findStudentByTesisId(asesorEventDto.id_tesis);
+    const committee: RetrievedCommitteeDTO =
+      await this.comiteService.retrieveCommittee(asesorEventDto.id_tesis);
+    const student: Usuario = await this.usuarioService.findStudentByTesisId(
+      asesorEventDto.id_tesis
+    );
 
     //also creates for owner
-    if(committee.asesor)
-    {
+    if (committee.asesor) {
       const event = this.eventoRepository.create({
         id_usuario: committee.asesor.id_usuario,
         id_creador: asesorEventDto.id_usuario,
@@ -42,11 +46,10 @@ export class EventoService {
         fecha_termino: asesorEventDto.end,
       });
       await this.eventoRepository.save(event);
-      console.log("created for asesor")
+      console.log("created for asesor");
     }
-    
-    if(committee.coasesor)
-    {
+
+    if (committee.coasesor) {
       const event = this.eventoRepository.create({
         id_usuario: committee.coasesor.id_usuario,
         id_creador: asesorEventDto.id_usuario,
@@ -55,10 +58,15 @@ export class EventoService {
         fecha_termino: asesorEventDto.end,
       });
       await this.eventoRepository.save(event);
+      this.notificacionService.create({
+        id_usuario: committee.coasesor.id_usuario,
+        titulo: "Se le ha añadido a un evento",
+        descripcion: `${committee.asesor.nombre} ${committee.asesor.apellido_paterno} ${committee.asesor.apellido_materno} lo ha añadido al evento ${asesorEventDto.title}`,
+        fecha_expedicion: new Date(),
+      });
     }
 
-    if(committee.sinodal1)
-    {
+    if (committee.sinodal1) {
       const event = this.eventoRepository.create({
         id_usuario: committee.sinodal1.id_usuario,
         id_creador: asesorEventDto.id_usuario,
@@ -67,10 +75,15 @@ export class EventoService {
         fecha_termino: asesorEventDto.end,
       });
       await this.eventoRepository.save(event);
+      this.notificacionService.create({
+        id_usuario: committee.sinodal1.id_usuario,
+        titulo: "Se le ha añadido a un evento",
+        descripcion: `${committee.asesor.nombre} ${committee.asesor.apellido_paterno} ${committee.asesor.apellido_materno} lo ha añadido al evento ${asesorEventDto.title}`,
+        fecha_expedicion: new Date(),
+      });
     }
 
-    if(committee.sinodal2)
-    {
+    if (committee.sinodal2) {
       const event = this.eventoRepository.create({
         id_usuario: committee.sinodal2.id_usuario,
         id_creador: asesorEventDto.id_usuario,
@@ -79,10 +92,15 @@ export class EventoService {
         fecha_termino: asesorEventDto.end,
       });
       await this.eventoRepository.save(event);
+      this.notificacionService.create({
+        id_usuario: committee.sinodal2.id_usuario,
+        titulo: "Se le ha añadido a un evento",
+        descripcion: `${committee.asesor.nombre} ${committee.asesor.apellido_paterno} ${committee.asesor.apellido_materno} lo ha añadido al evento ${asesorEventDto.title}`,
+        fecha_expedicion: new Date(),
+      });
     }
 
-    if(committee.sinodal3)
-    {
+    if (committee.sinodal3) {
       const event = this.eventoRepository.create({
         id_usuario: committee.sinodal3.id_usuario,
         id_creador: asesorEventDto.id_usuario,
@@ -91,10 +109,15 @@ export class EventoService {
         fecha_termino: asesorEventDto.end,
       });
       await this.eventoRepository.save(event);
+      this.notificacionService.create({
+        id_usuario: committee.sinodal3.id_usuario,
+        titulo: "Se le ha añadido a un evento",
+        descripcion: `${committee.asesor.nombre} ${committee.asesor.apellido_paterno} ${committee.asesor.apellido_materno} lo ha añadido al evento ${asesorEventDto.title}`,
+        fecha_expedicion: new Date(),
+      });
     }
 
-    if(committee.sinodal4)
-    {
+    if (committee.sinodal4) {
       const event = this.eventoRepository.create({
         id_usuario: committee.sinodal4.id_usuario,
         id_creador: asesorEventDto.id_usuario,
@@ -103,10 +126,15 @@ export class EventoService {
         fecha_termino: asesorEventDto.end,
       });
       await this.eventoRepository.save(event);
+      this.notificacionService.create({
+        id_usuario: committee.sinodal4.id_usuario,
+        titulo: "Se le ha añadido a un evento",
+        descripcion: `${committee.asesor.nombre} ${committee.asesor.apellido_paterno} ${committee.asesor.apellido_materno} lo ha añadido al evento ${asesorEventDto.title}`,
+        fecha_expedicion: new Date(),
+      });
     }
 
-    if(committee.suplente)
-    {
+    if (committee.suplente) {
       const event = this.eventoRepository.create({
         id_usuario: committee.suplente.id_usuario,
         id_creador: asesorEventDto.id_usuario,
@@ -115,6 +143,12 @@ export class EventoService {
         fecha_termino: asesorEventDto.end,
       });
       await this.eventoRepository.save(event);
+      this.notificacionService.create({
+        id_usuario: committee.suplente.id_usuario,
+        titulo: "Se le ha añadido a un evento",
+        descripcion: `${committee.asesor.nombre} ${committee.asesor.apellido_paterno} ${committee.asesor.apellido_materno} lo ha añadido al evento ${asesorEventDto.title}`,
+        fecha_expedicion: new Date(),
+      });
     }
 
     const event = this.eventoRepository.create({
@@ -125,12 +159,17 @@ export class EventoService {
       fecha_termino: asesorEventDto.end,
     });
     const createdEvent = await this.eventoRepository.save(event);
+    this.notificacionService.create({
+      id_usuario: student.id_usuario,
+      titulo: "Se le ha añadido a un evento",
+      descripcion: `${committee.asesor.nombre} ${committee.asesor.apellido_paterno} ${committee.asesor.apellido_materno} lo ha añadido al evento ${asesorEventDto.title}`,
+      fecha_expedicion: new Date(),
+    });
 
-    if(asesorEventDto.presentation === true)
-    {
-      const assignments: Asignacion[] = await this.asignacionService.findActiveByTesis(asesorEventDto.id_tesis);
-      for(let i = 0; i < assignments.length; i++)
-      {
+    if (asesorEventDto.presentation === true) {
+      const assignments: Asignacion[] =
+        await this.asignacionService.findActiveByTesis(asesorEventDto.id_tesis);
+      for (let i = 0; i < assignments.length; i++) {
         const updateAsignacionDto: UpdateAsignacionDto = {
           id_asignacion: assignments[i].id_asignacion,
           id_formato_evaluacion: assignments[i].id_formato_evaluacion,
@@ -148,28 +187,25 @@ export class EventoService {
           retroalimentacion: assignments[i].retroalimentacion,
           tipo: assignments[i].tipo,
           fecha_presentacion: asesorEventDto.start, //does this work?? cunt
-        }
+        };
         await this.asignacionService.update(updateAsignacionDto);
       }
     }
     return createdEvent;
   }
 
-  async getParticipants(title: string)
-  {
+  async getParticipants(title: string) {
     const eventList: Evento[] = await this.findAllThatShareTitle(title);
     const userList: Usuario[] = [];
-    for(let i = 0; i < eventList.length; i++)
-    {
-      userList.push(await this.usuarioService.findOne(eventList[i].id_usuario))
+    for (let i = 0; i < eventList.length; i++) {
+      userList.push(await this.usuarioService.findOne(eventList[i].id_usuario));
     }
     return userList;
   }
 
-  async deleteAllThatShareTitle(title: string){
+  async deleteAllThatShareTitle(title: string) {
     const list: Evento[] = await this.findAllThatShareTitle(title);
-    for(let i = 0; i < list.length; i++)
-    {
+    for (let i = 0; i < list.length; i++) {
       await this.eventoRepository.delete(list[i].id_evento);
     }
     return list[0];
@@ -179,22 +215,18 @@ export class EventoService {
     return await this.eventoRepository.find({ where: { titulo: title } });
   }
 
-  async findByUserId(id: number)
-  {
-    return await this.eventoRepository.find({where: {id_usuario: id}});
+  async findByUserId(id: number) {
+    return await this.eventoRepository.find({ where: { id_usuario: id } });
   }
 
-  async createAdminEventByType(createEventByTypeDto: CreateEventByTypeDto)
-  {
+  async createAdminEventByType(createEventByTypeDto: CreateEventByTypeDto) {
     const salt = new Date().toISOString();
     let startDate = new Date(createEventByTypeDto.start);
     let endDate = new Date(createEventByTypeDto.end);
-    switch(createEventByTypeDto.type)
-    {
+    switch (createEventByTypeDto.type) {
       case 1:
         const alumnos = await this.usuarioService.findAlumnos();
-        for(let i=0; i < alumnos.length; i++)
-        {
+        for (let i = 0; i < alumnos.length; i++) {
           const event = this.eventoRepository.create({
             id_usuario: alumnos[i].id_usuario,
             id_creador: createEventByTypeDto.id_creador,
@@ -203,12 +235,17 @@ export class EventoService {
             fecha_termino: endDate,
           });
           await this.eventoRepository.save(event);
+          this.notificacionService.create({
+            id_usuario: alumnos[i].id_usuario,
+            titulo: "Se le ha añadido a un evento",
+            descripcion: `Admin lo ha añadido al evento ${createEventByTypeDto.title}`,
+            fecha_expedicion: new Date(),
+          });
         }
         break;
       case 2:
-        const asesores = await this.usuarioService.findAlumnos();
-        for(let i=0; i < asesores.length; i++)
-        {
+        const asesores = await this.usuarioService.findAsesores();
+        for (let i = 0; i < asesores.length; i++) {
           const event = this.eventoRepository.create({
             id_usuario: asesores[i].id_usuario,
             id_creador: createEventByTypeDto.id_creador,
@@ -217,11 +254,16 @@ export class EventoService {
             fecha_termino: endDate,
           });
           await this.eventoRepository.save(event);
+          this.notificacionService.create({
+            id_usuario: asesores[i].id_usuario,
+            titulo: "Se le ha añadido a un evento",
+            descripcion: `Admin lo ha añadido al evento ${createEventByTypeDto.title}`,
+            fecha_expedicion: new Date(),
+          });
         }
         break;
       case 3:
-        for(let i=0; i < createEventByTypeDto.users.length; i++)
-        {
+        for (let i = 0; i < createEventByTypeDto.users.length; i++) {
           const event = this.eventoRepository.create({
             id_usuario: createEventByTypeDto.users[i].id_usuario,
             id_creador: createEventByTypeDto.id_creador,
@@ -230,6 +272,12 @@ export class EventoService {
             fecha_termino: endDate,
           });
           await this.eventoRepository.save(event);
+          this.notificacionService.create({
+            id_usuario: createEventByTypeDto.users[i].id_usuario,
+            titulo: "Se le ha añadido a un evento",
+            descripcion: `Admin lo ha añadido al evento ${createEventByTypeDto.title}`,
+            fecha_expedicion: new Date(),
+          });
         }
         break;
     }
