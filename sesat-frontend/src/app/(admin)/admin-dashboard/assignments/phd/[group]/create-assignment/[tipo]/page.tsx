@@ -40,11 +40,10 @@ export default function CreateAssignment({
 
 
   let index = parseInt(group) - 1;
-  let captionA = group === '5' && tipo === '2' ? ' - Evaluación de Inicio de Semestre' : '';
-  let captionB = group === '5' && tipo === '1' ? ' - Evaluación de Fin de Semestre' : '';
+  
   let oneWeekAhead = new Date();
   oneWeekAhead.setDate(oneWeekAhead.getDate() + 7);
-  const title = names.at(index) + captionA + captionB;
+  const title = group === '5' && tipo === '2' ? 'Evaluación de Medio Término' : names.at(index);
   const [periodo, setPeriodo] = useState<undefined | PeriodoProps>(undefined)
   const [numPendientes, setnumPendientes] = useState<undefined | number>(undefined)
   const [description, setDescription] = useState<null | string>(null);
@@ -284,25 +283,21 @@ export default function CreateAssignment({
                               Publicación (Evaluación de Medio Término)
                             </label>
 
-                            {!periodo.fecha_apertura_opc && (
-                              <>
-                                <Flatpickr
-                                  className={`gray__border w-full ${cssDisabled}`}
-                                  options={{
-                                    enableTime: true,
-                                    noCalendar: false,
-                                    minDate: new Date(periodo.fecha_apertura),
-                                    static: true,
-                                  }}
-                                  //data-enable-time
-                                  placeholder="Inicio"
-                                  value={start}
-                                  onChange={([date]) => {
-                                    setStartDate(date)
-                                  }}
-                                />
-                              </>
-                            )}
+                            <Flatpickr
+                              className={`gray__border w-full ${cssDisabled}`}
+                              options={{
+                                enableTime: true,
+                                noCalendar: false,
+                                minDate: new Date(periodo.fecha_apertura),
+                                static: true,
+                              }}
+                              //data-enable-time
+                              placeholder="Inicio"
+                              value={start}
+                              onChange={([date]) => {
+                                setStartDate(date)
+                              }}
+                            />
                           </div>
                           {/**Cierre */}
                           <div className="w-full flex flex-col">
@@ -310,25 +305,21 @@ export default function CreateAssignment({
                               Límite de entrega (Evaluación de Medio Término)
                             </label>
 
-                            {!periodo.fecha_cierre_opc && (
-                              <>
-                                <Flatpickr
-                                  className={`gray__border w-full ${cssDisabled}`}
-                                  options={{
-                                    enableTime: true,
-                                    noCalendar: false,
-                                    minDate: new Date(periodo.fecha_apertura),
-                                    static: true,
-                                  }}
-                                  //data-enable-time
-                                  placeholder="Inicio"
-                                  value={end}
-                                  onChange={([date]) => {
-                                    setEndDate(date)
-                                  }}
-                                />
-                              </>
-                            )}
+                            <Flatpickr
+                              className={`gray__border w-full ${cssDisabled}`}
+                              options={{
+                                enableTime: true,
+                                noCalendar: false,
+                                minDate: new Date(periodo.fecha_apertura),
+                                static: true,
+                              }}
+                              //data-enable-time
+                              placeholder="Inicio"
+                              value={end}
+                              onChange={([date]) => {
+                                setEndDate(date)
+                              }}
+                            />
                           </div>
                         </div>
                       </>

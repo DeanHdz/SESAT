@@ -2,7 +2,7 @@
 import ProcessingAnim from '@/app/components/ProcessingAnim';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
-import { fetchTesisByID, updateThesisTitle } from '../../../../../utils/tesis.endpoint';
+import { fetchTesisByID, updateThesis } from '../../../../../utils/tesis.endpoint';
 import { UpdateTesis } from '../../../../../types/ISESAT';
 
 const UpdateThesisTitleModal = ({ idTesis, titulo, token }: { idTesis: number, titulo: string, token: string }) => {
@@ -43,7 +43,7 @@ const UpdateThesisTitleModal = ({ idTesis, titulo, token }: { idTesis: number, t
         const tesis: UpdateTesis = await fetchTesisByID(idTesis, token);
 
         if (tesis) {
-            const res = await updateThesisTitle({
+            const res = await updateThesis({
                 id_tesis: tesis.id_tesis,
                 id_usuario: tesis.id_usuario,
                 titulo: title,
@@ -51,10 +51,10 @@ const UpdateThesisTitleModal = ({ idTesis, titulo, token }: { idTesis: number, t
                 generacion: tesis.generacion,
                 ultimo_avance: tesis.ultimo_avance,
                 estado_finalizacion: tesis.estado_finalizacion,
-            }, token)/*.catch(() => {
+            }, token).catch(() => {
                 setmsg("Algo salío mal")
                 setCssError("");
-            });*/
+            });
 
             if (res) {
                 setCssOk("");

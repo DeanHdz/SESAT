@@ -42,8 +42,7 @@ export default async function ViewGroup({
   let totalPendientes2;
   let totalEntregadas2;
 
-  let captionA = group === '5' ? ' - Evaluación Inicial' : '';
-  let captionB = group === '5' ? ' - Evaluación Final' : '';
+  let captionA = group === '5' ? 'Evaluación de Medio Término' : names[index];  
 
   let hayActivas;
   let hayPendientes;
@@ -114,11 +113,11 @@ export default async function ViewGroup({
               )}
 
               {typeof totalPendientes2 !== 'undefined' && totalPendientes2 === 0 && (
-                <AssingmentCardInfo title={names[index] + captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={true} />
+                <AssingmentCardInfo title={captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={true} />
               )}
 
               {typeof totalPendientes !== 'undefined' && totalPendientes === 0 && (
-                <AssingmentCardInfo title={names[index] + captionB} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={1} activa={true} />
+                <AssingmentCardInfo title={names[index]} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={1} activa={true} />
               )}
 
 
@@ -130,11 +129,11 @@ export default async function ViewGroup({
               )}
 
               {typeof totalPendientes2 !== 'undefined' && totalPendientes2 > 0 && (
-                <AssingmentCardInfo title={names[index] + captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={false} />
+                <AssingmentCardInfo title={captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={false} />
               )}
 
               {typeof totalPendientes !== 'undefined' && totalPendientes > 0 && (
-                <AssingmentCardInfo title={names[index] + captionB} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={1} activa={false} />
+                <AssingmentCardInfo title={names[index]} subtitle="Fin de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={1} activa={false} />
               )}
 
 
