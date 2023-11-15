@@ -82,12 +82,14 @@ export class ComiteService {
       this.update(updateCommitteeCoasesor);
     } //sino, crear
     else{
-      const createCommitteeCoasesor: CreateComiteDto = {
-        id_usuario: tesisRegistryDTO.coasesor ? tesisRegistryDTO.coasesor.id_usuario : 0,
-        id_tesis: tesisRegistryDTO.id_tesis,
-        id_funcion: 2,
+      if(tesisRegistryDTO.coasesor){
+        const createCommitteeCoasesor: CreateComiteDto = {
+          id_usuario: tesisRegistryDTO.coasesor ? tesisRegistryDTO.coasesor.id_usuario : 0,
+          id_tesis: tesisRegistryDTO.id_tesis,
+          id_funcion: 2,
+        }
+        this.create(createCommitteeCoasesor);
       }
-      this.create(createCommitteeCoasesor);
     }
 
     if(suplenteSpoof && suplenteSpoof[0] && suplenteSpoof[0].asesor) //si ya tenia uno, actualizar
@@ -279,12 +281,14 @@ export class ComiteService {
       this.update(updateCommitteeCoasesor);
     } //sino, crear
     else{
-      const createCommitteeCoasesor: CreateComiteDto = {
-        id_usuario: createRetrievedCommitteeDTO.coasesor ? createRetrievedCommitteeDTO.coasesor.id_usuario : 0,
-        id_tesis: createRetrievedCommitteeDTO.id_tesis,
-        id_funcion: 2,
+      if(createRetrievedCommitteeDTO.coasesor){
+        const createCommitteeCoasesor: CreateComiteDto = {
+          id_usuario: createRetrievedCommitteeDTO.coasesor ? createRetrievedCommitteeDTO.coasesor.id_usuario : 0,
+          id_tesis: createRetrievedCommitteeDTO.id_tesis,
+          id_funcion: 2,
+        }
+        this.create(createCommitteeCoasesor);
       }
-      this.create(createCommitteeCoasesor);
     }
 
     if(suplenteSpoof && suplenteSpoof[0] && suplenteSpoof[0].asesor) //si ya tenia uno, actualizar
