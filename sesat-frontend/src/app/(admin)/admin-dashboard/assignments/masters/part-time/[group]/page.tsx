@@ -9,7 +9,7 @@ import { fetchCountAlumnosMaestriaOfNumAv } from "../../../../../../../../utils/
 import { fetchNumAsignacionesEntregadasMaestria, fetchNumAsignacionesPendientesMaestria } from "../../../../../../../../utils/asignacion.endpoint";
 import MDAssingmentCardInfo from "../../../../components/MDAssingmentCardInfo";
 import GenInfoMD from "../../../../components/GenInfoMD";
-import Cookies from 'js-cookie';
+import { cookies } from "next/headers";
 
 export default async function ViewGroup({
   params,
@@ -17,7 +17,7 @@ export default async function ViewGroup({
   params: { group: string }
 }) {
 
-  const cookie = Cookies.get("SESATsession");
+  const cookie = cookies().get("SESATsession")?.value;
   const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
   const { group } = params

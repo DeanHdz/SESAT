@@ -4,7 +4,7 @@ import Alert from "../../components/Alert";
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
 import NotFound from "../../not-found";
 import { isPeriodActive } from "../../../../../../utils/utils";
-import Cookies from "js-cookie";
+import { cookies } from "next/headers";
 
 type AvanceProps = {
   num_avance: number,
@@ -78,7 +78,7 @@ async function fetchStatusPeriodo(): Promise<boolean> {
 
 
 export default async function Home() {
-  const cookie = Cookies.get("SESATsession");
+  const cookie = cookies().get("SESATsession")?.value;
   const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const periodo: PeriodoProps = await fetchLatestPeriod(token).catch(() => { return null })
   const statusArray = await fetchAsignacionesData(periodo?.id_periodo, token).catch(() => { return null }) 

@@ -39,7 +39,7 @@ export namespace LoginEndpoint {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       next: { tags: ["UserRole"] },
     };
@@ -63,7 +63,7 @@ export namespace LoginEndpoint {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       next: { revalidate: 3600 },
     };

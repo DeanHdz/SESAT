@@ -6,8 +6,7 @@ import AddPeriodoModal from './AddPeriodoModal';
 import { comparaFecha, getFormattedHours, shortFormatDate } from '../../../../../utils/utils';
 import UpdatePeriodoModal from './UpdatePeriodoModal';
 import NotFound from '../not-found';
-import Cookies from 'js-cookie';
-
+import { cookies } from 'next/headers';
 
 type PeriodoProps = {
     id_periodo: number;
@@ -43,7 +42,7 @@ async function fetchDATA(token: string): Promise<PeriodoProps> {
 }
 
 export default async function AlertPeriod() {
-    const cookie = Cookies.get("SESATsession");
+    const cookie = cookies().get("SESATsession")?.value;
     const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
     const periodo = await fetchDATA(token);
