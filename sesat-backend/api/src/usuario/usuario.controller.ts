@@ -10,11 +10,17 @@ import { Usuario } from "./entities/usuario.entity";
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { CreateForeignAsesorDto } from "./dto/create-foreign-asesor.dto";
 import { CreateExternalAsesorDto } from "./dto/create-external-asesor.dto";
+import { PasswordChangeDTO } from "./dto/password-change.dto";
 
 @Controller("usuario")
 export class UsuarioController{
   constructor(private readonly usuarioService: UsuarioService) {}
   
+  @Post("/change")
+  async changePassword(@Body() passwordChangeDTO: PasswordChangeDTO){
+    return await this.usuarioService.changePassword(passwordChangeDTO);
+  }
+
   @Get('/dedication/:id/:skip')
   async changeDedication(@Param("id") id: string, @Param("skip") skip: string) {
     return await this.usuarioService.changeDedication(+id, +skip);

@@ -731,3 +731,8 @@ export interface TesisRegistryDTO {
   sinodal4?: Usuario | null,
   suplente: Usuario | null,
 }
+
+export interface PasswordChangeDTO {
+  id_usuario: number,
+  password: string,
+}

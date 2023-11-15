@@ -98,6 +98,7 @@ export const config = {
 
     /* Asesor Dashboard Routes */
     '/asesor-dashboard',
+    '/asesor-dashboard/reset',
     '/asesor-dashboard/asesor-assignment',
     '/asesor-dashboard/asesor-assignment/:idAsignacion',
     '/asesor-dashboard/search-thesis',

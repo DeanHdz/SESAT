@@ -38,6 +38,7 @@ import { UpdateAsignacionDto } from "src/asignacion/dto/update-asignacion.dto";
 import { ComiteService } from "src/comite/comite.service";
 import { RetrievedCommitteeDTO } from "src/comite/dto/retrieved-committee.dto";
 import { CreateComiteDto } from "src/comite/dto/create-comite.dto";
+import { PasswordChangeDTO } from "./dto/password-change.dto";
 
 @Injectable()
 export class UsuarioService {
@@ -54,6 +55,23 @@ export class UsuarioService {
     private readonly httpService: HttpService,
     private readonly comiteService: ComiteService
   ) {}
+
+  async changePassword(passwordChangeDTO: PasswordChangeDTO){
+    const usuario: Usuario = await this.findOne(passwordChangeDTO.id_usuario);
+    const updateUsuarioDTO: UpdateUsuarioDto = {
+      id_usuario: passwordChangeDTO.id_usuario,
+      id_rol: usuario.id_rol,
+      id_datos_alumno: usuario.id_datos_alumno,
+      id_datos_asesor_externo: usuario.id_datos_asesor_externo,
+      nombre: usuario.nombre,
+      apellido_paterno: usuario.apellido_paterno,
+      apellido_materno: usuario.apellido_materno,
+      password: passwordChangeDTO.password,
+      correo: usuario.correo
+    }
+    const updatedUsuario = await this.update(updateUsuarioDTO);
+    return updatedUsuario;
+  }
 
   async findStudentByTesisId(id: number)
   {

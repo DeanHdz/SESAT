@@ -76,7 +76,7 @@ export default async function Drawer() {
         </Link>
         {user.id_usuario > 1000000 ? (
           <Link
-          href="/asesor-dashboard/students/phd"
+          href="/asesor-dashboard/reset"
           className={`${cssMenu}`}
         >
           <div className="w-[20px]">
