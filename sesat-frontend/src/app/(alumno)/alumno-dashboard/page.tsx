@@ -53,7 +53,7 @@ export default async function Home() {
         </div>
 
         <div className="w-full flex justify-center mb-4">
-          {tesis.fecha_registro === null ? (
+          {tesis && tesis.fecha_registro === null ? (
             <div className="bg-[#ffffff] gray__border w-full p-6 overflow-x-scroll lg:overflow-hidden">
               <div className="w-full py-2">
                 <p className="text-xl font-SESAT">Realiza tu registro de Tesis para acceder a las asignaciones</p>

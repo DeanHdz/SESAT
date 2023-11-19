@@ -275,7 +275,7 @@ export class EventoService {
           this.notificacionService.create({
             id_usuario: createEventByTypeDto.users[i].id_usuario,
             titulo: "Se le ha añadido a un evento",
-            descripcion: `Admin lo ha añadido al evento ${createEventByTypeDto.title}`,
+            descripcion: `Se le ha añadido al evento ${createEventByTypeDto.title}`,
             fecha_expedicion: new Date(),
           });
         }
