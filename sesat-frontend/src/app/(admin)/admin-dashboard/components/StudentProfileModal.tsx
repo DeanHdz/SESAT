@@ -1165,7 +1165,6 @@ const StudentProfileModal = ({ user }: { user: Usuario }) => {
     };
     if (query != null && query != "") {
       if (!isNaN(Number(query))) {
-        //is Nan Shit
         getUsuario(1);
         setSelectedAsesorIndex(null);
       } else {
