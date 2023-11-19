@@ -3,19 +3,27 @@ import { fetchLatestPeriod } from '../../../../../utils/periodo.endpoint';
 
 
 import AddPeriodoModal from './AddPeriodoModal';
-import { comparaFecha, getFormattedHours, shortFormatDate } from '../../../../../utils/utils';
+import { comparaFecha, getFormattedHours, isPeriodConcluded, shortFormatDate } from '../../../../../utils/utils';
 import UpdatePeriodoModal from './UpdatePeriodoModal';
 import NotFound from '../not-found';
 import { cookies } from 'next/headers';
 
-type PeriodoProps = {
+/*type PeriodoProps = {
     id_periodo: number;
     fecha_apertura: string;
     fecha_cierre: string;
     concluido: boolean;
+}*/
+
+export type PeriodoProps = {
+    id_periodo: number;
+    fecha_apertura: string;
+    fecha_cierre: string;
+    fecha_apertura_opc: string;
+    fecha_cierre_opc: string;
 }
 
-async function fetchDATA(token: string): Promise<PeriodoProps> {
+/*async function fetchDATA(token: string): Promise<PeriodoProps> {
     let periodo: PeriodoProps;
     try {
         await fetchLatestPeriod(token).then((res) => {
@@ -39,13 +47,13 @@ async function fetchDATA(token: string): Promise<PeriodoProps> {
 
     }
     return periodo!;
-}
+}*/
 
 export default async function AlertPeriod() {
     const cookie = cookies().get("SESATsession")?.value;
     const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
-    const periodo = await fetchDATA(token);
+    const periodo: PeriodoProps | undefined = await fetchLatestPeriod(token);
 
     if(!periodo){
         return <NotFound />
@@ -53,7 +61,7 @@ export default async function AlertPeriod() {
 
     return (
         <>
-            {periodo && periodo.concluido ? (
+            {periodo && isPeriodConcluded(periodo.fecha_cierre) ? (
                 <>
                     {/**Si no han pasado mas de 7 dias desde que cerró, dar opcion de editar */}
                     {comparaFecha(new Date(periodo.fecha_cierre)) ? (
@@ -63,7 +71,7 @@ export default async function AlertPeriod() {
                                 <h3 className="font-bold">El último periodo ha concluido el dia: {`${shortFormatDate(periodo.fecha_cierre)}`}</h3>
                                 <div className="text-xs">En caso de ser necesario, cuenta con una semana a partir de la fecha de cierre para extenderlo</div>
                             </div>
-                            <UpdatePeriodoModal idPeriodo={periodo.id_periodo} startDate={new Date(periodo.fecha_apertura)} endDate={new Date(periodo.fecha_cierre)} extender={true} />
+                            <UpdatePeriodoModal periodo={periodo} extender={true} />
                         </div>
                     ) : (
                         <div className="alert shadow-lg mb-6 rounded-md">
@@ -89,7 +97,7 @@ export default async function AlertPeriod() {
                                 </div>
 
                                 {periodo && (
-                                    <UpdatePeriodoModal idPeriodo={periodo.id_periodo} startDate={new Date(periodo.fecha_apertura)} endDate={new Date(periodo.fecha_cierre)} extender={false} />
+                                    <UpdatePeriodoModal periodo={periodo} extender={false} />
                                 )}
                             </div>
                             <div className="mx-auto flex items-center">

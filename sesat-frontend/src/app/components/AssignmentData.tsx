@@ -50,7 +50,7 @@ const AssignmentData = (props: AssignmentDataProps) => {
                     Numero de avance:
                 </label>
                 <label className="pl-4 mb-2">
-                    {props.numAvance}
+                    {props.idGradoEstudio === 1 ? props.numAvance - 1: props.numAvance}
                 </label>
 
                 <label className="font-SESAT mb-2">

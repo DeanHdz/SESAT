@@ -3,7 +3,7 @@ import { fetchGroupStatusPHD } from "../../../../../../utils/asignacion.endpoint
 import Alert from "../../components/Alert";
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
 import NotFound from "../../not-found";
-import { isPeriodActive } from "../../../../../../utils/utils";
+import { isPeriodConcluded } from "../../../../../../utils/utils";
 import { cookies } from "next/headers";
 
 type AvanceProps = {
@@ -58,7 +58,7 @@ export default async function Home() {
   const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
   const periodo: PeriodoProps = await fetchLatestPeriod(token).catch(() => { return null })
   const statusArray = await fetchAsignacionesData(periodo?.id_periodo, token).catch(() => { return null }) 
-  const periodoConcluido = isPeriodActive(periodo?.fecha_cierre)
+  const periodoConcluido = isPeriodConcluded(periodo?.fecha_cierre)
 
 
   return (

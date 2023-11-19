@@ -8,7 +8,7 @@ const LoginNavbar = () =>
       <div className="navbar-start">
               
         <a className="h-[50px]">
-          <img src="/images/uaslp_sesat_logo-m.png" alt="UASLP-SESAT Logo" className="h-[50px] hover:animate-pulse object-contain" />
+          <img src="/images/uaslp_sesat.png" alt="UASLP-SESAT Logo" className="h-[50px] hover:animate-pulse object-contain" />
         </a>
       </div>
 

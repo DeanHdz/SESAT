@@ -705,6 +705,7 @@ export type Avance = {
   num_avance: number;
   grado_estudio: string;
   modalidad: string;
+  tipo: number;
 };
 
 export type TesisInfo = {

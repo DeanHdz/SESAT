@@ -40,7 +40,7 @@ export default async function ViewGroup({
   let totalEntregadas;
 
   let totalPendientes2;
-  let totalEntregadas2;
+  let totalEntregadas2 = 0;
 
   let captionA = group === '5' ? 'Evaluación de Medio Término' : names[index];  
 
@@ -113,7 +113,7 @@ export default async function ViewGroup({
               )}
 
               {typeof totalPendientes2 !== 'undefined' && totalPendientes2 === 0 && (
-                <AssingmentCardInfo title={captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={true} />
+                <AssingmentCardInfo title={captionA} subtitle="Inicio de semestre" pendientes={totalPendientes2} entregadas={totalEntregadas2} avance={group} tipo={2} activa={true} />
               )}
 
               {typeof totalPendientes !== 'undefined' && totalPendientes === 0 && (
@@ -129,7 +129,7 @@ export default async function ViewGroup({
               )}
 
               {typeof totalPendientes2 !== 'undefined' && totalPendientes2 > 0 && (
-                <AssingmentCardInfo title={captionA} subtitle="Inicio de semestre" pendientes={totalPendientes} entregadas={totalEntregadas} avance={group} tipo={2} activa={false} />
+                <AssingmentCardInfo title={captionA} subtitle="Inicio de semestre" pendientes={totalPendientes2} entregadas={totalEntregadas2} avance={group} tipo={2} activa={false} />
               )}
 
               {typeof totalPendientes !== 'undefined' && totalPendientes > 0 && (

@@ -424,6 +424,7 @@ export class TesisService {
       .select([
         "a.id_asignacion AS id_asignacion",
         "a.num_avance AS num_avance",
+        "a.tipo AS tipo",
         "ge.nombre_grado_estudio AS grado_estudio",
         "mod.nombre_modalidad AS modalidad"      
       ])      

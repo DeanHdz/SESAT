@@ -8,6 +8,7 @@ type AsignacionProps = {
   fecha_entrega: string,
   fecha_cierre: string,
   fecha_cierre_opc: string,
+  tipo: number,
   id_grado_estudio: number
 }
 
@@ -32,10 +33,10 @@ const CompletedAssignments = ({ asignaciones }: { asignaciones: AsignacionProps[
               <tr
                 key={alumno.id_asignacion}
               >
-                <td>{alumno.num_avance}</td>
+                <td>{alumno.id_grado_estudio === 1 ? alumno.num_avance - 1 : alumno.num_avance}</td>
                 <td>{alumno.titulo}</td>
                 <td>
-                  {alumno.id_grado_estudio === 2 && alumno.num_avance === 5 ? (
+                  {alumno.tipo === 2 ? (
                     <span>{shortFormatDate(alumno.fecha_cierre_opc)}</span>
                   ) : (
                     <>

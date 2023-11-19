@@ -17,9 +17,18 @@ const AdvancesList = ({ history }: { history: Array<Avance> | undefined }) => {
         {history && (
           history.map((elem, i) => (
             elem.id_asignacion > 0 ? (
-              <li data-content={i + 1} className="step step-primary hidden">
-                <PrevAdvance idAsignacion={elem.id_asignacion} avance={elem.num_avance} />
-              </li>
+              <>
+                {/**Avance de medio término doctorado */}                
+                {elem.grado_estudio === 'Doctorado' && elem.tipo === 2 ? (
+                  <li data-content={''} className="step step-primary hidden">
+                    <PrevAdvance idAsignacion={elem.id_asignacion} avance={elem.num_avance} tipo={elem.tipo} />
+                  </li>
+                ) : (
+                  <li data-content={elem.num_avance > 0 ? elem.num_avance : ''} className="step step-primary hidden">
+                    <PrevAdvance idAsignacion={elem.id_asignacion} avance={elem.num_avance} tipo={elem.tipo} />
+                  </li>
+                )}
+              </>
             ) : (
               <>
                 {elem.id_asignacion === -1 ? (
@@ -27,9 +36,17 @@ const AdvancesList = ({ history }: { history: Array<Avance> | undefined }) => {
                     {`Cambio de modalidad a ${elem.modalidad}`}
                   </li>
                 ) : (
-                  <li data-content={elem.num_avance} className="step">
-                    {`Avance ${elem.num_avance}`}
-                  </li>
+                  <>
+                    {elem.tipo !== 2 ? (
+                      <li data-content={elem.num_avance > 0 ? elem.num_avance : ''} className="step">
+                        {elem.num_avance > 0 ? `Avance ${elem.num_avance}` : 'Seminario de investigación'}
+                      </li>
+                    ) : (
+                      <li data-content={''} className="step">
+                        {`Avance de medio término`}
+                      </li>
+                    )}
+                  </>
                 )}
               </>
             )

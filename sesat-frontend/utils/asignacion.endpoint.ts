@@ -370,9 +370,7 @@ export async function postAsignacionesPhdByNumAv(
     throw(new Error('Error fetching data'))
   }
 
-  const result = await response.json();
-
-  console.log(result)
+  const result = await response.json();  
   return result;
 
 }
@@ -479,8 +477,7 @@ export async function postAsignacionesMastersDgByNumAv(
   }
 
   const result = await response.json();
-
-  console.log(result)
+  
   return result;
 
 }

@@ -8,10 +8,11 @@ import { fetchNumAsignacionesPendientesMaestria, fetchOneInGroupAsignacionMaestr
 
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
-import { getFormattedHours, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { getFormattedHours, isPeriodConcluded, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import Cookies from 'js-cookie';
+import { PeriodoProps } from "@/app/(admin)/admin-dashboard/components/AlertPeriod";
 
 export default function CreateAssignment({
   params,
@@ -50,16 +51,7 @@ export default function CreateAssignment({
   const [updateError, setUpdateError] = useState(false);
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
-  const [editMode, setEditMode] = useState(false)
-
-  type PeriodoProps = {
-    id_periodo: number;
-    fecha_apertura: string;
-    fecha_cierre: string;
-    fecha_apertura_opc: string;
-    fecha_cierre_opc: string;
-    concluido: boolean;
-  }
+  const [editMode, setEditMode] = useState(false)  
 
   /**
    * Asignacion Activa
@@ -82,15 +74,7 @@ export default function CreateAssignment({
 
   useEffect(() => {
     async function fetchDATA() {
-      await fetchLatestPeriod(token).then((res) => {
-        let fechaCierrePeriodo = new Date(res.fecha_cierre);
-        let fechaActual = new Date();
-
-        res.concluido = false;//revisar
-
-        if (fechaActual > fechaCierrePeriodo) {
-          res.concluido = true;
-        }
+      await fetchLatestPeriod(token).then((res) => {        
 
         fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 1, token).then((result) => {
 
@@ -212,7 +196,7 @@ export default function CreateAssignment({
 
   return (
     <main>
-      {periodo && typeof numPendientes !== 'undefined' && numPendientes === 0 && !periodo.concluido ? (
+      {periodo && typeof numPendientes !== 'undefined' && numPendientes === 0 && !isPeriodConcluded(periodo.fecha_cierre) ? (
         <>
           <TitleBar title={names[index]} />
           <form action="submit" onSubmit={handleSubmit}>

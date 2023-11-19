@@ -2,7 +2,7 @@ import AdminAssignmentCard from "@/app/components/AdminAssignmentCard";
 import { fetchGroupStatusMastersDegree } from "../../../../../../utils/asignacion.endpoint";
 import Alert from "../../components/Alert";
 import { fetchLatestPeriod } from "../../../../../../utils/periodo.endpoint";
-import { isPeriodActive } from "../../../../../../utils/utils";
+import { isPeriodConcluded } from "../../../../../../utils/utils";
 import { cookies } from "next/headers";
 
 type AvanceProps = {
@@ -96,7 +96,7 @@ export default async function Home() {
   //fetch de la tabla periodo, revisar que exista al menos un periodo y si es el caso
   //obtener el ultimo creado, comparar la fecha de ciere con la actual para revisar que no este concluido
   let periodo: PeriodoProps = await fetchLatestPeriod(token).catch(() => {return null})
-  const periodoConcluido = isPeriodActive(periodo?.fecha_cierre);
+  const periodoConcluido = isPeriodConcluded(periodo?.fecha_cierre);
 
   let statusMidTime = new Array(), statusFullTime = new Array()
   if (!periodoConcluido) {

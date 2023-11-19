@@ -245,9 +245,10 @@ export class AsignacionService {
         "a.id_asignacion AS id_asignacion",
         "a.num_avance AS num_avance",
         "a.titulo AS titulo",
-        "a.fecha_entrega AS fecha_entrega",
+        "a.fecha_entrega AS fecha_entrega",        
         "p.fecha_cierre AS fecha_cierre",
         "p.fecha_cierre_opc AS fecha_cierre_opc",
+        "a.tipo AS tipo",
         "da.id_grado_estudio AS id_grado_estudio"
       ])
 
@@ -622,11 +623,7 @@ export class AsignacionService {
       .innerJoin(Tesis, "t", "t.id_tesis = a.id_tesis")
       .innerJoin(Usuario, "u", "t.id_usuario = u.id_usuario")
       .innerJoin(DatosAlumno, "da", "u.id_datos_alumno = da.id_datos_alumno")
-      .innerJoin(
-        GradoEstudio,
-        "ge",
-        "da.id_grado_estudio = ge.id_grado_estudio"
-      )
+      .innerJoin(GradoEstudio, "ge", "da.id_grado_estudio = ge.id_grado_estudio")
 
       .where("t.ultimo_avance = :numAv", { numAv: numAvance })
       .andWhere("t.ultimo_avance = a.num_avance")
@@ -849,14 +846,22 @@ export class AsignacionService {
         const promises = idTesisArray.map(async (elem) => {
           //crear una nueva instancia para cada iteracion
           const newAsignacionDto = {
-            ...updateAsignacionDto,
-            id_tesis: elem.id_tesis,
+            ...updateAsignacionDto,            
             id_asignacion: elem.id_asignacion,
+            id_formato_evaluacion: elem.id_formato_evaluacion,
+            id_acta_evaluacion: elem.id_acta_evaluacion,
+            id_tesis: elem.id_tesis,
             id_modalidad: elem.id_modalidad,
             id_periodo: elem.id_periodo,
             num_avance: elem.num_avance,
-            titulo: elem.titulo,
+            titulo: elem.titulo,            
+            fecha_entrega: elem.fecha_entrega,
+            calificacion: elem.calificacion,
+            documento: elem.documento,
+            estado_entrega: elem.estado_entrega,
+            retroalimentacion: elem.retroalimentacion,            
             tipo: elem.tipo,
+            fecha_presentacion: elem.fecha_presentacion
           };
           await this.asignacionRepository.save(newAsignacionDto);
         });

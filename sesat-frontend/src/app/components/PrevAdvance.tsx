@@ -22,7 +22,7 @@ async function fetchAndSortComments(idAsignacion: number, token: string) {
     return comments;
 }
 
-const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: number }) => {
+const PrevAdvance = ({ idAsignacion, avance, tipo }: { idAsignacion: number, avance: number, tipo: number }) => {
     const cookie = Cookies.get("SESATsession");
     const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : ""
 
@@ -43,8 +43,7 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
     const [currentPDF, setcurrentPDF] = useState<Array<number> | undefined>()
 
     useEffect(() => {
-        const getLoggedUser = async () =>
-        {
+        const getLoggedUser = async () => {
             const user: LoggedUser = await LoginEndpoint.getUserInfo(token);
             return user;
         }
@@ -55,7 +54,7 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
         }
 
         fetchData()
-    },[])
+    }, [])
 
 
     function setDefaultState() {
@@ -108,7 +107,9 @@ const PrevAdvance = ({ idAsignacion, avance }: { idAsignacion: number, avance: n
         <>
             <button className="bg-none hover:  mr-1 mb-1 outline-none focus:outline-none" type='button' onClick={openModal}>
                 <div className="text-center text-black text-base  ">
-                    {`Avance ${avance}`}
+                    <>
+                        {tipo !== 2 ? avance > 0 ? `Avance ${avance}`: 'Seminario de investigación' : 'Avance de medio término'}
+                    </>
                 </div>
             </button>
             {showModal && (

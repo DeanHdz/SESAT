@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import autosize from "autosize";
 import { TitleBar } from "@/app/components/TitleBar";
 import "flatpickr/dist/themes/dark.css";
@@ -10,10 +10,12 @@ import { fetchNumAsignacionesPendientesDoctorado, fetchOneInGroupAsignacionDocto
 
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod, putPeriod } from "../../../../../../../../../utils/periodo.endpoint";
-import { formatAsISODate, getFormattedHours, isDateWithinGlobalPeriod, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { formatAsISODate, getFormattedHours, isDateWithinGlobalPeriod, isPeriodConcluded, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import Cookies from "js-cookie";
+import { PeriodoProps } from "@/app/(admin)/admin-dashboard/components/AlertPeriod";
+import { useRouter } from "next/navigation";
 
 export default function CreateAssignment({
   params,
@@ -45,8 +47,8 @@ export default function CreateAssignment({
   const [periodo, setPeriodo] = useState<undefined | PeriodoProps>(undefined)
   const [numPendientes, setnumPendientes] = useState<undefined | number>(undefined)
   const [description, setDescription] = useState("");
-  const [start, setStartDate] = useState<Date>(new Date())                //Para avance 4 doc
-  const [end, setEndDate] = useState<Date>(new Date())                  //Para avance 4 doc
+  const [start, setStartDate] = useState<Date>(new Date())                //Para avance medio term doc
+  const [end, setEndDate] = useState<Date>(new Date())                  //Para avance medio term doc
   const [cssDisabled, setCSSDisabled] = useState("opacity-50 pointer-events-none cursor-not-allowed")
   const [cssHide, setcssHide] = useState("hidden")
   const [cssHideBtnEdit, setcssHideBtnEdit] = useState("")
@@ -56,15 +58,8 @@ export default function CreateAssignment({
   const [cssOk, setCssOk] = useState("hidden")
   const [msg, setmsg] = useState("")
   const [editMode, setEditMode] = useState(false)
-
-  type PeriodoProps = {
-    id_periodo: number;
-    fecha_apertura: string;
-    fecha_cierre: string;
-    fecha_apertura_opc: string;
-    fecha_cierre_opc: string;
-    concluido: boolean;
-  }
+  const router = useRouter();
+ 
 
   /**
    * Asignacion Activa
@@ -90,16 +85,9 @@ export default function CreateAssignment({
 
 
   useEffect(() => {
-    async function fetchDATA() {      
+    async function fetchDATA() {
       await fetchLatestPeriod(token).then(async (res) => {
-        let fechaCierrePeriodo = new Date(res.fecha_cierre);
-        let fechaActual = new Date();
-
-        res.concluido = false;//revisar
-
-        if (fechaActual > fechaCierrePeriodo) {
-          res.concluido = true;
-        }
+        
         await fetchNumAsignacionesPendientesDoctorado(res.id_periodo, group, tipo, token).then((result) => {
 
           let total = parseInt(result)
@@ -169,34 +157,34 @@ export default function CreateAssignment({
     if (periodo) {
       setCssError("hidden")
       setIsSubmitting(true)
-      setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")      
+      setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
       await putPeriod(
         {
           id_periodo: periodo.id_periodo,
           fecha_apertura: formatAsISODate(new Date(periodo.fecha_apertura)),
           fecha_cierre: formatAsISODate(new Date(periodo.fecha_cierre)),
           fecha_apertura_opc: formatAsISODate(start),
-          fecha_cierre_opc: formatAsISODate(end),
+          fecha_cierre_opc: formatAsISODate(end)
         },
         token
-      ).catch(() => {        
+      ).catch(() => {
         setCSSDisabled("")
         setcssHide("hidden")//oculta boton crear
         setIsSubmitting(false)
         setmsg("Algo salió mal")
         setCssError("")
         return true
-      })      
+      })
       return false
-    }else{
+    } else {
       return true;
-    }    
+    }
   }
 
   async function updateAssignmentForPHD() {
     setIsSubmitting(true);
     setCSSDisabled("opacity-80 pointer-events-none cursor-not-allowed")
-    
+
     const res = await updateAsignacionesPhdByNumAv({
       id_asignacion: 0, //no importa aqui, se asigna en backend
       id_formato_evaluacion: null,
@@ -218,20 +206,20 @@ export default function CreateAssignment({
       setmsg("Algo salió mal")
       setCssError("")
       setcssHide("hidden")
-      setIsSubmitting(false);    
-    });
-    
-    if (res) {
       setIsSubmitting(false);
-      setmsg("Los datos se actualizaron correctamente")
-      setCssOk("")
-      setcssHide("hidden")
-      setEditMode(false)    
+    });    
+    if (res) {      
+      router.refresh();
+      setIsSubmitting(false);      
+      setmsg("Los datos se actualizaron correctamente");
+      setCssOk("");
+      setcssHide("hidden");
+      setEditMode(false);
     }    
   }
 
   async function handleSubmit(e: any) {
-    e.preventDefault();    
+    e.preventDefault();
     let updateErr = false
     {/**Si la cadena no esta vacia o contiene solo espacios ' ' */ }
     if (description != null && description.trim().length > 0) {
@@ -240,24 +228,26 @@ export default function CreateAssignment({
       if (group === '5' && tipo === '2') {
         if (periodo && isDateWithinGlobalPeriod(new Date(periodo.fecha_apertura), new Date(periodo.fecha_cierre), start, end)) {
           if (start && end && start > end) {
-            setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
-            setCssError("")
+            setmsg("La fecha de inicio no puede ser posterior a la fecha de fin");
+            setCssError("");
             updateErr = true
-          } else {            
+          } else {
             updateErr = await updatePeriodForPHD();
+            if (updateErr) {
+              setmsg("Algo salió mal")
+              setCssError("")
+            }
           }
         } else {
+          updateErr = true
           setmsg("La fechas para esta asignación deben estar dentro del periodo global")
           setCssError("")
         }
       }
-      
+
       {/**Si no ocurrio ningun error al guardar el periodo de entrega*/ }
       if (updateErr === false) {
         updateAssignmentForPHD();
-      }else{
-        setmsg("Algo salió mal")
-        setCssError("")
       }
 
     } else {
@@ -268,7 +258,7 @@ export default function CreateAssignment({
 
   return (
     <main>
-      {periodo && typeof numPendientes !== 'undefined' && numPendientes === 0 && !periodo.concluido ? (
+      {periodo && typeof numPendientes !== 'undefined' && numPendientes === 0 && !isPeriodConcluded(periodo.fecha_cierre) ? (
         <>
           <TitleBar title={names[index]} />
           <form action="submit" onSubmit={handleSubmit}>
@@ -332,7 +322,7 @@ export default function CreateAssignment({
                   <div className='tooltip tooltip-left w-[24px] h-[24px] ml-auto rounded-full flex items-center justify-center hover:bg-light-gray-22'
                     data-tip={
                       group === '5' && tipo === '2' ? (
-                        'Solo aplica para alumnos de doctorado que están cursando seminario de tesis 4, el periodo de publicación/cierre debe estar dentro del periodo global') : (
+                        'Solo aplica para alumnos de doctorado que presentan su avance de medio término, el periodo de publicación/cierre debe estar dentro del periodo global') : (
                         'Esta fecha se establece/modifica en la página de inicio')
                     }>
                     <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16" height="20px"

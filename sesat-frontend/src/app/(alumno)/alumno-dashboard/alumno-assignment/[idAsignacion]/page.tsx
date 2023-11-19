@@ -133,7 +133,7 @@ export default async function Home({
                           </label>
 
                           <label className="mb-2">
-                            {asignacion.num_avance}
+                            {tesisInfo.id_grado_estudio === 1 ? asignacion.num_avance - 1 : asignacion.num_avance}
                           </label>
 
                           <label className="font-SESAT mb-2">
@@ -141,7 +141,16 @@ export default async function Home({
                           </label>
 
                           <label className="mb-2">
-                            {`${shortFormatDate(periodo.fecha_cierre)}    ${getFormattedHours(new Date(periodo.fecha_cierre))}`}
+
+                            {asignacion.tipo === 1 ? (
+                              <>
+                                {`${shortFormatDate(periodo.fecha_cierre)}    ${getFormattedHours(new Date(periodo.fecha_cierre))}`}
+                              </>
+                            ) : (
+                              <>
+                                {`${shortFormatDate(periodo.fecha_cierre_opc)}    ${getFormattedHours(new Date(periodo.fecha_cierre_opc))}`}
+                              </>
+                            )}
                           </label>
 
                           <label className="font-SESAT mb-2">
@@ -164,7 +173,7 @@ export default async function Home({
                     {evaluacion_realizada && (
                       <Results calificacion={asignacion.calificacion} id_acta_evaluacion={asignacion.id_acta_evaluacion} id_formato_evaluacion={asignacion.id_formato_evaluacion} />
                     )}
-                    <PDFUploadForm server_time={periodo.server_time} fecha_cierre={periodo.fecha_cierre} asignacion={asignacion} />
+                    <PDFUploadForm server_time={periodo.server_time} fecha_cierre={asignacion.tipo === 1 ? periodo.fecha_cierre : periodo.fecha_cierre_opc} asignacion={asignacion} />
 
 
                   </>

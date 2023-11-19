@@ -21,6 +21,7 @@ type AsignacionProps = {
   fecha_entrega: string,
   fecha_cierre: string,
   fecha_cierre_opc: string,
+  tipo: number,
   id_grado_estudio: number
 }
 
