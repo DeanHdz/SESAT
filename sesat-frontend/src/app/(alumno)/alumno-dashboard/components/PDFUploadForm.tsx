@@ -126,22 +126,22 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
               setmsg("Algo salió mal")
               setCssError("")
             });
-            let comite: Comite[] = await fetchComiteByIDTesis(
-              props.asignacion.id_tesis,
+          let comite: Comite[] = await fetchComiteByIDTesis(
+            props.asignacion.id_tesis,
+            token
+          );
+          let user: LoggedUser = await LoginEndpoint.getUserInfo(token);
+          comite.forEach(async (member) => {
+            await postNotificacion(
+              {
+                id_usuario: member.id_usuario,
+                titulo: "Asignacion entregada",
+                descripcion: `El alumno ${user.nombre} ${user.apellido_paterno} ${user.apellido_materno} ha entregado la asignación ${props.asignacion.titulo}`,
+                fecha_expedicion: formatAsISODate(new Date()),
+              },
               token
             );
-            let user: LoggedUser = await LoginEndpoint.getUserInfo(token);
-            comite.forEach(async (member) => {
-              await postNotificacion(
-                {
-                  id_usuario: member.id_usuario,
-                  titulo: "Asignacion entregada",
-                  descripcion: `El alumno ${user.nombre} ${user.apellido_paterno} ${user.apellido_materno} ha entregado la asignación ${props.asignacion.titulo}`,
-                  fecha_expedicion: formatAsISODate(new Date()),
-                },
-                token
-              );
-            });
+          });
           router.refresh();
           setEditMode(false)
           setIsSubmitting(false);
@@ -155,7 +155,7 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
       } else {
         router.refresh();
         setmsg("La fecha de entrega ha vencido, no puedes realizar cambios")
-        setCssError("")        
+        setCssError("")
       }
 
       //alert("El archivo PDF se ha subido.");
@@ -172,7 +172,15 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
 
       <div className={`px-6 py-3 mb-3 flex ${editMode && 'flex-col'}  lg:flex-row lg:items-center text-xl font-semibold border-b`}>
         <span>
-          {props.asignacion.estado_entrega === 0 ? 'Subir un documento' : 'Avance de tesis entregado'}
+          {fecha_actual > fecha_limite && props.asignacion.estado_entrega === 0 ? (
+            <>
+              {'La fecha de entrega ha vencido'}
+            </>
+          ) : (
+            <>
+              {props.asignacion.estado_entrega === 0 ? 'Subir un documento' : 'Avance de tesis entregado'}
+            </>
+          )}
         </span>
         <>
           {!evaluacion_realizada ? (
@@ -225,7 +233,7 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
         </div>
         {props.asignacion.estado_entrega === 0 || editMode ? (
           <>
-            <div className={`w-full mb-3`}>
+            <div className={`w-full mb-3 ${fecha_actual > fecha_limite ? 'opacity-50 pointer-events-none cursor-not-allowed' : ''}`}>
               <input
                 type="file"
                 required

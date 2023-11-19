@@ -166,6 +166,7 @@ export class UsuarioService {
 
     // Deletable
     //make placeholder assignments (?remove)
+    //es para cambio de modalidad?
     for(let i = 0; i < skipToAvance-1 ; i++)
     {
       let today = new Date();

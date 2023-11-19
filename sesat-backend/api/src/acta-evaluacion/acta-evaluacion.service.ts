@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateActaEvaluacionDto } from './dto/create-acta-evaluacion.dto';
@@ -8,7 +8,7 @@ import { FilledActDto } from './dto/create-formulario.dto';
 import { PDFDocument } from 'pdf-lib';
 import { decode } from 'base64-arraybuffer';
 import { FormatoVacio } from 'src/formato-vacio/entities/formato-vacio.entity';
-import { formatAsISODate, shortFormatDate } from 'src/utils/utils';
+import { shortFormatDate } from 'src/utils/utils';
 import { Asignacion } from 'src/asignacion/entities/asignacion.entity';
 import { Tesis } from 'src/tesis/entities/tesis.entity';
 import { Comite } from 'src/comite/entities/comite.entity';
@@ -110,6 +110,7 @@ export class ActaEvaluacionService {
       .innerJoin(Usuario, "u", "u.id_usuario = c.id_usuario")
       .innerJoin(Funcion, "f", "f.id_funcion = c.id_funcion")
       .where('a.id_asignacion = :id_asignacion', { id_asignacion: idAsignacion })
+      .orderBy('f.nombre_funcion')
       .getRawMany()
     return result;
   }
@@ -119,12 +120,10 @@ export class ActaEvaluacionService {
     //por default se carga en un ArrayBuffer aunque sea un string      
 
     var comite = await this.findComiteMembers(fillActa.id_asignacion);
+    
     //Nota el id_formato_vacio siempre es fijo ya que la tabla solo contiene 2 registros(acta y formato)
     var emptyFormat = await this.formatoVacioRepository.findOne({ where: { id_formato_vacio: 1 } });
     var buffer = emptyFormat.acta_evaluacion;
-
-    var logger = new Logger('PDFDetails');
-    logger.log('ID: ', idAsignacion)
 
     //Ver en formato UTF-8, no lo reconoce por default 
     var base64 = new TextDecoder().decode(buffer);
@@ -159,9 +158,7 @@ export class ActaEvaluacionService {
       logger.log('ID: ', idAsignacion);*/
 
       //Editar campos del PDF
-      var form = pdfDoc.getForm();
-      logger.log('PDF Fields: ', fillActa.fecha_toefl);
-      logger.log('PDF Fields: ', shortFormatDate(fillActa.fecha_toefl));
+      var form = pdfDoc.getForm();      
 
       form.getTextField('posgrado').setText("POSGRADO EN COMPUTACIÓN");
       form.getTextField('fecha_eval').setText(shortFormatDate(fillActa.fecha_eval));

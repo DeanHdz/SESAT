@@ -25,7 +25,7 @@ export function shortFormatDateWithoutConversion(dateString: string): string {
     const date = new Date(year, month, day);
     const formattedDay = date.getDate().toString().padStart(2, '0');
     const formattedMonth = months[date.getMonth()];
-    
+
     return `${formattedDay}/${formattedMonth}/${year}`;
 }
 //Regresa dd/MMM/yyyy en fecha y hora local
@@ -98,7 +98,7 @@ export function esPeriodoValido(anterior: Date, nuevo: Date): boolean {
 }
 
 
-export function isPeriodActive(endDate: string): boolean {
+export function isPeriodConcluded(endDate: string): boolean {
 
     let fechaCierrePeriodo = new Date(endDate);
     let fechaActual = new Date();
@@ -112,13 +112,13 @@ export function isPeriodActive(endDate: string): boolean {
 }
 
 //Recibe una fecha en formato dd/MMM/YYYY, por ejemplo 02/Feb/2023, Devuelve el objeto Date Correspondiente
-export function dateStringToDate(dateString: string): Date {    
+export function dateStringToDate(dateString: string): Date {
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
     const parts = dateString.split('/');
     const day = parseInt(parts[0], 10);
     const month = months.indexOf(parts[1]);
     const year = parseInt(parts[2], 10);
-        
+
     return new Date(year, month, day);
 }
 
@@ -135,22 +135,30 @@ export async function fetchHistoryByIdTesis(idTesis: number, idModalidadActual: 
         history.sort((a, b) => a.id_asignacion - b.id_asignacion);
 
         let lastElement = history[history.length - 1];
-
+        let firstElem = history[0];
+        let j = 0;
         switch (lastElement.grado_estudio) {
             case 'Doctorado':
-                
-                for (let index = 0; index < totalDoctorado; index++) {                                       
-                    avancesEntregados.push({ num_avance: index + 1, grado_estudio: "", id_asignacion: 0, modalidad: '' })
-                }              
-            
-                history.map((item, i) => (
-                    avancesEntregados[i] = item
-                ))
-                
+                let cont = 1;
+                for (let index = 0; index < totalDoctorado; index++) {
+                    if (index === 4) {
+                        avancesEntregados.push({ num_avance: -1, grado_estudio: "", id_asignacion: 0, modalidad: '', tipo: 2 })
+                    } else {
+                        avancesEntregados.push({ num_avance: cont, grado_estudio: "", id_asignacion: 0, modalidad: '', tipo: -1 })
+                        cont++;
+                    }
+                }
+
+                for (let index = firstElem.num_avance - 1; index < avancesEntregados.length; index++) {
+                    if (history[j]) {
+                        avancesEntregados[index] = history[j];
+                        j++;
+                    }
+                }
                 break;
 
             default://Maestria
-                let assignmentsLeft = 0;
+                let assignmentsLeft = j = 0;
 
                 if (modalidadActual === 'Tiempo Completo') {
                     assignmentsLeft = totalMaestria1 - numAvanceActual + 1;//el avance actual tambien esta en el conjunto de los faltantes, por eso es + 1
@@ -158,34 +166,46 @@ export async function fetchHistoryByIdTesis(idTesis: number, idModalidadActual: 
                     assignmentsLeft = totalMaestria2 - numAvanceActual + 1;
                 }
 
-                //Revisar cambios de modalidad previos
-                let modalidad = history[0].modalidad;
-
+                {/**Completa avances previos VACIOS */}
+                if(firstElem.num_avance > 1){
+                    for (let index = 0; index < firstElem.num_avance - 1; index++) {
+                        avancesEntregados.push({ num_avance: index, grado_estudio: '', id_asignacion: 0, modalidad: '', tipo: -1 });
+                    }
+                }
+                
+                //Revisar cambios de modalidad
+                let modalidad = firstElem.modalidad;                
+                j = 0;
                 for (let index = 0; index < history.length; index++) {
 
-                    const element = history[index];
+                    let element = history[index];
+                    element.num_avance--;
 
                     if (element.modalidad !== modalidad) {
                         modalidad = element.modalidad;
                         //Avance vacio, se usa como separador entre una modalidad y otra
-                        avancesEntregados.push({ num_avance: -1, grado_estudio: element.grado_estudio, id_asignacion: -1, modalidad: element.modalidad });
+                        avancesEntregados.push({ num_avance: - 1, grado_estudio: element.grado_estudio,     id_asignacion: -1, modalidad: element.modalidad, tipo: element.tipo });
                     }
 
                     avancesEntregados.push(element);
                 }
-
+                let cambioModReciente = false;
+                /**Hubo un cambio de modalidad el semestre inmediato anterior (aun no está en historial) */
                 if (lastElement.modalidad !== modalidadActual) {
                     //Avance vacio, se usa como separador entre una modalidad y otra
-                    avancesEntregados.push({ num_avance: -1, grado_estudio: lastElement.grado_estudio, id_asignacion: -1, modalidad: modalidadActual });
+                    avancesEntregados.push({ num_avance: -1, grado_estudio: lastElement.grado_estudio, id_asignacion: -1, modalidad: modalidadActual, tipo: -1 });
+                    cambioModReciente = true;
                 }
-                //avances restantes del alumno
-                for (let index = numAvanceActual; index < numAvanceActual + assignmentsLeft; index++) {
-                    avancesEntregados.push({ num_avance: index, grado_estudio: '', id_asignacion: 0, modalidad: '' });
+                //avances restantes por completar del alumno(No accesibles)
+                for (let index = numAvanceActual - 1; index < numAvanceActual - 1 + assignmentsLeft; index++) {
+                    if((lastElement.num_avance - 1) !== index){
+                        avancesEntregados.push({ num_avance: index, grado_estudio: '', id_asignacion: 0, modalidad: '', tipo: -1 });
+                    }else if(cambioModReciente){
+                        avancesEntregados.push({ num_avance: index, grado_estudio: '', id_asignacion: 0, modalidad: '', tipo: -1 });
+                    }
                 }
                 break;
         }
-    }    
-    console.log(modalidadActual)
-    console.log(avancesEntregados)
+    }
     return avancesEntregados;
 }

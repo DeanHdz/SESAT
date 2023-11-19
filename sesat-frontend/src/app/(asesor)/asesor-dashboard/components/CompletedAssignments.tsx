@@ -45,7 +45,7 @@ const CompletedAssignments = ({ asignaciones }: { asignaciones: AsignacionProps[
                 <td>{`${alumno.nombre} ${alumno.apellido_paterno} ${alumno.apellido_materno}`}</td>
                 <td>{alumno.titulo}</td>
                 <td>{alumno.grado === 1 ? 'Maestría' : 'Doctorado'}</td>
-                <td>{alumno.num_avance}</td>
+                <td>{alumno.grado === 1 ? alumno.num_avance - 1 : alumno.num_avance}</td>
                 <td>{shortFormatDate(alumno.fecha_entrega)}</td>
                 <td>
                   <div>

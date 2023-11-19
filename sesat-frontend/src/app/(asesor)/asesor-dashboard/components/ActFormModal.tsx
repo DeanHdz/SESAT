@@ -148,7 +148,7 @@ const ActFormModal = ({
           nombre: tesisInfo.nombre,
 
           programa: tesisInfo.programa_nombre_programa,
-          no_avance: asignacion.num_avance,
+          no_avance: tesisInfo.id_grado_estudio === 1 ? asignacion.num_avance -1 : asignacion.num_avance,
 
           titulo_tesis: tesisInfo.titulo,
           total_avance: porcentajeAv.toString(),
@@ -372,7 +372,7 @@ const ActFormModal = ({
                                   Avance No.:
                                 </label>
                                 <label className="mb-3 block text-lg font-sans">
-                                  {asignacion.num_avance}
+                                  {tesisInfo.id_grado_estudio === 1 ? asignacion.num_avance - 1 : asignacion.num_avance}
                                 </label>
                               </div>
                             </div>

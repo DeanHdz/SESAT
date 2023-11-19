@@ -10,7 +10,7 @@ import Flatpickr from "react-flatpickr";
 import { fetchNumAsignacionesPendientesDoctorado, postAsignacionesPhdByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod, putPeriod } from "../../../../../../../../../utils/periodo.endpoint";
-import { formatAsISODate, getFormattedHours, isPeriodActive, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { formatAsISODate, getFormattedHours, isPeriodConcluded, shortFormatDate } from "../../../../../../../../../utils/utils";
 import EmptyPage from "@/app/components/EmptyPage";
 import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import Cookies from "js-cookie";
@@ -79,7 +79,7 @@ export default function CreateAssignment({
         setPeriodo(res)
 
         if (periodo) {
-          periodo.concluido = isPeriodActive(res.fecha_cierre)
+          periodo.concluido = isPeriodConcluded(res.fecha_cierre)
         }
 
         if (!["1", "2"].includes(tipo) || tipo === '2' && group !== '5') {

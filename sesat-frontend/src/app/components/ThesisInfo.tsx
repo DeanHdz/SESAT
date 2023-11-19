@@ -23,13 +23,13 @@ const ThesisInfo = (props: TesisProps) => {
     async function fetchThesisHistoryByIdTesis() {
         setIsLoading(true);
         setIsOpen(!isOpen);
-        
-        const res = await fetchHistoryByIdTesis(props.tesis.id_tesis,props.tesis.id_modalidad, props.tesis.avance, token);
+
+        const res = await fetchHistoryByIdTesis(props.tesis.id_tesis, props.tesis.id_modalidad, props.tesis.avance, token);
         setHistory(res);
 
         setIsLoading(false);
     }
-        
+
 
     return (
         <div className={`collapse ${isOpen ? 'collapse-open' : ''} bg-transparent gray__border py-0`} >
@@ -41,7 +41,7 @@ const ThesisInfo = (props: TesisProps) => {
                     </div>
                     <div className="ml-6 block w-auto">
                         <p className="mt-1 text-[16px] font-SESAT">{props.tesis.titulo}</p>
-                        <p className="mt-1 text-sm font-sans text-black/40">{props.tesis.grado === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computacións'}</p>
+                        <p className="mt-1 text-sm font-sans text-black/40">{props.tesis.grado === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computación'}</p>
                     </div>
                     <div className="flex w-[50px] ml-auto text-dark-blue-10 justify-center items-center">
                         <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"></path></svg>
@@ -144,9 +144,17 @@ const ThesisInfo = (props: TesisProps) => {
                                     {history && (
                                         history.map((elem, i) => (
                                             elem.id_asignacion > 0 ? (
-                                                <li data-content={i + 1} className="step step-primary hidden">
-                                                    <PrevAdvance idAsignacion={elem.id_asignacion} avance={elem.num_avance} />
-                                                </li>
+                                                <>
+                                                    {elem.tipo === 2 ? (
+                                                        <li data-content={''} className="step step-primary hidden">
+                                                            <PrevAdvance idAsignacion={elem.id_asignacion} avance={elem.num_avance} tipo={elem.tipo} />
+                                                        </li>
+                                                    ) : (
+                                                        <li data-content={elem.num_avance > 0 ? elem.num_avance : ''} className="step step-primary hidden">
+                                                            <PrevAdvance idAsignacion={elem.id_asignacion} avance={elem.num_avance} tipo={elem.tipo} />
+                                                        </li>
+                                                    )}
+                                                </>
                                             ) : (
                                                 <>
                                                     {elem.id_asignacion === -1 ? (
@@ -154,9 +162,17 @@ const ThesisInfo = (props: TesisProps) => {
                                                             {`Cambio de modalidad a ${elem.modalidad}`}
                                                         </li>
                                                     ) : (
-                                                        <li data-content={elem.num_avance} className="step">
-                                                            {`Avance ${elem.num_avance}`}
-                                                        </li>
+                                                        <>
+                                                            {elem.tipo !== 2 ? (
+                                                                <li data-content={elem.num_avance > 0 ? elem.num_avance : ''} className="step">
+                                                                    {elem.num_avance > 0 ? `Avance ${elem.num_avance}` : 'Seminario de investigación'}
+                                                                </li>
+                                                            ) : (
+                                                                <li data-content={''} className="step">
+                                                                    {`Avance de medio término`}
+                                                                </li>
+                                                            )}
+                                                        </>
                                                     )}
                                                 </>
                                             )

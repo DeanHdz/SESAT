@@ -123,7 +123,7 @@ export default function TesisRegistryForm({
   }, [query]); //,router
 
   const searchBar = (
-    <div className="mb-2 p-2 border-t border-b border-light-gray-22 border-solid w-full flex justify-end">
+    <div className="mb-2 p-2  border-b border-light-gray-22 border-solid w-full flex justify-end">
       <input
         type="search"
         placeholder="Nombre o Clave/RPE"
@@ -182,11 +182,10 @@ export default function TesisRegistryForm({
       suplente: selectedSuplente,
     }
     const res = await postTesisRegistry(token, tesisRegistryDTO);
-    if(res != null) 
-    {
+    if (res != null) {
       setShowSuccessModal(!showSuccessModal)
     }
-    else 
+    else
       console.log("incorrecto")
   }
 
@@ -202,11 +201,11 @@ export default function TesisRegistryForm({
                   <svg className="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="40" zoomAndPan="magnify" viewBox="0 0 30 30.000001" height="40" preserveAspectRatio="xMidYMid meet" version="1.0">
                     <defs>
                       <clipPath id="id1">
-                        <path d="M 2.328125 4.222656 L 27.734375 4.222656 L 27.734375 24.542969 L 2.328125 24.542969 Z M 2.328125 4.222656 " clipRule="nonzero"/>
+                        <path d="M 2.328125 4.222656 L 27.734375 4.222656 L 27.734375 24.542969 L 2.328125 24.542969 Z M 2.328125 4.222656 " clipRule="nonzero" />
                       </clipPath>
                     </defs>
                     <g clipPath="url(#id1)">
-                      <path fill="rgb(0%, 40%, 20%)" d="M 27.5 7.53125 L 24.464844 4.542969 C 24.15625 4.238281 23.65625 4.238281 23.347656 4.542969 L 11.035156 16.667969 L 6.824219 12.523438 C 6.527344 12.230469 6 12.230469 5.703125 12.523438 L 2.640625 15.539062 C 2.332031 15.84375 2.332031 16.335938 2.640625 16.640625 L 10.445312 24.324219 C 10.59375 24.472656 10.796875 24.554688 11.007812 24.554688 C 11.214844 24.554688 11.417969 24.472656 11.566406 24.324219 L 27.5 8.632812 C 27.648438 8.488281 27.734375 8.289062 27.734375 8.082031 C 27.734375 7.875 27.648438 7.679688 27.5 7.53125 Z M 27.5 7.53125 " fillOpacity="1" fillRule="nonzero"/>
+                      <path fill="rgb(0%, 40%, 20%)" d="M 27.5 7.53125 L 24.464844 4.542969 C 24.15625 4.238281 23.65625 4.238281 23.347656 4.542969 L 11.035156 16.667969 L 6.824219 12.523438 C 6.527344 12.230469 6 12.230469 5.703125 12.523438 L 2.640625 15.539062 C 2.332031 15.84375 2.332031 16.335938 2.640625 16.640625 L 10.445312 24.324219 C 10.59375 24.472656 10.796875 24.554688 11.007812 24.554688 C 11.214844 24.554688 11.417969 24.472656 11.566406 24.324219 L 27.5 8.632812 C 27.648438 8.488281 27.734375 8.289062 27.734375 8.082031 C 27.734375 7.875 27.648438 7.679688 27.5 7.53125 Z M 27.5 7.53125 " fillOpacity="1" fillRule="nonzero" />
                     </g>
                   </svg>
                 </div>
@@ -218,9 +217,9 @@ export default function TesisRegistryForm({
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"> 
-              <button 
-                type="button" 
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 onClick={() => {
                   router.push("/alumno-dashboard");
@@ -240,23 +239,24 @@ export default function TesisRegistryForm({
       {showSuccessModal ? (successModal) : ("")}
       <div className="w-full my-2 p-2">
         <div className="w-full my-2 flex gap-2">
-          <div className="gray__border w-3/6 h-[200px]">
+          <div className="gray__border w-3/6 h-fit p-6">
             <div className="text-xl font-bold my-2 text-dark-blue-10 px-2">
               Título de la Tesis
             </div>
             <input
               type="text"
               className="mx-2 w-11/12 border-t-0 border-l-0 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-dark-blue-10 transition duration-300 ease-in-out appearance-none"
-              placeholder="Titulo de la tesis..."
+              placeholder="Escribe el título"
               onChange={handleTitleChange}
             />
             <p className="w-full text-center text-[15px] px-8 my-8">
               Indica el <span className="font-semibold text-dark-blue-10 italic">título de tu tesis</span> para realizar el registro.
-              <br/>
+              <br />
               Recuerda que puedes solicitar un <span className="font-semibold text-dark-blue-10 italic">cambio de título</span> a tu asesor.
             </p>
           </div>
-          <div className="gray__border w-3/6 h-[200px] p-2 flex flex-col overflow-auto">
+
+          <div className="gray__border w-3/6 h-fit p-6 flex flex-col overflow-auto">
             <div className="text-xl font-bold my-2 text-dark-blue-10">
               Comité
             </div>
@@ -649,17 +649,17 @@ export default function TesisRegistryForm({
             </div>
           </div>
         </div>
+        
         <div className="text-xl font-bold my-2 text-dark-blue-10">
           Selección de Comité
         </div>
         <div className="flex gap-2">
           <button
             type="button"
-            className={`${
-              asesorBtn
+            className={`${asesorBtn
                 ? "bg-dark-blue-10 text-white border border-white"
                 : "text-dark-blue-10 border-blue-700 border"
-            } font-bold rounded-lg text-sm text-center px-2 py-2`}
+              } font-bold rounded-lg text-sm text-center px-2 py-2`}
             onClick={() => {
               setAsesorBtn(!asesorBtn);
               if (coasesorBtn) {
@@ -680,11 +680,10 @@ export default function TesisRegistryForm({
           </button>
           <button
             type="button"
-            className={`${
-              coasesorBtn
+            className={`${coasesorBtn
                 ? "bg-dark-blue-10 text-white border border-white"
                 : "text-dark-blue-10 border-blue-700 border"
-            } font-bold rounded-lg text-sm text-center px-2 py-2`}
+              } font-bold rounded-lg text-sm text-center px-2 py-2`}
             onClick={() => {
               setCoasesorBtn(!coasesorBtn);
               if (asesorBtn) {
@@ -705,11 +704,10 @@ export default function TesisRegistryForm({
           </button>
           <button
             type="button"
-            className={`${
-              sinodalBtn
+            className={`${sinodalBtn
                 ? "bg-dark-blue-10 text-white border border-white"
                 : "text-dark-blue-10 border-blue-700 border"
-            } font-bold rounded-lg text-sm text-center px-2 py-2`}
+              } font-bold rounded-lg text-sm text-center px-2 py-2`}
             onClick={() => {
               setSinodalBtn(!sinodalBtn);
               if (asesorBtn) {
@@ -730,11 +728,10 @@ export default function TesisRegistryForm({
           </button>
           <button
             type="button"
-            className={`${
-              suplenteBtn
+            className={`${suplenteBtn
                 ? "bg-dark-blue-10 text-white border border-white"
                 : "text-dark-blue-10 border-blue-700 border"
-            } font-bold rounded-lg text-sm text-center px-2 py-2`}
+              } font-bold rounded-lg text-sm text-center px-2 py-2`}
             onClick={() => {
               setSuplenteBtn(!suplenteBtn);
               if (asesorBtn) {
@@ -986,7 +983,7 @@ export default function TesisRegistryForm({
         {user.datos_alumno && user.datos_alumno.id_grado_estudio == 1 ? (
           <>
             {sinodalBtn &&
-            (selectedSinodal1 === null || selectedSinodal2 === null) ? (
+              (selectedSinodal1 === null || selectedSinodal2 === null) ? (
               <div className="w-full gray__border py-2 my-2 px-2">
                 {searchBar}
                 <div className="max-h-[250px] overflow-auto mt-2 flex flex-col flex-shrink-0">
@@ -1047,8 +1044,8 @@ export default function TesisRegistryForm({
             ) : (
               <>
                 {sinodalBtn &&
-                selectedSinodal1 !== null &&
-                selectedSinodal2 !== null ? (
+                  selectedSinodal1 !== null &&
+                  selectedSinodal2 !== null ? (
                   <div className="w-full gray__border py-2 my-2">
                     <div className="w-full px-4 flex items-center">
                       <div className="w-[25px] text-dark-blue-10 flex items-center justify-center mx-2">
@@ -1150,10 +1147,10 @@ export default function TesisRegistryForm({
         ) : (
           <>
             {sinodalBtn &&
-            (selectedSinodal1 === null ||
-              selectedSinodal2 === null ||
-              selectedSinodal3 === null ||
-              selectedSinodal4 === null) ? (
+              (selectedSinodal1 === null ||
+                selectedSinodal2 === null ||
+                selectedSinodal3 === null ||
+                selectedSinodal4 === null) ? (
               <div className="w-full gray__border py-2 my-2 px-2">
                 {searchBar}
                 <div className="max-h-[250px] overflow-auto mt-2 flex flex-col flex-shrink-0">
@@ -1214,10 +1211,10 @@ export default function TesisRegistryForm({
             ) : (
               <>
                 {sinodalBtn &&
-                selectedSinodal1 !== null &&
-                selectedSinodal2 !== null &&
-                selectedSinodal3 !== null &&
-                selectedSinodal4 !== null ? (
+                  selectedSinodal1 !== null &&
+                  selectedSinodal2 !== null &&
+                  selectedSinodal3 !== null &&
+                  selectedSinodal4 !== null ? (
                   <div className="w-full gray__border py-2 my-2">
                     <div className="w-full px-4 flex items-center">
                       <div className="w-[25px] text-dark-blue-10 flex items-center justify-center mx-2">
@@ -1523,34 +1520,34 @@ export default function TesisRegistryForm({
       <div className="w-full px-2 flex justify-end">
         {user.datos_alumno && user.datos_alumno.id_grado_estudio == 1 ? (
           <>
-          {tesisTitle !== "" && selectedAsesor && selectedSinodal1 && selectedSinodal2 && selectedSuplente ? (
-            <button 
-              className="primary__btn" 
-              type="submit"
-              onClick={handleTesisRegistry}
-            >
-              Registrar Tesis
-            </button>
-          ) : (
-            ""
-          )}
+            {tesisTitle !== "" && selectedAsesor && selectedSinodal1 && selectedSinodal2 && selectedSuplente ? (
+              <button
+                className="primary__btn"
+                type="submit"
+                onClick={handleTesisRegistry}
+              >
+                Registrar Tesis
+              </button>
+            ) : (
+              ""
+            )}
           </>
         ) : (
           ""
         )}
         {user.datos_alumno && user.datos_alumno.id_grado_estudio == 2 ? (
           <>
-          {tesisTitle !== "" && selectedAsesor && selectedSinodal1 && selectedSinodal2 && selectedSinodal3 && selectedSinodal4 && selectedSuplente ? (
-            <button 
-              className="primary__btn" 
-              type="submit"
-              onClick={handleTesisRegistry}
-            >
-              Registrar Tesis
-            </button>
-          ) : (
-            ""
-          )}
+            {tesisTitle !== "" && selectedAsesor && selectedSinodal1 && selectedSinodal2 && selectedSinodal3 && selectedSinodal4 && selectedSuplente ? (
+              <button
+                className="primary__btn"
+                type="submit"
+                onClick={handleTesisRegistry}
+              >
+                Registrar Tesis
+              </button>
+            ) : (
+              ""
+            )}
           </>
         ) : (
           ""

@@ -7,7 +7,7 @@ import NotFound from "@/app/(admin)/admin-dashboard/not-found";
 import ProcessingAnim from "@/app/components/ProcessingAnim";
 import { fetchLatestPeriod } from "../../../../../../../../../utils/periodo.endpoint";
 import EmptyPage from "@/app/components/EmptyPage";
-import { getFormattedHours, isPeriodActive, shortFormatDate } from "../../../../../../../../../utils/utils";
+import { getFormattedHours, isPeriodConcluded, shortFormatDate } from "../../../../../../../../../utils/utils";
 import { fetchNumAsignacionesPendientesMaestria, postAsignacionesMastersDgByNumAv } from "../../../../../../../../../utils/asignacion.endpoint";
 import Cookies from 'js-cookie';
 
@@ -32,8 +32,11 @@ export default function CreateAssignment({
 
   const names = [
     "Seminario de Investigación",
+    'Avance 1',
     "Seminario de Tesis I (20% de avance)",
+    'Avance 3',
     "Seminario de Tesis II (50% de avance)",
+    'Avance 5',
     "Seminario de Tesis III (90% de avance)"
   ]
 
@@ -66,7 +69,7 @@ export default function CreateAssignment({
         const res = await fetchLatestPeriod(token).catch(() => { return null })
         setPeriodo(res)
 
-        periodoConcluido = isPeriodActive(res.fecha_cierre)
+        periodoConcluido = isPeriodConcluded(res.fecha_cierre)
 
         await fetchNumAsignacionesPendientesMaestria(res.id_periodo, group, 2, token).then((result) => {
 

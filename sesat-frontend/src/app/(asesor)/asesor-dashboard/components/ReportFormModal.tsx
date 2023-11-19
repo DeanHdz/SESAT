@@ -1,8 +1,7 @@
 import { useState } from "react";
 import "flatpickr/dist/themes/dark.css";
 import Flatpickr from "react-flatpickr";
-import { TesisInfo } from "../asesor-assignment/[idAsignacion]/page";
-import { Asignacion } from "../../../../../types/ISESAT";
+import { Asignacion, TesisInfo } from "../../../../../types/ISESAT";
 import { dateStringToDate, formatAsISODate, shortFormatDate, shortFormatDateWithoutConversion } from "../../../../../utils/utils";
 import { fetchComiteMembers } from "../../../../../utils/comite.endpoint";
 import { fetchFormatData, fetchFormatoEvaluacion, postFormatoEvaluacion } from "../../../../../utils/formato-evaluacion.endpoint";
@@ -57,7 +56,7 @@ const ReportFormModal = ({
             setComite(res);
             setasesor(res.find(usuario => usuario.nombre_funcion === 'Asesor'));
             setcoasesor(res.find(usuario => usuario.nombre_funcion === 'Co-asesor'));
-        }
+        }        
     }
 
     const closeReportFormModal = () => {
@@ -68,16 +67,16 @@ const ReportFormModal = ({
     async function fetchDocumentDataToEdit(idFormato: number) {
         const res = await fetchFormatData(idFormato, token);
         setFechaLimite(dateStringToDate(res.fecha_limite));
-        settituloReporte(res.titulo_reporte);            
-      }
+        settituloReporte(res.titulo_reporte);
+    }
 
     const editActForm = async () => {
         setMsg("Recuperando los datos del documento...");
-        setIsSubmitting(true);          
+        setIsSubmitting(true);
         setPDF(undefined);
         await fetchDocumentDataToEdit(asignacion.id_formato_evaluacion);
         setIsSubmitting(false);
-      };
+    };
 
 
 
@@ -85,7 +84,7 @@ const ReportFormModal = ({
         e.preventDefault();
         let gradoEstudio = tesisInfo.id_grado_estudio === 1 ? 'Maestría en Ingeniería de la Computación' : 'Doctorado en Ciencias de la Computación';
         //try {
-
+        let co_Asesor = coasesor ? `${coasesor.nombre} ${coasesor.apellido_paterno} ${coasesor.apellido_materno}` : ' ';
         setIsSubmitting(true);
         const res = await postFormatoEvaluacion(
             asignacion.id_asignacion,
@@ -95,14 +94,14 @@ const ReportFormModal = ({
                 grado: gradoEstudio,
                 estudiante: `${tesisInfo.nombre} ${tesisInfo.apellido_paterno} ${tesisInfo.apellido_materno}`,
                 asesor: `${asesor?.nombre} ${asesor?.apellido_paterno} ${asesor?.apellido_materno}`,
-                coasesor: `${coasesor?.nombre} ${coasesor?.apellido_paterno} ${coasesor?.apellido_materno}`,
+                coasesor: co_Asesor,
                 comite: comite!,
                 titulo_tesis: tesisInfo.titulo,
                 fecha_comienzo: tesisInfo.fecha_registro,
                 fecha_limite: shortFormatDateWithoutConversion(formatAsISODate(fechaLimite)),
             },
             token
-        );
+        ).catch();
         setPDF(res.documento_rellenado.data);
         asignacion.id_formato_evaluacion = res.id_formato_evaluacion;
         setIsSubmitting(false);
@@ -220,15 +219,21 @@ const ReportFormModal = ({
                                                         </tr>
                                                         <tr>
                                                             <td className="font-SESAT">Coasesor</td>
-                                                            <td>{`${coasesor?.nombre} ${coasesor?.apellido_paterno} ${coasesor?.apellido_materno}`}</td>
+                                                            {coasesor && (
+                                                                <td>{`${coasesor?.nombre} ${coasesor?.apellido_paterno} ${coasesor?.apellido_materno}`}</td>
+                                                            )}
                                                         </tr>
                                                         <tr>
                                                             <td className="font-SESAT">Comité de tesis</td>
                                                             <td className="whitespace-normal">
                                                                 {comite?.map((elem, index) => (
-                                                                    <span key={index}>
-                                                                        {`${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno}`}<br />
-                                                                    </span>
+                                                                    <>
+                                                                        {elem.nombre_funcion !== 'Asesor' && elem.nombre_funcion !== 'Co-asesor' && (
+                                                                            <span key={index}>
+                                                                                {`${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno}`}<br />
+                                                                            </span>
+                                                                        )}
+                                                                    </>
                                                                 ))}
                                                             </td>
                                                         </tr>

@@ -7,14 +7,15 @@ import { putPeriod } from '../../../../../utils/periodo.endpoint';
 import { useRouter } from 'next/navigation';
 import { formatAsISODate } from '../../../../../utils/utils';
 import Cookies from 'js-cookie';
-
-const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPeriodo: number, startDate: Date, endDate: Date, extender: boolean }) => {
+import { PeriodoProps } from './AlertPeriod';
+//idPeriodo: number, startDate: Date, endDate: Date,
+const UpdatePeriodoModal = ({ periodo, extender }: { periodo: PeriodoProps,  extender: boolean }) => {
     const cookie = Cookies.get("SESATsession");
     const token: string = cookie ? cookie.substring(1, cookie?.length - 1) : "";
 
     const [showModal, setShowModal] = useState(false);
-    const [start, setStartDate] = useState<Date>(startDate)
-    const [end, setEndDate] = useState<Date>(endDate)
+    const [start, setStartDate] = useState<Date>(new Date(periodo.fecha_apertura))
+    const [end, setEndDate] = useState<Date>(new Date(periodo.fecha_cierre))    
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [cssDisabled, setCSSDisabled] = useState("")
     const [cssHide, setcssHide] = useState("")
@@ -22,8 +23,10 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
     const [cssOk, setCssOk] = useState("hidden")
     const [msg, setmsg] = useState("")
     const router = useRouter()
-    let info = '¿Cómo funciona? El inicio y fin del periodo marcan la apertura y cierre de los avances de tesis, puede ampliarlo o reducirlo '
-
+    let info = 'El inicio y fin del periodo corresponden a la fecha de apertura y cierre de los avances de tesis'
+    let fechaActual = new Date();
+    let unaSemanaAdelante = new Date();
+    unaSemanaAdelante.setDate(fechaActual.getDate() + 7);
 
     function setDefaultState() {
         setShowModal(false)
@@ -42,7 +45,7 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
     }
 
     async function handleSubmit(event: any) {
-        event.preventDefault();
+        event.preventDefault();        
         if (start && end && start > end) {
             setmsg("La fecha de inicio no puede ser posterior a la fecha de fin")
             setCssError("")
@@ -53,11 +56,11 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
                 setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed")
                 await putPeriod(
                     {
-                        id_periodo: idPeriodo,
+                        id_periodo: periodo.id_periodo,
                         fecha_apertura: formatAsISODate(start),
                         fecha_cierre: formatAsISODate(end),
-                        fecha_apertura_opc: null,
-                        fecha_cierre_opc: null,
+                        fecha_apertura_opc: periodo.fecha_apertura_opc ? formatAsISODate(new Date(periodo.fecha_apertura_opc)) : null,
+                        fecha_cierre_opc: periodo.fecha_cierre_opc ? formatAsISODate(new Date(periodo.fecha_cierre_opc)) : null,
                     },
                     token
                 ).then((res) => {
@@ -140,11 +143,11 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
                                     </div>
                                     <p>Inicio del semestre</p>
                                     <Flatpickr
-                                        className={`gray__border ml-3 ${cssDisabled}`}
+                                        className={`gray__border ml-3 ${cssDisabled} ${extender && 'opacity-50 pointer-events-none cursor-not-allowed'}`}
                                         options={{
                                             enableTime: true,
                                             noCalendar: false,
-                                            minDate: startDate,
+                                            minDate: new Date(periodo.fecha_apertura),
                                             static: true,
                                         }}
                                         //data-enable-time
@@ -172,10 +175,11 @@ const UpdatePeriodoModal = ({ idPeriodo, startDate, endDate, extender }: { idPer
                                         options={{
                                             enableTime: true,
                                             noCalendar: false,
-
+                                            maxDate: extender ? unaSemanaAdelante : undefined,
+                                            minDate: extender ? fechaActual : undefined,
                                             static: true,
                                         }}
-                                        placeholder="Fin"
+                                        placeholder="Fin"                                        
                                         value={end}
                                         onChange={([date]) => {
                                             setEndDate(date)

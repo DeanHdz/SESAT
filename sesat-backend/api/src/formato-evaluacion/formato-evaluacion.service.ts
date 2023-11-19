@@ -117,10 +117,14 @@ export class FormatoEvaluacionService {
       */
       //Editar campos del PDF
 
-      let comite_members = "";
-      fillFormat.comite.map((elem) => {
-        comite_members += `${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno}, `
-      })
+      let comite_members = "";      
+
+      fillFormat.comite.forEach(elem => {
+        if(elem.nombre_funcion !== 'Asesor' && elem.nombre_funcion !== 'Co-asesor'){
+          comite_members += `${elem.nombre} ${elem.apellido_paterno} ${elem.apellido_materno}, `
+        }
+      });      
+      
       comite_members = comite_members.substring(0, comite_members.length - 2)
 
       var form = pdfDoc.getForm();
