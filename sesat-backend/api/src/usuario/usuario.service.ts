@@ -416,7 +416,6 @@ export class UsuarioService {
       apellido_materno: apellidos[1] ? apellidos[1] : "",
       correo: createExternalAsesorDto.email
     });
-
     await this.usuarioRepository.save(user);
 
     return user;

@@ -79,7 +79,7 @@ export const AsesorRegistryForm = () => {
       correo: foreignCorreo ? foreignCorreo : "",
       organizacion: foreignOrganizacion ? foreignOrganizacion : "", 
     }
-
+    console.log(foreignAsesorDto);
     const foreignAsesor = await UsuarioEndpoint.postForeignAsesor(token, foreignAsesorDto)
 
     if(foreignAsesor != null) {

@@ -51,8 +51,9 @@ export class UsuarioController{
   }
 
   @Post('/asesor/external')
-  async createExternalAsesor(@Body() createExternalAsesorDto: CreateExternalAsesorDto)
+  async createExternalAsesor(@Body() createExternalAsesorDto: any)
   {
+    console.log(createExternalAsesorDto);
     return await this.usuarioService.createExternalAsesor(createExternalAsesorDto);
   }
 
@@ -88,6 +89,7 @@ export class UsuarioController{
   @Post('/asesor/foreign')
   async createForeignAsesor(@Body() createForeignAsesorDto: CreateForeignAsesorDto)
   {
+    console.log(createForeignAsesorDto);
     return await this.usuarioService.createForeignAsesor(createForeignAsesorDto);
   }
   

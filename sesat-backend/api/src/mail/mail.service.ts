@@ -85,7 +85,7 @@ export class MailService {
 
       if (validDays.includes(days)) {
         await this.mailerService.sendMail({
-          to: "jesusgerardo.1315@hotmail.com",
+          to: tesis.alumno.correo,
           subject: "Recordatorio cierre de asignación",
           template: "./reminder",
           context: {
