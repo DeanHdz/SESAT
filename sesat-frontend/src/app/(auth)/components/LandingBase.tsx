@@ -5,7 +5,7 @@ import LandingLogo from "./LandingLogo"
 const LandingBase = () =>
 {
   return(
-    <div className="bg-[#e8edef] w-screen h-[687px] flex flex-row">
+    <div className="bg-[#e8edef] w-screen h-screen flex flex-row">
       <div className="w-screen md:w-4/6 h-[687px]">
         <LandingLogin />
       </div>
