@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LoggedUser } from "../../../../../types/ISESAT";
 import { LoginEndpoint } from "../../../../../utils/login.endpoint";
+import Cookies from "js-cookie";
 
 const ViewEventModal = ({
   eventTitle,
@@ -44,15 +45,6 @@ const ViewEventModal = ({
     "viernes",
     "sábado",
   ];
-
-  /*const getRelatedEvents = async () => {
-    const eventosData: Promise<Evento[]> = EventoEndpoint.getEventosByTitle(
-      "",
-      eventTitle
-    ); //hard admin id
-    const eventos = await eventosData;
-    return eventos;
-  };*/
   const split = eventTitle ? eventTitle.split("!!") : [];
 
   const [eventList, setEventList] = useState<Evento[]>([]);
@@ -103,7 +95,7 @@ const ViewEventModal = ({
 
   const handleDeletion = async () => {
     const eventosData = await EventoEndpoint.deleteEventosByTitle(
-      "",
+      token,
       eventTitle
     );
     if (eventosData != null) {
