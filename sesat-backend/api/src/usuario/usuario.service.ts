@@ -453,7 +453,7 @@ export class UsuarioService {
     );
   }
 
-  async createForeignAsesor(createForeignAsesorDto: CreateForeignAsesorDto)
+  async createForeignAsesor(createForeignAsesorDto: any)
   {
     const datosAsesorExternoData: CreateDatosAsesorexternoDto = {
       telefono: createForeignAsesorDto.telefono,

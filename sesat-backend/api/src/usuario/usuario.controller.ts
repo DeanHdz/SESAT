@@ -87,7 +87,7 @@ export class UsuarioController{
   }
 
   @Post('/asesor/foreign')
-  async createForeignAsesor(@Body() createForeignAsesorDto: CreateForeignAsesorDto)
+  async createForeignAsesor(@Body() createForeignAsesorDto: any)
   {
     console.log(createForeignAsesorDto);
     return await this.usuarioService.createForeignAsesor(createForeignAsesorDto);

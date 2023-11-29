@@ -59,8 +59,8 @@ export const PDFUploadForm = (props: PDFUploadFormProps) => {
       const fileExtension = fileName.split(".").pop();
 
       //Nota: convertir un pdf a base64 aumenta 33% su tamaño original
-      if (bytesToMegabytes(fileSize) > 20) {
-        setmsg("Tamaño de archivo excede el límite permitido (20MB)");
+      if (bytesToMegabytes(fileSize) > 5) {
+        setmsg("Tamaño de archivo excede el límite permitido (5MB)");
         setCSSDisabled("opacity-50 pointer-events-none cursor-not-allowed");
         setCssError("");
       }
